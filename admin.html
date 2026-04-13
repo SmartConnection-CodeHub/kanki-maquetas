@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanki Street — Admin Panel</title>
+  <style>
+    :root {
+      --navy: #1B2F4E;
+      --navy-light: #2A4A6E;
+      --gold: #C49A3A;
+      --gold-light: #D4AA4A;
+      --cream: #F5EDD8;
+      --white: #ffffff;
+      --bg: #f5f5f7;
+      --border: #e5e5e7;
+      --text: #1d1d1f;
+      --text-secondary: #86868b;
+      --success: #34c759;
+      --warning: #ff9f0a;
+      --danger: #ff3b30;
+      --sidebar-w: 240px;
+      --topbar-h: 52px;
+      --font: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h);
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 20px; gap: 12px; z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon { width: 30px; height: 30px; background: var(--navy); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-weight: 700; font-size: 13px; flex-shrink: 0; }
+    .logo-text { font-size: 15px; font-weight: 600; color: var(--text); }
+    .logo-badge { font-size: 10px; background: var(--gold); color: var(--navy); padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.04em; }
+    .topbar-sep { flex: 1; }
+    .topbar-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--white); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; position: relative; transition: background 150ms; }
+    .topbar-btn:hover { background: var(--bg); }
+    .notif-dot { position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; background: var(--danger); border-radius: 50%; border: 1.5px solid white; }
+    .avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--navy); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 12px; font-weight: 700; cursor: pointer; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; padding-top: var(--topbar-h); min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); background: var(--white); border-right: 1px solid var(--border);
+      position: fixed; top: var(--topbar-h); bottom: 0; left: 0;
+      overflow-y: auto; padding: 16px 10px; display: flex; flex-direction: column; gap: 2px;
+    }
+    .nav-section { font-size: 10px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 8px 4px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px; border-radius: 8px; cursor: pointer;
+      color: var(--text-secondary); font-size: 14px; font-weight: 500;
+      transition: all 150ms; text-decoration: none; user-select: none;
+    }
+    .nav-item:hover { background: var(--bg); color: var(--text); }
+    .nav-item.active { background: var(--navy); color: var(--white); }
+    .nav-badge { margin-left: auto; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+    .nav-badge.red { background: var(--danger); color: white; }
+    .nav-badge.gold { background: var(--gold); color: var(--navy); }
+    .sidebar-bottom { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
+
+    /* ── MAIN ── */
+    .main { margin-left: var(--sidebar-w); flex: 1; padding: 28px 32px; }
+
+    /* ── VIEWS ── */
+    .view { display: none; animation: fadeIn 200ms ease; }
+    .view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ── PAGE HEADER ── */
+    .page-header { margin-bottom: 24px; }
+    .page-header-row { display: flex; align-items: center; gap: 16px; }
+    .page-title { font-size: clamp(22px, 3vw, 28px); font-weight: 700; letter-spacing: -0.02em; }
+    .page-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 3px; }
+
+    /* ── KPI GRID ── */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .kpi { background: var(--white); border-radius: 12px; padding: 18px 20px; border: 1px solid var(--border); }
+    .kpi.dark { background: var(--navy); border-color: var(--navy); }
+    .kpi-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+    .kpi.dark .kpi-label { color: rgba(255,255,255,0.5); }
+    .kpi-value { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 6px 0 4px; }
+    .kpi.dark .kpi-value { color: var(--gold); }
+    .kpi-delta { font-size: 12px; font-weight: 500; }
+    .kpi-delta.up { color: var(--success); }
+    .kpi-delta.neutral { color: var(--text-secondary); }
+
+    /* ── CARDS ── */
+    .card { background: var(--white); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
+    .card-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-size: 14px; font-weight: 600; }
+    .card-link { font-size: 13px; color: #0071e3; cursor: pointer; font-weight: 500; background: none; border: none; }
+
+    /* ── ALERT ── */
+    .alert { display: flex; align-items: center; gap: 10px; padding: 11px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 13px; font-weight: 500; }
+    .alert.warn { background: #fff8e6; border: 1px solid #ffe49e; color: #7a5200; }
+    .alert.info { background: #e8f4ff; border: 1px solid #b3d7ff; color: #003d82; }
+    .alert-link { margin-left: auto; font-size: 13px; font-weight: 600; text-decoration: none; color: inherit; }
+
+    /* ── TABLE ── */
+    .table { width: 100%; border-collapse: collapse; }
+    .table th { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; padding: 11px 20px; text-align: left; background: #fafafa; border-bottom: 1px solid var(--border); }
+    .table td { padding: 13px 20px; border-bottom: 1px solid #f5f5f7; font-size: 14px; vertical-align: middle; }
+    .table tr:last-child td { border-bottom: none; }
+    .table tbody tr:hover td { background: #fafafa; }
+
+    /* ── BADGES ── */
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 20px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+    .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .badge-nuevo { background: #fff3cd; color: #7a5200; }
+    .badge-nuevo::before { background: #ffc107; }
+    .badge-comprobante { background: #dbeafe; color: #1e40af; }
+    .badge-comprobante::before { background: #3b82f6; }
+    .badge-validado { background: #dcfce7; color: #166534; }
+    .badge-validado::before { background: var(--success); }
+    .badge-despachado { background: #e8f5e9; color: #2e7d32; }
+    .badge-despachado::before { background: #4caf50; }
+    .badge-rechazado { background: #fee2e2; color: #991b1b; }
+    .badge-rechazado::before { background: var(--danger); }
+
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 150ms; font-family: var(--font); }
+    .btn-navy { background: var(--navy); color: white; }
+    .btn-navy:hover { background: var(--navy-light); }
+    .btn-gold { background: var(--gold); color: var(--navy); font-weight: 600; }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); color: var(--text); }
+    .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
+    .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+
+    /* ── FILTER TABS ── */
+    .filter-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+
+    /* ── STATS ROW ── */
+    .stat-row { display: flex; align-items: center; padding: 12px 20px; border-bottom: 1px solid #f5f5f7; }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-label { flex: 1; font-size: 14px; color: var(--text-secondary); }
+    .stat-bar { width: 80px; height: 4px; background: #f0f0f2; border-radius: 2px; margin: 0 14px; overflow: hidden; }
+    .stat-fill { height: 100%; background: var(--navy); border-radius: 2px; }
+    .stat-value { font-size: 14px; font-weight: 600; min-width: 36px; text-align: right; }
+
+    /* ── TWO COL ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* ── PRODUCT GRID ── */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; padding: 20px; }
+    .product-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; cursor: pointer; transition: box-shadow 200ms, transform 200ms; }
+    .product-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .product-thumb { width: 100%; height: 130px; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 36px; }
+    .product-info { padding: 11px; }
+    .product-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .product-stock { font-size: 12px; color: var(--text-secondary); }
+    .product-stock.low { color: var(--danger); }
+    .product-price { font-size: 14px; font-weight: 700; color: var(--navy); margin-top: 5px; }
+
+    /* ── FORM ── */
+    .form-section { background: var(--white); border-radius: 12px; border: 1px solid var(--border); padding: 22px; margin-bottom: 18px; }
+    .form-section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
+    .form-input { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: var(--font); outline: none; background: white; transition: border-color 150ms; }
+    .form-input:focus { border-color: var(--navy); }
+    .form-hint { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ── MOBILE BOTTOM NAV ── */
+    .bottom-nav { display: none; }
+
+    /* ── MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; border-radius: 16px; padding: 24px; width: 400px; max-width: 90vw; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-secondary); line-height: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 16px 14px 90px; }
+      .table th:nth-child(3), .table td:nth-child(3),
+      .table th:nth-child(6), .table td:nth-child(6) { display: none; }
+      .bottom-nav {
+        display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+        background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+        border-top: 1px solid var(--border); padding: 8px 0 env(safe-area-inset-bottom, 16px); z-index: 100;
+      }
+      .bn-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; }
+      .bn-icon { font-size: 20px; line-height: 1.2; }
+      .bn-label { font-size: 10px; font-weight: 500; color: var(--text-secondary); }
+      .bn-item.active .bn-label { color: var(--navy); font-weight: 600; }
+    }
+
+    /* ── iPHONE (≤390px) ── */
+    @media (max-width: 390px) {
+      :root { --topbar-h: 48px; }
+      .topbar { padding: 0 14px; gap: 8px; }
+      .logo-text { font-size: 13px; }
+      .main { padding: 12px 12px 88px; }
+      .page-title { font-size: 20px; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .kpi { padding: 14px 14px; }
+      .kpi-value { font-size: 22px; margin: 4px 0 3px; }
+      .kpi-label { font-size: 10px; }
+      /* Ocultar columna extra en tabla */
+      .table th:nth-child(4), .table td:nth-child(4) { display: none; }
+      .table th, .table td { padding: 11px 12px; font-size: 13px; }
+      /* Botones más compactos */
+      .btn { padding: 7px 11px; font-size: 12px; }
+      .filter-tabs .btn { font-size: 11px; padding: 5px 9px; }
+      .card-header { padding: 12px 14px; }
+      .card-title { font-size: 13px; }
+      /* Productos 2 col */
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 14px; }
+      .product-thumb { height: 110px; font-size: 28px; }
+      .product-name { font-size: 12px; }
+      /* Alert compacta */
+      .alert { font-size: 12px; padding: 10px 12px; }
+      /* Bottom nav más alta para home indicator */
+      .bottom-nav { padding-bottom: env(safe-area-inset-bottom, 20px); }
+      .bn-icon { font-size: 18px; }
+      .bn-label { font-size: 9px; }
+    }
+
+    /* ── iPAD (769px – 1024px) ── */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      :root { --sidebar-w: 200px; }
+      .sidebar { width: var(--sidebar-w); }
+      .main { margin-left: var(--sidebar-w); padding: 22px 24px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-item { font-size: 13px; padding: 7px 10px; }
+      .nav-section { font-size: 9px; }
+      .table th, .table td { padding: 11px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOPBAR ── -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-icon">KS</div>
+    <span class="logo-text">Kanki Street</span>
+    <span class="logo-badge">ADMIN</span>
+  </div>
+  <div class="topbar-sep"></div>
+  <button class="topbar-btn" title="Notificaciones">
+    🔔
+    <span class="notif-dot"></span>
+  </button>
+  <div class="avatar" title="Martín">M</div>
+</header>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="nav-section">Principal</div>
+  <div class="nav-item active" data-view="dashboard">
+    <span>📊</span> Dashboard
+  </div>
+  <div class="nav-item" data-view="pedidos">
+    <span>📋</span> Pedidos
+    <span class="nav-badge red">3</span>
+  </div>
+  <div class="nav-item" data-view="productos">
+    <span>👕</span> Productos
+    <span class="nav-badge gold">2</span>
+  </div>
+  <div class="nav-section">Configuración</div>
+  <div class="nav-item" data-view="config">
+    <span>🏦</span> Datos de Pago
+  </div>
+  <div class="nav-item" data-view="config">
+    <span>🚚</span> Despacho
+  </div>
+  <div class="sidebar-bottom">
+    <div class="nav-item">
+      <span>💬</span> WhatsApp
+    </div>
+    <div class="nav-item">
+      <span>⚙️</span> Ajustes
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- VIEW: DASHBOARD -->
+  <div class="view active" id="view-dashboard">
+    <div class="page-header">
+      <div class="page-title">Buenos días, Martín 👋</div>
+      <div class="page-subtitle">Jueves 10 de abril 2026 · 3 pedidos requieren atención</div>
+    </div>
+
+    <div class="alert warn">
+      ⚠️ <strong>Stock crítico:</strong> Poleron Barrel Wave talla M — quedan 2 unidades
+      <a class="alert-link" onclick="navigate('productos')">Ver →</a>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi dark">
+        <div class="kpi-label">Pedidos hoy</div>
+        <div class="kpi-value">7</div>
+        <div class="kpi-delta up">↑ 3 vs ayer</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Revenue hoy</div>
+        <div class="kpi-value" style="color:var(--navy)">$186K</div>
+        <div class="kpi-delta up">↑ 12% vs ayer</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Pendientes revisión</div>
+        <div class="kpi-value" style="color:var(--danger)">3</div>
+        <div class="kpi-delta neutral">Comprobantes en espera</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Despachados semana</div>
+        <div class="kpi-value" style="color:var(--success)">24</div>
+        <div class="kpi-delta up">↑ 8 vs semana anterior</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Últimos pedidos</span>
+          <button class="card-link" onclick="navigate('pedidos')">Ver todos →</button>
+        </div>
+        <table class="table">
+          <thead>
+            <tr><th>Pedido</th><th>Cliente</th><th>Total</th><th>Estado</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>#0042</strong></td><td>Valentina M.</td><td>$38.990</td>
+              <td><span class="badge badge-comprobante">Comprobante</span></td>
+            </tr>
+            <tr>
+              <td><strong>#0041</strong></td><td>Diego R.</td><td>$26.990</td>
+              <td><span class="badge badge-nuevo">Nuevo</span></td>
+            </tr>
+            <tr>
+              <td><strong>#0040</strong></td><td>Catalina V.</td><td>$52.490</td>
+              <td><span class="badge badge-validado">Validado</span></td>
+            </tr>
+            <tr>
+              <td><strong>#0039</strong></td><td>Ignacio P.</td><td>$31.990</td>
+              <td><span class="badge badge-despachado">Despachado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Ventas por categoría</span>
+          <span style="font-size:12px; color:var(--text-secondary)">Este mes</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Polerones</span>
+          <div class="stat-bar"><div class="stat-fill" style="width:72%"></div></div>
+          <span class="stat-value">72%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Essentials</span>
+          <div class="stat-bar"><div class="stat-fill" style="width:45%"></div></div>
+          <span class="stat-value">45%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Girls &amp; Motors</span>
+          <div class="stat-bar"><div class="stat-fill" style="width:28%"></div></div>
+          <span class="stat-value">28%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Lookbook</span>
+          <div class="stat-bar"><div class="stat-fill" style="width:15%"></div></div>
+          <span class="stat-value">15%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: PEDIDOS -->
+  <div class="view" id="view-pedidos">
+    <div class="page-header">
+      <div class="page-header-row">
+        <div>
+          <div class="page-title">Pedidos</div>
+          <div class="page-subtitle">34 pedidos totales · 3 requieren atención</div>
+        </div>
+        <div style="margin-left:auto; display:flex; gap:8px;">
+          <button class="btn btn-ghost btn-sm">Exportar</button>
+          <button class="btn btn-navy btn-sm">+ Pedido manual</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="btn btn-navy btn-sm" onclick="filterOrders('all',this)">Todos (34)</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterOrders('nuevo',this)">🟡 Nuevos (2)</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterOrders('comprobante',this)">🔵 Comprobante (3)</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterOrders('validado',this)">🟢 Validados (5)</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterOrders('despachado',this)">✅ Despachados (24)</button>
+    </div>
+
+    <div class="card">
+      <table class="table" id="orders-table">
+        <thead>
+          <tr><th>Pedido</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr data-status="comprobante">
+            <td><strong>#0042</strong><br><small style="color:var(--text-secondary)">hace 15 min</small></td>
+            <td>Valentina Morales<br><small style="color:var(--text-secondary)">+56 9 8712 3456</small></td>
+            <td>Poleron Barrel Wave M</td>
+            <td><strong>$38.990</strong></td>
+            <td><span class="badge badge-comprobante">Comprobante</span></td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-ghost btn-sm" onclick="openProof('#0042','Valentina Morales','$38.990')">📎 Ver</button>
+                <button class="btn btn-gold btn-sm" onclick="validateOrder(this)">✓ Validar</button>
+              </div>
+            </td>
+          </tr>
+          <tr data-status="comprobante">
+            <td><strong>#0041</strong><br><small style="color:var(--text-secondary)">hace 42 min</small></td>
+            <td>Diego Riquelme<br><small style="color:var(--text-secondary)">+56 9 7823 4567</small></td>
+            <td>Tshirt Ocean Fade S</td>
+            <td><strong>$26.990</strong></td>
+            <td><span class="badge badge-comprobante">Comprobante</span></td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-ghost btn-sm" onclick="openProof('#0041','Diego Riquelme','$26.990')">📎 Ver</button>
+                <button class="btn btn-gold btn-sm" onclick="validateOrder(this)">✓ Validar</button>
+              </div>
+            </td>
+          </tr>
+          <tr data-status="nuevo">
+            <td><strong>#0040</strong><br><small style="color:var(--text-secondary)">hace 1h</small></td>
+            <td>Catalina Vega<br><small style="color:var(--text-secondary)">+56 9 6934 5678</small></td>
+            <td>Poleron Surf Script L + Cap Navy</td>
+            <td><strong>$52.490</strong></td>
+            <td><span class="badge badge-nuevo">Nuevo</span></td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-ghost btn-sm">💬 WA</button>
+                <span style="font-size:12px; color:var(--warning); align-self:center; font-weight:600;">⏱ 1h restante</span>
+              </div>
+            </td>
+          </tr>
+          <tr data-status="validado">
+            <td><strong>#0039</strong><br><small style="color:var(--text-secondary)">hace 3h</small></td>
+            <td>Ignacio Parra<br><small style="color:var(--text-secondary)">+56 9 5045 6789</small></td>
+            <td>Tshirt Tubes Riders M</td>
+            <td><strong>$31.990</strong></td>
+            <td><span class="badge badge-validado">Validado</span></td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-navy btn-sm" onclick="dispatchOrder(this)">📦 Despachar</button>
+              </div>
+            </td>
+          </tr>
+          <tr data-status="despachado">
+            <td><strong>#0038</strong><br><small style="color:var(--text-secondary)">ayer 16:30</small></td>
+            <td>Sofía Lagos<br><small style="color:var(--text-secondary)">+56 9 4156 7890</small></td>
+            <td>Poleron Barrel Wave S</td>
+            <td><strong>$38.990</strong></td>
+            <td><span class="badge badge-despachado">Despachado</span></td>
+            <td>
+              <button class="btn btn-ghost btn-sm">🔍 Tracking</button>
+            </td>
+          </tr>
+          <tr data-status="despachado">
+            <td><strong>#0037</strong><br><small style="color:var(--text-secondary)">ayer 12:10</small></td>
+            <td>Matías Torres<br><small style="color:var(--text-secondary)">+56 9 3267 8901</small></td>
+            <td>Cap Navy Kanki + Tshirt Sunset</td>
+            <td><strong>$38.980</strong></td>
+            <td><span class="badge badge-despachado">Despachado</span></td>
+            <td>
+              <button class="btn btn-ghost btn-sm">🔍 Tracking</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VIEW: PRODUCTOS -->
+  <div class="view" id="view-productos">
+    <div class="page-header">
+      <div class="page-header-row">
+        <div>
+          <div class="page-title">Productos</div>
+          <div class="page-subtitle">12 productos activos · 2 con stock crítico</div>
+        </div>
+        <button class="btn btn-navy" style="margin-left:auto">+ Agregar producto</button>
+      </div>
+    </div>
+
+    <div class="alert warn">
+      📦 <strong>2 productos</strong> tienen stock ≤ 2 unidades en alguna talla. Considera reabastecer.
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-thumb">🌊</div>
+        <div class="product-info">
+          <div class="product-name">Poleron Barrel Wave</div>
+          <div class="product-stock low">⚠️ Talla M: 2 unid.</div>
+          <div class="product-price">$38.990</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb">🏄</div>
+        <div class="product-info">
+          <div class="product-name">Poleron Surf Script</div>
+          <div class="product-stock">Stock: 14 unid.</div>
+          <div class="product-price">$38.990</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb">☀️</div>
+        <div class="product-info">
+          <div class="product-name">Tshirt Ocean Fade</div>
+          <div class="product-stock low">⚠️ Talla S: 1 unid.</div>
+          <div class="product-price">$26.990</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb">🐟</div>
+        <div class="product-info">
+          <div class="product-name">Tshirt Tubes Riders</div>
+          <div class="product-stock">Stock: 8 unid.</div>
+          <div class="product-price">$26.990</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb">🧢</div>
+        <div class="product-info">
+          <div class="product-name">Cap Navy Kanki</div>
+          <div class="product-stock">Stock: 22 unid.</div>
+          <div class="product-price">$15.990</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb">🩱</div>
+        <div class="product-info">
+          <div class="product-name">Camiseta Girls Sunset</div>
+          <div class="product-stock">Stock: 5 unid.</div>
+          <div class="product-price">$22.990</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: CONFIG -->
+  <div class="view" id="view-config">
+    <div class="page-header">
+      <div class="page-title">Configuración de Pago</div>
+      <div class="page-subtitle">Datos bancarios que verá el comprador al finalizar su pedido</div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="form-section">
+          <div class="form-section-title">🏦 Cuenta Bancaria</div>
+          <div class="form-group">
+            <label class="form-label">Banco</label>
+            <input class="form-input" value="Banco de Chile">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo de cuenta</label>
+            <input class="form-input" value="Cuenta Corriente">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Número de cuenta</label>
+            <input class="form-input" value="00-123-45678-09">
+          </div>
+          <div class="form-group">
+            <label class="form-label">RUT titular</label>
+            <input class="form-input" value="12.345.678-9">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nombre titular</label>
+            <input class="form-input" value="Martín Kanki SpA">
+          </div>
+          <button class="btn btn-navy" onclick="showToast('✅ Datos guardados correctamente')">Guardar cambios</button>
+        </div>
+      </div>
+      <div>
+        <div class="form-section">
+          <div class="form-section-title">📋 Instrucciones al comprador</div>
+          <div class="form-group">
+            <label class="form-label">Mensaje de pago</label>
+            <textarea class="form-input" rows="4" style="resize:vertical">Realiza tu transferencia y envía el comprobante a nuestro WhatsApp. Tu pedido se procesa en máximo 2 horas hábiles. 🤙</textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tiempo máximo de validación</label>
+            <input class="form-input" value="2 horas hábiles">
+            <div class="form-hint">El stock queda reservado durante este tiempo</div>
+          </div>
+          <button class="btn btn-gold" style="color:var(--navy)" onclick="showToast('✅ Instrucciones guardadas')">Guardar</button>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">💬 WhatsApp de contacto</div>
+          <div class="form-group">
+            <label class="form-label">Número WhatsApp</label>
+            <input class="form-input" value="+56 9 XXXX XXXX">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mensaje automático al comprar</label>
+            <textarea class="form-input" rows="3" style="resize:vertical">Hola! Acabo de realizar mi pedido #{{order_id}} en Kanki Street 🤙 Adjunto el comprobante de transferencia.</textarea>
+            <div class="form-hint">{{order_id}} se reemplaza automáticamente</div>
+          </div>
+          <button class="btn btn-navy" onclick="showToast('✅ WhatsApp configurado')">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── BOTTOM NAV MOBILE ── -->
+<nav class="bottom-nav">
+  <div class="bn-item active" data-view="dashboard"><span class="bn-icon">📊</span><span class="bn-label">Inicio</span></div>
+  <div class="bn-item" data-view="pedidos"><span class="bn-icon">📋</span><span class="bn-label">Pedidos</span></div>
+  <div class="bn-item" data-view="productos"><span class="bn-icon">👕</span><span class="bn-label">Productos</span></div>
+  <div class="bn-item" data-view="config"><span class="bn-icon">⚙️</span><span class="bn-label">Config</span></div>
+</nav>
+
+<!-- ── MODAL: VER COMPROBANTE ── -->
+<div class="modal-overlay" id="proof-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <strong id="proof-title">Comprobante #0042</strong>
+      <button class="modal-close" onclick="closeModal('proof-modal')">×</button>
+    </div>
+    <div style="background:var(--cream); border-radius:10px; padding:28px; text-align:center; margin-bottom:16px; border:2px dashed var(--gold);">
+      <div style="font-size:52px; margin-bottom:8px;">🧾</div>
+      <div style="font-size:13px; color:var(--text-secondary)">Comprobante de Transferencia</div>
+      <div id="proof-amount" style="font-size:18px; font-weight:700; margin:8px 0 4px; color:var(--navy)">$38.990</div>
+      <div id="proof-client" style="font-size:13px; color:var(--text-secondary)">Valentina Morales</div>
+      <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">10 Abr 2026 · 14:32 · Banco de Chile</div>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-gold" style="flex:1; justify-content:center; color:var(--navy); font-weight:700;"
+        onclick="closeModal('proof-modal'); showToast('✅ Pago validado — listo para despachar')">
+        ✓ Validar pago
+      </button>
+      <button class="btn btn-danger" onclick="closeModal('proof-modal'); showToast('❌ Pago rechazado — se notificó al cliente')">
+        ✗ Rechazar
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── NAVIGATION ──
+  function navigate(viewName) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('[data-view]').forEach(el => el.classList.remove('active'));
+    const view = document.getElementById('view-' + viewName);
+    if (view) view.classList.add('active');
+    document.querySelectorAll(`[data-view="${viewName}"]`).forEach(el => el.classList.add('active'));
+  }
+
+  document.querySelectorAll('[data-view]').forEach(el => {
+    el.addEventListener('click', () => navigate(el.dataset.view));
+  });
+
+  // ── FILTER ORDERS ──
+  function filterOrders(status, btn) {
+    document.querySelectorAll('#orders-table tbody tr').forEach(row => {
+      row.style.display = (status === 'all' || row.dataset.status === status) ? '' : 'none';
+    });
+    document.querySelectorAll('.filter-tabs .btn').forEach(b => {
+      b.className = b === btn ? 'btn btn-navy btn-sm' : 'btn btn-ghost btn-sm';
+    });
+  }
+
+  // ── VALIDATE ORDER ──
+  function validateOrder(btn) {
+    const row = btn.closest('tr');
+    const badge = row.querySelector('.badge');
+    badge.className = 'badge badge-validado';
+    badge.textContent = 'Validado';
+    btn.closest('div').innerHTML = '<button class="btn btn-navy btn-sm" onclick="dispatchOrder(this)">📦 Despachar</button>';
+    row.dataset.status = 'validado';
+    showToast('✅ Pago validado — pedido listo para despachar');
+  }
+
+  // ── DISPATCH ORDER ──
+  function dispatchOrder(btn) {
+    const row = btn.closest('tr');
+    const badge = row.querySelector('.badge');
+    badge.className = 'badge badge-despachado';
+    badge.textContent = 'Despachado';
+    btn.closest('div').innerHTML = '<button class="btn btn-ghost btn-sm">🔍 Tracking</button>';
+    row.dataset.status = 'despachado';
+    showToast('📦 Pedido despachado. Se notificó al cliente por WhatsApp.');
+  }
+
+  // ── PROOF MODAL ──
+  function openProof(order, client, amount) {
+    document.getElementById('proof-title').textContent = 'Comprobante ' + order;
+    document.getElementById('proof-client').textContent = client;
+    document.getElementById('proof-amount').textContent = amount;
+    document.getElementById('proof-modal').classList.add('open');
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+  document.getElementById('proof-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('proof-modal');
+  });
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:#1d1d1f;color:white;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:400;opacity:0;transition:all 250ms ease;white-space:nowrap;';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; });
+    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2800);
+  }
+</script>
+</body>
+</html>
