@@ -549,45 +549,131 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
   .footer-grid{grid-template-columns:1fr}
 }
 
-/* ─── iPHONE (≤430px — cubre iPhone 16 Pro 393px, Pro Max 430px) ─── */
+/* ─── iPHONE MOBILE-FIRST (≤430px — iPhone 17 Pro 402px, 16 Pro 393px, Pro Max 430px) ─── */
 @media(max-width:430px){
-  :root{--header-h:44px;--subnav-h:42px;--brand-h:30px}
-  .nav-global{padding:0 14px}
-  .nav-logo-name{font-size:12px}
+  /* ── Variables mobile ── */
+  :root{--header-h:44px;--subnav-h:36px;--brand-h:28px}
+
+  /* ── Nav: solo logo + iconos ── */
+  .nav-global{padding:0 12px}
+  .nav-links{display:none}
   .nav-logo-sub{display:none}
-  /* Brand filter scrollable */
-  .brand-filter{justify-content:flex-start;padding:0 14px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:6px}
-  .brand-filter::-webkit-scrollbar{display:none}
-  .brand-btn{font-size:9px;padding:4px 10px;flex-shrink:0;min-height:26px}
-  /* Sub-nav scrollable */
-  .nav-sub-inner{padding:0 14px}
-  .nav-sub-links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav-logo-name{font-size:12px;letter-spacing:0.06em}
+  .nav-right{gap:4px}
+  .nav-icon-btn{padding:5px 7px;min-width:40px;min-height:40px;font-size:18px}
+  .hamburger{font-size:18px}
+
+  /* ── Sub-nav: pills compactos ── */
+  .nav-sub{height:36px}
+  .nav-sub-inner{padding:0 12px;justify-content:flex-start}
+  .nav-sub-name{display:none}
+  .nav-sub-links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex:1}
   .nav-sub-links::-webkit-scrollbar{display:none}
-  .nav-sub-links a{padding:0 9px;font-size:9px;white-space:nowrap}
-  /* Hero */
-  .hero{padding:72px 14px 36px;min-height:52vh}
-  .hero-eyebrow{font-size:9px;margin-bottom:14px}
-  .hero-sub{font-size:0.82rem;margin-bottom:28px}
-  .hero-actions{gap:8px}
-  .hero-actions .btn-fill,.hero-actions .btn-ghost{padding:11px 18px;font-size:12px}
-  .hero-badges{gap:6px}
+  .nav-sub-links a{padding:0 12px;font-size:10px;height:36px;line-height:36px;white-space:nowrap}
+
+  /* ── Brand filter: scroll horizontal ── */
+  .brand-filter{height:28px;justify-content:flex-start;padding:0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:6px}
+  .brand-filter::-webkit-scrollbar{display:none}
+  .brand-filter-label{display:none}
+  .brand-btn{font-size:9px;padding:3px 10px;flex-shrink:0;min-height:24px;border-radius:980px}
+
+  /* ── HERO: pantalla completa mobile-first ── */
+  .hero{
+    min-height:90svh;min-height:90vh; /* fallback para Safari < 15.4 */
+    padding:56px 16px 48px;
+    margin-top:var(--header-h);
+    align-items:flex-start;
+    justify-content:flex-end;
+    text-align:left;
+  }
+  .hero-content{max-width:100%;width:100%}
+  .hero-eyebrow{font-size:9px;letter-spacing:0.16em;margin-bottom:10px}
+  .hero-title{font-size:clamp(2rem,9vw,2.8rem);line-height:1.0;letter-spacing:-0.04em;margin-bottom:14px}
+  .hero-sub{font-size:0.85rem;line-height:1.6;margin:0 0 22px;max-width:300px;text-align:left}
+  .hero-actions{flex-direction:column;align-items:flex-start;gap:10px}
+  .hero-actions .btn-fill{width:100%;max-width:260px;padding:14px 22px;font-size:14px;font-weight:700;letter-spacing:0.04em;text-align:center}
+  .hero-actions .btn-ghost{display:none}
+  .hero-badges{justify-content:flex-start;gap:6px;flex-wrap:wrap}
   .hero-badge{font-size:9px;padding:4px 10px}
-  /* Products */
-  .products-section{padding:28px 14px}
-  .product-img{height:200px}
-  /* Cart drawer: bottom sheet en iPhone */
-  .cart-drawer{width:100%;height:88vh;top:auto;bottom:0;right:0 !important;transform:translateY(100%);border-radius:20px 20px 0 0;transition:transform 0.35s cubic-bezier(0.4,0,0.2,1) !important}
+  .hero-scene-label{display:none}
+
+  /* ── Products ── */
+  .products-section{padding:16px 12px 40px}
+  .products-section-inner{max-width:100%}
+  .section-header{margin-bottom:16px}
+  .section-header-title{font-size:10px}
+  .products-grid{grid-template-columns:1fr;gap:14px}
+  .skeleton-grid{grid-template-columns:1fr}
+
+  /* Product card: imagen proporcional al ancho ── */
+  .product-img{height:56vw}
+  .product-info{padding:12px 14px 14px}
+  .product-name{font-size:14px}
+  .product-price{font-size:16px}
+  .product-overlay{display:none} /* hover overlay no funciona en touch */
+
+  /* Catalog feature banner: bloque promo mobile ── */
+  .catalog-feature-banner{
+    grid-column:1/-1;
+    grid-template-columns:1fr;
+    min-height:unset;
+    border-radius:14px;
+  }
+  .catalog-feature-banner img{display:none}
+  .catalog-feature-copy{padding:20px 16px}
+  .catalog-feature-copy h3{font-size:1.3rem;margin-bottom:6px}
+  .catalog-feature-copy p{font-size:12px;margin-bottom:14px}
+
+  /* ── Lifestyle ── */
+  .lifestyle{padding:32px 12px}
+  .lifestyle h3{font-size:1.5rem}
+  .lifestyle-items{gap:14px}
+  .lifestyle-item{width:44px;height:44px;border-radius:10px}
+
+  /* ── Collections ── */
+  .collections-section{padding:36px 12px}
+  .collections-section-inner{max-width:100%}
+  .collections-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .collection-card{min-height:120px;border-radius:12px}
+
+  /* ── Testimonials ── */
+  .testimonials-section{padding:36px 12px}
+  .testimonials-grid{grid-template-columns:1fr}
+
+  /* ── Newsletter ── */
+  .newsletter-section{padding:36px 12px}
+  .nl-title{font-size:1.5rem}
+  .nl-sub{font-size:13px;margin-bottom:20px}
+
+  /* ── Footer ── */
+  .footer-full{padding:28px 12px 90px} /* padding-bottom para dejar espacio al bottom bar */
+  .footer-grid{grid-template-columns:1fr;gap:20px;padding-bottom:20px}
+
+  /* ── Modales / Overlays ── */
+  .pp-layout{grid-template-columns:1fr}
+  .pp-preview{height:52vw}
+
+  /* ── Cart drawer: bottom sheet iOS ── */
+  .cart-drawer{
+    width:100%;height:90svh;height:90vh;
+    top:auto;bottom:0;right:0 !important;
+    transform:translateY(100%);
+    border-radius:20px 20px 0 0;
+    transition:transform 0.35s cubic-bezier(0.4,0,0.2,1) !important;
+  }
   .cart-drawer.open{transform:translateY(0) !important;right:0 !important}
-  .cart-drawer-footer{padding-bottom:env(safe-area-inset-bottom,20px)}
-  /* Layout */
-  .wrap{padding:0 14px}
-  .section{padding:48px 0}
-  .section-alt,.section-warm{padding:48px 0}
-  /* Floating btns */
-  #music-btn{right:14px;bottom:90px}
-  .back-top{right:14px}
-  /* Touch targets */
-  .nav-icon-btn{padding:6px 8px;min-width:36px;min-height:36px}
+  .cart-drawer-footer{padding-bottom:calc(env(safe-area-inset-bottom,16px) + 8px)}
+
+  /* ── Layout general ── */
+  .wrap{padding:0 12px}
+  .section,.section-alt,.section-warm{padding:36px 0}
+
+  /* ── Floating btns ── */
+  #music-btn{right:12px;bottom:72px}
+  .back-top{right:12px}
+
+  /* ── Announcement marquee ── */
+  .marquee-track{font-size:10px}
 }
 
 /* ─── iPAD (768px – 1024px) ─── */
