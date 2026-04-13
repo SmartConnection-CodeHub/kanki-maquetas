@@ -335,6 +335,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .product-colors{display:flex;gap:5px;margin-bottom:10px}
 .color-swatch{width:14px;height:14px;border-radius:50%;border:2px solid transparent;cursor:pointer}
 .color-swatch.active{border-color:var(--navy)}
+.size-pills{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.size-pill{font-size:9px;font-weight:700;letter-spacing:0.06em;border:1.5px solid var(--border);border-radius:6px;padding:2px 7px;color:var(--muted);background:transparent;cursor:pointer;transition:all 0.15s}
+.size-pill:hover,.size-pill.active{border-color:var(--navy);color:var(--navy);background:var(--bg-alt)}
 .btn-cart{width:100%;padding:9px 0;border:none;border-radius:8px;background:var(--navy);color:var(--cream);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
 .btn-cart:hover{background:var(--navy-mid)}
 .btn-cart:disabled{background:var(--border);color:var(--subtle);cursor:not-allowed}
@@ -863,21 +866,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
       <!-- Brands separator -->
       <div class="brands-row-label"><span>MARCAS QUE TRAEMOS</span></div>
 
-      <!-- Grizzly Script Logo Negro Tee — AGOTADO -->
-      <div class="product-card" data-product="grizzly-script-negro" data-category="poleras" data-brand="grizzly" onclick="return false" style="cursor:default">
-        <div class="product-img" style="position:relative">
-          <span class="product-badge" style="background:#555">AGOTADO</span>
-          <img src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96096-image-copia.jpg" alt="Grizzly Print Script Logo Negro" loading="lazy" style="filter:grayscale(30%)">
-        </div>
-        <div class="product-info">
-          <div class="product-brand-tag">GRIZZLY GRIPTAPE</div>
-          <div class="product-name">PRINT SCRIPT LOGO TEE</div>
-          <div class="product-price" style="color:var(--subtle)">$27.990</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#1a1a1a"></div></div>
-          <button class="btn-cart" disabled style="opacity:0.35;cursor:not-allowed">AGOTADO</button>
-        </div>
-      </div>
-
       <!-- Grizzly OG Bear Basic Negro Hoodie -->
       <div class="product-card" data-product="grizzly-og-black" data-category="polerones" data-brand="grizzly" onclick="openPP('grizzly-og-black')">
         <div class="product-img">
@@ -890,7 +878,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
           <div class="product-brand-tag">GRIZZLY GRIPTAPE</div>
           <div class="product-name">OG BEAR BASIC HOODIE — NEGRO</div>
           <div class="product-price">$48.990</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#1a1a1a"></div></div>
+          <div class="size-pills"><span class="size-pill">S</span><span class="size-pill active">M</span><span class="size-pill">L</span><span class="size-pill">XL</span><span class="size-pill">XXL</span></div>
           <button class="btn-cart">ADD TO CART</button>
         </div>
       </div>
@@ -906,8 +894,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
         <div class="product-info">
           <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
           <div class="product-name">FLEECE HOODIE FW24 — BLACK</div>
-          <div class="product-price">$105.000</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#1a1a1a"></div></div>
+          <div class="product-price">$109.990</div>
+          <div class="size-pills"><span class="size-pill active">L</span><span class="size-pill">XL</span></div>
           <button class="btn-cart">ADD TO CART</button>
         </div>
       </div>
@@ -923,8 +911,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
         <div class="product-info">
           <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
           <div class="product-name">FLEECE HOODIE FW24 — GREY</div>
-          <div class="product-price">$105.000</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#b8b0a8"></div></div>
+          <div class="product-price">$109.990</div>
+          <div class="size-pills"><span class="size-pill active">L</span><span class="size-pill">XL</span></div>
           <button class="btn-cart">ADD TO CART</button>
         </div>
       </div>
@@ -940,8 +928,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
         <div class="product-info">
           <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
           <div class="product-name">DARK OATMEAL HOODIE</div>
-          <div class="product-price">$105.000</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#8b7d6b"></div></div>
+          <div class="product-price">$99.990</div>
+          <div class="size-pills"><span class="size-pill active">L</span><span class="size-pill">XL</span></div>
           <button class="btn-cart">ADD TO CART</button>
         </div>
       </div>
@@ -957,8 +945,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
         <div class="product-info">
           <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
           <div class="product-name">LIGHT OATMEAL HOODIE</div>
-          <div class="product-price">$105.000</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#d4c5a9"></div></div>
+          <div class="product-price">$99.990</div>
+          <div class="size-pills"><span class="size-pill active">L</span><span class="size-pill">XL</span></div>
           <button class="btn-cart">ADD TO CART</button>
         </div>
       </div>
@@ -974,8 +962,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
         <div class="product-info">
           <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
           <div class="product-name">STRETCH LIMO HOODIE</div>
-          <div class="product-price">$105.000</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#3d3d3d"></div></div>
+          <div class="product-price">$99.990</div>
+          <div class="size-pills"><span class="size-pill active">L</span><span class="size-pill">XL</span></div>
           <button class="btn-cart">ADD TO CART</button>
         </div>
       </div>
@@ -1007,7 +995,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
           <div class="product-brand-tag">GRIZZLY GRIPTAPE</div>
           <div class="product-name">OG BEAR BASIC TEE — NEGRO</div>
           <div class="product-price">$24.990</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#1a1a1a"></div></div>
+          <div class="size-pills"><span class="size-pill">S</span><span class="size-pill active">M</span><span class="size-pill">L</span><span class="size-pill">XL</span><span class="size-pill">XXL</span></div>
           <button class="btn-cart">ADD TO CART</button>
         </div>
       </div>
@@ -1024,7 +1012,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
           <div class="product-brand-tag">GRIZZLY GRIPTAPE</div>
           <div class="product-name">OG BEAR BASIC TEE — BEIGE</div>
           <div class="product-price">$24.990</div>
-          <div class="product-colors"><div class="color-swatch active" style="background:#d4c5a9"></div></div>
+          <div class="size-pills"><span class="size-pill">S</span><span class="size-pill active">M</span><span class="size-pill">L</span><span class="size-pill">XL</span><span class="size-pill">XXL</span></div>
           <button class="btn-cart">ADD TO CART</button>
         </div>
       </div>
