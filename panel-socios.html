@@ -469,6 +469,7 @@
     <li><a href="#retiros">Retiros</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#decisiones">Decisiones</a></li>
+    <li><button onclick="openWallet()" style="background:var(--gold);color:var(--navy);border:none;padding:6px 16px;border-radius:980px;font-size:11px;font-weight:800;letter-spacing:0.06em;cursor:pointer;text-transform:uppercase">💳 Wallet</button></li>
     <li><a href="#pasos">Pasos</a></li>
   </ul>
   <span class="nav-date">SURF &amp; STREETWEAR · EST. 1968 · ABR 2026</span>
@@ -1699,6 +1700,242 @@ new Chart(document.getElementById('chartGastos'), {
       tooltip: { ...tooltip, callbacks: { label: c => ` ${c.label}: ${c.parsed}%` } }
     }
   }
+});
+
+/* ═══════════════ WALLET SOCIOS ═══════════════ */
+const WALLET = {
+  saldo: { guillermo: 189425, martin: 189425 },
+  txns: [
+    { fecha:'12 Abr', desc:'Venta colección FOG', monto:+245000, tipo:'ingreso' },
+    { fecha:'11 Abr', desc:'Reposición Grizzly (16 pares)', monto:-128000, tipo:'egreso', aprobado:true },
+    { fecha:'10 Abr', desc:'Venta colección Cariuma', monto:+189500, tipo:'ingreso' },
+    { fecha:'09 Abr', desc:'Packaging + etiquetas', monto:-14200, tipo:'egreso', aprobado:true },
+  ],
+  nums: { guillermo:'56955361419', martin:'56957807766' },
+  solicitante: 'guillermo' // quien está viendo el panel
+};
+
+function openWallet() {
+  document.getElementById('walletOverlay').classList.add('open');
+  renderWalletMain();
+}
+function closeWallet() {
+  document.getElementById('walletOverlay').classList.remove('open');
+}
+function renderWalletMain() {
+  document.getElementById('walletMain').style.display = 'block';
+  document.getElementById('walletForm').style.display = 'none';
+}
+function renderWalletForm() {
+  document.getElementById('walletMain').style.display = 'none';
+  document.getElementById('walletForm').style.display = 'block';
+  updateWAPreview();
+}
+
+function fmtCLP(n) {
+  return '$' + Math.abs(n).toLocaleString('es-CL');
+}
+
+function updateWAPreview() {
+  const monto = document.getElementById('wMonto').value || '0';
+  const desc  = document.getElementById('wDesc').value  || '(sin descripción)';
+  const cat   = document.getElementById('wCat').value;
+  const who   = document.getElementById('wToggle').checked ? 'Martín' : 'Guillermo';
+  const receptor = document.getElementById('wToggle').checked ? 'Guillermo' : 'Martín';
+  const msg = `💳 *Solicitud de gasto — Kanki & Co.*\n\n` +
+              `Solicitante: ${who}\n` +
+              `Monto: $${Number(monto).toLocaleString('es-CL')}\n` +
+              `Categoría: ${cat}\n` +
+              `Descripción: ${desc}\n\n` +
+              `¿Apruebas este gasto? Responde ✅ para aprobar o ❌ para rechazar.`;
+  document.getElementById('waPreview').textContent = msg;
+}
+
+function sendWA() {
+  const monto = document.getElementById('wMonto').value || '0';
+  const desc  = document.getElementById('wDesc').value  || '(sin descripción)';
+  const cat   = document.getElementById('wCat').value;
+  const esMartin = document.getElementById('wToggle').checked;
+  // Si Martín solicita → manda a Guillermo; si Guillermo solicita → manda a Martín
+  const receptor = esMartin ? WALLET.nums.guillermo : WALLET.nums.martin;
+  const solicitante = esMartin ? 'Martín' : 'Guillermo';
+  const msg = `💳 *Solicitud de gasto — Kanki & Co.*\n\n` +
+              `Solicitante: ${solicitante}\n` +
+              `Monto: $${Number(monto).toLocaleString('es-CL')}\n` +
+              `Categoría: ${cat}\n` +
+              `Descripción: ${desc}\n\n` +
+              `¿Apruebas este gasto? Responde ✅ para aprobar o ❌ para rechazar.`;
+  const url = `https://wa.me/${receptor}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+</script>
+
+<!-- ══════════════ WALLET OVERLAY ══════════════ -->
+<div id="walletOverlay" onclick="if(event.target===this)closeWallet()" style="
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(27,47,78,0.45); backdrop-filter:blur(4px);
+">
+</div>
+<div id="walletDrawer" style="
+  position:fixed; top:0; right:0; height:100vh; width:380px; max-width:96vw;
+  background:#fff; z-index:10000; box-shadow:-8px 0 40px rgba(27,47,78,0.18);
+  display:flex; flex-direction:column; transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(.4,0,.2,1);
+  font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+">
+  <!-- header -->
+  <div style="background:#1B2F4E;padding:20px 22px 16px;display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="color:#C49A3A;font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">💳 Wallet</div>
+      <div style="color:#fff;font-size:17px;font-weight:700;">Kanki & Co.</div>
+    </div>
+    <button onclick="closeWallet()" style="background:rgba(255,255,255,0.12);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+  </div>
+
+  <!-- body scrollable -->
+  <div style="flex:1;overflow-y:auto;padding:20px 18px;">
+
+    <!-- PANTALLA PRINCIPAL -->
+    <div id="walletMain">
+
+      <!-- saldo cards -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+        <div style="background:linear-gradient(135deg,#1B2F4E,#2f5082);border-radius:14px;padding:16px;color:#fff;">
+          <div style="font-size:10px;opacity:0.7;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Guillermo G.</div>
+          <div style="font-size:20px;font-weight:800;color:#C49A3A;">$189.425</div>
+          <div style="font-size:10px;opacity:0.6;margin-top:4px;">Saldo MP Business</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#6B9B7A,#4a7a5a);border-radius:14px;padding:16px;color:#fff;">
+          <div style="font-size:10px;opacity:0.7;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Martín O.</div>
+          <div style="font-size:20px;font-weight:800;color:#f5e4b0;">$189.425</div>
+          <div style="font-size:10px;opacity:0.6;margin-top:4px;">Saldo MP Business</div>
+        </div>
+      </div>
+
+      <!-- pending approval banner -->
+      <div style="background:#fffbe6;border:1.5px solid #C49A3A;border-radius:12px;padding:14px 16px;margin-bottom:20px;">
+        <div style="font-size:11px;font-weight:800;color:#C49A3A;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;">⏳ Pendiente de aprobación</div>
+        <div style="font-size:13px;color:#3a4a5c;margin-bottom:10px;">
+          Martín solicita egreso de <strong>$14.200</strong> — Packaging<br>
+          <span style="font-size:11px;color:#7a8a9a;">Enviado hace 2 horas</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="alert('✅ Gasto aprobado')" style="flex:1;background:#6B9B7A;color:#fff;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;">✅ Aprobar</button>
+          <button onclick="alert('❌ Gasto rechazado')" style="flex:1;background:#f5ece6;color:#c0392b;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;">❌ Rechazar</button>
+        </div>
+      </div>
+
+      <!-- historial -->
+      <div style="font-size:11px;font-weight:800;color:#7a8a9a;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">Últimas transacciones</div>
+      <div id="walletTxns"></div>
+
+      <!-- CTA -->
+      <button onclick="renderWalletForm()" style="width:100%;margin-top:18px;background:#1B2F4E;color:#fff;border:none;border-radius:12px;padding:14px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:0.04em;">
+        + Solicitar aprobación de gasto
+      </button>
+
+      <!-- 🧠 nota conectividad -->
+      <div style="margin-top:16px;padding:12px 14px;background:#f0f5ff;border-radius:10px;font-size:11px;color:#3a4a5c;line-height:1.5;">
+        🔗 <strong>Próxima versión:</strong> saldo en tiempo real vía API MP Business.<br>
+        Por ahora los montos se actualizan manualmente aquí.
+      </div>
+    </div>
+
+    <!-- PANTALLA SOLICITUD -->
+    <div id="walletForm" style="display:none;">
+      <button onclick="renderWalletMain()" style="background:none;border:none;color:#7a8a9a;font-size:13px;cursor:pointer;padding:0;margin-bottom:16px;display:flex;align-items:center;gap:6px;">← Volver</button>
+      <div style="font-size:15px;font-weight:700;color:#1B2F4E;margin-bottom:18px;">Nueva solicitud de gasto</div>
+
+      <!-- toggle quien solicita -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px 14px;background:#f7f3ea;border-radius:10px;">
+        <span style="font-size:12px;font-weight:700;color:#1B2F4E;">Guillermo</span>
+        <label style="position:relative;display:inline-block;width:42px;height:22px;">
+          <input type="checkbox" id="wToggle" onchange="updateWAPreview()" style="opacity:0;width:0;height:0;">
+          <span style="position:absolute;cursor:pointer;inset:0;background:#C49A3A;border-radius:22px;transition:.3s;"></span>
+          <span id="toggleThumb" style="position:absolute;content:'';height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;"></span>
+        </label>
+        <span style="font-size:12px;font-weight:700;color:#1B2F4E;">Martín</span>
+      </div>
+
+      <!-- inputs -->
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;font-weight:700;color:#7a8a9a;letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Monto ($)</label>
+        <input id="wMonto" type="number" placeholder="14200" oninput="updateWAPreview()" style="width:100%;padding:11px 14px;border:1.5px solid #E2D9C5;border-radius:10px;font-size:15px;font-weight:700;color:#1B2F4E;outline:none;" />
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;font-weight:700;color:#7a8a9a;letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Descripción</label>
+        <input id="wDesc" type="text" placeholder="Ej: Packaging + etiquetas" oninput="updateWAPreview()" style="width:100%;padding:11px 14px;border:1.5px solid #E2D9C5;border-radius:10px;font-size:13px;color:#1B2F4E;outline:none;" />
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:11px;font-weight:700;color:#7a8a9a;letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Categoría</label>
+        <select id="wCat" onchange="updateWAPreview()" style="width:100%;padding:11px 14px;border:1.5px solid #E2D9C5;border-radius:10px;font-size:13px;color:#1B2F4E;background:#fff;outline:none;">
+          <option>Inventario / Reposición</option>
+          <option>Packaging & materiales</option>
+          <option>Envíos & logística</option>
+          <option>Marketing & publicidad</option>
+          <option>Herramientas & tecnología</option>
+          <option>Legal & contabilidad</option>
+          <option>Retiro socio</option>
+          <option>Otro</option>
+        </select>
+      </div>
+
+      <!-- preview WA -->
+      <div style="background:#e9fbe5;border-radius:12px;padding:14px;margin-bottom:16px;">
+        <div style="font-size:10px;font-weight:800;color:#25d366;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">📱 Vista previa WhatsApp</div>
+        <pre id="waPreview" style="font-size:11px;color:#2e7d32;white-space:pre-wrap;font-family:inherit;line-height:1.55;margin:0;"></pre>
+      </div>
+
+      <button onclick="sendWA()" style="width:100%;background:#25d366;color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+        📱 Enviar solicitud por WhatsApp
+      </button>
+    </div>
+
+  </div><!-- /body -->
+</div><!-- /walletDrawer -->
+
+<style>
+#walletOverlay.open { display:block !important; }
+#walletOverlay.open ~ #walletDrawer,
+#walletDrawer { transition: transform 0.35s cubic-bezier(.4,0,.2,1); }
+/* trick: use overlay open to slide drawer */
+</style>
+
+<script>
+// Abrir/cerrar drawer con animación
+const _origOpen = openWallet;
+window.openWallet = function() {
+  document.getElementById('walletOverlay').classList.add('open');
+  document.getElementById('walletDrawer').style.transform = 'translateX(0)';
+  renderWalletMain();
+  renderTxns();
+};
+window.closeWallet = function() {
+  document.getElementById('walletOverlay').classList.remove('open');
+  document.getElementById('walletDrawer').style.transform = 'translateX(100%)';
+};
+
+function renderTxns() {
+  const el = document.getElementById('walletTxns');
+  el.innerHTML = WALLET.txns.map(t => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0ebe0;">
+      <div style="width:36px;height:36px;border-radius:10px;background:${t.tipo==='ingreso'?'#eef7f1':'#fef3ef'};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">
+        ${t.tipo==='ingreso'?'↑':'↓'}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:12px;font-weight:600;color:#1B2F4E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.desc}</div>
+        <div style="font-size:10px;color:#7a8a9a;margin-top:2px;">${t.fecha}${t.aprobado?' · ✅ Aprobado':''}</div>
+      </div>
+      <div style="font-size:13px;font-weight:800;color:${t.tipo==='ingreso'?'#6B9B7A':'#c0392b'};flex-shrink:0;">
+        ${t.tipo==='ingreso'?'+':'-'}${fmtCLP(t.monto)}
+      </div>
+    </div>
+  `).join('');
+}
+
+// Toggle thumb animation
+document.getElementById('wToggle').addEventListener('change', function() {
+  document.getElementById('toggleThumb').style.transform = this.checked ? 'translateX(20px)' : '';
 });
 </script>
 </body>
