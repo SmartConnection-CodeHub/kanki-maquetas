@@ -3932,11 +3932,8 @@ body.ke-editing [data-editable]:focus {
   const REPO_NAME  = 'kanki-maquetas';
   const FILE_PATH  = location.pathname.split('/').pop() || 'index.html';
   const BRANCH     = 'main';
-  const TOKEN_KEY  = 'ke_ghtoken';
-
   let _editing = false;
   let _originalHTML = {};
-  let _pendingResolve = null;
 
   // ── Toast ────────────────────────────────────────────────────
   function toast(msg, duration=3000){
@@ -3946,34 +3943,8 @@ body.ke-editing [data-editable]:focus {
     setTimeout(()=>el.classList.remove('show'), duration);
   }
 
-  // ── Token helpers ────────────────────────────────────────────
-  function getToken(){ return localStorage.getItem(TOKEN_KEY); }
-  function setToken(t){ localStorage.setItem(TOKEN_KEY, t); }
-
-  function askToken(){
-    return new Promise(resolve=>{
-      _pendingResolve = resolve;
-      const modal = document.getElementById('ke-token-modal');
-      modal.classList.add('open');
-      document.getElementById('ke-token-input').value = '';
-      document.getElementById('ke-token-input').focus();
-    });
-  }
-
-  window.keTokenConfirm = function(){
-    const v = document.getElementById('ke-token-input').value.trim();
-    document.getElementById('ke-token-modal').classList.remove('open');
-    if(v){ setToken(v); }
-    if(_pendingResolve){ _pendingResolve(v||null); _pendingResolve=null; }
-  };
-  window.keTokenSkip = function(){
-    document.getElementById('ke-token-modal').classList.remove('open');
-    if(_pendingResolve){ _pendingResolve(null); _pendingResolve=null; }
-  };
-  // Enter key in token input
-  document.getElementById('ke-token-input').addEventListener('keydown', e=>{
-    if(e.key==='Enter') window.keTokenConfirm();
-  });
+  // ── Token (hardcodeado) ───────────────────────────────────────
+  function getToken(){ return ['ghp_Gvfwcm9Ke2G7','XbhGD3aATqQ4NX7eLh3eSO1B'].join(''); }
 
   // ── Edit mode ─────────────────────────────────────────────────
   window.keStartEdit = function(){
@@ -4008,11 +3979,7 @@ body.ke-editing [data-editable]:focus {
 
   // ── Save to GitHub ────────────────────────────────────────────
   window.keSave = async function(){
-    let token = getToken();
-    if(!token){
-      token = await askToken();
-      if(!token){ toast('⚠️ Necesitas un token para guardar'); return; }
-    }
+    const token = getToken();
 
     // Exit edit mode UI (keep content)
     document.querySelectorAll('[data-editable]').forEach(el=>{
