@@ -432,6 +432,18 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .pp-sz.active{background:var(--navy);color:var(--cream);border-color:var(--navy)}
 .pp-add{width:100%;padding:13px;background:var(--navy);color:var(--cream);border:none;border-radius:10px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
 .pp-add:hover{background:var(--navy-mid)}
+.pp-size-guide{display:none;margin-bottom:14px}
+.pp-size-guide-toggle{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);cursor:pointer;text-decoration:underline;margin-bottom:8px;display:inline-block}
+.pp-size-guide-table{width:100%;border-collapse:collapse;font-size:10px;border-radius:6px;overflow:hidden}
+.pp-size-guide-table th{background:var(--navy);color:var(--cream);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:6px 8px;text-align:center}
+.pp-size-guide-table th:first-child{text-align:left}
+.pp-size-guide-table td{padding:5px 8px;text-align:center;border-bottom:1px solid rgba(27,47,78,0.15);color:var(--navy);font-weight:600}
+.pp-size-guide-table td:first-child{text-align:left;color:var(--muted);font-weight:500}
+.pp-size-guide-table tr:last-child td{border-bottom:none}
+.pp-size-guide-table tr:nth-child(even) td{background:rgba(27,47,78,0.04)}
+.pp-size-guide-note{font-size:9px;color:var(--muted);margin-top:4px}
+.pp-size-guide-section{margin-bottom:6px}
+.pp-size-guide-section-title{font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:5px}
 
 /* Cart Drawer */
 .cart-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.5);opacity:0;pointer-events:none;transition:opacity 0.25s}
@@ -771,7 +783,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
     </video>
     <!-- 🌀 V3 — OLA / TUBAZO -->
     <video class="hero-vid" id="vidTube" muted loop playsinline preload="none">
-      <source src="https://media.istockphoto.com/id/515364710/video/extreme-surfer-surfing-inside-big-tube-barrel-wave.mp4?s=mp4-640x640-is&k=20&c=nTms6MQTpOF4-nWuFJ872xs3NlPEynZNdou2Qb_7Atw=" type="video/mp4">
+      <source src="https://videos.pexels.com/video-files/3095560/3095560-hd_1920_1080_30fps.mp4" type="video/mp4">
       <source src="https://videos.pexels.com/video-files/3571264/3571264-hd_1280_720_30fps.mp4" type="video/mp4">
     </video>
     <div class="hero-scene-label" id="sceneLabel">
@@ -1153,6 +1165,35 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
         <div class="pp-name" id="ppName"></div>
         <div class="pp-price" id="ppPrice"></div>
         <div class="pp-desc" id="ppDesc"></div>
+        <!-- GUÍA DE TALLAS GRIZZLY -->
+        <div class="pp-size-guide" id="ppSizeGuide">
+          <span class="pp-size-guide-toggle" onclick="toggleSizeGuide()">📏 Ver guía de tallas</span>
+          <div id="ppSizeGuideContent" style="display:none">
+            <div class="pp-size-guide-section">
+              <div class="pp-size-guide-section-title">REMERA</div>
+              <table class="pp-size-guide-table">
+                <thead><tr><th>Medida</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr></thead>
+                <tbody>
+                  <tr><td>Ancho pecho (cm)</td><td>52</td><td>54</td><td>56</td><td>58</td><td>60</td></tr>
+                  <tr><td>Largo delantero (cm)</td><td>76</td><td>78</td><td>80</td><td>82</td><td>84</td></tr>
+                  <tr><td>Largo manga (cm)</td><td>68</td><td>69</td><td>70</td><td>71</td><td>72</td></tr>
+                </tbody>
+              </table>
+              <div class="pp-size-guide-note">Cuello 2cm</div>
+            </div>
+            <div class="pp-size-guide-section" style="margin-top:10px">
+              <div class="pp-size-guide-section-title">HOODIE</div>
+              <table class="pp-size-guide-table">
+                <thead><tr><th>Medida</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr></thead>
+                <tbody>
+                  <tr><td>Ancho pecho (cm)</td><td>59</td><td>61</td><td>63</td><td>65</td><td>67</td></tr>
+                  <tr><td>Largo delantero (cm)</td><td>72</td><td>74</td><td>76</td><td>78</td><td>80</td></tr>
+                  <tr><td>Largo manga (cm)</td><td>68</td><td>69</td><td>71</td><td>72</td><td>72</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
         <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">TALLA:</div>
         <div class="pp-sizes">
           <div class="pp-sz">S</div><div class="pp-sz active">M</div><div class="pp-sz">L</div><div class="pp-sz">XL</div><div class="pp-sz">XXL</div>
@@ -1469,11 +1510,11 @@ function closeWP(){document.getElementById('wpPopup').classList.remove('open')}
 
 /* ═══ PRODUCT DATA ═══ */
 const products={
-  'fog-black':{id:'fog-black',name:'FLEECE HOODIE FW24 — BLACK',price:120000,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials FW24. Fleece pesado, capucha oversized, interior afelpado premium. Logo impreso al pecho. Stock limitado: tallas M · L · XL.'},
-  'fog-grey':{id:'fog-grey',name:'FLEECE HOODIE FW24 — HEATHER GREY',price:120000,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials FW24 en gris jaspeado. Fleece pesado, corte relaxed, capucha estructurada. Logo impreso al pecho. Stock limitado: tallas L · XL.'},
-  'fog-dark-oatmeal':{id:'fog-dark-oatmeal',name:'DARK OATMEAL HOODIE',price:120000,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials en dark oatmeal. Tono tierra oscuro, corte oversize, interior afelpado premium. Stock limitado: tallas L · XL.'},
-  'fog-light-oatmeal':{id:'fog-light-oatmeal',name:'LIGHT OATMEAL HOODIE',price:120000,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials en light oatmeal. Beige neutro premium, corte oversize, logo bordado. Stock limitado: tallas L · XL.'},
-  'fog-stretch-limo':{id:'fog-stretch-limo',name:'STRETCH LIMO HOODIE',price:120000,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials "Stretch Limo". Gris carbón profundo, silueta oversized, capucha de gran volumen. Stock limitado: tallas L · XL.'},
+  'fog-black':{id:'fog-black',name:'FLEECE HOODIE FW24 — BLACK',price:109990,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials FW24. Fleece pesado, capucha oversized, interior afelpado premium. Logo impreso al pecho. Stock limitado: tallas M · L · XL.'},
+  'fog-grey':{id:'fog-grey',name:'FLEECE HOODIE FW24 — HEATHER GREY',price:109990,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials FW24 en gris jaspeado. Fleece pesado, corte relaxed, capucha estructurada. Logo impreso al pecho. Stock limitado: tallas L · XL.'},
+  'fog-dark-oatmeal':{id:'fog-dark-oatmeal',name:'DARK OATMEAL HOODIE',price:99990,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials en dark oatmeal. Tono tierra oscuro, corte oversize, interior afelpado premium. Stock limitado: tallas L · XL.'},
+  'fog-light-oatmeal':{id:'fog-light-oatmeal',name:'LIGHT OATMEAL HOODIE',price:99990,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials en light oatmeal. Beige neutro premium, corte oversize, logo bordado. Stock limitado: tallas L · XL.'},
+  'fog-stretch-limo':{id:'fog-stretch-limo',name:'STRETCH LIMO HOODIE',price:99990,brand:'FEAR OF GOD ESSENTIALS',desc:'Polerón Fear of God Essentials "Stretch Limo". Gris carbón profundo, silueta oversized, capucha de gran volumen. Stock limitado: tallas L · XL.'},
   'grizzly-script-negro':{id:'grizzly-script-negro',name:'PRINT SCRIPT LOGO TEE',price:27990,brand:'GRIZZLY GRIPTAPE',soldOut:true,desc:'Polera Grizzly Print Script Logo. 100% algodón. Negro. Agotado.'},
   'grizzly-og-black':{id:'grizzly-og-black',name:'OG BEAR BASIC HOODIE — NEGRO',price:48990,brand:'GRIZZLY GRIPTAPE',desc:'El polerón OG Bear de Grizzly en negro. Oso OG serigrafía frontal, capucha doble capa, bolsillo canguro. 80% algodón 20% poliéster. Tallas S · M · L · XL · XXL.'},
   'grizzly-hoodie':{id:'grizzly-hoodie',name:'LOWERCASE FADEAWAY HOODIE',price:44990,brand:'GRIZZLY GRIPTAPE',soldOut:true,desc:'Polerón Lowercase Fadeaway. Agotado.'},
@@ -1509,9 +1550,21 @@ function openPP(id){
   else{preview.innerHTML='';}
   selectedSize='M';
   document.querySelectorAll('.pp-sz').forEach(s=>s.classList.toggle('active',s.textContent==='M'));
+  // Mostrar guía de tallas solo en productos Grizzly
+  const isGrizzly=id.startsWith('grizzly');
+  document.getElementById('ppSizeGuide').style.display=isGrizzly?'block':'none';
+  document.getElementById('ppSizeGuideContent').style.display='none';
+  document.querySelector('.pp-size-guide-toggle') && (document.querySelector('.pp-size-guide-toggle').textContent='📏 Ver guía de tallas');
   document.getElementById('ppOverlay').classList.add('open');
 }
 function closePP(){document.getElementById('ppOverlay').classList.remove('open')}
+function toggleSizeGuide(){
+  const content=document.getElementById('ppSizeGuideContent');
+  const toggle=document.querySelector('.pp-size-guide-toggle');
+  const visible=content.style.display==='block';
+  content.style.display=visible?'none':'block';
+  toggle.textContent=visible?'📏 Ver guía de tallas':'📏 Ocultar guía de tallas';
+}
 
 document.querySelectorAll('.pp-sz').forEach(s=>{
   s.addEventListener('click',()=>{document.querySelectorAll('.pp-sz').forEach(x=>x.classList.remove('active'));s.classList.add('active');selectedSize=s.textContent;});
