@@ -39,6 +39,14 @@
     --font:        -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
   }
 
+  .iva-tab {
+    padding: 8px 20px; border-radius: 980px; border: 1.5px solid var(--border);
+    background: #fff; font-size: 12px; font-weight: 700; color: var(--text-muted);
+    cursor: pointer; letter-spacing: 0.04em; transition: all 0.2s;
+  }
+  .iva-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .iva-tab:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+
   html { scroll-behavior: smooth; }
   body {
     font-family: var(--font);
@@ -457,6 +465,7 @@
   <ul class="nav-links">
     <li><a href="#capital">Capital</a></li>
     <li><a href="#proyeccion">Proyección</a></li>
+    <li><a href="#flujo-iva">Flujo IVA</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#decisiones">Decisiones</a></li>
     <li><a href="#pasos">Pasos</a></li>
@@ -1095,6 +1104,106 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════════════════════════════════
+       SECCIÓN: FLUJO IVA — SIMULADOR INTERACTIVO
+       ═══════════════════════════════════════════════════ -->
+  <section id="flujo-iva">
+    <p class="section-label">🧾 Tributario</p>
+    <h2 class="section-title">Flujo IVA — Simulador de Caja Fiscal</h2>
+    <p class="section-sub">Edita ventas y gastos por mes. El sistema calcula débito, crédito y lo que pagas al SII.</p>
+
+    <!-- TABS MESES -->
+    <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap">
+      <button class="iva-tab active" onclick="setMes(0)">Mes 1</button>
+      <button class="iva-tab" onclick="setMes(1)">Mes 2</button>
+      <button class="iva-tab" onclick="setMes(2)">Mes 3</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+      <!-- VENTAS -->
+      <div class="card">
+        <h3 class="card-title" style="color:var(--sage);margin-bottom:16px">📈 VENTAS — Débito Fiscal</h3>
+        <div id="ventasEditor"></div>
+        <div style="margin-top:16px;padding-top:14px;border-top:2px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--navy)">
+            <span>Total ventas</span><span id="totalVentas">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-top:6px">
+            <span>IVA débito (19/119)</span><span id="ivaDebito" style="color:var(--sage);font-weight:700">$0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GASTOS -->
+      <div class="card">
+        <h3 class="card-title" style="color:var(--gold);margin-bottom:16px">📉 GASTOS CON FACTURA — Crédito Fiscal</h3>
+        <div id="gastosEditor"></div>
+        <div style="margin-top:16px;padding-top:14px;border-top:2px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--navy)">
+            <span>Total gastos</span><span id="totalGastos">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-top:6px">
+            <span>IVA crédito (19/119)</span><span id="ivaCredito" style="color:var(--gold);font-weight:700">$0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTADO SII -->
+    <div class="card" style="margin-top:20px;background:var(--navy);color:#fff">
+      <h3 style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--gold);margin-bottom:20px">⚖️ RESULTADO SII — MES <span id="mesLabel">1</span></h3>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <div style="text-align:center;padding:16px;background:rgba(255,255,255,0.06);border-radius:10px">
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">IVA Débito</div>
+          <div id="resDebito" style="font-size:20px;font-weight:800;color:var(--sage)">$0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px">lo que debes</div>
+        </div>
+        <div style="text-align:center;padding:16px;background:rgba(255,255,255,0.06);border-radius:10px">
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">IVA Crédito</div>
+          <div id="resCredito" style="font-size:20px;font-weight:800;color:var(--gold)">$0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px">lo que descontas</div>
+        </div>
+        <div style="text-align:center;padding:16px;background:rgba(255,255,255,0.06);border-radius:10px">
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">PPM (~1%)</div>
+          <div id="resPPM" style="font-size:20px;font-weight:800;color:#fff">$0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px">anticipo renta</div>
+        </div>
+        <div style="text-align:center;padding:16px;border-radius:10px;border:2px solid var(--gold)" id="resSIIBox">
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">PAGAS AL SII</div>
+          <div id="resSII" style="font-size:22px;font-weight:900;color:var(--gold)">$0</div>
+          <div id="resSIILabel" style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUMEN 3 MESES -->
+    <div class="card" style="margin-top:20px">
+      <h3 class="card-title" style="margin-bottom:20px">📊 Resumen Acumulado 3 Meses</h3>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="background:var(--navy);color:#fff">
+              <th style="padding:10px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:0.06em">Concepto</th>
+              <th style="padding:10px 14px;text-align:right;font-size:11px;font-weight:700;letter-spacing:0.06em">Mes 1</th>
+              <th style="padding:10px 14px;text-align:right;font-size:11px;font-weight:700;letter-spacing:0.06em">Mes 2</th>
+              <th style="padding:10px 14px;text-align:right;font-size:11px;font-weight:700;letter-spacing:0.06em">Mes 3</th>
+              <th style="padding:10px 14px;text-align:right;font-size:11px;font-weight:700;letter-spacing:0.06em;background:var(--gold)">Total</th>
+            </tr>
+          </thead>
+          <tbody id="tablaResumen"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CHART FLUJO IVA -->
+    <div class="card" style="margin-top:20px">
+      <h3 class="card-title" style="margin-bottom:16px">📈 Flujo de Caja vs IVA</h3>
+      <div style="height:220px"><canvas id="chartIVA"></canvas></div>
+    </div>
+
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <p><strong>Kanki &amp; Co.</strong> · Surf &amp; Streetwear Tradition · Est. 1968</p>
@@ -1104,6 +1213,248 @@
 </div>
 
 <script>
+/* ═══ SIMULADOR IVA ═══ */
+const ivaData = [
+  {
+    ventas: [
+      {label:'FOG Essentials', val:439960},
+      {label:'Grizzly Griptape', val:195920},
+    ],
+    gastos: [
+      {label:'Inventario Grizzly', val:350000},
+      {label:'Packaging / etiquetas', val:15000},
+      {label:'Chilexpress / Starken', val:20000},
+      {label:'Publicidad Meta/IG', val:30000},
+      {label:'Fotografía productos', val:30000},
+      {label:'Contador', val:35000},
+      {label:'Teléfono (50%)', val:12500},
+      {label:'Internet (50%)', val:10000},
+      {label:'Bencina Concón→Stgo', val:40000},
+      {label:'Peajes autopista', val:12000},
+      {label:'Alimentación negocio', val:20000},
+      {label:'Arriendo bodega', val:80000},
+    ]
+  },
+  {
+    ventas: [
+      {label:'FOG Essentials', val:659940},
+      {label:'Grizzly Griptape', val:293880},
+    ],
+    gastos: [
+      {label:'Inventario Grizzly', val:350000},
+      {label:'Reposición FOG', val:200000},
+      {label:'Packaging / etiquetas', val:18000},
+      {label:'Chilexpress / Starken', val:30000},
+      {label:'Publicidad Meta/IG', val:50000},
+      {label:'Contador', val:35000},
+      {label:'Teléfono (50%)', val:12500},
+      {label:'Internet (50%)', val:10000},
+      {label:'Bencina Concón→Stgo', val:40000},
+      {label:'Peajes autopista', val:12000},
+      {label:'Alimentación negocio', val:20000},
+      {label:'Arriendo bodega', val:80000},
+    ]
+  },
+  {
+    ventas: [
+      {label:'FOG Essentials', val:879920},
+      {label:'Grizzly Griptape', val:391840},
+    ],
+    gastos: [
+      {label:'Inventario Grizzly', val:700000},
+      {label:'Reposición FOG', val:200000},
+      {label:'Packaging / etiquetas', val:25000},
+      {label:'Chilexpress / Starken', val:45000},
+      {label:'Publicidad Meta/IG', val:70000},
+      {label:'Fotografía productos', val:30000},
+      {label:'Contador', val:35000},
+      {label:'Teléfono (50%)', val:12500},
+      {label:'Internet (50%)', val:10000},
+      {label:'Bencina Concón→Stgo', val:40000},
+      {label:'Peajes autopista', val:12000},
+      {label:'Alimentación negocio', val:20000},
+      {label:'Arriendo bodega', val:80000},
+    ]
+  }
+];
+
+let mesActual = 0;
+let ivaChart = null;
+
+function fmt(n){return '$'+(Math.round(n)).toLocaleString('es-CL')}
+function ivaOf(n){return n*19/119}
+
+function renderEditor(){
+  const d = ivaData[mesActual];
+
+  // Ventas
+  let hV = '';
+  d.ventas.forEach((v,i)=>{
+    hV += `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px">
+      <span style="font-size:12px;color:var(--text-body);flex:1">${v.label}</span>
+      <input type="text" value="${v.val.toLocaleString('es-CL')}"
+        style="width:130px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:700;color:var(--navy);text-align:right;background:#fff"
+        oninput="updateVal('v',${i},this.value)" onblur="fmtInput(this)">
+    </div>`;
+  });
+  hV += `<button onclick="addRow('v')" style="margin-top:4px;width:100%;padding:7px;border:1.5px dashed var(--border);border-radius:8px;background:none;font-size:11px;color:var(--text-muted);cursor:pointer">+ Agregar venta</button>`;
+  document.getElementById('ventasEditor').innerHTML = hV;
+
+  // Gastos
+  let hG = '';
+  d.gastos.forEach((g,i)=>{
+    hG += `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px">
+      <span style="font-size:12px;color:var(--text-body);flex:1">${g.label}</span>
+      <input type="text" value="${g.val.toLocaleString('es-CL')}"
+        style="width:130px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:700;color:var(--navy);text-align:right;background:#fff"
+        oninput="updateVal('g',${i},this.value)" onblur="fmtInput(this)">
+    </div>`;
+  });
+  hG += `<button onclick="addRow('g')" style="margin-top:4px;width:100%;padding:7px;border:1.5px dashed var(--border);border-radius:8px;background:none;font-size:11px;color:var(--text-muted);cursor:pointer">+ Agregar gasto</button>`;
+  document.getElementById('gastosEditor').innerHTML = hG;
+
+  calcular();
+}
+
+function fmtInput(el){
+  const raw = parseInt(el.value.replace(/\D/g,''))||0;
+  el.value = raw.toLocaleString('es-CL');
+}
+
+function updateVal(tipo, idx, raw){
+  const val = parseInt(raw.replace(/\D/g,''))||0;
+  if(tipo==='v') ivaData[mesActual].ventas[idx].val = val;
+  else           ivaData[mesActual].gastos[idx].val = val;
+  calcular();
+}
+
+function addRow(tipo){
+  const label = prompt(tipo==='v'?'Nombre de la venta:':'Nombre del gasto:','');
+  if(!label) return;
+  const val = parseInt(prompt('Monto ($):','0'))||0;
+  if(tipo==='v') ivaData[mesActual].ventas.push({label,val});
+  else           ivaData[mesActual].gastos.push({label,val});
+  renderEditor();
+}
+
+function calcular(){
+  const d = ivaData[mesActual];
+  const tv = d.ventas.reduce((s,x)=>s+x.val,0);
+  const tg = d.gastos.reduce((s,x)=>s+x.val,0);
+  const deb = ivaOf(tv);
+  const cred = ivaOf(tg);
+  const neto = deb - cred;
+  const ppm = tv*0.01/1.19;
+
+  document.getElementById('totalVentas').textContent = fmt(tv);
+  document.getElementById('ivaDebito').textContent   = fmt(deb);
+  document.getElementById('totalGastos').textContent = fmt(tg);
+  document.getElementById('ivaCredito').textContent  = fmt(cred);
+  document.getElementById('resDebito').textContent   = fmt(deb);
+  document.getElementById('resCredito').textContent  = fmt(cred);
+  document.getElementById('resPPM').textContent      = fmt(ppm);
+
+  const box = document.getElementById('resSIIBox');
+  const lbl = document.getElementById('resSIILabel');
+  if(neto > 0){
+    document.getElementById('resSII').textContent = fmt(neto + ppm);
+    lbl.textContent = 'pagas este mes';
+    box.style.borderColor = '#e05555';
+    document.getElementById('resSII').style.color = '#e05555';
+  } else {
+    document.getElementById('resSII').textContent = fmt(Math.abs(neto));
+    lbl.textContent = '✅ remanente a favor';
+    box.style.borderColor = 'var(--sage)';
+    document.getElementById('resSII').style.color = '#6B9B7A';
+  }
+
+  actualizarTabla();
+  actualizarChart();
+}
+
+function actualizarTabla(){
+  const rows = [
+    {label:'Ventas brutas', fn: d=>d.ventas.reduce((s,x)=>s+x.val,0), color:'var(--sage)'},
+    {label:'IVA Débito', fn: d=>ivaOf(d.ventas.reduce((s,x)=>s+x.val,0)), color:'var(--sage)'},
+    {label:'Total gastos', fn: d=>d.gastos.reduce((s,x)=>s+x.val,0), color:'var(--gold)'},
+    {label:'IVA Crédito', fn: d=>ivaOf(d.gastos.reduce((s,x)=>s+x.val,0)), color:'var(--gold)'},
+    {label:'IVA Neto al SII', fn: d=>{const n=ivaOf(d.ventas.reduce((s,x)=>s+x.val,0))-ivaOf(d.gastos.reduce((s,x)=>s+x.val,0)); return n;}, color:'var(--navy)', bold:true},
+    {label:'PPM (~1%)', fn: d=>d.ventas.reduce((s,x)=>s+x.val,0)*0.01/1.19, color:'var(--text-muted)'},
+    {label:'Flujo neto (ventas−gastos−SII)', fn: d=>{
+      const tv=d.ventas.reduce((s,x)=>s+x.val,0);
+      const tg=d.gastos.reduce((s,x)=>s+x.val,0);
+      const neto=ivaOf(tv)-ivaOf(tg);
+      const ppm=tv*0.01/1.19;
+      return tv-tg-(neto>0?neto+ppm:ppm);
+    }, color:'var(--navy)', bold:true},
+  ];
+
+  const total = rows.map(r=>[0,1,2].reduce((s,i)=>s+r.fn(ivaData[i]),0));
+  let html = '';
+  rows.forEach((r,ri)=>{
+    const vals = [0,1,2].map(i=>r.fn(ivaData[i]));
+    const isNeg = r.label.includes('Neto') || r.label.includes('Flujo');
+    html += `<tr style="border-bottom:1px solid var(--border);${ri%2===0?'background:var(--bg);':''}">
+      <td style="padding:9px 14px;font-size:12px;font-weight:${r.bold?'700':'400'};color:${r.color}">${r.label}</td>
+      ${vals.map(v=>`<td style="padding:9px 14px;text-align:right;font-size:12px;font-weight:${r.bold?'700':'500'};color:${v<0&&isNeg?'#e05555':r.color}">${v<0?'−'+fmt(Math.abs(v)):fmt(v)}</td>`).join('')}
+      <td style="padding:9px 14px;text-align:right;font-size:12px;font-weight:700;color:${r.color};background:var(--gold-pale)">${total[ri]<0?'−'+fmt(Math.abs(total[ri])):fmt(total[ri])}</td>
+    </tr>`;
+  });
+  document.getElementById('tablaResumen').innerHTML = html;
+}
+
+function actualizarChart(){
+  const labels = ['Mes 1','Mes 2','Mes 3'];
+  const ventas = ivaData.map(d=>d.ventas.reduce((s,x)=>s+x.val,0));
+  const gastos = ivaData.map(d=>d.gastos.reduce((s,x)=>s+x.val,0));
+  const sii    = ivaData.map(d=>{
+    const tv=d.ventas.reduce((s,x)=>s+x.val,0);
+    const tg=d.gastos.reduce((s,x)=>s+x.val,0);
+    const neto=ivaOf(tv)-ivaOf(tg);
+    return Math.max(0,neto)+tv*0.01/1.19;
+  });
+  const flujo  = ventas.map((v,i)=>v-gastos[i]-sii[i]);
+
+  if(ivaChart) ivaChart.destroy();
+  ivaChart = new Chart(document.getElementById('chartIVA'),{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:'Ventas',data:ventas,backgroundColor:'rgba(107,155,122,0.7)',borderColor:'#6B9B7A',borderWidth:2,borderRadius:6},
+        {label:'Gastos',data:gastos,backgroundColor:'rgba(196,154,58,0.5)',borderColor:'#C49A3A',borderWidth:2,borderRadius:6},
+        {label:'Pago SII',data:sii,backgroundColor:'rgba(224,85,85,0.6)',borderColor:'#e05555',borderWidth:2,borderRadius:6},
+        {label:'Flujo neto',data:flujo,type:'line',borderColor:'#1B2F4E',backgroundColor:'rgba(27,47,78,0.08)',
+         borderWidth:2,pointRadius:6,pointBackgroundColor:flujo.map(v=>v>=0?'#6B9B7A':'#e05555'),
+         pointBorderColor:'#fff',pointBorderWidth:2,fill:true,tension:0.3,order:0}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{position:'bottom',labels:{font:{size:11},color:'#7a8a9a',padding:14,usePointStyle:true,pointStyleWidth:8}},
+        tooltip:{backgroundColor:'#1B2F4E',titleColor:'#fff',bodyColor:'rgba(255,255,255,0.7)',padding:12,cornerRadius:10,
+          callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y>=0?'':'−'}$${Math.abs(Math.round(c.parsed.y)).toLocaleString('es-CL')}`}}
+      },
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:11},color:'#7a8a9a'},border:{display:false}},
+        y:{grid:{color:'#f0ebe0'},ticks:{font:{size:11},color:'#7a8a9a',callback:v=>'$'+(Math.abs(v)/1000).toFixed(0)+'K'},border:{display:false}}
+      }
+    }
+  });
+}
+
+function setMes(i){
+  mesActual = i;
+  document.querySelectorAll('.iva-tab').forEach((b,idx)=>b.classList.toggle('active',idx===i));
+  document.getElementById('mesLabel').textContent = i+1;
+  renderEditor();
+}
+
+// Init
+renderEditor();
+
 const NAVY = '#1B2F4E', GOLD = '#C49A3A', SAGE = '#6B9B7A',
       WOOD = '#c8a882', RED = '#e05555', CREAM = '#F5EDD8';
 
