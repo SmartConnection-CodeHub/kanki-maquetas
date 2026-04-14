@@ -805,6 +805,21 @@ body.ke-editing [data-editable]:focus {
   background:rgba(196,154,58,0.18)!important;
   box-shadow:0 0 0 2px #C49A3A;
 }
+#ke-deploy-bar {
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:10001;
+  background:#1B2F4E;color:#F5EDD8;
+  padding:12px 20px 10px;flex-direction:column;gap:6px;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.35);font-family:inherit;
+}
+#ke-deploy-inner { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+#ke-deploy-status { font-size:13px;font-weight:700;flex-shrink:0; }
+#ke-deploy-time { font-size:12px;color:#C49A3A;font-weight:700;min-width:40px;flex-shrink:0;font-variant-numeric:tabular-nums; }
+#ke-deploy-track { flex:1;min-width:80px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden; }
+#ke-deploy-fill { height:100%;background:linear-gradient(90deg,#C49A3A,#e8c06a);border-radius:2px;width:0;transition:width 0.8s ease; }
+#ke-deploy-reload { display:none;background:#C49A3A;color:#1B2F4E;border:none;padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:700;font-size:12px; }
+#ke-deploy-reload:hover { background:#e8c06a; }
+#ke-deploy-close { background:none;border:none;color:rgba(245,237,216,0.4);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0;line-height:1; }
+#ke-deploy-note { font-size:11px;color:rgba(245,237,216,0.55);margin:0;letter-spacing:0.01em; }
 </style>
 
 <div id="ke-fab">
@@ -813,6 +828,17 @@ body.ke-editing [data-editable]:focus {
   <button id="ke-btn-edit"   onclick="keStartEdit()">✏️ Editar panel</button>
 </div>
 <div id="ke-toast"></div>
+
+<div id="ke-deploy-bar">
+  <div id="ke-deploy-inner">
+    <span id="ke-deploy-status">⏳ Publicando en GitHub Pages...</span>
+    <span id="ke-deploy-time">~2 min</span>
+    <div id="ke-deploy-track"><div id="ke-deploy-fill"></div></div>
+    <button id="ke-deploy-reload" onclick="location.reload()">🔄 Recargar</button>
+    <button id="ke-deploy-close" onclick="document.getElementById('ke-deploy-bar').style.display='none'" title="Cerrar">✕</button>
+  </div>
+  <p id="ke-deploy-note">💡 Puedes cerrar esta pestaña — el cambio ya está guardado en GitHub y se publicará solo</p>
+</div>
 
 <div id="ke-token-modal">
   <div id="ke-token-box">
@@ -904,8 +930,10 @@ body.ke-editing [data-editable]:focus {
       const meta = await metaRes.json();
       const sha = meta.sha;
 
-      // 2. Get current page HTML (with edits applied)
-      const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      // 2. Get current page HTML (with edits applied) + unique deploy marker
+      const marker = 'ke-v:' + Date.now();
+      const rawHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const html = rawHTML.replace('</head>', `<!-- ${marker} -->\n</head>`);
 
       // 3. Commit
       const now = new Date().toLocaleString('es-CL', {timeZone:'America/Santiago'});
@@ -926,8 +954,9 @@ body.ke-editing [data-editable]:focus {
         const err = await commitRes.json();
         throw new Error(err.message || 'Error al guardar');
       }
-      toast('✅ Guardado en GitHub — cambios visibles en ~2 min', 5000);
+      toast('✅ Commit enviado — publicando...', 3000);
       _originalHTML = {};
+      keWatchDeploy(marker);
     } catch(e){
       toast('❌ ' + e.message, 5000);
       // Re-enter edit mode on error
@@ -938,6 +967,40 @@ body.ke-editing [data-editable]:focus {
       document.getElementById('ke-btn-edit').style.display   = 'none';
     }
   };
+
+  function keWatchDeploy(marker){
+    const bar  = document.getElementById('ke-deploy-bar');
+    const fill = document.getElementById('ke-deploy-fill');
+    const time = document.getElementById('ke-deploy-time');
+    const stat = document.getElementById('ke-deploy-status');
+    bar.style.display = 'flex';
+    const startMs = Date.now();
+    const TOTAL = 150;
+
+    async function tick(){
+      const elapsed = Math.round((Date.now()-startMs)/1000);
+      const pct = Math.min(96, (elapsed/TOTAL)*100);
+      fill.style.width = pct + '%';
+      const rem = Math.max(0, TOTAL - elapsed);
+      time.textContent = rem > 60 ? Math.ceil(rem/60) + ' min' : rem + 's';
+      try {
+        const rawURL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${FILE_PATH}?t=${Date.now()}`;
+        const res = await fetch(rawURL, {cache:'no-store'});
+        const text = await res.text();
+        if(text.includes(marker)){ keDeployDone(); return; }
+      } catch(e){}
+      if(elapsed < TOTAL) setTimeout(tick, 20000);
+      else keDeployDone();
+    }
+    setTimeout(tick, 15000);
+  }
+
+  function keDeployDone(){
+    document.getElementById('ke-deploy-fill').style.width = '100%';
+    document.getElementById('ke-deploy-status').textContent = '✅ ¡En vivo! Recarga para ver los cambios';
+    document.getElementById('ke-deploy-time').textContent = '';
+    document.getElementById('ke-deploy-reload').style.display = 'inline-block';
+  }
 
 })();
 </script>
