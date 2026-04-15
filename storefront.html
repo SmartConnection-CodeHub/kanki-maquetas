@@ -843,9 +843,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
       <div class="nav-logo-mark">
         <svg viewBox="0 0 12 12"><path d="M2 10 L6 2 L10 10 M3.5 7 H8.5" stroke-width="1.5" stroke="currentColor" fill="none"></path></svg>
       </div>
-      <span class="nav-logo-name">KANKI</span>
+      <span class="nav-logo-name" data-editable="sf-nav-name">KANKI</span>
       <span class="nav-logo-sep">/</span>
-      <span class="nav-logo-sub">Street</span>
+      <span class="nav-logo-sub" data-editable="sf-nav-sub">Street</span>
     </a>
     <ul class="nav-links">
       <li><a href="#" data-filter="all" onclick="filterCategory('all');return false">Tienda</a></li>
@@ -922,8 +922,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
     <h1 class="hero-title"><span data-editable="sf-hero-title">KANKI</span><br><em data-editable="sf-hero-em">&amp; CO.</em></h1>
     <p class="hero-sub" data-editable="sf-hero-sub">Surf y streetwear sin compromiso. Piezas que saben de olas y asfalto — vístete con la actitud del océano y la energía de la ciudad.</p>
     <div class="hero-actions">
-      <button class="btn-fill" onclick="smoothScroll('productsGrid')">VER COLECCIÓN</button>
-      <button class="btn-ghost" onclick="showInfoModal('whatsapp')">CONTACTAR</button>
+      <button class="btn-fill" data-editable="sf-hero-btn1" onclick="smoothScroll('productsGrid')">VER COLECCIÓN</button>
+      <button class="btn-ghost" data-editable="sf-hero-btn2" onclick="showInfoModal('whatsapp')">CONTACTAR</button>
     </div>
     <div class="hero-badges">
       <span class="hero-badge gold-b">SURF &amp; STREETWEAR</span>
@@ -1027,15 +1027,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 <!-- ═══ COLLECTIONS ═══ -->
 <section class="collections-section reveal" id="sCollections">
   <div class="collections-section-inner">
-    <div class="section-header"><span class="section-header-title">COLECCIONES</span><span class="section-header-line"></span></div>
+    <div class="section-header"><span class="section-header-title" data-editable="sf-col-title">COLECCIONES</span><span class="section-header-line"></span></div>
     <div class="collections-grid">
       <div class="collection-card reveal" onclick="filterCategory('polerones')">
         <div class="cc-bg" style="background:linear-gradient(135deg,var(--navy),var(--navy-mid))"></div>
         <div class="cc-content">
-          <div class="cc-tag">INVIERNO 2026</div>
-          <div class="cc-name">POLERONES</div>
-          <div class="cc-count">7 productos</div>
-          <button class="cc-btn">VER COLECCIÓN</button>
+          <div class="cc-tag" data-editable="sf-cc-tag1">INVIERNO 2026</div>
+          <div class="cc-name" data-editable="sf-cc-name1">POLERONES</div>
+          <div class="cc-count" data-editable="sf-cc-count1">7 productos</div>
+          <button class="cc-btn" data-editable="sf-cc-btn1">VER COLECCIÓN</button>
         </div>
       </div>
       <div class="collection-card reveal d1" onclick="filterCategory('poleras')">
@@ -1054,22 +1054,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 <!-- ═══ TESTIMONIALS ═══ -->
 <section class="testimonials-section reveal" id="sTestimonials">
   <div class="testimonials-section-inner">
-    <div class="section-header"><span class="section-header-title">LO QUE DICEN</span><span class="section-header-line"></span></div>
+    <div class="section-header"><span class="section-header-title" data-editable="sf-test-title">LO QUE DICEN</span><span class="section-header-line"></span></div>
     <div class="testimonials-grid" style="margin-top:28px">
       <div class="testimonial-card reveal">
-        <div class="tc-stars">★★★★★</div>
-        <div class="tc-text">"El polerón FOG es increíble. La calidad se siente premium y el diseño es único. Llegó súper rápido."</div>
-        <div class="tc-author">CATALINA R.</div><div class="tc-location">Santiago, Chile</div>
+        <div class="tc-stars" data-editable="sf-tc1-stars">★★★★★</div>
+        <div class="tc-text" data-editable="sf-tc1-text">"El polerón FOG es increíble. La calidad se siente premium y el diseño es único. Llegó súper rápido."</div>
+        <div class="tc-author" data-editable="sf-tc1-author">CATALINA R.</div><div class="tc-location" data-editable="sf-tc1-loc">Santiago, Chile</div>
       </div>
       <div class="testimonial-card reveal d1">
-        <div class="tc-stars">★★★★★</div>
-        <div class="tc-text">"El Grizzly OG Bear es una joya. El algodón es de primera y el bordado impecable. 100% recomendado."</div>
-        <div class="tc-author">MATÍAS G.</div><div class="tc-location">Valparaíso, Chile</div>
+        <div class="tc-stars" data-editable="sf-tc2-stars">★★★★★</div>
+        <div class="tc-text" data-editable="sf-tc2-text">"El Grizzly OG Bear es una joya. El algodón es de primera y el bordado impecable. 100% recomendado."</div>
+        <div class="tc-author" data-editable="sf-tc2-author">MATÍAS G.</div><div class="tc-location" data-editable="sf-tc2-loc">Valparaíso, Chile</div>
       </div>
       <div class="testimonial-card reveal d2">
-        <div class="tc-stars">★★★★☆</div>
-        <div class="tc-text">"Excelente atención. Me ayudaron con la talla correcta y llegó en 48 horas. El producto es exactamente como las fotos."</div>
-        <div class="tc-author">FRANCISCA L.</div><div class="tc-location">Concepción, Chile</div>
+        <div class="tc-stars" data-editable="sf-tc3-stars">★★★★☆</div>
+        <div class="tc-text" data-editable="sf-tc3-text">"Excelente atención. Me ayudaron con la talla correcta y llegó en 48 horas. El producto es exactamente como las fotos."</div>
+        <div class="tc-author" data-editable="sf-tc3-author">FRANCISCA L.</div><div class="tc-location" data-editable="sf-tc3-loc">Concepción, Chile</div>
       </div>
     </div>
   </div>
@@ -1077,11 +1077,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 
 <!-- ═══ NEWSLETTER ═══ -->
 <section class="newsletter-section reveal" id="sNewsletter">
-  <div class="nl-title">ÚNETE A LA TRIBU</div>
-  <div class="nl-sub">Ofertas exclusivas y nuevas colecciones</div>
+  <div class="nl-title" data-editable="sf-nl-title">ÚNETE A LA TRIBU</div>
+  <div class="nl-sub" data-editable="sf-nl-sub">Ofertas exclusivas y nuevas colecciones</div>
   <form class="nl-form" onsubmit="event.preventDefault();subscribeNL(this)">
     <input type="email" class="nl-input" placeholder="tu@email.com" required="">
-    <button type="submit" class="nl-btn">SUSCRIBIRSE</button>
+    <button type="submit" class="nl-btn" data-editable="sf-nl-btn">SUSCRIBIRSE</button>
   </form>
 </section>
 
@@ -1089,9 +1089,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 <footer class="footer-full" id="sContact">
   <div class="footer-grid">
     <div class="footer-col">
-      <div class="footer-logo">KANKI</div>
-      <div class="footer-tagline">Where the sea meets the street</div>
-      <p>E-commerce de streetwear y surf chileno. Est. 1968.</p>
+      <div class="footer-logo" data-editable="sf-ft-logo">KANKI</div>
+      <div class="footer-tagline" data-editable="sf-ft-tagline">Where the sea meets the street</div>
+      <p data-editable="sf-ft-desc">E-commerce de streetwear y surf chileno. Est. 1968.</p>
       <div class="footer-social">
         <a href="#" title="Instagram">📷</a>
         <a href="#" title="TikTok">🎵</a>
@@ -1100,28 +1100,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
       </div>
     </div>
     <div class="footer-col">
-      <h4>TIENDA</h4>
-      <a onclick="filterCategory('polerones');return false">Polerones</a>
-      <a onclick="filterCategory('poleras');return false">Poleras</a>
-      <a onclick="filterCategory('lookbook');return false">Lookbook</a>
+      <h4 data-editable="sf-ft-h-tienda">TIENDA</h4>
+      <a onclick="filterCategory('polerones');return false"><span data-editable="sf-ft-lnk-pol">Polerones</span></a>
+      <a onclick="filterCategory('poleras');return false"><span data-editable="sf-ft-lnk-tee">Poleras</span></a>
+      <a onclick="filterCategory('lookbook');return false"><span data-editable="sf-ft-lnk-look">Lookbook</span></a>
     </div>
     <div class="footer-col">
-      <h4>AYUDA</h4>
-      <a onclick="showInfoModal('envios');return false">Envíos y Entregas</a>
-      <a onclick="showInfoModal('devol');return false">Devoluciones</a>
-      <a onclick="showInfoModal('faq');return false">Preguntas Frecuentes</a>
-      <a onclick="showInfoModal('pago');return false">Medios de Pago</a>
-      <a onclick="showInfoModal('tallas');return false">Guía de Tallas</a>
+      <h4 data-editable="sf-ft-h-ayuda">AYUDA</h4>
+      <a onclick="showInfoModal('envios');return false"><span data-editable="sf-ft-lnk-envios">Envíos y Entregas</span></a>
+      <a onclick="showInfoModal('devol');return false"><span data-editable="sf-ft-lnk-devol">Devoluciones</span></a>
+      <a onclick="showInfoModal('faq');return false"><span data-editable="sf-ft-lnk-faq">Preguntas Frecuentes</span></a>
+      <a onclick="showInfoModal('pago');return false"><span data-editable="sf-ft-lnk-pago">Medios de Pago</span></a>
+      <a onclick="showInfoModal('tallas');return false"><span data-editable="sf-ft-lnk-tallas">Guía de Tallas</span></a>
     </div>
     <div class="footer-col">
-      <h4>CONTACTO</h4>
-      <p>📍 Santiago, Chile</p>
-      <p>📧 hola@kankistreet.cl</p>
-      <p>📱 <a href="tel:+56 9 1234 5678">+56 9 1234 5678</a></p>
-      <p>⏰ Lun-Vie 10:00 - 19:00</p>
+      <h4 data-editable="sf-ft-h-contacto">CONTACTO</h4>
+      <p>📍 <span data-editable="sf-ft-city">Santiago, Chile</span></p>
+      <p>📧 <span data-editable="sf-ft-email">hola@kankistreet.cl</span></p>
+      <p>📱 <a href="tel:+56 9 1234 5678" data-editable="sf-ft-phone">+56 9 1234 5678</a></p>
+      <p>⏰ <span data-editable="sf-ft-hours">Lun-Vie 10:00 - 19:00</span></p>
     </div>
   </div>
-  <div class="footer-bottom">© 2026 KANKI STREET — EST. 1968 — TODOS LOS DERECHOS RESERVADOS</div>
+  <div class="footer-bottom" data-editable="sf-ft-copy">© 2026 KANKI STREET — EST. 1968 — TODOS LOS DERECHOS RESERVADOS</div>
 </footer>
 
 <!-- ═══ WALLPAPER POPUP ═══ -->
