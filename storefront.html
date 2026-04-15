@@ -833,7 +833,135 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
     #kanki-fab{bottom:18px;right:18px}
     #kanki-bubble{right:18px;bottom:84px}
   }
-  </style></head>
+  </style><style>
+  /* ─── Kanki Chat Widget ─── */
+  #kanki-fab{
+    position:fixed;bottom:28px;right:28px;z-index:9999;
+    width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--navy);box-shadow:0 4px 24px rgba(27,47,78,0.35);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s;
+    outline:none;
+  }
+  #kanki-fab:hover{transform:scale(1.1);box-shadow:0 6px 32px rgba(27,47,78,0.5)}
+  #kanki-fab:active{transform:scale(0.96)}
+  #kanki-fab-logo{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);background:var(--navy);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  #kanki-fab-logo svg{width:22px;height:22px;fill:var(--gold)}
+  #kanki-badge{
+    position:absolute;top:-3px;right:-3px;
+    background:#ef4444;color:#fff;font-size:9px;font-weight:800;
+    padding:2px 5px;border-radius:10px;border:1.5px solid #fff;
+    display:none;
+  }
+  #kanki-bubble{
+    position:fixed;bottom:96px;right:28px;z-index:9998;
+    background:var(--navy);color:var(--cream);
+    font-size:12px;font-family:var(--font);font-weight:500;
+    padding:8px 14px;border-radius:14px 14px 4px 14px;
+    box-shadow:0 4px 20px rgba(27,47,78,0.3);
+    white-space:nowrap;pointer-events:none;
+    opacity:0;transform:translateY(8px) scale(0.95);
+    transition:opacity 0.3s,transform 0.3s;
+  }
+  #kanki-bubble.show{opacity:1;transform:translateY(0) scale(1)}
+  #kanki-bubble::after{
+    content:'';position:absolute;bottom:-6px;right:20px;
+    border:6px solid transparent;border-top-color:var(--navy);border-bottom:none;
+  }
+
+  /* ─── Chat Panel ─── */
+  #kanki-panel{
+    position:fixed;bottom:96px;right:28px;z-index:9997;
+    width:360px;max-height:580px;border-radius:20px;overflow:hidden;
+    background:#fff;box-shadow:0 12px 60px rgba(27,47,78,0.25);
+    display:flex;flex-direction:column;
+    opacity:0;transform:translateY(16px) scale(0.96);
+    pointer-events:none;transition:opacity 0.3s cubic-bezier(0.4,0,0.2,1),transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  #kanki-panel.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+  .kp-header{
+    background:var(--navy);padding:16px 18px 14px;
+    display:flex;align-items:center;gap:12px;flex-shrink:0;
+  }
+  .kp-avatar{
+    width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);
+    background:rgba(196,154,58,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .kp-avatar svg{width:24px;height:24px;fill:var(--gold)}
+  .kp-info{flex:1}
+  .kp-name{font-size:14px;font-weight:700;color:#fff;letter-spacing:-0.2px}
+  .kp-status{font-size:11px;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:4px;margin-top:2px}
+  .kp-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0}
+  .kp-close{background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:18px;padding:4px;line-height:1;transition:color 0.2s}
+  .kp-close:hover{color:#fff}
+  .kp-messages{
+    flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;
+    background:var(--bg-warm);scroll-behavior:smooth;
+  }
+  .kp-messages::-webkit-scrollbar{width:4px}
+  .kp-messages::-webkit-scrollbar-track{background:transparent}
+  .kp-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  .msg{max-width:82%;display:flex;flex-direction:column;gap:2px}
+  .msg.bot{align-self:flex-start}
+  .msg.user{align-self:flex-end}
+  .msg-bubble{
+    padding:10px 13px;border-radius:16px;font-size:13px;line-height:1.55;
+    font-family:var(--font);
+  }
+  .msg.bot .msg-bubble{
+    background:#fff;color:var(--text);border:1px solid var(--border-w);
+    border-bottom-left-radius:4px;
+  }
+  .msg.user .msg-bubble{
+    background:var(--navy);color:var(--cream);
+    border-bottom-right-radius:4px;
+  }
+  .msg-bubble strong,.msg-bubble b{font-weight:700}
+  .msg-time{font-size:10px;color:var(--subtle)}
+  .msg.bot .msg-time{padding-left:4px}
+  .msg.user .msg-time{padding-right:4px;text-align:right}
+  .kp-typing{display:none;align-self:flex-start;background:#fff;border:1px solid var(--border-w);border-radius:16px 16px 16px 4px;padding:10px 14px;gap:4px}
+  .kp-typing.show{display:flex}
+  .kp-dot-anim{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:kpDot 1.4s infinite ease-in-out both}
+  .kp-dot-anim:nth-child(1){animation-delay:-0.32s}
+  .kp-dot-anim:nth-child(2){animation-delay:-0.16s}
+  @keyframes kpDot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+  .kp-quick{
+    display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px 0;background:var(--bg-warm);
+  }
+  .kp-chip{
+    font-size:11px;font-weight:500;padding:5px 12px;border-radius:980px;
+    border:1.5px solid var(--border);background:#fff;color:var(--navy);cursor:pointer;
+    transition:all 0.18s;font-family:var(--font);white-space:nowrap;
+  }
+  .kp-chip:hover{background:var(--navy);color:var(--cream);border-color:var(--navy)}
+  .kp-form{
+    display:flex;align-items:center;gap:8px;padding:12px 14px;
+    background:#fff;border-top:1px solid var(--border-w);flex-shrink:0;
+  }
+  .kp-input{
+    flex:1;border:1.5px solid var(--border);border-radius:980px;
+    padding:9px 14px;font-size:13px;font-family:var(--font);
+    background:var(--bg-warm);color:var(--text);outline:none;
+    transition:border-color 0.2s;
+  }
+  .kp-input:focus{border-color:var(--navy)}
+  .kp-input::placeholder{color:var(--subtle)}
+  .kp-send{
+    width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--navy);color:var(--cream);display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;transition:background 0.2s,transform 0.15s;
+  }
+  .kp-send:hover{background:var(--gold);color:var(--navy);transform:scale(1.08)}
+  .kp-send svg{width:15px;height:15px}
+
+  @media(max-width:480px){
+    #kanki-panel{width:calc(100vw - 20px);right:10px;bottom:80px;max-height:70vh}
+    #kanki-fab{bottom:18px;right:18px}
+    #kanki-bubble{right:18px;bottom:84px}
+  }
+  </style><!-- ke-v:1776278264371 -->
+</head>
 <body class="" style="">
 
 <!-- ═══ NAV GLOBAL ═══ -->
@@ -898,21 +1026,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
   <div class="hero-vid-wrap" id="heroBg">
     <div class="hero-vid-fallback"></div>
     <!-- 🌊 V1 — SURF DRONE -->
-    <video class="hero-vid active" id="vidSurf" autoplay="" muted="" loop="" playsinline="" preload="auto">
+    <video class="hero-vid" id="vidSurf" autoplay="" muted="" loop="" playsinline="" preload="auto" style="transform: translateY(1061.2px);">
       <source src="https://videos.pexels.com/video-files/1826275/1826275-hd_1920_1080_25fps.mp4" type="video/mp4">
       <source src="https://videos.pexels.com/video-files/1739010/1739010-hd_1920_1080_30fps.mp4" type="video/mp4">
     </video>
     <!-- 🛹 V2 — SKATE PARK -->
-    <video class="hero-vid" id="vidSkate" muted="" loop="" playsinline="" preload="auto">
+    <video class="hero-vid active" id="vidSkate" muted="" loop="" playsinline="" preload="auto" style="transform: translateY(1061.2px);">
       <source src="https://videos.pexels.com/video-files/6399966/6399966-hd_1920_1080_30fps.mp4" type="video/mp4">
       <source src="https://videos.pexels.com/video-files/5074295/5074295-hd_1920_1080_30fps.mp4" type="video/mp4">
     </video>
     <!-- 🌀 V3 — OLA / TUBAZO -->
-    <video class="hero-vid" id="vidTube" muted="" loop="" playsinline="" preload="auto">
+    <video class="hero-vid active" id="vidTube" muted="" loop="" playsinline="" preload="auto" style="transform: translateY(1061.2px); z-index: 3;">
       <source src="https://videos.pexels.com/video-files/3095560/3095560-hd_1920_1080_30fps.mp4" type="video/mp4">
       <source src="https://videos.pexels.com/video-files/3571264/3571264-hd_1280_720_30fps.mp4" type="video/mp4">
     </video>
-    <div class="hero-scene-label" id="sceneLabel">
+    <div class="hero-scene-label show" id="sceneLabel">
       <span class="scene-dot"></span><span id="sceneTxt">🌀 THE TUBE · RIDER</span>
     </div>
   </div>
@@ -1005,14 +1133,185 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
       <div class="brands-row-label"><span>MARCAS QUE TRAEMOS</span></div>
 
       <!-- Grizzly OG Bear Basic Negro Hoodie -->
-      <div id="kk-dynamic-grid" style="display:contents"></div>
+      <div id="kk-dynamic-grid" style="display:contents"><div class="product-card reveal visible" data-product="grizzly-og-black" data-category="polerones" data-brand="grizzly" onclick="openPP('grizzly-og-black')">
+  <div class="product-img">
+    <span class="product-badge badge-hot">HOT</span><button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)" aria-label="Favorito">♡</button>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96098-image.jpg" alt="Grizzly OG Bear Basic Negro Hoodie" loading="lazy"><div class="product-overlay"><button class="qv-btn">QUICK VIEW</button></div></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">GRIZZLY GRIPTAPE</div>
+        <div class="flip-back-name">OG BEAR BASIC HOODIE — NEGRO</div>
+        <div class="flip-back-price">$48.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">GRIZZLY GRIPTAPE</div>
+    <div class="product-name">OG BEAR BASIC HOODIE — NEGRO</div>
+    <div class="product-price">$48.990</div>
+    <div class="size-pills"><span class="size-pill">S</span><span class="size-pill active">M</span><span class="size-pill">L</span><span class="size-pill">XL</span><span class="size-pill">XXL</span></div><button class="btn-cart">ADD TO CART</button>
+  </div>
+</div><div class="product-card reveal visible" data-product="fog-black" data-category="polerones" data-brand="fog" onclick="openPP('fog-black')">
+  <div class="product-img">
+    <span class="product-badge badge-new">NUEVO</span><button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)" aria-label="Favorito">♡</button>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://luked.cl/cdn/shop/files/fwafawwfawfa.webp?v=1750114347" alt="Fear of God Essentials Fleece Hoodie FW24 Black" loading="lazy"><div class="product-overlay"><button class="qv-btn">QUICK VIEW</button></div></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">FEAR OF GOD ESSENTIALS</div>
+        <div class="flip-back-name">FLEECE HOODIE FW24 — BLACK</div>
+        <div class="flip-back-price">$109.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
+    <div class="product-name">FLEECE HOODIE FW24 — BLACK</div>
+    <div class="product-price">$109.990</div>
+    <div class="size-pills"><span class="size-pill">L</span><span class="size-pill active">XL</span></div><button class="btn-cart">ADD TO CART</button>
+  </div>
+</div><div class="product-card reveal visible" data-product="fog-grey" data-category="polerones" data-brand="fog" onclick="openPP('fog-grey')">
+  <div class="product-img">
+    <span class="product-badge badge-new">NUEVO</span><button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)" aria-label="Favorito">♡</button>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://luked.cl/cdn/shop/files/IMG-8874.webp?v=1756595907" alt="Fear of God Essentials Fleece Hoodie FW24 Grey" loading="lazy"><div class="product-overlay"><button class="qv-btn">QUICK VIEW</button></div></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">FEAR OF GOD ESSENTIALS</div>
+        <div class="flip-back-name">FLEECE HOODIE FW24 — GREY</div>
+        <div class="flip-back-price">$109.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
+    <div class="product-name">FLEECE HOODIE FW24 — GREY</div>
+    <div class="product-price">$109.990</div>
+    <div class="size-pills"><span class="size-pill">L</span><span class="size-pill active">XL</span></div><button class="btn-cart">ADD TO CART</button>
+  </div>
+</div><div class="product-card reveal visible" data-product="fog-dark-oatmeal" data-category="polerones" data-brand="fog" onclick="openPP('fog-dark-oatmeal')">
+  <div class="product-img">
+    <span class="product-badge badge-new">NUEVO</span><button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)" aria-label="Favorito">♡</button>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://luked.cl/cdn/shop/files/IMG-4248.jpg?v=1750117064" alt="Fear of God Essentials Dark Oatmeal" loading="lazy"><div class="product-overlay"><button class="qv-btn">QUICK VIEW</button></div></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">FEAR OF GOD ESSENTIALS</div>
+        <div class="flip-back-name">DARK OATMEAL HOODIE</div>
+        <div class="flip-back-price">$99.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
+    <div class="product-name">DARK OATMEAL HOODIE</div>
+    <div class="product-price">$99.990</div>
+    <div class="size-pills"><span class="size-pill">L</span><span class="size-pill active">XL</span></div><button class="btn-cart">ADD TO CART</button>
+  </div>
+</div><div class="product-card reveal visible" data-product="fog-light-oatmeal" data-category="polerones" data-brand="fog" onclick="openPP('fog-light-oatmeal')">
+  <div class="product-img">
+    <span class="product-badge badge-new">NUEVO</span><button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)" aria-label="Favorito">♡</button>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://luked.cl/cdn/shop/files/IMG-4252.jpg?v=1750117099" alt="Fear of God Essentials Light Oatmeal" loading="lazy"><div class="product-overlay"><button class="qv-btn">QUICK VIEW</button></div></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">FEAR OF GOD ESSENTIALS</div>
+        <div class="flip-back-name">LIGHT OATMEAL HOODIE</div>
+        <div class="flip-back-price">$99.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
+    <div class="product-name">LIGHT OATMEAL HOODIE</div>
+    <div class="product-price">$99.990</div>
+    <div class="size-pills"><span class="size-pill">L</span><span class="size-pill active">XL</span></div><button class="btn-cart">ADD TO CART</button>
+  </div>
+</div><div class="product-card reveal visible" data-product="fog-stretch-limo" data-category="polerones" data-brand="fog" onclick="openPP('fog-stretch-limo')">
+  <div class="product-img">
+    <span class="product-badge badge-new">NUEVO</span><button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)" aria-label="Favorito">♡</button>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://luked.cl/cdn/shop/files/IMG-4244.jpg?v=1750117132" alt="Fear of God Essentials Stretch Limo" loading="lazy"><div class="product-overlay"><button class="qv-btn">QUICK VIEW</button></div></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">FEAR OF GOD ESSENTIALS</div>
+        <div class="flip-back-name">STRETCH LIMO HOODIE</div>
+        <div class="flip-back-price">$99.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">FEAR OF GOD ESSENTIALS</div>
+    <div class="product-name">STRETCH LIMO HOODIE</div>
+    <div class="product-price">$99.990</div>
+    <div class="size-pills"><span class="size-pill">L</span><span class="size-pill active">XL</span></div><button class="btn-cart">ADD TO CART</button>
+  </div>
+</div><div class="product-card reveal visible" data-product="grizzly-hoodie" data-category="polerones" data-brand="grizzly" onclick="return false" style="cursor:default">
+  <div class="product-img">
+    <span class="product-badge " style="background:#555">AGOTADO</span>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://grizzlygriptape.cl/wp-content/uploads/2025/09/product_template_93367.jpg" alt="Grizzly Lowercase Fadeaway Hoodie" loading="lazy" style="filter:grayscale(30%)"></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">GRIZZLY GRIPTAPE</div>
+        <div class="flip-back-name">LOWERCASE FADEAWAY HOODIE</div>
+        <div class="flip-back-price">$44.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">GRIZZLY GRIPTAPE</div>
+    <div class="product-name">LOWERCASE FADEAWAY HOODIE</div>
+    <div class="product-price" style="color:var(--subtle)">$44.990</div>
+    <div class="size-pills"><span class="size-pill">S</span><span class="size-pill active">M</span><span class="size-pill">L</span><span class="size-pill">XL</span><span class="size-pill">XXL</span></div><button class="btn-cart" disabled="" style="opacity:0.35;cursor:not-allowed">AGOTADO</button>
+  </div>
+</div><div class="product-card reveal visible" data-product="grizzly-tee-negro" data-category="poleras" data-brand="grizzly" onclick="openPP('grizzly-tee-negro')">
+  <div class="product-img">
+    <span class="product-badge badge-hot">HOT</span><button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)" aria-label="Favorito">♡</button>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96096-image-copia.jpg" alt="Grizzly OG Bear Basic Tee Negro" loading="lazy"><div class="product-overlay"><button class="qv-btn">QUICK VIEW</button></div></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">GRIZZLY GRIPTAPE</div>
+        <div class="flip-back-name">OG BEAR BASIC TEE — NEGRO</div>
+        <div class="flip-back-price">$24.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">GRIZZLY GRIPTAPE</div>
+    <div class="product-name">OG BEAR BASIC TEE — NEGRO</div>
+    <div class="product-price">$24.990</div>
+    <div class="size-pills"><span class="size-pill">S</span><span class="size-pill active">M</span><span class="size-pill">L</span><span class="size-pill">XL</span><span class="size-pill">XXL</span></div><button class="btn-cart">ADD TO CART</button>
+  </div>
+</div><div class="product-card reveal visible" data-product="grizzly-tee-beige" data-category="poleras" data-brand="grizzly" onclick="openPP('grizzly-tee-beige')">
+  <div class="product-img">
+    <span class="product-badge badge-hot">HOT</span><button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)" aria-label="Favorito">♡</button>
+    <div class="flip-inner">
+      <div class="flip-front"><img src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96087-image.jpg" alt="Grizzly OG Bear Basic Tee Beige" loading="lazy"><div class="product-overlay"><button class="qv-btn">QUICK VIEW</button></div></div>
+      <div class="flip-back"><div class="flip-back-content">
+        <div class="flip-back-brand">GRIZZLY GRIPTAPE</div>
+        <div class="flip-back-name">OG BEAR BASIC TEE — BEIGE</div>
+        <div class="flip-back-price">$24.990</div>
+        <div class="flip-back-cta">TAP TO VIEW DETAILS</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-brand-tag">GRIZZLY GRIPTAPE</div>
+    <div class="product-name">OG BEAR BASIC TEE — BEIGE</div>
+    <div class="product-price">$24.990</div>
+    <div class="size-pills"><span class="size-pill">S</span><span class="size-pill active">M</span><span class="size-pill">L</span><span class="size-pill">XL</span><span class="size-pill">XXL</span></div><button class="btn-cart">ADD TO CART</button>
+  </div>
+</div></div>
 
     </div><!-- /productsGrid -->
   </div>
 </section>
 
 <!-- ═══ LIFESTYLE ═══ -->
-<section class="lifestyle reveal">
+<section class="lifestyle reveal visible">
   <h3><span data-editable="sf-h-7764">RAW SURF, REAL STREET</span></h3>
   <p>since '68</p>
   <div class="lifestyle-items">
@@ -1025,11 +1324,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 </section>
 
 <!-- ═══ COLLECTIONS ═══ -->
-<section class="collections-section reveal" id="sCollections">
+<section class="collections-section reveal visible" id="sCollections">
   <div class="collections-section-inner">
     <div class="section-header"><span class="section-header-title" data-editable="sf-col-title">COLECCIONES</span><span class="section-header-line"></span></div>
     <div class="collections-grid">
-      <div class="collection-card reveal" onclick="filterCategory('polerones')">
+      <div class="collection-card reveal visible" onclick="filterCategory('polerones')">
         <div class="cc-bg" style="background:linear-gradient(135deg,var(--navy),var(--navy-mid))"></div>
         <div class="cc-content">
           <div class="cc-tag" data-editable="sf-cc-tag1">INVIERNO 2026</div>
@@ -1038,7 +1337,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
           <button class="cc-btn" data-editable="sf-cc-btn1">VER COLECCIÓN</button>
         </div>
       </div>
-      <div class="collection-card reveal d1" onclick="filterCategory('poleras')">
+      <div class="collection-card reveal d1 visible" onclick="filterCategory('poleras')">
         <div class="cc-bg" style="background:linear-gradient(135deg,#3d2b1f,#1a1a1a)"></div>
         <div class="cc-content">
           <div class="cc-tag">ESENCIAL</div>
@@ -1052,21 +1351,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 </section>
 
 <!-- ═══ TESTIMONIALS ═══ -->
-<section class="testimonials-section reveal" id="sTestimonials">
+<section class="testimonials-section reveal visible" id="sTestimonials">
   <div class="testimonials-section-inner">
     <div class="section-header"><span class="section-header-title" data-editable="sf-test-title">LO QUE DICEN</span><span class="section-header-line"></span></div>
     <div class="testimonials-grid" style="margin-top:28px">
-      <div class="testimonial-card reveal">
+      <div class="testimonial-card reveal visible">
         <div class="tc-stars" data-editable="sf-tc1-stars">★★★★★</div>
         <div class="tc-text" data-editable="sf-tc1-text">"El polerón FOG es increíble. La calidad se siente premium y el diseño es único. Llegó súper rápido."</div>
         <div class="tc-author" data-editable="sf-tc1-author">CATALINA R.</div><div class="tc-location" data-editable="sf-tc1-loc">Santiago, Chile</div>
       </div>
-      <div class="testimonial-card reveal d1">
+      <div class="testimonial-card reveal d1 visible">
         <div class="tc-stars" data-editable="sf-tc2-stars">★★★★★</div>
         <div class="tc-text" data-editable="sf-tc2-text">"El Grizzly OG Bear es una joya. El algodón es de primera y el bordado impecable. 100% recomendado."</div>
         <div class="tc-author" data-editable="sf-tc2-author">MATÍAS G.</div><div class="tc-location" data-editable="sf-tc2-loc">Valparaíso, Chile</div>
       </div>
-      <div class="testimonial-card reveal d2">
+      <div class="testimonial-card reveal d2 visible">
         <div class="tc-stars" data-editable="sf-tc3-stars">★★★★☆</div>
         <div class="tc-text" data-editable="sf-tc3-text">"Excelente atención. Me ayudaron con la talla correcta y llegó en 48 horas. El producto es exactamente como las fotos."</div>
         <div class="tc-author" data-editable="sf-tc3-author">FRANCISCA L.</div><div class="tc-location" data-editable="sf-tc3-loc">Concepción, Chile</div>
@@ -1076,7 +1375,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 </section>
 
 <!-- ═══ NEWSLETTER ═══ -->
-<section class="newsletter-section reveal" id="sNewsletter">
+<section class="newsletter-section reveal visible" id="sNewsletter">
   <div class="nl-title" data-editable="sf-nl-title">ÚNETE A LA TRIBU</div>
   <div class="nl-sub" data-editable="sf-nl-sub">Ofertas exclusivas y nuevas colecciones</div>
   <form class="nl-form" onsubmit="event.preventDefault();subscribeNL(this)">
@@ -1091,7 +1390,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
     <div class="footer-col">
       <div class="footer-logo" data-editable="sf-ft-logo">KANKI</div>
       <div class="footer-tagline" data-editable="sf-ft-tagline">Where the sea meets the street</div>
-      <p data-editable="sf-ft-desc">E-commerce de streetwear y surf chileno. Est. 1968.</p>
+      <p data-editable="sf-ft-desc">E-commerce de streetwear y surf chileno. Est. 2020.</p>
       <div class="footer-social">
         <a href="#" title="Instagram">📷</a>
         <a href="#" title="TikTok">🎵</a>
@@ -1115,13 +1414,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
     </div>
     <div class="footer-col">
       <h4 data-editable="sf-ft-h-contacto">CONTACTO</h4>
-      <p>📍 <span data-editable="sf-ft-city">Santiago, Chile</span></p>
-      <p>📧 <span data-editable="sf-ft-email">hola@kankistreet.cl</span></p>
-      <p>📱 <a href="tel:+56 9 1234 5678" data-editable="sf-ft-phone">+56 9 1234 5678</a></p>
+      <p>📍 <span data-editable="sf-ft-city">Concón, Chile</span></p>
+      <p>📧 <span data-editable="sf-ft-email">Contackankisurf@gmail.com</span></p>
+      <p>📱 <a href="tel:+56 9 1234 5678" data-editable="sf-ft-phone">+56 9 57807766</a></p>
       <p>⏰ <span data-editable="sf-ft-hours">Lun-Vie 10:00 - 19:00</span></p>
     </div>
   </div>
-  <div class="footer-bottom" data-editable="sf-ft-copy">© 2026 KANKI STREET — EST. 1968 — TODOS LOS DERECHOS RESERVADOS</div>
+  <div class="footer-bottom" data-editable="sf-ft-copy">© 2026 KANKI STREET — EST. 2020 — TODOS LOS DERECHOS RESERVADOS</div>
 </footer>
 
 <!-- ═══ WALLPAPER POPUP ═══ -->
@@ -1253,7 +1552,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 <div class="pp-overlay" id="infoModal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="pp-box" style="max-width:520px">
     <button class="pp-x" onclick="document.getElementById('infoModal').classList.remove('open')">✕</button>
-    <div id="infoContent" style="padding:32px"></div>
+    <div id="infoContent" style="padding:32px"><h3 style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:14px"><span data-editable="sf-h-9361">GUÍA DE TALLAS</span></h3><div style="font-size:13px;overflow-x:auto"><table style="width:100%;border-collapse:collapse"><tbody><tr style="background:var(--bg-alt)"><th style="padding:10px;border:1px solid var(--border-w);color:var(--navy)">Talla</th><th style="padding:10px;border:1px solid var(--border-w);color:var(--navy)">Pecho</th><th style="padding:10px;border:1px solid var(--border-w);color:var(--navy)">Largo</th></tr><tr><td style="padding:9px;border:1px solid var(--border-w);text-align:center">S</td><td style="padding:9px;border:1px solid var(--border-w);text-align:center">96cm</td><td style="padding:9px;border:1px solid var(--border-w);text-align:center">68cm</td></tr><tr><td style="padding:9px;border:1px solid var(--border-w);text-align:center">M</td><td style="padding:9px;border:1px solid var(--border-w);text-align:center">102cm</td><td style="padding:9px;border:1px solid var(--border-w);text-align:center">72cm</td></tr><tr><td style="padding:9px;border:1px solid var(--border-w);text-align:center">L</td><td style="padding:9px;border:1px solid var(--border-w);text-align:center">108cm</td><td style="padding:9px;border:1px solid var(--border-w);text-align:center">76cm</td></tr><tr><td style="padding:9px;border:1px solid var(--border-w);text-align:center">XL</td><td style="padding:9px;border:1px solid var(--border-w);text-align:center">114cm</td><td style="padding:9px;border:1px solid var(--border-w);text-align:center">80cm</td></tr></tbody></table></div></div>
   </div>
 </div>
 
@@ -2222,6 +2521,36 @@ document.querySelectorAll('.product-card').forEach(card=>{
 
 })();
 </script><button id="music-btn" title="♪ Ambient Surf — Kanki"><span class="note">♪</span></button><button id="kanki-fab" aria-label="Abrir asistente Kanki"><div id="kanki-fab-logo"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 4h3v6l5-6h4l-6 7 6 9h-4l-4.5-7L9 16.5V20H6V4z"></path>
+  </svg></div><span id="kanki-badge" style="display: block;">1</span></button><div id="kanki-bubble" class="">¿Necesitas ayuda? 👋</div><div id="kanki-panel" role="dialog" aria-label="Chat con Kanki">
+    <div class="kp-header">
+      <div class="kp-avatar"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 4h3v6l5-6h4l-6 7 6 9h-4l-4.5-7L9 16.5V20H6V4z"></path>
+  </svg></div>
+      <div class="kp-info">
+        <div class="kp-name">Kanki</div>
+        <div class="kp-status"><span class="kp-dot"></span>Asistente virtual · en línea</div>
+      </div>
+      <button class="kp-close" aria-label="Cerrar chat">✕</button>
+    </div>
+    <div class="kp-messages" id="kp-messages">
+      <div class="kp-typing" id="kp-typing">
+        <span class="kp-dot-anim"></span><span class="kp-dot-anim"></span><span class="kp-dot-anim"></span>
+      </div>
+    </div>
+    <div class="kp-quick" id="kp-quick">
+      <button class="kp-chip">📦 Rastrear pedido</button>
+      <button class="kp-chip">👟 Info de marcas</button>
+      <button class="kp-chip">📏 Stock y tallas</button>
+      <button class="kp-chip">🔧 Tengo un problema</button>
+    </div>
+    <div class="kp-form">
+      <input class="kp-input" id="kp-input" type="text" placeholder="Escríbeme…" autocomplete="off" maxlength="200">
+      <button class="kp-send" id="kp-send" aria-label="Enviar">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+      </button>
+    </div>
+  </div><button id="music-btn" title="♪ Ambient Surf — Kanki"><span class="note">♪</span></button><button id="kanki-fab" aria-label="Abrir asistente Kanki"><div id="kanki-fab-logo"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M6 4h3v6l5-6h4l-6 7 6 9h-4l-4.5-7L9 16.5V20H6V4z"></path>
   </svg></div><span id="kanki-badge" style="display: block;">1</span></button><div id="kanki-bubble" class="">¿Necesitas ayuda? 👋</div><div id="kanki-panel" role="dialog" aria-label="Chat con Kanki">
     <div class="kp-header">
