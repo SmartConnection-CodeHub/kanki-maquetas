@@ -502,64 +502,108 @@
       <div class="page-header-row">
         <div>
           <div class="page-title">Productos</div>
-          <div class="page-subtitle">12 productos activos · 2 con stock crítico</div>
+          <div class="page-subtitle" id="adm-prod-subtitle">Cargando catálogo...</div>
         </div>
-        <button class="btn btn-navy" style="margin-left:auto">+ Agregar producto</button>
+        <div style="display:flex;gap:8px;margin-left:auto">
+          <button class="btn btn-ghost" onclick="admAddProduct()">+ Agregar</button>
+          <button class="btn btn-navy" id="adm-save-btn" onclick="admSaveProducts()" disabled>💾 Guardar cambios</button>
+        </div>
       </div>
     </div>
 
-    <div class="alert warn">
-      📦 <strong>2 productos</strong> tienen stock ≤ 2 unidades en alguna talla. Considera reabastecer.
-    </div>
+    <div id="adm-prod-alert" class="alert warn" style="display:none"></div>
 
-    <div class="product-grid">
-      <div class="product-card">
-        <div class="product-thumb">🌊</div>
-        <div class="product-info">
-          <div class="product-name">Poleron Barrel Wave</div>
-          <div class="product-stock low">⚠️ Talla M: 2 unid.</div>
-          <div class="product-price">$38.990</div>
+    <div style="overflow-x:auto">
+      <table class="table" id="adm-prod-table">
+        <thead>
+          <tr>
+            <th style="width:56px">Img</th>
+            <th>Nombre</th>
+            <th>Marca</th>
+            <th style="width:92px">Cat.</th>
+            <th style="width:100px">Precio $</th>
+            <th style="width:80px">Badge</th>
+            <th style="width:82px">Disponible</th>
+            <th style="width:70px">Stock</th>
+            <th style="width:50px"></th>
+          </tr>
+        </thead>
+        <tbody id="adm-prod-tbody">
+          <tr><td colspan="9" style="text-align:center;padding:40px;color:#94a3b8">⏳ Cargando productos...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MODAL: Agregar producto -->
+  <div class="modal-overlay" id="adm-add-modal">
+    <div class="modal" style="width:480px;max-width:96vw">
+      <div class="modal-header">
+        <div style="font-size:15px;font-weight:600;color:var(--text-primary)">Agregar producto</div>
+        <button class="modal-close" onclick="document.getElementById('adm-add-modal').classList.remove('open')">×</button>
+      </div>
+      <div class="form-group">
+        <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">ID único (sin espacios)</label>
+        <input class="form-input" id="adm-new-id" placeholder="ej: grizzly-cap-azul" />
+      </div>
+      <div class="form-group">
+        <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Nombre del producto</label>
+        <input class="form-input" id="adm-new-name" placeholder="ej: OG BEAR CAP — AZUL" />
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Marca</label>
+          <input class="form-input" id="adm-new-brand" placeholder="GRIZZLY GRIPTAPE" />
+        </div>
+        <div class="form-group">
+          <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Brand slug (filtro)</label>
+          <input class="form-input" id="adm-new-brandslug" placeholder="grizzly" />
         </div>
       </div>
-      <div class="product-card">
-        <div class="product-thumb">🏄</div>
-        <div class="product-info">
-          <div class="product-name">Poleron Surf Script</div>
-          <div class="product-stock">Stock: 14 unid.</div>
-          <div class="product-price">$38.990</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Categoría</label>
+          <select class="form-input" id="adm-new-cat">
+            <option value="polerones">Polerones</option>
+            <option value="poleras">Poleras</option>
+            <option value="accesorios">Accesorios</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Precio ($)</label>
+          <input class="form-input" id="adm-new-price" type="number" placeholder="49990" />
         </div>
       </div>
-      <div class="product-card">
-        <div class="product-thumb">☀️</div>
-        <div class="product-info">
-          <div class="product-name">Tshirt Ocean Fade</div>
-          <div class="product-stock low">⚠️ Talla S: 1 unid.</div>
-          <div class="product-price">$26.990</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Badge</label>
+          <select class="form-input" id="adm-new-badge">
+            <option value="">Sin badge</option>
+            <option value="HOT">HOT</option>
+            <option value="NUEVO">NUEVO</option>
+            <option value="AGOTADO">AGOTADO</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Stock inicial</label>
+          <input class="form-input" id="adm-new-stock" type="number" value="0" />
         </div>
       </div>
-      <div class="product-card">
-        <div class="product-thumb">🐟</div>
-        <div class="product-info">
-          <div class="product-name">Tshirt Tubes Riders</div>
-          <div class="product-stock">Stock: 8 unid.</div>
-          <div class="product-price">$26.990</div>
-        </div>
+      <div class="form-group">
+        <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">URL Imagen</label>
+        <input class="form-input" id="adm-new-img" placeholder="https://..." />
       </div>
-      <div class="product-card">
-        <div class="product-thumb">🧢</div>
-        <div class="product-info">
-          <div class="product-name">Cap Navy Kanki</div>
-          <div class="product-stock">Stock: 22 unid.</div>
-          <div class="product-price">$15.990</div>
-        </div>
+      <div class="form-group">
+        <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Tallas (separadas por coma)</label>
+        <input class="form-input" id="adm-new-sizes" placeholder="S,M,L,XL,XXL" value="S,M,L,XL,XXL" />
       </div>
-      <div class="product-card">
-        <div class="product-thumb">🩱</div>
-        <div class="product-info">
-          <div class="product-name">Camiseta Girls Sunset</div>
-          <div class="product-stock">Stock: 5 unid.</div>
-          <div class="product-price">$22.990</div>
-        </div>
+      <div class="form-group">
+        <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px">Descripción</label>
+        <textarea class="form-input" id="adm-new-desc" rows="2" placeholder="Descripción del producto..."></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">
+        <button class="btn btn-ghost" onclick="document.getElementById('adm-add-modal').classList.remove('open')">Cancelar</button>
+        <button class="btn btn-navy" onclick="admConfirmAdd()">Agregar al catálogo</button>
       </div>
     </div>
   </div>
@@ -1001,6 +1045,181 @@ body.ke-editing [data-editable]:focus {
     document.getElementById('ke-deploy-time').textContent = '';
     document.getElementById('ke-deploy-reload').style.display = 'inline-block';
   }
+
+  // ── Product Management ──────────────────────────────────────
+  const ADM_PRODUCTS_PATH = 'products.json';
+  let admProducts = [];
+  let admProdsDirty = false;
+
+  async function admLoadProducts(){
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ADM_PRODUCTS_PATH}?ref=${BRANCH}`,
+        { headers: { Authorization: `Bearer ${getToken()}`, Accept: 'application/vnd.github+json' } }
+      );
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const meta = await res.json();
+      const data = JSON.parse(atob(meta.content.replace(/\n/g,'')));
+      admProducts = data.products || [];
+      admRenderTable();
+    } catch(e) {
+      document.getElementById('adm-prod-subtitle').textContent = '⚠️ Error al cargar — ' + e.message;
+      document.getElementById('adm-prod-tbody').innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:#ef4444">❌ No se pudo cargar products.json<br><small style="color:#94a3b8">${e.message}</small></td></tr>`;
+    }
+  }
+
+  function admRenderTable(){
+    const tbody = document.getElementById('adm-prod-tbody');
+    const active = admProducts.filter(p=>p.available).length;
+    document.getElementById('adm-prod-subtitle').textContent = `${admProducts.length} productos · ${active} activos`;
+    const saveBtn = document.getElementById('adm-save-btn');
+
+    if(!admProducts.length){
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:#94a3b8">No hay productos en el catálogo</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = admProducts.map((p,i) => `
+      <tr data-idx="${i}">
+        <td><img src="${p.img||''}" alt="${p.name}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;background:#f5f5f7" onerror="this.style.background='#f5f5f7';this.src=''"></td>
+        <td><input class="form-input" style="font-size:12px;padding:5px 8px" value="${escHtml(p.name)}" onchange="admField(${i},'name',this.value)" /></td>
+        <td><input class="form-input" style="font-size:12px;padding:5px 8px" value="${escHtml(p.brand)}" onchange="admField(${i},'brand',this.value)" /></td>
+        <td><select class="form-input" style="font-size:12px;padding:5px 6px" onchange="admField(${i},'category',this.value)">
+          <option value="polerones"${p.category==='polerones'?' selected':''}>Polerones</option>
+          <option value="poleras"${p.category==='poleras'?' selected':''}>Poleras</option>
+          <option value="accesorios"${p.category==='accesorios'?' selected':''}>Accesorios</option>
+        </select></td>
+        <td><input class="form-input" style="font-size:12px;padding:5px 8px" type="number" value="${p.price}" onchange="admField(${i},'price',parseInt(this.value)||0)" /></td>
+        <td><select class="form-input" style="font-size:12px;padding:5px 6px" onchange="admField(${i},'badge',this.value)">
+          <option value=""${!p.badge?' selected':''}>—</option>
+          <option value="HOT"${p.badge==='HOT'?' selected':''}>HOT</option>
+          <option value="NUEVO"${p.badge==='NUEVO'?' selected':''}>NUEVO</option>
+          <option value="AGOTADO"${p.badge==='AGOTADO'?' selected':''}>AGOTADO</option>
+        </select></td>
+        <td style="text-align:center">
+          <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:12px">
+            <input type="checkbox" ${p.available?'checked':''} onchange="admToggleAvail(${i},this.checked)" style="width:16px;height:16px;cursor:pointer" />
+            <span style="color:${p.available?'#22c55e':'#94a3b8'}">${p.available?'Sí':'No'}</span>
+          </label>
+        </td>
+        <td><input class="form-input" style="font-size:12px;padding:5px 8px" type="number" value="${p.stock||0}" onchange="admField(${i},'stock',parseInt(this.value)||0)" /></td>
+        <td><button class="btn btn-danger btn-sm" onclick="admDeleteProduct(${i})" title="Eliminar">🗑</button></td>
+      </tr>`).join('');
+  }
+
+  function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+  function admField(idx, field, val){
+    admProducts[idx][field] = val;
+    admSetDirty();
+  }
+
+  function admToggleAvail(idx, val){
+    admProducts[idx].available = val;
+    admProducts[idx].badge = val ? (admProducts[idx].badge==='AGOTADO'?'':admProducts[idx].badge) : 'AGOTADO';
+    admSetDirty();
+    admRenderTable();
+  }
+
+  function admSetDirty(){
+    admProdsDirty = true;
+    document.getElementById('adm-save-btn').disabled = false;
+    document.getElementById('adm-save-btn').style.opacity = '1';
+  }
+
+  function admDeleteProduct(idx){
+    const p = admProducts[idx];
+    if(!confirm(`¿Eliminar "${p.name}"?`)) return;
+    admProducts.splice(idx,1);
+    admSetDirty();
+    admRenderTable();
+  }
+
+  function admAddProduct(){
+    document.getElementById('adm-add-modal').classList.add('open');
+  }
+
+  function admConfirmAdd(){
+    const id = document.getElementById('adm-new-id').value.trim().toLowerCase().replace(/\s+/g,'-');
+    const name = document.getElementById('adm-new-name').value.trim();
+    if(!id || !name){ alert('ID y Nombre son obligatorios'); return; }
+    if(admProducts.find(p=>p.id===id)){ alert('Ya existe un producto con ese ID'); return; }
+    admProducts.push({
+      id, name,
+      brand: document.getElementById('adm-new-brand').value.trim()||'',
+      brandSlug: document.getElementById('adm-new-brandslug').value.trim()||id.split('-')[0],
+      category: document.getElementById('adm-new-cat').value,
+      price: parseInt(document.getElementById('adm-new-price').value)||0,
+      badge: document.getElementById('adm-new-badge').value,
+      available: document.getElementById('adm-new-badge').value !== 'AGOTADO',
+      stock: parseInt(document.getElementById('adm-new-stock').value)||0,
+      img: document.getElementById('adm-new-img').value.trim(),
+      alt: name,
+      sizes: document.getElementById('adm-new-sizes').value.split(',').map(s=>s.trim()).filter(Boolean),
+      desc: document.getElementById('adm-new-desc').value.trim()
+    });
+    document.getElementById('adm-add-modal').classList.remove('open');
+    // Reset form
+    ['id','name','brand','brandslug','img','desc'].forEach(f=>{ const el=document.getElementById('adm-new-'+f); if(el) el.value=''; });
+    document.getElementById('adm-new-price').value='';
+    document.getElementById('adm-new-stock').value='0';
+    admSetDirty();
+    admRenderTable();
+    showToast('✅ Producto agregado — guarda para publicar');
+  }
+
+  async function admSaveProducts(){
+    const saveBtn = document.getElementById('adm-save-btn');
+    saveBtn.disabled = true; saveBtn.textContent = '⏳ Guardando...';
+    const token = getToken();
+    try {
+      // Get current SHA of products.json
+      const metaRes = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ADM_PRODUCTS_PATH}?ref=${BRANCH}`,
+        { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+      );
+      if(!metaRes.ok) throw new Error('No se pudo leer products.json (SHA)');
+      const meta = await metaRes.json();
+      const sha = meta.sha;
+
+      const jsonContent = JSON.stringify({products: admProducts}, null, 2);
+      const encoded = btoa(unescape(encodeURIComponent(jsonContent)));
+      const now = new Date().toLocaleString('es-CL',{timeZone:'America/Santiago'});
+      const commitRes = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ADM_PRODUCTS_PATH}`,
+        {
+          method: 'PUT',
+          headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: `update: catálogo productos — ${now}`, content: encoded, sha, branch: BRANCH })
+        }
+      );
+      if(!commitRes.ok){ const err=await commitRes.json(); throw new Error(err.message); }
+      saveBtn.textContent = '✅ Guardado';
+      saveBtn.style.background = '#22c55e';
+      admProdsDirty = false;
+      showToast('✅ Catálogo publicado en GitHub');
+      const alert = document.getElementById('adm-prod-alert');
+      alert.style.display = 'flex';
+      alert.innerHTML = '✅ <strong>Cambios guardados.</strong> El storefront se actualizará en ~2 minutos.';
+      setTimeout(()=>{ alert.style.display='none'; saveBtn.textContent='💾 Guardar cambios'; saveBtn.style.background=''; }, 5000);
+    } catch(e){
+      saveBtn.disabled = false; saveBtn.textContent = '💾 Guardar cambios';
+      showToast('❌ ' + e.message);
+    }
+  }
+
+  // Load products when switching to productos tab
+  const _origShowView = window.showView;
+  window.showView = function(id){
+    _origShowView && _origShowView(id);
+    if(id === 'view-productos' && !admProducts.length) admLoadProducts();
+  };
+  // Also load if this tab is active on page load
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const activeNav = document.querySelector('.nav-item.active');
+    if(activeNav && activeNav.getAttribute('onclick') && activeNav.getAttribute('onclick').includes('view-productos')) admLoadProducts();
+  });
+
 
 })();
 </script>
