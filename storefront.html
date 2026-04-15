@@ -898,17 +898,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
   <div class="hero-vid-wrap" id="heroBg">
     <div class="hero-vid-fallback"></div>
     <!-- 🌊 V1 — SURF DRONE -->
-    <video class="hero-vid" id="vidSurf" autoplay="" muted="" loop="" playsinline="" preload="auto" style="transform: translateY(217.84px);">
+    <video class="hero-vid" id="vidSurf" autoplay="" muted="" loop="" playsinline="" preload="auto">
       <source src="https://videos.pexels.com/video-files/1826275/1826275-hd_1920_1080_25fps.mp4" type="video/mp4">
       <source src="https://videos.pexels.com/video-files/1739010/1739010-hd_1920_1080_30fps.mp4" type="video/mp4">
     </video>
     <!-- 🛹 V2 — SKATE PARK -->
-    <video class="hero-vid" id="vidSkate" muted="" loop="" playsinline="" preload="auto" style="transform: translateY(217.84px);">
+    <video class="hero-vid" id="vidSkate" muted="" loop="" playsinline="" preload="auto">
       <source src="https://videos.pexels.com/video-files/6399966/6399966-hd_1920_1080_30fps.mp4" type="video/mp4">
       <source src="https://videos.pexels.com/video-files/5074295/5074295-hd_1920_1080_30fps.mp4" type="video/mp4">
     </video>
     <!-- 🌀 V3 — OLA / TUBAZO -->
-    <video class="hero-vid active" id="vidTube" muted="" loop="" playsinline="" preload="auto" style="transform: translateY(217.84px);">
+    <video class="hero-vid active" id="vidTube" muted="" loop="" playsinline="" preload="auto">
       <source src="https://videos.pexels.com/video-files/3095560/3095560-hd_1920_1080_30fps.mp4" type="video/mp4">
       <source src="https://videos.pexels.com/video-files/3571264/3571264-hd_1280_720_30fps.mp4" type="video/mp4">
     </video>
@@ -1376,13 +1376,19 @@ window.addEventListener('scroll',()=>{
   vids.forEach(v => v.el.addEventListener('error', ()=>{ v.el.style.display='none'; }));
 
   // ── Parallax ──
+  function applyParallax(){
+    if(window.innerWidth > 767){
+      const o = window.scrollY * 0.28;
+      vids.forEach(v=>{ v.el.style.transform = `translateY(${o}px)`; });
+    } else {
+      vids.forEach(v=>{ v.el.style.transform = '';}); 
+    }
+  }
+  applyParallax(); // set correct value on load
   let ticking = false;
   window.addEventListener('scroll',()=>{
     if(!ticking){ requestAnimationFrame(()=>{
-      if(window.innerWidth > 767){
-        const o = window.scrollY * 0.28;
-        vids.forEach(v=>{ v.el.style.transform = `translateY(${o}px)`; });
-      }
+      applyParallax();
       ticking = false;
     }); ticking = true; }
   });
