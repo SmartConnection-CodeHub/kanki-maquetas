@@ -68,7 +68,7 @@
     .sidebar-bottom { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
 
     /* ── MAIN ── */
-    .main { margin-left: var(--sidebar-w); flex: 1; padding: 28px 32px; padding-top: 12px; }
+    .main { margin-left: var(--sidebar-w); flex: 1; padding: 28px 32px; }
 
     /* ── VIEWS ── */
     .view { display: none; animation: fadeIn 200ms ease; }
@@ -111,6 +111,8 @@
     .table td { padding: 13px 20px; border-bottom: 1px solid #f5f5f7; font-size: 14px; vertical-align: middle; }
     .table tr:last-child td { border-bottom: none; }
     .table tbody tr:hover td { background: #fafafa; }
+    .order-row { cursor: pointer; }
+    .order-row:hover td { background: #f0f4ff !important; }
 
     /* ── BADGES ── */
     .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 20px; font-size: 12px; font-weight: 500; white-space: nowrap; }
@@ -202,6 +204,18 @@
       .bn-item.active .bn-label { color: var(--navy); font-weight: 600; }
     }
 
+    @media (max-width: 768px) {
+      .report-grid { grid-template-columns: 1fr; }
+      .report-grid .chart-placeholder[style*="span 2"] { grid-column: span 1; }
+      .modal-wide { width: 95vw; max-height: 85vh; padding: 18px; }
+      .form-row { grid-template-columns: 1fr; }
+      .photo-grid { grid-template-columns: repeat(3, 1fr); }
+      .detail-grid { grid-template-columns: 1fr; gap: 8px; }
+      .timeline { flex-wrap: nowrap; padding: 10px 8px; gap: 0; overflow-x: auto; }
+      .tl-label { font-size: 9px; }
+      .tl-dot { width: 24px; height: 24px; font-size: 10px; }
+    }
+
     /* ── iPHONE (≤390px) ── */
     @media (max-width: 390px) {
       :root { --topbar-h: 48px; }
@@ -233,6 +247,153 @@
       .bn-label { font-size: 9px; }
     }
 
+    /* ── PRODUCT MODAL (wide) ── */
+    .modal-wide { width: 580px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+    .modal-tabs { display: flex; gap: 4px; margin-bottom: 18px; border-bottom: 1px solid var(--border); }
+    .modal-tab { padding: 8px 14px; font-size: 13px; font-weight: 500; color: var(--text-secondary); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .modal-tab.active { color: var(--navy); border-bottom-color: var(--navy); font-weight: 600; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-select { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: var(--font); outline: none; background: white; }
+    .form-select:focus { border-color: var(--navy); }
+    .photo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 6px; }
+    .photo-slot { aspect-ratio: 1; border: 2px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color 200ms; position: relative; overflow: hidden; background: var(--bg); }
+    .photo-slot:hover { border-color: var(--navy); }
+    .photo-slot.has-photo { border-style: solid; border-color: var(--success); }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-slot .photo-add { font-size: 20px; color: var(--text-secondary); }
+    .photo-slot .photo-remove { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: var(--danger); color: white; font-size: 11px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .size-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .size-chip { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 150ms; user-select: none; }
+    .size-chip.selected { background: var(--navy); color: white; border-color: var(--navy); }
+    .variant-stock-table { width: 100%; margin-top: 10px; }
+    .variant-stock-table th { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; padding: 6px 8px; text-align: left; }
+    .variant-stock-table td { padding: 6px 8px; }
+    .variant-stock-table input { width: 70px; padding: 5px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; text-align: center; }
+    .status-radio { display: flex; gap: 8px; margin-top: 6px; }
+    .status-option { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 150ms; }
+    .status-option.active-st { background: #dcfce7; color: #166534; border-color: #86efac; }
+    .status-option.draft-st { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .status-option.out-st { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+    /* ── TIMELINE (pedidos) ── */
+    .timeline { display: flex; align-items: center; gap: 0; margin: 12px 0; padding: 12px 16px; background: var(--bg); border-radius: 10px; }
+    .tl-step { display: flex; flex-direction: column; align-items: center; position: relative; flex: 1; }
+    .tl-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--text-secondary); z-index: 1; transition: all 200ms; }
+    .tl-dot.done { background: var(--success); color: white; }
+    .tl-dot.current { background: var(--gold); color: var(--navy); box-shadow: 0 0 0 4px rgba(196,154,58,0.25); }
+    .tl-label { font-size: 10px; color: var(--text-secondary); margin-top: 5px; font-weight: 500; text-align: center; }
+    .tl-label.done { color: var(--success); }
+    .tl-label.current { color: var(--gold); font-weight: 600; }
+    .tl-line { flex: 1; height: 3px; background: var(--border); margin: 0 -8px; margin-top: -14px; z-index: 0; }
+    .tl-line.done { background: var(--success); }
+
+    /* ── PEDIDO DETAIL EXPANDABLE ── */
+    .order-detail { display: none; }
+    .order-detail.open { display: table-row; }
+    .order-detail td { padding: 0 20px 16px; background: #fafafa; }
+    .detail-inner { padding: 14px 0; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; font-size: 13px; }
+    .detail-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 2px; }
+
+    /* ── REPORTES ── */
+    .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .chart-placeholder { background: var(--white); border-radius: 12px; border: 1px solid var(--border); padding: 20px; }
+    .chart-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+    .chart-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .chart-bar-label { width: 110px; font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chart-bar-track { flex: 1; height: 22px; background: #f0f0f2; border-radius: 6px; overflow: hidden; position: relative; }
+    .chart-bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 600; color: white; min-width: 32px; transition: width 600ms ease; }
+    .chart-bar-value { font-size: 13px; font-weight: 600; min-width: 60px; text-align: right; }
+    .mini-chart { display: flex; align-items: flex-end; gap: 3px; height: 60px; padding: 0 2px; }
+    .mini-bar { flex: 1; background: var(--navy); border-radius: 3px 3px 0 0; min-height: 3px; opacity: 0.7; transition: height 400ms ease, opacity 200ms; }
+    .mini-bar:hover { opacity: 1; }
+    .mini-bar.today { background: var(--gold); opacity: 1; }
+    .top-product-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f5f5f7; }
+    .top-product-row:last-child { border-bottom: none; }
+    .top-product-rank { width: 24px; height: 24px; border-radius: 50%; background: var(--navy); color: var(--gold); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .top-product-img { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+    .top-product-info { flex: 1; min-width: 0; }
+    .top-product-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .top-product-brand { font-size: 11px; color: var(--text-secondary); }
+    .top-product-sales { font-size: 14px; font-weight: 700; color: var(--navy); }
+    .stock-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f5f5f7; font-size: 13px; }
+    .stock-row:last-child { border-bottom: none; }
+    .stock-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .stock-dot.green { background: var(--success); }
+    .stock-dot.yellow { background: var(--warning); }
+    .stock-dot.red { background: var(--danger); }
+    .stock-name { flex: 1; }
+    .stock-qty { font-weight: 600; min-width: 50px; text-align: right; }
+    .stock-badge { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+    .stock-badge.ok { background: #dcfce7; color: #166534; }
+    .stock-badge.low { background: #fef3c7; color: #92400e; }
+    .stock-badge.out { background: #fee2e2; color: #991b1b; }
+
+    /* ── NOTIFICATION CENTER (Shopify bell) ── */
+    .notif-panel { position: fixed; top: var(--topbar-h); right: 12px; width: 360px; max-height: 420px; background: white; border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 12px 40px rgba(0,0,0,0.14); z-index: 150; display: none; overflow: hidden; animation: slideDown 200ms ease; }
+    .notif-panel.open { display: block; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+    .notif-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .notif-title { font-size: 15px; font-weight: 700; }
+    .notif-count { font-size: 11px; background: var(--danger); color: white; padding: 1px 7px; border-radius: 10px; font-weight: 700; }
+    .notif-list { overflow-y: auto; max-height: 340px; }
+    .notif-item { display: flex; gap: 11px; padding: 13px 18px; border-bottom: 1px solid #f5f5f7; cursor: pointer; transition: background 150ms; align-items: flex-start; }
+    .notif-item:hover { background: #fafafa; }
+    .notif-item.unread { background: #f0f4ff; }
+    .notif-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .notif-body { flex: 1; min-width: 0; }
+    .notif-text { font-size: 13px; font-weight: 500; line-height: 1.35; }
+    .notif-time { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+    /* ── CMD+K SEARCH (Shopify global search) ── */
+    .cmdk-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; align-items: flex-start; justify-content: center; padding-top: 15vh; }
+    .cmdk-overlay.open { display: flex; }
+    .cmdk-box { width: 520px; max-width: 92vw; background: white; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; animation: slideDown 200ms ease; }
+    .cmdk-input-wrap { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    .cmdk-input-wrap span { font-size: 18px; color: var(--text-secondary); }
+    .cmdk-input { flex: 1; border: none; outline: none; font-size: 16px; font-family: var(--font); background: none; }
+    .cmdk-hint { font-size: 11px; color: var(--text-secondary); background: var(--bg); padding: 2px 7px; border-radius: 4px; font-weight: 500; }
+    .cmdk-results { max-height: 320px; overflow-y: auto; padding: 8px 0; }
+    .cmdk-section { font-size: 10px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 18px 4px; }
+    .cmdk-item { display: flex; align-items: center; gap: 10px; padding: 9px 18px; cursor: pointer; transition: background 150ms; font-size: 14px; }
+    .cmdk-item:hover { background: var(--bg); }
+    .cmdk-item .cmdk-icon { width: 28px; text-align: center; font-size: 15px; }
+    .cmdk-item .cmdk-label { flex: 1; }
+    .cmdk-item .cmdk-meta { font-size: 12px; color: var(--text-secondary); }
+
+    /* ── BULK ACTIONS BAR (Shopify multi-select) ── */
+    .bulk-bar { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy); color: white; padding: 10px 20px; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.18); z-index: 120; gap: 12px; align-items: center; font-size: 13px; font-weight: 500; animation: slideUp 200ms ease; }
+    .bulk-bar.show { display: flex; }
+    @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(12px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    .bulk-bar .bulk-count { background: var(--gold); color: var(--navy); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px; }
+    .bulk-bar .bulk-btn { background: rgba(255,255,255,0.15); border: none; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: background 150ms; }
+    .bulk-bar .bulk-btn:hover { background: rgba(255,255,255,0.25); }
+    .bulk-bar .bulk-close { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 18px; cursor: pointer; margin-left: 4px; }
+    .product-card .bulk-check { position: absolute; top: 8px; left: 8px; width: 20px; height: 20px; border-radius: 5px; border: 2px solid rgba(0,0,0,0.2); background: rgba(255,255,255,0.85); cursor: pointer; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 150ms; }
+    .product-card .bulk-check.checked { background: var(--navy); border-color: var(--navy); color: white; }
+    .product-card { position: relative; }
+
+    /* ── SCORE CARD (MeLi performance thermometer) ── */
+    .score-card { background: var(--white); border-radius: 12px; border: 1px solid var(--border); padding: 20px; }
+    .score-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+    .score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .score-label { font-size: 13px; color: var(--text-secondary); width: 140px; }
+    .score-bar-track { flex: 1; height: 8px; background: #f0f0f2; border-radius: 4px; overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 4px; transition: width 600ms ease; }
+    .score-value { font-size: 13px; font-weight: 700; min-width: 40px; text-align: right; }
+    .score-grade { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; font-size: 16px; font-weight: 800; margin-right: 10px; }
+
+    /* ── ORDER NOTES (MeLi Q&A style) ── */
+    .order-notes { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .order-notes textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: var(--font); resize: vertical; outline: none; min-height: 40px; }
+    .order-notes textarea:focus { border-color: var(--navy); }
+    .order-notes-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+
+    /* ── SHIPPING COPY BTN (MeLi label 1-click) ── */
+    .ship-copy-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border); background: white; font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: all 150ms; margin-top: 8px; }
+    .ship-copy-btn:hover { background: var(--bg); border-color: var(--navy); }
+
     /* ── iPAD (769px – 1024px) ── */
     @media (min-width: 769px) and (max-width: 1024px) {
       :root { --sidebar-w: 200px; }
@@ -255,13 +416,106 @@
     <span class="logo-badge">ADMIN</span>
   </div>
   <div class="topbar-sep"></div>
-  <button class="topbar-btn" title="Notificaciones">
+  <button class="topbar-btn" title="Buscar (⌘K)" onclick="openCmdK()">🔍</button>
+  <button class="topbar-btn" title="Notificaciones" onclick="toggleNotifPanel()">
     🔔
     <span class="notif-dot"></span>
   </button>
   <div class="avatar" title="Martín">M</div>
 </header>
 
+<!-- ── NOTIFICATION CENTER ── -->
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-header">
+    <span class="notif-title">Notificaciones</span>
+    <span class="notif-count">5</span>
+  </div>
+  <div class="notif-list">
+    <div class="notif-item unread" onclick="navigate('pedidos');closeNotifPanel()">
+      <div class="notif-icon" style="background:#dbeafe">💳</div>
+      <div class="notif-body">
+        <div class="notif-text">Valentina Morales envió comprobante — <strong>#0042 · $48.990</strong></div>
+        <div class="notif-time">hace 15 min</div>
+      </div>
+    </div>
+    <div class="notif-item unread" onclick="navigate('pedidos');closeNotifPanel()">
+      <div class="notif-icon" style="background:#dbeafe">💳</div>
+      <div class="notif-body">
+        <div class="notif-text">Diego Riquelme envió comprobante — <strong>#0041 · $24.990</strong></div>
+        <div class="notif-time">hace 42 min</div>
+      </div>
+    </div>
+    <div class="notif-item unread" onclick="navigate('pedidos');closeNotifPanel()">
+      <div class="notif-icon" style="background:#fff3cd">🛒</div>
+      <div class="notif-body">
+        <div class="notif-text">Nuevo pedido de <strong>Catalina Vega — #0040 · $109.990</strong></div>
+        <div class="notif-time">hace 1h</div>
+      </div>
+    </div>
+    <div class="notif-item" onclick="navigate('productos');closeNotifPanel()">
+      <div class="notif-icon" style="background:#fee2e2">📦</div>
+      <div class="notif-body">
+        <div class="notif-text"><strong>Stock crítico:</strong> OG Bear Hoodie Negro L — 2 unid.</div>
+        <div class="notif-time">hace 2h</div>
+      </div>
+    </div>
+    <div class="notif-item" onclick="navigate('productos');closeNotifPanel()">
+      <div class="notif-icon" style="background:#fee2e2">❌</div>
+      <div class="notif-body">
+        <div class="notif-text"><strong>Agotado:</strong> Lowercase Fadeaway Hoodie — 0 unid.</div>
+        <div class="notif-time">hace 5h</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CMD+K SEARCH ── -->
+<div class="cmdk-overlay" id="cmdk-overlay" onclick="if(event.target===this)closeCmdK()">
+  <div class="cmdk-box">
+    <div class="cmdk-input-wrap">
+      <span>🔍</span>
+      <input class="cmdk-input" id="cmdk-input" placeholder="Buscar pedidos, productos, clientes…" oninput="filterCmdK(this.value)">
+      <span class="cmdk-hint">ESC</span>
+    </div>
+    <div class="cmdk-results" id="cmdk-results">
+      <div class="cmdk-section">Pedidos</div>
+      <div class="cmdk-item" data-search="0042 valentina morales hoodie" onclick="navigate('pedidos');closeCmdK()">
+        <span class="cmdk-icon">📋</span><span class="cmdk-label">#0042 — Valentina Morales</span><span class="cmdk-meta">$48.990</span>
+      </div>
+      <div class="cmdk-item" data-search="0041 diego riquelme tee" onclick="navigate('pedidos');closeCmdK()">
+        <span class="cmdk-icon">📋</span><span class="cmdk-label">#0041 — Diego Riquelme</span><span class="cmdk-meta">$24.990</span>
+      </div>
+      <div class="cmdk-item" data-search="0040 catalina vega fleece" onclick="navigate('pedidos');closeCmdK()">
+        <span class="cmdk-icon">📋</span><span class="cmdk-label">#0040 — Catalina Vega</span><span class="cmdk-meta">$109.990</span>
+      </div>
+      <div class="cmdk-section">Productos</div>
+      <div class="cmdk-item" data-search="og bear hoodie negro grizzly" onclick="navigate('productos');closeCmdK()">
+        <span class="cmdk-icon">👕</span><span class="cmdk-label">OG Bear Basic Hoodie — Negro</span><span class="cmdk-meta">$48.990</span>
+      </div>
+      <div class="cmdk-item" data-search="fleece hoodie fw24 black fog" onclick="navigate('productos');closeCmdK()">
+        <span class="cmdk-icon">👕</span><span class="cmdk-label">Fleece Hoodie FW24 — Black</span><span class="cmdk-meta">$109.990</span>
+      </div>
+      <div class="cmdk-item" data-search="dark oatmeal hoodie fog" onclick="navigate('productos');closeCmdK()">
+        <span class="cmdk-icon">👕</span><span class="cmdk-label">Dark Oatmeal Hoodie</span><span class="cmdk-meta">$99.990</span>
+      </div>
+      <div class="cmdk-item" data-search="og bear tee negro grizzly" onclick="navigate('productos');closeCmdK()">
+        <span class="cmdk-icon">👕</span><span class="cmdk-label">OG Bear Basic Tee — Negro</span><span class="cmdk-meta">$24.990</span>
+      </div>
+      <div class="cmdk-section">Vistas</div>
+      <div class="cmdk-item" data-search="dashboard inicio" onclick="navigate('dashboard');closeCmdK()">
+        <span class="cmdk-icon">📊</span><span class="cmdk-label">Dashboard</span>
+      </div>
+      <div class="cmdk-item" data-search="reportes analytics" onclick="navigate('reportes');closeCmdK()">
+        <span class="cmdk-icon">📈</span><span class="cmdk-label">Reportes</span>
+      </div>
+      <div class="cmdk-item" data-search="configuracion pago banco" onclick="navigate('config');closeCmdK()">
+        <span class="cmdk-icon">⚙️</span><span class="cmdk-label">Configuración de Pago</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
 <!-- ── SIDEBAR ── -->
 <aside class="sidebar">
   <div class="nav-section">Principal</div>
@@ -275,6 +529,9 @@
   <div class="nav-item" data-view="productos">
     <span>👕</span> Productos
     <span class="nav-badge gold">2</span>
+  </div>
+  <div class="nav-item" data-view="reportes">
+    <span>📈</span> Reportes
   </div>
   <div class="nav-section">Configuración</div>
   <div class="nav-item" data-view="config">
@@ -331,6 +588,38 @@
       </div>
     </div>
 
+    <!-- SCORE OPERACIÓN (MeLi thermometer) -->
+    <div class="score-card" style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div class="score-grade" style="background:#dcfce7;color:#166534">A</div>
+        <div>
+          <div class="score-title" style="margin-bottom:0">Score de operación</div>
+          <div style="font-size:12px;color:var(--text-secondary)">Basado en los últimos 30 días</div>
+        </div>
+        <div style="margin-left:auto;font-size:12px;color:var(--success);font-weight:600">92/100</div>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Tiempo respuesta</span>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:95%;background:var(--success)"></div></div>
+        <span class="score-value" style="color:var(--success)">95%</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Envíos a tiempo</span>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:88%;background:var(--success)"></div></div>
+        <span class="score-value" style="color:var(--success)">88%</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Cancelaciones</span>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:3%;background:var(--danger)"></div></div>
+        <span class="score-value" style="color:var(--success)">3%</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Satisfacción</span>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:94%;background:var(--gold)"></div></div>
+        <span class="score-value" style="color:var(--gold)">94%</span>
+      </div>
+    </div>
+
     <div class="two-col">
       <div class="card">
         <div class="card-header">
@@ -384,6 +673,55 @@
         </div>
       </div>
     </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Top 3 productos — esta semana</span>
+        </div>
+        <div style="padding:14px 20px;">
+          <div class="top-product-row">
+            <div class="top-product-rank">1</div>
+            <img class="top-product-img" src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96098-image.jpg" alt="OG Bear Hoodie">
+            <div class="top-product-info">
+              <div class="top-product-name">OG Bear Basic Hoodie — Negro</div>
+              <div class="top-product-brand">Grizzly · 8 vendidos</div>
+            </div>
+            <div class="top-product-sales">$391.920</div>
+          </div>
+          <div class="top-product-row">
+            <div class="top-product-rank">2</div>
+            <img class="top-product-img" src="https://luked.cl/cdn/shop/files/fwafawwfawfa.webp?v=1750114347" alt="Fleece Hoodie FW24">
+            <div class="top-product-info">
+              <div class="top-product-name">Fleece Hoodie FW24 — Black</div>
+              <div class="top-product-brand">FOG Essentials · 5 vendidos</div>
+            </div>
+            <div class="top-product-sales">$549.950</div>
+          </div>
+          <div class="top-product-row">
+            <div class="top-product-rank">3</div>
+            <img class="top-product-img" src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96096-image-copia.jpg" alt="OG Bear Tee">
+            <div class="top-product-info">
+              <div class="top-product-name">OG Bear Basic Tee — Negro</div>
+              <div class="top-product-brand">Grizzly · 6 vendidos</div>
+            </div>
+            <div class="top-product-sales">$149.940</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Ventas últimos 30 días</span>
+          <span style="font-size:12px;color:var(--text-secondary)">$2.4M total</span>
+        </div>
+        <div style="padding:20px;">
+          <div class="mini-chart" id="dash-chart"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--text-secondary)">
+            <span>1 Abr</span><span>15 Abr</span><span>Hoy</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- VIEW: PEDIDOS -->
@@ -415,68 +753,180 @@
           <tr><th>Pedido</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
         </thead>
         <tbody>
-          <tr data-status="comprobante">
+          <tr data-status="comprobante" class="order-row" onclick="toggleDetail('d42')">
             <td><strong>#0042</strong><br><small style="color:var(--text-secondary)">hace 15 min</small></td>
             <td>Valentina Morales<br><small style="color:var(--text-secondary)">+56 9 8712 3456</small></td>
             <td>OG Bear Hoodie Negro M</td>
             <td><strong>$48.990</strong></td>
             <td><span class="badge badge-comprobante">Comprobante</span></td>
             <td>
-              <div style="display:flex; gap:6px;">
-                <button class="btn btn-ghost btn-sm" onclick="openProof('#0042','Valentina Morales','$38.990')">📎 Ver</button>
-                <button class="btn btn-gold btn-sm" onclick="validateOrder(this)">✓ Validar</button>
+              <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
+                <button class="btn btn-ghost btn-sm" onclick="openProof('#0042','Valentina Morales','$48.990')">📎 Ver</button>
+                <button class="btn btn-gold btn-sm" onclick="confirmPay(this)">✓ Confirmar pago</button>
               </div>
             </td>
           </tr>
-          <tr data-status="comprobante">
+          <tr class="order-detail" id="d42"><td colspan="6"><div class="detail-inner">
+            <div class="detail-grid">
+              <div><div class="detail-label">Dirección</div>Los Leones 044, Providencia<button class="ship-copy-btn" onclick="copyShipping('Valentina Morales','Los Leones 044, Providencia','+56 9 8712 3456','Starken')">📋 Copiar datos envío</button></div>
+              <div><div class="detail-label">Despacho</div>Starken · $3.490</div>
+              <div><div class="detail-label">Nota cliente</div>Talla M confirmada</div>
+            </div>
+            <div class="order-notes">
+              <div class="order-notes-label">📝 Notas internas <small style="font-weight:400;text-transform:none">(solo tú las ves)</small></div>
+              <textarea placeholder="Agregar nota… ej: 'Cliente pidió cambio de talla', 'Enviar con Starken mañana'"></textarea>
+            </div>
+            <div class="timeline">
+              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Recibido</div></div>
+              <div class="tl-line done"></div>
+              <div class="tl-step"><div class="tl-dot current">2</div><div class="tl-label current">Pago</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">3</div><div class="tl-label">Preparando</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">4</div><div class="tl-label">Despachado</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
+            </div>
+          </div></td></tr>
+          <tr data-status="comprobante" class="order-row" onclick="toggleDetail('d41')">
             <td><strong>#0041</strong><br><small style="color:var(--text-secondary)">hace 42 min</small></td>
             <td>Diego Riquelme<br><small style="color:var(--text-secondary)">+56 9 7823 4567</small></td>
             <td>OG Bear Tee Negro S</td>
             <td><strong>$24.990</strong></td>
             <td><span class="badge badge-comprobante">Comprobante</span></td>
             <td>
-              <div style="display:flex; gap:6px;">
-                <button class="btn btn-ghost btn-sm" onclick="openProof('#0041','Diego Riquelme','$26.990')">📎 Ver</button>
-                <button class="btn btn-gold btn-sm" onclick="validateOrder(this)">✓ Validar</button>
+              <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
+                <button class="btn btn-ghost btn-sm" onclick="openProof('#0041','Diego Riquelme','$24.990')">📎 Ver</button>
+                <button class="btn btn-gold btn-sm" onclick="confirmPay(this)">✓ Confirmar pago</button>
               </div>
             </td>
           </tr>
-          <tr data-status="nuevo">
+          <tr class="order-detail" id="d41"><td colspan="6"><div class="detail-inner">
+            <div class="detail-grid">
+              <div><div class="detail-label">Dirección</div>Av. Irarrázaval 2401, Ñuñoa<button class="ship-copy-btn" onclick="copyShipping('Diego Riquelme','Av. Irarrázaval 2401, Ñuñoa','+56 9 7823 4567','Retiro')">📋 Copiar datos envío</button></div>
+              <div><div class="detail-label">Despacho</div>Retiro en tienda</div>
+              <div><div class="detail-label">Nota cliente</div>—</div>
+            </div>
+            <div class="order-notes">
+              <div class="order-notes-label">📝 Notas internas</div>
+              <textarea placeholder="Agregar nota…"></textarea>
+            </div>
+            <div class="timeline">
+              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Recibido</div></div>
+              <div class="tl-line done"></div>
+              <div class="tl-step"><div class="tl-dot current">2</div><div class="tl-label current">Pago</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">3</div><div class="tl-label">Preparando</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">4</div><div class="tl-label">Despachado</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
+            </div>
+          </div></td></tr>
+          <tr data-status="nuevo" class="order-row" onclick="toggleDetail('d40')">
             <td><strong>#0040</strong><br><small style="color:var(--text-secondary)">hace 1h</small></td>
             <td>Catalina Vega<br><small style="color:var(--text-secondary)">+56 9 6934 5678</small></td>
             <td>Fleece Hoodie FW24 Black L</td>
             <td><strong>$109.990</strong></td>
             <td><span class="badge badge-nuevo">Nuevo</span></td>
             <td>
-              <div style="display:flex; gap:6px;">
+              <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
                 <button class="btn btn-ghost btn-sm">💬 WA</button>
-                <span style="font-size:12px; color:var(--warning); align-self:center; font-weight:600;">⏱ 1h restante</span>
+                <span style="font-size:12px; color:var(--warning); align-self:center; font-weight:600;">⏱ 1h</span>
               </div>
             </td>
           </tr>
-          <tr data-status="validado">
+          <tr class="order-detail" id="d40"><td colspan="6"><div class="detail-inner">
+            <div class="detail-grid">
+              <div><div class="detail-label">Dirección</div>Moneda 970, Santiago Centro<button class="ship-copy-btn" onclick="copyShipping('Catalina Vega','Moneda 970, Santiago Centro','+56 9 6934 5678','Chilexpress')">📋 Copiar datos envío</button></div>
+              <div><div class="detail-label">Despacho</div>Chilexpress · $4.990</div>
+              <div><div class="detail-label">Nota cliente</div>Consultar por talla XL</div>
+            </div>
+            <div class="order-notes">
+              <div class="order-notes-label">📝 Notas internas</div>
+              <textarea placeholder="Agregar nota…">Consultar disponibilidad XL con proveedor</textarea>
+            </div>
+            <div class="timeline">
+              <div class="tl-step"><div class="tl-dot current">1</div><div class="tl-label current">Recibido</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">2</div><div class="tl-label">Pago</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">3</div><div class="tl-label">Preparando</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">4</div><div class="tl-label">Despachado</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
+            </div>
+          </div></td></tr>
+          <tr data-status="validado" class="order-row" onclick="toggleDetail('d39')">
             <td><strong>#0039</strong><br><small style="color:var(--text-secondary)">hace 3h</small></td>
             <td>Ignacio Parra<br><small style="color:var(--text-secondary)">+56 9 5045 6789</small></td>
             <td>Dark Oatmeal Hoodie M</td>
             <td><strong>$99.990</strong></td>
             <td><span class="badge badge-validado">Validado</span></td>
             <td>
-              <div style="display:flex; gap:6px;">
+              <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
                 <button class="btn btn-navy btn-sm" onclick="dispatchOrder(this)">📦 Despachar</button>
               </div>
             </td>
           </tr>
-          <tr data-status="despachado">
+          <tr class="order-detail" id="d39"><td colspan="6"><div class="detail-inner">
+            <div class="detail-grid">
+              <div><div class="detail-label">Dirección</div>Av. Kennedy 5454, Las Condes<button class="ship-copy-btn" onclick="copyShipping('Ignacio Parra','Av. Kennedy 5454, Las Condes','+56 9 5045 6789','Starken')">📋 Copiar datos envío</button></div>
+              <div><div class="detail-label">Despacho</div>Starken · $3.490</div>
+              <div><div class="detail-label">Nota cliente</div>—</div>
+            </div>
+            <div class="order-notes">
+              <div class="order-notes-label">📝 Notas internas</div>
+              <textarea placeholder="Agregar nota…">Listo para despacho — empacar hoy</textarea>
+            </div>
+            <div class="timeline">
+              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Recibido</div></div>
+              <div class="tl-line done"></div>
+              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Pago</div></div>
+              <div class="tl-line done"></div>
+              <div class="tl-step"><div class="tl-dot current">3</div><div class="tl-label current">Preparando</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">4</div><div class="tl-label">Despachado</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
+            </div>
+          </div></td></tr>
+          <tr data-status="despachado" class="order-row" onclick="toggleDetail('d38')">
             <td><strong>#0038</strong><br><small style="color:var(--text-secondary)">ayer 16:30</small></td>
             <td>Sofía Lagos<br><small style="color:var(--text-secondary)">+56 9 4156 7890</small></td>
             <td>OG Bear Hoodie Negro S</td>
             <td><strong>$48.990</strong></td>
             <td><span class="badge badge-despachado">Despachado</span></td>
             <td>
-              <button class="btn btn-ghost btn-sm">🔍 Tracking</button>
+              <div onclick="event.stopPropagation()">
+                <button class="btn btn-ghost btn-sm">🔍 Tracking</button>
+              </div>
             </td>
           </tr>
-          <tr data-status="despachado">
+          <tr class="order-detail" id="d38"><td colspan="6"><div class="detail-inner">
+            <div class="detail-grid">
+              <div><div class="detail-label">Dirección</div>Av. Apoquindo 3000, Las Condes</div>
+              <div><div class="detail-label">Tracking</div>STK-78291034</div>
+              <div><div class="detail-label">Despacho</div>Starken · $3.490</div>
+            </div>
+            <div class="order-notes">
+              <div class="order-notes-label">📝 Notas internas</div>
+              <textarea placeholder="Agregar nota…">Despachado 9/4 — tracking enviado por WA</textarea>
+            </div>
+            <div class="timeline">
+              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Recibido</div></div>
+              <div class="tl-line done"></div>
+              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Pago</div></div>
+              <div class="tl-line done"></div>
+              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Preparando</div></div>
+              <div class="tl-line done"></div>
+              <div class="tl-step"><div class="tl-dot current">4</div><div class="tl-label current">Despachado</div></div>
+              <div class="tl-line"></div>
+              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
+            </div>
+          </div></td></tr>
+          <tr data-status="despachado" class="order-row">
             <td><strong>#0037</strong><br><small style="color:var(--text-secondary)">ayer 12:10</small></td>
             <td>Matías Torres<br><small style="color:var(--text-secondary)">+56 9 3267 8901</small></td>
             <td>OG Bear Tee Beige M + Tee Negro S</td>
@@ -499,7 +949,10 @@
           <div class="page-title">Productos</div>
           <div class="page-subtitle">9 productos · 1 agotado · 1 stock crítico</div>
         </div>
-        <button class="btn btn-navy" style="margin-left:auto">+ Agregar producto</button>
+        <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-ghost btn-sm" onclick="toggleAllBulk()">☑️ Seleccionar</button>
+          <button class="btn btn-navy" onclick="openProductModal()">+ Agregar producto</button>
+        </div>
       </div>
     </div>
 
@@ -608,6 +1061,112 @@
     </div>
   </div>
 
+  <!-- VIEW: REPORTES -->
+  <div class="view" id="view-reportes">
+    <div class="page-header">
+      <div class="page-header-row">
+        <div>
+          <div class="page-title">Reportes</div>
+          <div class="page-subtitle">Abril 2026 · actualizado hoy</div>
+        </div>
+        <div style="margin-left:auto; display:flex; gap:8px;">
+          <button class="btn btn-ghost btn-sm">Exportar PDF</button>
+          <button class="btn btn-ghost btn-sm">📅 Abril ▾</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi dark">
+        <div class="kpi-label">Revenue mes</div>
+        <div class="kpi-value">$2.4M</div>
+        <div class="kpi-delta up">↑ 32% vs marzo</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Pedidos totales</div>
+        <div class="kpi-value" style="color:var(--navy)">34</div>
+        <div class="kpi-delta up">↑ 12 vs marzo</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Ticket promedio</div>
+        <div class="kpi-value" style="color:var(--navy)">$70.588</div>
+        <div class="kpi-delta up">↑ 8%</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Margen estimado</div>
+        <div class="kpi-value" style="color:var(--success)">42%</div>
+        <div class="kpi-delta neutral">Costo promedio 58%</div>
+      </div>
+    </div>
+
+    <div class="report-grid">
+      <div class="chart-placeholder">
+        <div class="chart-title">Ventas por marca</div>
+        <div class="chart-bar-row">
+          <div class="chart-bar-label">FOG Essentials</div>
+          <div class="chart-bar-track"><div class="chart-bar-fill" style="width:62%;background:var(--navy)">62%</div></div>
+          <div class="chart-bar-value">$1.49M</div>
+        </div>
+        <div class="chart-bar-row">
+          <div class="chart-bar-label">Grizzly Hoodies</div>
+          <div class="chart-bar-track"><div class="chart-bar-fill" style="width:24%;background:var(--gold)">24%</div></div>
+          <div class="chart-bar-value">$576K</div>
+        </div>
+        <div class="chart-bar-row">
+          <div class="chart-bar-label">Grizzly Tees</div>
+          <div class="chart-bar-track"><div class="chart-bar-fill" style="width:14%;background:#94a3b8">14%</div></div>
+          <div class="chart-bar-value">$336K</div>
+        </div>
+      </div>
+
+      <div class="chart-placeholder">
+        <div class="chart-title">Top 3 productos del mes</div>
+        <div style="padding:4px 0;">
+          <div class="top-product-row">
+            <div class="top-product-rank">1</div>
+            <img class="top-product-img" src="https://luked.cl/cdn/shop/files/fwafawwfawfa.webp?v=1750114347" alt="Fleece Hoodie FW24">
+            <div class="top-product-info">
+              <div class="top-product-name">Fleece Hoodie FW24 — Black</div>
+              <div class="top-product-brand">FOG Essentials · 14 vendidos</div>
+            </div>
+            <div class="top-product-sales">$1.54M</div>
+          </div>
+          <div class="top-product-row">
+            <div class="top-product-rank">2</div>
+            <img class="top-product-img" src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96098-image.jpg" alt="OG Bear Hoodie">
+            <div class="top-product-info">
+              <div class="top-product-name">OG Bear Hoodie — Negro</div>
+              <div class="top-product-brand">Grizzly · 12 vendidos</div>
+            </div>
+            <div class="top-product-sales">$587K</div>
+          </div>
+          <div class="top-product-row">
+            <div class="top-product-rank">3</div>
+            <img class="top-product-img" src="https://luked.cl/cdn/shop/files/IMG-4248.jpg?v=1750117064" alt="Dark Oatmeal">
+            <div class="top-product-info">
+              <div class="top-product-name">Dark Oatmeal Hoodie</div>
+              <div class="top-product-brand">FOG Essentials · 8 vendidos</div>
+            </div>
+            <div class="top-product-sales">$799K</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-placeholder" style="grid-column:span 2">
+        <div class="chart-title">Stock actual — todos los productos</div>
+        <div class="stock-row"><div class="stock-dot green"></div><div class="stock-name">OG Bear Basic Tee — Negro</div><div class="stock-qty">12</div><span class="stock-badge ok">OK</span></div>
+        <div class="stock-row"><div class="stock-dot green"></div><div class="stock-name">OG Bear Basic Tee — Beige</div><div class="stock-qty">10</div><span class="stock-badge ok">OK</span></div>
+        <div class="stock-row"><div class="stock-dot green"></div><div class="stock-name">Fleece Hoodie FW24 — Black</div><div class="stock-qty">6</div><span class="stock-badge ok">OK</span></div>
+        <div class="stock-row"><div class="stock-dot green"></div><div class="stock-name">Dark Oatmeal Hoodie</div><div class="stock-qty">5</div><span class="stock-badge ok">OK</span></div>
+        <div class="stock-row"><div class="stock-dot green"></div><div class="stock-name">Light Oatmeal Hoodie</div><div class="stock-qty">5</div><span class="stock-badge ok">OK</span></div>
+        <div class="stock-row"><div class="stock-dot yellow"></div><div class="stock-name">Fleece Hoodie FW24 — Grey</div><div class="stock-qty">4</div><span class="stock-badge low">Bajo</span></div>
+        <div class="stock-row"><div class="stock-dot yellow"></div><div class="stock-name">Stretch Limo Hoodie</div><div class="stock-qty">3</div><span class="stock-badge low">Bajo</span></div>
+        <div class="stock-row"><div class="stock-dot yellow"></div><div class="stock-name">OG Bear Hoodie Negro — L</div><div class="stock-qty">2</div><span class="stock-badge low">ÚLTIMO</span></div>
+        <div class="stock-row"><div class="stock-dot red"></div><div class="stock-name">Lowercase Fadeaway Hoodie</div><div class="stock-qty">0</div><span class="stock-badge out">AGOTADO</span></div>
+      </div>
+    </div>
+  </div>
+
   <!-- VIEW: CONFIG -->
   <div class="view" id="view-config">
     <div class="page-header">
@@ -675,12 +1234,24 @@
 
 </main>
 
+</div><!-- /.layout -->
+
+<!-- ── BULK ACTIONS BAR ── -->
+<div class="bulk-bar" id="bulk-bar">
+  <span class="bulk-count" id="bulk-count">0</span>
+  <span>seleccionados</span>
+  <button class="bulk-btn" onclick="bulkAction('Editar precio')">💰 Editar precio</button>
+  <button class="bulk-btn" onclick="bulkAction('Cambiar estado')">📝 Cambiar estado</button>
+  <button class="bulk-btn" onclick="bulkAction('Eliminar')" style="color:#fca5a5">🗑 Eliminar</button>
+  <button class="bulk-close" onclick="clearBulk()">×</button>
+</div>
+
 <!-- ── BOTTOM NAV MOBILE ── -->
 <nav class="bottom-nav">
   <div class="bn-item active" data-view="dashboard"><span class="bn-icon">📊</span><span class="bn-label">Inicio</span></div>
   <div class="bn-item" data-view="pedidos"><span class="bn-icon">📋</span><span class="bn-label">Pedidos</span></div>
   <div class="bn-item" data-view="productos"><span class="bn-icon">👕</span><span class="bn-label">Productos</span></div>
-  <div class="bn-item" data-view="config"><span class="bn-icon">⚙️</span><span class="bn-label">Config</span></div>
+  <div class="bn-item" data-view="reportes"><span class="bn-icon">📈</span><span class="bn-label">Reportes</span></div>
 </nav>
 
 <!-- ── MODAL: VER COMPROBANTE ── -->
@@ -709,6 +1280,111 @@
   </div>
 </div>
 
+<!-- ── MODAL: AGREGAR/EDITAR PRODUCTO ── -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <strong id="product-modal-title">Agregar producto</strong>
+      <button class="modal-close" onclick="closeModal('product-modal')">×</button>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Nombre del producto</label>
+        <input class="form-input" id="pm-name" placeholder="Ej: OG Bear Basic Hoodie — Negro">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Marca</label>
+        <select class="form-select" id="pm-brand">
+          <option value="grizzly">Grizzly</option>
+          <option value="fog">FOG Essentials</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Precio de venta</label>
+        <input class="form-input" id="pm-price" type="number" placeholder="48990">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Precio tachado <small style="color:var(--text-secondary)">(opcional)</small></label>
+        <input class="form-input" id="pm-compare" type="number" placeholder="59990">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Costo de compra <small style="color:var(--text-secondary)">(interno)</small></label>
+        <input class="form-input" id="pm-cost" type="number" placeholder="25000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Badge</label>
+        <select class="form-select" id="pm-badge">
+          <option value="">Ninguno</option>
+          <option value="HOT">🔥 HOT</option>
+          <option value="NUEVO">✨ NUEVO</option>
+          <option value="ÚLTIMO">⚠️ ÚLTIMO</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Descripción corta</label>
+      <textarea class="form-input" id="pm-desc" rows="2" placeholder="Hoodie oversized, algodón premium 400gsm" style="resize:vertical"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Fotos <small style="color:var(--text-secondary)">(hasta 5)</small></label>
+      <div class="photo-grid">
+        <div class="photo-slot" onclick="simulateUpload(this)"><span class="photo-add">+</span></div>
+        <div class="photo-slot" onclick="simulateUpload(this)"><span class="photo-add">+</span></div>
+        <div class="photo-slot" onclick="simulateUpload(this)"><span class="photo-add">+</span></div>
+        <div class="photo-slot" onclick="simulateUpload(this)"><span class="photo-add">+</span></div>
+        <div class="photo-slot" onclick="simulateUpload(this)"><span class="photo-add">+</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Tallas disponibles</label>
+      <div class="size-chips" id="size-chips">
+        <div class="size-chip" onclick="toggleSize(this)" data-size="XS">XS</div>
+        <div class="size-chip selected" onclick="toggleSize(this)" data-size="S">S</div>
+        <div class="size-chip selected" onclick="toggleSize(this)" data-size="M">M</div>
+        <div class="size-chip selected" onclick="toggleSize(this)" data-size="L">L</div>
+        <div class="size-chip" onclick="toggleSize(this)" data-size="XL">XL</div>
+        <div class="size-chip" onclick="toggleSize(this)" data-size="XXL">XXL</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Stock por talla</label>
+      <table class="variant-stock-table" id="variant-stock">
+        <thead><tr><th>Talla</th><th>Stock</th><th>SKU</th></tr></thead>
+        <tbody>
+          <tr><td>S</td><td><input type="number" value="5" min="0"></td><td><input type="text" value="KS-001-S" style="width:100px"></td></tr>
+          <tr><td>M</td><td><input type="number" value="8" min="0"></td><td><input type="text" value="KS-001-M" style="width:100px"></td></tr>
+          <tr><td>L</td><td><input type="number" value="3" min="0"></td><td><input type="text" value="KS-001-L" style="width:100px"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Estado</label>
+      <div class="status-radio">
+        <div class="status-option active-st" onclick="selectStatus(this,'active-st')">✅ Activo</div>
+        <div class="status-option" onclick="selectStatus(this,'draft-st')">📝 Borrador</div>
+        <div class="status-option" onclick="selectStatus(this,'out-st')">❌ Agotado</div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('product-modal')">Cancelar</button>
+      <button class="btn btn-navy" onclick="saveProduct()">Guardar producto</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ── NAVIGATION ──
   function navigate(viewName) {
@@ -726,9 +1402,14 @@
   // ── FILTER ORDERS ──
   function filterOrders(status, btn) {
     document.querySelectorAll('#orders-table tbody tr').forEach(row => {
-      row.style.display = (status === 'all' || row.dataset.status === status) ? '' : 'none';
+      if (row.classList.contains('order-detail')) {
+        row.classList.remove('open');
+        return;
+      }
+      const show = status === 'all' || row.dataset.status === status;
+      row.style.display = show ? '' : 'none';
     });
-    document.querySelectorAll('.filter-tabs .btn').forEach(b => {
+    btn.parentElement.querySelectorAll('.btn').forEach(b => {
       b.className = b === btn ? 'btn btn-navy btn-sm' : 'btn btn-ghost btn-sm';
     });
   }
@@ -776,6 +1457,213 @@
     });
     btn.parentElement.querySelectorAll('.btn').forEach(b => {
       b.className = b === btn ? 'btn btn-navy btn-sm' : 'btn btn-ghost btn-sm';
+    });
+  }
+
+  // ── TOGGLE ORDER DETAIL ──
+  function toggleDetail(id) {
+    const row = document.getElementById(id);
+    if (row) row.classList.toggle('open');
+  }
+
+  // ── CONFIRM PAY (1-click) ──
+  function confirmPay(btn) {
+    const row = btn.closest('tr');
+    const badge = row.querySelector('.badge');
+    badge.className = 'badge badge-validado';
+    badge.textContent = 'Validado';
+    btn.closest('div').innerHTML = '<button class="btn btn-navy btn-sm" onclick="dispatchOrder(this)">📦 Despachar</button>';
+    row.dataset.status = 'validado';
+    const detailRow = row.nextElementSibling;
+    if (detailRow && detailRow.classList.contains('order-detail')) {
+      const dots = detailRow.querySelectorAll('.tl-dot');
+      const labels = detailRow.querySelectorAll('.tl-label');
+      const lines = detailRow.querySelectorAll('.tl-line');
+      if (dots[1]) { dots[1].className = 'tl-dot done'; dots[1].textContent = '✓'; }
+      if (labels[1]) { labels[1].className = 'tl-label done'; }
+      if (dots[2]) { dots[2].className = 'tl-dot current'; }
+      if (labels[2]) { labels[2].className = 'tl-label current'; }
+      if (lines[1]) { lines[1].className = 'tl-line done'; }
+    }
+    showToast('✅ Pago confirmado — pedido listo para preparar');
+  }
+
+  // ── PRODUCT MODAL ──
+  function openProductModal(editName) {
+    document.getElementById('product-modal-title').textContent = editName ? 'Editar: ' + editName : 'Agregar producto';
+    if (!editName) {
+      document.getElementById('pm-name').value = '';
+      document.getElementById('pm-price').value = '';
+      document.getElementById('pm-compare').value = '';
+      document.getElementById('pm-cost').value = '';
+      document.getElementById('pm-desc').value = '';
+    }
+    document.getElementById('product-modal').classList.add('open');
+  }
+  document.getElementById('product-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('product-modal');
+  });
+
+  function saveProduct() {
+    const name = document.getElementById('pm-name').value;
+    if (!name) { showToast('⚠️ Ingresa el nombre del producto'); return; }
+    closeModal('product-modal');
+    showToast('✅ Producto "' + name + '" guardado correctamente');
+  }
+
+  // ── SIZE CHIPS ──
+  function toggleSize(chip) {
+    chip.classList.toggle('selected');
+    updateVariantTable();
+  }
+
+  function updateVariantTable() {
+    const selected = document.querySelectorAll('#size-chips .size-chip.selected');
+    const tbody = document.querySelector('#variant-stock tbody');
+    const prefix = 'KS-' + String(Math.floor(Math.random()*900)+100);
+    tbody.innerHTML = '';
+    selected.forEach(chip => {
+      const s = chip.dataset.size;
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + s + '</td><td><input type="number" value="5" min="0"></td><td><input type="text" value="' + prefix + '-' + s + '" style="width:100px"></td>';
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ── STATUS RADIO ──
+  function selectStatus(el, cls) {
+    el.parentElement.querySelectorAll('.status-option').forEach(o => o.className = 'status-option');
+    el.classList.add('status-option', cls);
+  }
+
+  // ── PHOTO UPLOAD SIM ──
+  function simulateUpload(slot) {
+    if (slot.classList.contains('has-photo')) return;
+    const colors = ['#dbeafe','#dcfce7','#fef3c7','#fce7f3','#e0e7ff'];
+    slot.innerHTML = '<div style="width:100%;height:100%;background:' + colors[Math.floor(Math.random()*5)] + ';display:flex;align-items:center;justify-content:center;font-size:18px">📷</div><button class="photo-remove" onclick="event.stopPropagation();removePhoto(this)">×</button>';
+    slot.classList.add('has-photo');
+  }
+  function removePhoto(btn) {
+    const slot = btn.closest('.photo-slot');
+    slot.innerHTML = '<span class="photo-add">+</span>';
+    slot.classList.remove('has-photo');
+  }
+
+  // ── PRODUCT CARD CLICK TO EDIT ──
+  document.querySelectorAll('#product-grid .product-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const name = card.querySelector('.product-name')?.textContent || '';
+      openProductModal(name);
+    });
+  });
+
+  // ── MINI CHART (30 days) ──
+  function renderMiniChart() {
+    const el = document.getElementById('dash-chart');
+    if (!el) return;
+    const data = [3,2,5,4,6,3,7,5,4,6,8,5,3,7,9,6,4,8,5,7,6,9,10,7,5,8,11,9,7,12];
+    const max = Math.max(...data);
+    el.innerHTML = '';
+    data.forEach((v, i) => {
+      const bar = document.createElement('div');
+      bar.className = 'mini-bar' + (i === data.length - 1 ? ' today' : '');
+      bar.style.height = Math.round((v / max) * 100) + '%';
+      bar.title = v + ' pedidos';
+      el.appendChild(bar);
+    });
+  }
+  renderMiniChart();
+
+  // ── NOTIFICATION CENTER ──
+  function toggleNotifPanel() {
+    const panel = document.getElementById('notif-panel');
+    panel.classList.toggle('open');
+  }
+  function closeNotifPanel() {
+    document.getElementById('notif-panel').classList.remove('open');
+  }
+  document.addEventListener('click', function(e) {
+    const panel = document.getElementById('notif-panel');
+    if (panel.classList.contains('open') && !panel.contains(e.target) && !e.target.closest('.topbar-btn[title*="Notif"]')) {
+      panel.classList.remove('open');
+    }
+  });
+
+  // ── CMD+K SEARCH ──
+  function openCmdK() {
+    document.getElementById('cmdk-overlay').classList.add('open');
+    setTimeout(() => document.getElementById('cmdk-input').focus(), 100);
+  }
+  function closeCmdK() {
+    document.getElementById('cmdk-overlay').classList.remove('open');
+    document.getElementById('cmdk-input').value = '';
+    filterCmdK('');
+  }
+  function filterCmdK(q) {
+    const items = document.querySelectorAll('#cmdk-results .cmdk-item');
+    const sections = document.querySelectorAll('#cmdk-results .cmdk-section');
+    q = q.toLowerCase().trim();
+    const sectionHas = {};
+    items.forEach(item => {
+      const match = !q || item.dataset.search.includes(q) || item.querySelector('.cmdk-label').textContent.toLowerCase().includes(q);
+      item.style.display = match ? '' : 'none';
+      const sec = item.previousElementSibling;
+      let s = item;
+      while (s.previousElementSibling && !s.previousElementSibling.classList.contains('cmdk-section')) s = s.previousElementSibling;
+      if (s.previousElementSibling) sectionHas[s.previousElementSibling.textContent] = sectionHas[s.previousElementSibling.textContent] || match;
+    });
+    sections.forEach(sec => {
+      sec.style.display = sectionHas[sec.textContent] ? '' : 'none';
+    });
+  }
+  document.addEventListener('keydown', function(e) {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCmdK(); }
+    if (e.key === 'Escape') { closeCmdK(); closeNotifPanel(); }
+  });
+
+  // ── BULK ACTIONS ──
+  let bulkMode = false;
+  function toggleAllBulk() {
+    bulkMode = !bulkMode;
+    const cards = document.querySelectorAll('#product-grid .product-card');
+    cards.forEach(card => {
+      let check = card.querySelector('.bulk-check');
+      if (bulkMode) {
+        if (!check) {
+          check = document.createElement('div');
+          check.className = 'bulk-check';
+          check.onclick = function(e) { e.stopPropagation(); this.classList.toggle('checked'); this.textContent = this.classList.contains('checked') ? '✓' : ''; updateBulkBar(); };
+          card.prepend(check);
+        }
+      } else {
+        if (check) check.remove();
+      }
+    });
+    if (!bulkMode) clearBulk();
+  }
+  function updateBulkBar() {
+    const checked = document.querySelectorAll('.bulk-check.checked').length;
+    const bar = document.getElementById('bulk-bar');
+    document.getElementById('bulk-count').textContent = checked;
+    bar.classList.toggle('show', checked > 0);
+  }
+  function clearBulk() {
+    document.querySelectorAll('.bulk-check').forEach(c => { c.classList.remove('checked'); c.textContent = ''; });
+    document.getElementById('bulk-bar').classList.remove('show');
+  }
+  function bulkAction(action) {
+    const n = document.querySelectorAll('.bulk-check.checked').length;
+    clearBulk();
+    showToast('✅ ' + action + ' aplicado a ' + n + ' productos');
+  }
+
+  // ── COPY SHIPPING DATA ──
+  function copyShipping(name, address, phone, courier) {
+    const text = name + '\n' + address + '\n' + phone + '\nCourier: ' + courier;
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('📋 Datos de envío copiados al portapapeles');
+    }).catch(() => {
+      showToast('📋 ' + name + ' · ' + address);
     });
   }
 
