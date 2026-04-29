@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanki Street — Arquitectura del Sistema</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0e1a;--surface:#111827;--elevated:#1a2236;--glass:rgba(26,34,54,0.85);
+--border:rgba(255,255,255,0.08);--border-accent:rgba(196,154,58,0.3);
+--text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
+--gold:#C49A3A;--navy:#1B2F4E;--cream:#F5EDD8;
+--accent:#00e5b0;--blue:#3b82f6;--purple:#8b5cf6;--red:#ef4444;--orange:#f97316;
+--pink:#ec4899;--cyan:#06b6d4;--lime:#84cc16;
+--font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* Header */
+.header{text-align:center;padding:40px 20px 20px;position:relative}
+.header h1{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--cream));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{color:var(--text2);font-size:14px;margin-top:8px}
+.badge-zero{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#000;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-top:12px}
+
+/* Diagram container */
+.diagram{max-width:1200px;margin:0 auto;padding:20px}
+
+/* Layer sections */
+.layer{margin-bottom:24px;border-radius:16px;border:1px solid var(--border);overflow:hidden}
+.layer-header{padding:14px 20px;display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;letter-spacing:0.5px;text-transform:uppercase}
+.layer-body{padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:stretch}
+
+/* Layer colors */
+.layer-users .layer-header{background:linear-gradient(90deg,rgba(236,72,153,0.15),rgba(236,72,153,0.05));color:var(--pink);border-bottom:1px solid rgba(236,72,153,0.15)}
+.layer-frontend .layer-header{background:linear-gradient(90deg,rgba(59,130,246,0.15),rgba(59,130,246,0.05));color:var(--blue);border-bottom:1px solid rgba(59,130,246,0.15)}
+.layer-chatbots .layer-header{background:linear-gradient(90deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));color:var(--purple);border-bottom:1px solid rgba(139,92,246,0.15)}
+.layer-backend .layer-header{background:linear-gradient(90deg,rgba(0,229,176,0.15),rgba(0,229,176,0.05));color:var(--accent);border-bottom:1px solid rgba(0,229,176,0.15)}
+.layer-data .layer-header{background:linear-gradient(90deg,rgba(249,115,22,0.15),rgba(249,115,22,0.05));color:var(--orange);border-bottom:1px solid rgba(249,115,22,0.15)}
+.layer-infra .layer-header{background:linear-gradient(90deg,rgba(100,116,139,0.15),rgba(100,116,139,0.05));color:var(--text2);border-bottom:1px solid rgba(100,116,139,0.15)}
+.layer-agents .layer-header{background:linear-gradient(90deg,rgba(196,154,58,0.15),rgba(196,154,58,0.05));color:var(--gold);border-bottom:1px solid rgba(196,154,58,0.15)}
+.layer-external .layer-header{background:linear-gradient(90deg,rgba(6,182,212,0.15),rgba(6,182,212,0.05));color:var(--cyan);border-bottom:1px solid rgba(6,182,212,0.15)}
+
+/* Cards */
+.card{background:var(--elevated);border:1px solid var(--border);border-radius:12px;padding:14px 16px;min-width:140px;flex:1;position:relative;transition:all 0.2s}
+.card:hover{border-color:var(--border-accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.card-icon{font-size:24px;margin-bottom:6px}
+.card-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.card-desc{font-size:11px;color:var(--text3);line-height:1.4}
+.card-tech{display:inline-block;font-size:10px;color:var(--text2);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:6px;margin-top:6px;font-family:var(--mono)}
+.card-cost{position:absolute;top:8px;right:10px;font-size:10px;color:var(--accent);font-weight:700}
+
+/* Wide cards */
+.card-wide{min-width:200px;flex:2}
+.card-full{min-width:100%;flex:1 1 100%}
+
+/* Connection arrows */
+.arrows{text-align:center;padding:6px 0;color:var(--text3);font-size:18px;letter-spacing:8px}
+
+/* Chatbot profiles grid */
+.profiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;width:100%}
+.profile{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:10px;text-align:center}
+.profile-icon{font-size:20px}
+.profile-name{font-size:11px;font-weight:600;margin-top:4px}
+.profile-tools{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* Agent grid */
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;width:100%}
+.agent-card{background:var(--elevated);border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;transition:all 0.2s}
+.agent-card:hover{border-color:var(--gold);transform:translateY(-1px)}
+.agent-emoji{font-size:20px;flex-shrink:0}
+.agent-info{min-width:0}
+.agent-name{font-size:12px;font-weight:600}
+.agent-role{font-size:10px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agent-model{font-size:9px;color:var(--text3);font-family:var(--mono);background:rgba(255,255,255,0.04);padding:1px 5px;border-radius:4px;display:inline-block;margin-top:2px}
+
+/* Memory flow */
+.memory-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%}
+.memory-step{background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.15);border-radius:8px;padding:8px 12px;font-size:11px;text-align:center;flex:1;min-width:100px}
+.memory-arrow{color:var(--orange);font-size:16px;flex-shrink:0}
+
+/* Email flow */
+.email-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;width:100%}
+.email-item{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.12);border-radius:8px;padding:8px 10px;font-size:11px}
+.email-item strong{color:var(--blue);font-size:10px;display:block;margin-bottom:2px}
+
+/* Summary bar */
+.summary{max-width:1200px;margin:0 auto 40px;padding:0 20px}
+.summary-bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.stat{background:var(--elevated);border:1px solid var(--border);border-radius:12px;padding:16px 24px;text-align:center;min-width:120px}
+.stat-value{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:11px;color:var(--text3);margin-top:4px}
+
+/* Footer */
+.footer{text-align:center;padding:20px;color:var(--text3);font-size:11px;border-top:1px solid var(--border);margin-top:20px}
+
+/* Responsive */
+@media(max-width:768px){
+  .header h1{font-size:22px}
+  .layer-body{flex-direction:column}
+  .card{min-width:100%}
+  .card-wide,.card-full{min-width:100%}
+  .profiles{grid-template-columns:repeat(2,1fr)}
+  .agent-grid{grid-template-columns:repeat(2,1fr)}
+  .email-grid{grid-template-columns:1fr}
+  .stat{min-width:80px;padding:12px 16px}
+  .stat-value{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>KANKI STREET — Arquitectura del Sistema</h1>
+  <p>E-commerce streetwear · Next.js + Supabase + 3 Chatbots IA + 14 Agentes SMC</p>
+  <div class="badge-zero">$0/mes — Todo reutilizado</div>
+</div>
+
+<!-- Summary Stats -->
+<div class="summary">
+  <div class="summary-bar">
+    <div class="stat"><div class="stat-value">3</div><div class="stat-label">Paneles</div></div>
+    <div class="stat"><div class="stat-value">3</div><div class="stat-label">Chatbots IA</div></div>
+    <div class="stat"><div class="stat-value">5</div><div class="stat-label">Perfiles Socios</div></div>
+    <div class="stat"><div class="stat-value">14</div><div class="stat-label">Agentes SMC</div></div>
+    <div class="stat"><div class="stat-value">12</div><div class="stat-label">APIs Gratis</div></div>
+    <div class="stat"><div class="stat-value">$0</div><div class="stat-label">Costo Mensual</div></div>
+  </div>
+</div>
+
+<div class="diagram">
+
+<!-- CAPA 1: Usuarios -->
+<div class="layer layer-users">
+  <div class="layer-header">👥 Usuarios</div>
+  <div class="layer-body">
+    <div class="card">
+      <div class="card-icon">🛍️</div>
+      <div class="card-title">Cliente Final</div>
+      <div class="card-desc">Compra productos, consulta stock, tracking pedidos, waitlist drops</div>
+      <div class="card-tech">storefront</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">Equipo Admin</div>
+      <div class="card-desc">Gestiona pedidos, stock, despacho, verifica pagos, reportes</div>
+      <div class="card-tech">admin panel</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <div class="card-title">Socios</div>
+      <div class="card-desc">Contable, comercial, abogado, logística, marketing — cada uno con perfil IA</div>
+      <div class="card-tech">panel socios</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 2: Frontend -->
+<div class="layer layer-frontend">
+  <div class="layer-header">🎨 Frontend — Next.js + Tailwind v4</div>
+  <div class="layer-body">
+    <div class="card">
+      <div class="card-icon">🏪</div>
+      <div class="card-title">Storefront</div>
+      <div class="card-desc">Catálogo, producto, carrito, checkout (transferencia), drops con timer, waitlist, size guide</div>
+      <div class="card-tech">kanki.smconnection.cl</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Admin Panel</div>
+      <div class="card-desc">Pedidos, productos, clientes, stock, comprobantes, score operación, bulk actions, Cmd+K</div>
+      <div class="card-tech">/admin</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">👥</div>
+      <div class="card-title">Panel Socios</div>
+      <div class="card-desc">Dashboard por perfil, chatbot especializado, reportes, herramientas por rol</div>
+      <div class="card-tech">/socios</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔐</div>
+      <div class="card-title">Auth</div>
+      <div class="card-desc">Login Google + Apple ID, roles (admin, socio, cliente), sesiones Supabase Auth</div>
+      <div class="card-tech">supabase auth</div>
+      <div class="card-cost">$0</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 3: Chatbots IA -->
+<div class="layer layer-chatbots">
+  <div class="layer-header">🐾 Chatbots IA — Hoku × 3 (Groq Llama 3.3 70B)</div>
+  <div class="layer-body">
+    <div class="card">
+      <div class="card-icon">🛍️</div>
+      <div class="card-title">Chatbot Storefront</div>
+      <div class="card-desc">Tono casual/urbano. Stock, tracking, tallas, waitlist, envío. Escala a WA si no resuelve en 3 msgs.</div>
+      <div class="card-tech">6 tools</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">Chatbot Admin</div>
+      <div class="card-desc">Copiloto operativo. Reportes, alertas stock, pedidos pendientes, draft mensajes WA, bulk ops.</div>
+      <div class="card-tech">10 tools</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card card-wide">
+      <div class="card-icon">🤝</div>
+      <div class="card-title">Chatbot Socios — Multi-perfil</div>
+      <div class="card-desc">Switch de perfil por rol. System prompt + tools diferente por perfil. Memoria por socio.</div>
+      <div class="card-tech">5 perfiles · 35+ tools</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card-full">
+      <div class="profiles">
+        <div class="profile">
+          <div class="profile-icon">📊</div>
+          <div class="profile-name">Contable</div>
+          <div class="profile-tools">Revenue, IVA, margen, flujo caja, CSV export</div>
+        </div>
+        <div class="profile">
+          <div class="profile-icon">💰</div>
+          <div class="profile-name">Comercial</div>
+          <div class="profile-tools">Ventas, segmentos, pricing, promos, cart recovery</div>
+        </div>
+        <div class="profile">
+          <div class="profile-icon">⚖️</div>
+          <div class="profile-name">Abogado</div>
+          <div class="profile-tools">TyC, Sernac, privacidad, contratos, disputas</div>
+        </div>
+        <div class="profile">
+          <div class="profile-icon">🚚</div>
+          <div class="profile-name">Logística</div>
+          <div class="profile-tools">Envíos, stock, couriers, devoluciones, proveedores</div>
+        </div>
+        <div class="profile">
+          <div class="profile-icon">📱</div>
+          <div class="profile-name">Marketing</div>
+          <div class="profile-tools">GA4, social, drops, waitlist, contenido, competencia</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 3.5: Memoria -->
+<div class="layer layer-chatbots">
+  <div class="layer-header">🧠 Memoria Conversacional — 4 capas</div>
+  <div class="layer-body">
+    <div class="card-full">
+      <div class="memory-flow">
+        <div class="memory-step"><strong>Capa 1</strong><br>Últimos 10 msgs<br><span style="color:var(--text3)">~2K tokens</span></div>
+        <div class="memory-arrow">→</div>
+        <div class="memory-step"><strong>Capa 2</strong><br>Summary auto<br><span style="color:var(--text3)">si conv >20 msgs</span></div>
+        <div class="memory-arrow">→</div>
+        <div class="memory-step"><strong>Capa 3</strong><br>Cross-conv<br><span style="color:var(--text3)">últimos 3 summaries</span></div>
+        <div class="memory-arrow">→</div>
+        <div class="memory-step"><strong>Capa 4</strong><br>Perfil usuario<br><span style="color:var(--text3)">solo socios</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 4: Backend -->
+<div class="layer layer-backend">
+  <div class="layer-header">🔧 Backend — Next.js API Routes + Supabase Edge Functions</div>
+  <div class="layer-body">
+    <div class="card">
+      <div class="card-icon">📦</div>
+      <div class="card-title">API Productos</div>
+      <div class="card-desc">CRUD, variantes, stock, imágenes, categorías, búsqueda</div>
+      <div class="card-tech">REST /api/v1/products</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛒</div>
+      <div class="card-title">API Pedidos</div>
+      <div class="card-desc">Crear, confirmar pago, despachar, tracking, notas internas</div>
+      <div class="card-tech">REST /api/v1/orders</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">👤</div>
+      <div class="card-title">API Clientes</div>
+      <div class="card-desc">Registro, historial, puntos loyalty, segmentación</div>
+      <div class="card-tech">REST /api/v1/customers</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <div class="card-title">API Chat</div>
+      <div class="card-desc">SSE streaming, 3 chatbots, tools execution, memoria</div>
+      <div class="card-tech">SSE /api/v1/chat/stream</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📧</div>
+      <div class="card-title">Email Queue</div>
+      <div class="card-desc">Cola de envío, templates HTML, Gmail API, triggers automáticos</div>
+      <div class="card-tech">Edge Function + cron</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔥</div>
+      <div class="card-title">API Drops</div>
+      <div class="card-desc">Crear drop, timer, lanzar, notificar waitlist</div>
+      <div class="card-tech">REST /api/v1/drops</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 5: Data -->
+<div class="layer layer-data">
+  <div class="layer-header">🗄️ Base de Datos — Supabase (nuevo proyecto · free tier)</div>
+  <div class="layer-body">
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <div class="card-title">Core (4 tablas)</div>
+      <div class="card-desc">products, orders, order_notes, customers</div>
+      <div class="card-tech">RLS por rol</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔥</div>
+      <div class="card-title">Engagement (3 tablas)</div>
+      <div class="card-desc">waitlist, cart_abandoned, drops</div>
+      <div class="card-tech">triggers auto</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💬</div>
+      <div class="card-title">Chat Memory (3 tablas)</div>
+      <div class="card-desc">chat_conversations, chat_messages, chat_summaries</div>
+      <div class="card-tech">por chatbot</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <div class="card-title">Socios (1 tabla)</div>
+      <div class="card-desc">partner_profiles + permisos por rol</div>
+      <div class="card-tech">5 roles</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📧</div>
+      <div class="card-title">Emails (1 tabla)</div>
+      <div class="card-desc">email_notifications — cola con 12 tipos de email</div>
+      <div class="card-tech">pending→sent</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">Config (1 tabla)</div>
+      <div class="card-desc">config — shipping rates, payment info, settings</div>
+      <div class="card-tech">key-value jsonb</div>
+      <div class="card-cost">$0</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 6: Emails -->
+<div class="layer layer-frontend">
+  <div class="layer-header">📧 Emails Automáticos — Gmail API (smconnection.cl)</div>
+  <div class="layer-body">
+    <div class="card-full">
+      <div class="email-grid">
+        <div class="email-item"><strong>📦 Pedido nuevo</strong>→ Cliente: confirmación<br>→ Admin: alerta</div>
+        <div class="email-item"><strong>✅ Pago confirmado</strong>→ Cliente: "preparando tu pedido"</div>
+        <div class="email-item"><strong>🚚 Despachado</strong>→ Cliente: courier + tracking + wa.me</div>
+        <div class="email-item"><strong>📦 Entregado</strong>→ Cliente: "¿recibiste?" + review</div>
+        <div class="email-item"><strong>🛒 Carrito 2h</strong>→ Cliente: "tu carrito te espera"</div>
+        <div class="email-item"><strong>🔥 Carrito 24h</strong>→ Cliente: "última chance"</div>
+        <div class="email-item"><strong>⏰ Drop lanzado</strong>→ Waitlist: "YA DISPONIBLE"</div>
+        <div class="email-item"><strong>📋 Waitlist OK</strong>→ Cliente: "estás en la lista"</div>
+        <div class="email-item"><strong>📊 Reporte semanal</strong>→ Contable + Comercial</div>
+        <div class="email-item"><strong>⚠️ Stock bajo</strong>→ Admin + Logística</div>
+        <div class="email-item"><strong>🧾 Comprobante</strong>→ Admin: nuevo comprobante</div>
+        <div class="email-item"><strong>⏳ Sin pago 48h</strong>→ Admin: "¿cancelar?"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 7: External APIs -->
+<div class="layer layer-external">
+  <div class="layer-header">🔌 APIs Externas — Todas gratis (reutilizadas de Amplify/InfoPet)</div>
+  <div class="layer-body">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Groq</div>
+      <div class="card-desc">LLM principal para 3 chatbots. Llama 3.3 70B.</div>
+      <div class="card-tech">GROQ_API_KEY</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔵</div>
+      <div class="card-title">Gemini</div>
+      <div class="card-desc">Fallback #2. Flash 2.0. Contexto 1M.</div>
+      <div class="card-tech">GEMINI_API_KEY</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔷</div>
+      <div class="card-title">DeepSeek</div>
+      <div class="card-desc">Fallback #3. Razonamiento fuerte.</div>
+      <div class="card-tech">DEEPSEEK_API_KEY</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔀</div>
+      <div class="card-title">OpenRouter</div>
+      <div class="card-desc">Router automático si todos fallan.</div>
+      <div class="card-tech">OPENROUTER_API_KEY</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🟡</div>
+      <div class="card-title">Cohere</div>
+      <div class="card-desc">Embeddings para búsqueda semántica en catálogo.</div>
+      <div class="card-tech">COHERE_API_KEY</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">GA4 + GTM</div>
+      <div class="card-desc">Analytics, eventos e-commerce, funnel conversión.</div>
+      <div class="card-tech">Google Analytics</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📧</div>
+      <div class="card-title">Gmail API</div>
+      <div class="card-desc">Emails transaccionales desde pedidos@kanki.smconnection.cl</div>
+      <div class="card-tech">Google Workspace</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <div class="card-title">reCAPTCHA v3</div>
+      <div class="card-desc">Protección checkout y formularios.</div>
+      <div class="card-tech">Google Cloud</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💬</div>
+      <div class="card-title">WhatsApp</div>
+      <div class="card-desc">wa.me links gratuitos. Confirmación, tracking, soporte.</div>
+      <div class="card-tech">wa.me/56...</div>
+      <div class="card-cost">$0</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 7.5: Fase 2 -->
+<div class="layer layer-external" style="opacity:0.6">
+  <div class="layer-header">🔮 Fase 2 — Integraciones futuras</div>
+  <div class="layer-body">
+    <div class="card" style="border-style:dashed">
+      <div class="card-icon">💳</div>
+      <div class="card-title">Webpay</div>
+      <div class="card-desc">Transbank. Tarjetas débito/crédito Chile.</div>
+      <div class="card-tech">Fase 2</div>
+    </div>
+    <div class="card" style="border-style:dashed">
+      <div class="card-icon">🚚</div>
+      <div class="card-title">Shipit</div>
+      <div class="card-desc">Agregador couriers. Cotización + tracking auto.</div>
+      <div class="card-tech">Fase 2</div>
+    </div>
+    <div class="card" style="border-style:dashed">
+      <div class="card-icon">🛒</div>
+      <div class="card-title">MercadoLibre</div>
+      <div class="card-desc">Multi-canal. Sync productos + órdenes.</div>
+      <div class="card-tech">Fase 2 · RADAR investigando</div>
+    </div>
+    <div class="card" style="border-style:dashed">
+      <div class="card-icon">🛍️</div>
+      <div class="card-title">Google Merchant</div>
+      <div class="card-desc">Shopping ads. Feed de productos.</div>
+      <div class="card-tech">Fase 2</div>
+    </div>
+    <div class="card" style="border-style:dashed">
+      <div class="card-icon">🔍</div>
+      <div class="card-title">Search Console</div>
+      <div class="card-desc">SEO, indexación, rendimiento.</div>
+      <div class="card-tech">Fase 2</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 8: Infra -->
+<div class="layer layer-infra">
+  <div class="layer-header">🛠️ Infraestructura — AWS + Supabase + GitHub</div>
+  <div class="layer-body">
+    <div class="card">
+      <div class="card-icon">☁️</div>
+      <div class="card-title">AWS Amplify</div>
+      <div class="card-desc">Hosting Next.js. CI/CD auto (push main → deploy). SSL.</div>
+      <div class="card-tech">cuenta existente</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">Route 53</div>
+      <div class="card-desc">DNS smconnection.cl → CNAME kanki.smconnection.cl a Amplify.</div>
+      <div class="card-tech">subdominio</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🗄️</div>
+      <div class="card-title">Supabase</div>
+      <div class="card-desc">DB + Auth + Edge Functions + Realtime. Proyecto nuevo free tier.</div>
+      <div class="card-tech">13 tablas</div>
+      <div class="card-cost">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🐙</div>
+      <div class="card-title">GitHub</div>
+      <div class="card-desc">Repo kanki-street. Push main → Amplify auto-deploy.</div>
+      <div class="card-tech">SmartConnection-CodeHub</div>
+      <div class="card-cost">$0</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 9: Fallback Chain -->
+<div class="layer layer-chatbots">
+  <div class="layer-header">🔄 Fallback Chain IA — Circuit Breaker (4 providers · $0)</div>
+  <div class="layer-body">
+    <div class="card-full">
+      <div class="memory-flow">
+        <div class="memory-step" style="background:rgba(0,229,176,0.1);border-color:rgba(0,229,176,0.2)"><strong>⚡ Groq</strong><br>Llama 3.3 70B<br><span style="color:var(--accent)">PRINCIPAL</span></div>
+        <div class="memory-arrow" style="color:var(--accent)">→</div>
+        <div class="memory-step" style="background:rgba(249,115,22,0.08);border-color:rgba(249,115,22,0.15)"><strong>⚡ Groq</strong><br>Llama 4 Scout<br><span style="color:var(--orange)">FALLBACK 1</span></div>
+        <div class="memory-arrow" style="color:var(--orange)">→</div>
+        <div class="memory-step" style="background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.15)"><strong>🔵 Gemini</strong><br>Flash 2.0<br><span style="color:var(--blue)">FALLBACK 2</span></div>
+        <div class="memory-arrow" style="color:var(--blue)">→</div>
+        <div class="memory-step" style="background:rgba(139,92,246,0.08);border-color:rgba(139,92,246,0.15)"><strong>🔷 DeepSeek</strong><br>V3<br><span style="color:var(--purple)">FALLBACK 3</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows">↕ ↕ ↕</div>
+
+<!-- CAPA 10: Agentes SMC -->
+<div class="layer layer-agents">
+  <div class="layer-header">🏗️ Equipo SMC — 14 Agentes asignados a Kanki</div>
+  <div class="layer-body">
+    <div class="card-full">
+      <div style="margin-bottom:8px;font-size:11px;color:var(--text3);font-weight:600">ESTRATEGIA & COORDINACIÓN</div>
+      <div class="agent-grid" style="margin-bottom:16px">
+        <div class="agent-card">
+          <div class="agent-emoji">👔</div>
+          <div class="agent-info"><div class="agent-name">PM</div><div class="agent-role">Sprint planning · RICE · AARRR</div><div class="agent-model">sonnet</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">🧠</div>
+          <div class="agent-info"><div class="agent-name">Cerebro</div><div class="agent-role">Mentor · Patterns · Diverge</div><div class="agent-model">opus</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">💰</div>
+          <div class="agent-info"><div class="agent-name">Comercial</div><div class="agent-role">Pricing · Retención · Socios</div><div class="agent-model">sonnet</div></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:8px;font-size:11px;color:var(--text3);font-weight:600">DISEÑO & CONTENIDO</div>
+      <div class="agent-grid" style="margin-bottom:16px">
+        <div class="agent-card">
+          <div class="agent-emoji">🐕</div>
+          <div class="agent-info"><div class="agent-name">Panchita</div><div class="agent-role">Maquetas · UX · BPMN · Copy</div><div class="agent-model">opus</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">🎬</div>
+          <div class="agent-info"><div class="agent-name">Video&Img</div><div class="agent-role">Assets · Pexels · Gemini · Canva</div><div class="agent-model">sonnet</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">🎙️</div>
+          <div class="agent-info"><div class="agent-name">Portavoz</div><div class="agent-role">Brand voice · Posts · Content</div><div class="agent-model">sonnet</div></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:8px;font-size:11px;color:var(--text3);font-weight:600">ARQUITECTURA & RESEARCH</div>
+      <div class="agent-grid" style="margin-bottom:16px">
+        <div class="agent-card">
+          <div class="agent-emoji">🔍</div>
+          <div class="agent-info"><div class="agent-name">TechLead</div><div class="agent-role">Arquitectura · Contracts · ADRs</div><div class="agent-model">opus</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">🔬</div>
+          <div class="agent-info"><div class="agent-name">AI/ML</div><div class="agent-role">Benchmarks · Evals · Radar IA</div><div class="agent-model">opus</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">📡</div>
+          <div class="agent-info"><div class="agent-name">RADAR</div><div class="agent-role">Intel mercado · Tendencias · Brief</div><div class="agent-model">sonnet</div></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:8px;font-size:11px;color:var(--text3);font-weight:600">IMPLEMENTACIÓN</div>
+      <div class="agent-grid" style="margin-bottom:16px">
+        <div class="agent-card">
+          <div class="agent-emoji">🔧</div>
+          <div class="agent-info"><div class="agent-name">ABAP</div><div class="agent-role">APIs · Supabase · Auth · Email</div><div class="agent-model">sonnet</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">🎨</div>
+          <div class="agent-info"><div class="agent-name">Fiori</div><div class="agent-role">Next.js · UI · Responsive · SEO</div><div class="agent-model">sonnet</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">🐾</div>
+          <div class="agent-info"><div class="agent-name">Hoku</div><div class="agent-role">3 Chatbots · RAG · Tools · SSE</div><div class="agent-model">opus</div></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:8px;font-size:11px;color:var(--text3);font-weight:600">QA & DEPLOY</div>
+      <div class="agent-grid">
+        <div class="agent-card">
+          <div class="agent-emoji">👩</div>
+          <div class="agent-info"><div class="agent-name">Camilita</div><div class="agent-role">QA · 6 personas · Bugs · Regresión</div><div class="agent-model">sonnet</div></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-emoji">🛠️</div>
+          <div class="agent-info"><div class="agent-name">Pipeline</div><div class="agent-role">Amplify · CI/CD · SSL · Route53</div><div class="agent-model">haiku</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Kanki Street — Arquitectura v1.0 · 29 abril 2026 · Smart Connection · kanki.smconnection.cl<br>
+  14 agentes · 3 chatbots IA · 13 tablas Supabase · 12 APIs gratis · $0/mes
+</div>
+
+</body>
+</html>
