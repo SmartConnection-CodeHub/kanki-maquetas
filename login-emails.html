@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KANKI STREET — Login, Mi Cuenta & Emails</title>
+<style>
+/* ═══════════════════════════════════════════════════
+   🐕 PANCHITA — Login + Mi Cuenta + Email Templates
+   Kanki Street · Light mode (matching storefront/admin)
+   Mobile-first 375px → Desktop
+   ═══════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B2F4E;
+  --navy-light:#2A4A6E;
+  --navy-mid:#243d63;
+  --gold:#C49A3A;
+  --gold-dim:#d4aa4a;
+  --gold-light:#D4AA4A;
+  --cream:#F5EDD8;
+  --cream-mid:#EDE3C9;
+  --bg:#ffffff;
+  --bg-alt:#f5f5f7;
+  --bg-warm:#fafaf8;
+  --white:#ffffff;
+  --text:#1d1d1f;
+  --text-secondary:#86868b;
+  --muted:#6e6e73;
+  --subtle:#86868b;
+  --border:#d2d2d7;
+  --border-w:#e8e8ed;
+  --red:#ff3b30;
+  --green:#34c759;
+  --blue:#0071e3;
+  --orange:#ff9f0a;
+  --success:#34c759;
+  --warning:#ff9f0a;
+  --danger:#ff3b30;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --radius:12px;
+  --radius-sm:8px;
+  --radius-lg:16px;
+  --shadow:0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md:0 4px 14px rgba(0,0,0,0.08);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+
+/* ─── TOP NAV ─── */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border-w);
+}
+.top-nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.top-nav-logo-box{width:30px;height:30px;background:var(--navy);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.top-nav-logo-box span{color:var(--gold);font-weight:700;font-size:14px}
+.top-nav-name{font-size:15px;font-weight:600;color:var(--text);letter-spacing:0.02em}
+.top-nav-right{display:flex;align-items:center;gap:6px}
+.top-nav-btn{
+  background:none;border:1px solid var(--border-w);color:var(--text-secondary);cursor:pointer;
+  font-size:12px;font-weight:500;padding:7px 14px;border-radius:var(--radius-sm);
+  transition:all 0.2s;display:flex;align-items:center;gap:6px;font-family:var(--font);
+  background:var(--white);
+}
+.top-nav-btn:hover{background:var(--bg-alt);color:var(--text)}
+.top-nav-btn.navy{background:var(--navy);color:white;border-color:var(--navy)}
+.top-nav-btn.navy:hover{background:var(--navy-light)}
+
+/* ─── SECTION TABS ─── */
+.section-tabs{
+  position:fixed;top:52px;left:0;right:0;z-index:250;
+  height:44px;display:flex;align-items:center;justify-content:center;gap:4px;
+  background:rgba(255,255,255,0.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-w);
+  padding:0 16px;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.section-tabs::-webkit-scrollbar{display:none}
+.section-tab{
+  font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;
+  padding:6px 16px;border-radius:980px;cursor:pointer;transition:all 0.2s;
+  border:1.5px solid transparent;background:none;color:var(--muted);
+  white-space:nowrap;min-height:32px;font-family:var(--font);
+}
+.section-tab:hover{color:var(--text);border-color:var(--border)}
+.section-tab.active{background:var(--navy);color:white;border-color:var(--navy);font-weight:700}
+
+/* ─── PAGE CONTENT ─── */
+.page-content{padding-top:104px;min-height:100vh}
+.section-panel{display:none;padding:24px 16px 60px;max-width:520px;margin:0 auto}
+.section-panel.wide{max-width:960px}
+.section-panel.active{display:block;animation:fadeIn 200ms ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ─── FORM STYLES ─── */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px}
+.form-input{
+  width:100%;padding:10px 14px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--white);
+  color:var(--text);font-size:14px;font-family:var(--font);
+  transition:border-color 0.2s,box-shadow 0.2s;
+  outline:none;
+}
+.form-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,47,78,0.1)}
+.form-input::placeholder{color:var(--subtle)}
+.form-hint{font-size:12px;color:var(--text-secondary);margin-top:4px}
+.form-error{font-size:12px;color:var(--red);margin-top:4px}
+.form-select{
+  width:100%;padding:10px 14px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--white);
+  color:var(--text);font-size:14px;font-family:var(--font);
+  outline:none;cursor:pointer;
+}
+.form-select:focus{border-color:var(--navy)}
+
+/* ─── BUTTONS ─── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 18px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;
+  cursor:pointer;border:none;transition:all 150ms;font-family:var(--font);
+  min-height:44px;
+}
+.btn-navy{background:var(--navy);color:white}
+.btn-navy:hover{background:var(--navy-light)}
+.btn-gold{background:var(--gold);color:var(--navy);font-weight:600}
+.btn-gold:hover{background:var(--gold-dim)}
+.btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--bg-alt);color:var(--text)}
+.btn-danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
+.btn-danger:hover{background:#fff5f5}
+.btn-block{width:100%}
+.btn-sm{padding:7px 12px;font-size:13px;min-height:36px;border-radius:6px}
+
+/* ─── CARDS ─── */
+.card{
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--border-w);
+  box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden;
+}
+.card-header{
+  padding:14px 20px;border-bottom:1px solid var(--border-w);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-title{font-size:15px;font-weight:600;color:var(--text)}
+.card-body{padding:20px}
+
+/* ─── BADGES ─── */
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap;
+}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.badge-pending{background:#fff3cd;color:#7a5200}
+.badge-pending::before{background:#ffc107}
+.badge-confirmed{background:#dbeafe;color:#1e40af}
+.badge-confirmed::before{background:#3b82f6}
+.badge-shipped{background:var(--navy);color:var(--cream)}
+.badge-shipped::before{background:var(--gold)}
+.badge-delivered{background:#dcfce7;color:#166534}
+.badge-delivered::before{background:var(--success)}
+
+/* ─── TABLE ─── */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.table{width:100%;border-collapse:collapse}
+.table th{font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;padding:11px 16px;text-align:left;background:var(--bg-alt);border-bottom:1px solid var(--border-w)}
+.table td{padding:12px 16px;border-bottom:1px solid var(--bg-alt);font-size:14px;vertical-align:middle}
+.table tr:last-child td{border-bottom:none}
+.table tbody tr:hover td{background:var(--bg-alt)}
+
+/* ─── DIVIDER ─── */
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border-w)}
+.divider span{font-size:12px;color:var(--subtle);font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
+
+/* ─── AUTH CARD ─── */
+.auth-card{
+  background:var(--white);border-radius:var(--radius-lg);
+  border:1px solid var(--border-w);
+  box-shadow:var(--shadow-md);
+  padding:32px 24px;max-width:400px;margin:0 auto;
+}
+.auth-logo{text-align:center;margin-bottom:24px}
+.auth-logo-box{width:48px;height:48px;background:var(--navy);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
+.auth-logo-box span{color:var(--gold);font-weight:800;font-size:22px}
+.auth-title{font-size:22px;font-weight:700;letter-spacing:-0.02em;color:var(--text)}
+.auth-subtitle{font-size:14px;color:var(--text-secondary);margin-top:4px}
+.auth-links{text-align:center;margin-top:16px;font-size:13px;color:var(--text-secondary)}
+.auth-links a{color:var(--navy);font-weight:500;text-decoration:none;cursor:pointer}
+.auth-links a:hover{text-decoration:underline}
+
+/* Social Buttons */
+.btn-social{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:11px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;
+  cursor:pointer;transition:all 150ms;font-family:var(--font);min-height:44px;
+}
+.btn-google{
+  background:var(--white);border:1px solid var(--border);color:var(--text);
+}
+.btn-google:hover{background:var(--bg-alt);border-color:#c0c0c5}
+.btn-google svg{width:18px;height:18px}
+.btn-apple{
+  background:#000;border:1px solid #000;color:#fff;
+}
+.btn-apple:hover{background:#222}
+.btn-apple svg{width:16px;height:16px}
+
+/* ─── CHECKBOX ─── */
+.checkbox-group{display:flex;align-items:flex-start;gap:8px;margin:16px 0}
+.checkbox-group input[type="checkbox"]{width:18px;height:18px;accent-color:var(--navy);margin-top:1px;cursor:pointer;flex-shrink:0}
+.checkbox-group label{font-size:13px;color:var(--text-secondary);cursor:pointer;line-height:1.4}
+.checkbox-group label a{color:var(--navy);text-decoration:underline}
+
+/* ─── PHONE INPUT ─── */
+.phone-row{display:flex;gap:8px}
+.phone-prefix{
+  width:76px;padding:10px 10px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--bg-alt);
+  color:var(--text);font-size:14px;font-family:var(--font);
+  text-align:center;flex-shrink:0;
+}
+
+/* ─── ACCOUNT LAYOUT ─── */
+.account-layout{display:flex;gap:24px;max-width:960px;margin:0 auto}
+.account-sidebar{width:220px;flex-shrink:0}
+.account-main{flex:1;min-width:0}
+
+.sidebar-nav{
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--border-w);box-shadow:var(--shadow);
+  padding:8px;overflow:hidden;
+}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--radius-sm);
+  cursor:pointer;font-size:14px;font-weight:500;
+  color:var(--text-secondary);transition:all 150ms;
+  border:none;background:none;width:100%;text-align:left;
+  font-family:var(--font);
+}
+.sidebar-item:hover{background:var(--bg-alt);color:var(--text)}
+.sidebar-item.active{background:var(--navy);color:white}
+.sidebar-item .icon{font-size:16px;width:20px;text-align:center}
+.sidebar-sep{height:1px;background:var(--border-w);margin:4px 8px}
+.sidebar-item.danger{color:var(--danger)}
+.sidebar-item.danger:hover{background:#fff5f5}
+
+/* Mobile tabs for account */
+.account-tabs-mobile{display:none;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:4px;padding:0 0 12px;scrollbar-width:none;margin-bottom:16px}
+.account-tabs-mobile::-webkit-scrollbar{display:none}
+.account-tab-m{
+  font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;
+  padding:7px 14px;border-radius:980px;cursor:pointer;transition:all 0.2s;
+  border:1.5px solid var(--border);background:var(--white);color:var(--muted);
+  white-space:nowrap;font-family:var(--font);
+}
+.account-tab-m.active{background:var(--navy);color:white;border-color:var(--navy)}
+
+/* Account sub-views */
+.account-view{display:none;animation:fadeIn 200ms ease}
+.account-view.active{display:block}
+
+/* ─── ADDRESS CARDS ─── */
+.address-card{
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--border-w);padding:16px;
+  margin-bottom:12px;display:flex;align-items:flex-start;
+  justify-content:space-between;gap:12px;
+}
+.address-info{flex:1}
+.address-name{font-size:14px;font-weight:600;margin-bottom:4px}
+.address-detail{font-size:13px;color:var(--text-secondary);line-height:1.5}
+.address-default{display:inline-block;font-size:11px;font-weight:600;color:var(--navy);background:rgba(27,47,78,0.08);padding:2px 8px;border-radius:4px;margin-top:6px}
+.address-actions{display:flex;gap:6px;flex-shrink:0}
+
+/* ─── WISHLIST GRID ─── */
+.wishlist-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.wish-card{
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--border-w);overflow:hidden;
+  transition:box-shadow 200ms,transform 200ms;
+}
+.wish-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.wish-img{width:100%;height:160px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:42px;position:relative}
+.wish-remove{
+  position:absolute;top:8px;right:8px;width:28px;height:28px;
+  border-radius:50%;background:var(--white);border:1px solid var(--border-w);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--danger);transition:all 150ms;
+}
+.wish-remove:hover{background:#fff5f5;border-color:var(--danger)}
+.wish-info{padding:12px}
+.wish-brand{font-size:10px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:0.06em}
+.wish-name{font-size:13px;font-weight:600;margin:2px 0 6px;color:var(--text)}
+.wish-price{font-size:15px;font-weight:700;color:var(--navy)}
+.wish-price .old{font-size:12px;color:var(--subtle);text-decoration:line-through;font-weight:400;margin-left:6px}
+
+/* ─── EMAIL PREVIEW ─── */
+.email-preview-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.email-preview-card{
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--border-w);overflow:hidden;
+  cursor:pointer;transition:box-shadow 200ms,transform 200ms;
+}
+.email-preview-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.email-preview-card.expanded{cursor:default;transform:none}
+.email-preview-header{
+  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+}
+.email-preview-tag{
+  font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;
+}
+.email-preview-tag.order{background:rgba(27,47,78,0.08);color:var(--navy)}
+.email-preview-tag.shipping{background:rgba(52,199,89,0.1);color:#166534}
+.email-preview-tag.cart{background:rgba(196,154,58,0.12);color:#7a5200}
+.email-preview-info h3{font-size:14px;font-weight:600;color:var(--text)}
+.email-preview-info p{font-size:12px;color:var(--text-secondary);margin-top:2px}
+.email-preview-toggle{
+  font-size:11px;color:var(--navy);font-weight:600;cursor:pointer;
+  padding:6px 12px;border-radius:6px;border:1px solid var(--border);
+  background:var(--white);font-family:var(--font);transition:all 150ms;
+  white-space:nowrap;
+}
+.email-preview-toggle:hover{background:var(--bg-alt)}
+.email-body{display:none;border-top:1px solid var(--border-w)}
+.email-body.open{display:block}
+
+/* ─── EMAIL TEMPLATE IFRAME ─── */
+.email-frame{
+  background:var(--bg-alt);padding:20px 16px;
+  display:flex;justify-content:center;
+}
+.email-container{
+  background:var(--white);max-width:600px;width:100%;
+  border-radius:8px;overflow:hidden;
+  box-shadow:0 2px 12px rgba(0,0,0,0.08);
+}
+.email-header-bar{
+  background:var(--navy);padding:28px 24px;text-align:center;
+}
+.email-header-bar .email-logo-box{
+  width:40px;height:40px;border:2px solid var(--gold);border-radius:8px;
+  display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px;
+}
+.email-header-bar .email-logo-box span{color:var(--gold);font-weight:800;font-size:18px}
+.email-header-bar .email-brand{font-size:14px;font-weight:700;color:white;letter-spacing:0.08em;text-transform:uppercase}
+.email-header-bar .email-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;letter-spacing:0.06em;text-transform:uppercase}
+.email-content{padding:28px 24px}
+.email-content h2{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
+.email-content p{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px}
+.email-content .greeting{font-size:14px;color:var(--text);margin-bottom:14px}
+.email-product-row{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 0;border-bottom:1px solid var(--border-w);
+}
+.email-product-row:last-child{border-bottom:none}
+.email-product-img{width:56px;height:56px;border-radius:8px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.email-product-info{flex:1;min-width:0}
+.email-product-name{font-size:13px;font-weight:600;color:var(--text)}
+.email-product-detail{font-size:12px;color:var(--text-secondary);margin-top:2px}
+.email-product-price{font-size:14px;font-weight:700;color:var(--navy);flex-shrink:0}
+.email-total-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 0;margin-top:4px;border-top:2px solid var(--text);
+}
+.email-total-row span:first-child{font-size:14px;font-weight:600;color:var(--text)}
+.email-total-row span:last-child{font-size:18px;font-weight:700;color:var(--navy)}
+.email-bank-box{
+  background:var(--bg-alt);border-radius:var(--radius-sm);
+  padding:16px;margin:16px 0;
+}
+.email-bank-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.email-bank-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.email-bank-row span:first-child{color:var(--text-secondary)}
+.email-bank-row span:last-child{font-weight:600;color:var(--text)}
+.email-cta{
+  display:block;width:100%;text-align:center;
+  padding:14px;border-radius:var(--radius-sm);
+  background:var(--gold);color:var(--navy);
+  font-size:14px;font-weight:700;text-decoration:none;
+  margin:20px 0;transition:background 150ms;
+}
+.email-cta:hover{background:var(--gold-dim)}
+.email-note{
+  font-size:12px;color:var(--subtle);text-align:center;
+  line-height:1.5;margin:14px 0;
+}
+.email-tracking{
+  background:var(--bg-alt);border-radius:var(--radius-sm);
+  padding:16px;margin:16px 0;
+}
+.email-tracking-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.email-tracking-row span:first-child{color:var(--text-secondary)}
+.email-tracking-row span:last-child{font-weight:600;color:var(--text)}
+.email-footer{
+  background:var(--bg-alt);padding:20px 24px;text-align:center;
+  border-top:1px solid var(--border-w);
+}
+.email-footer p{font-size:11px;color:var(--subtle);line-height:1.5;margin-bottom:8px}
+.email-social{display:flex;justify-content:center;gap:12px;margin-bottom:8px}
+.email-social a{
+  width:32px;height:32px;border-radius:50%;background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);font-size:14px;text-decoration:none;
+  transition:background 150ms;
+}
+.email-social a:hover{background:var(--navy-light)}
+.email-urgency{
+  background:rgba(196,154,58,0.1);border:1px solid rgba(196,154,58,0.25);
+  border-radius:var(--radius-sm);padding:12px 16px;
+  text-align:center;margin:16px 0;
+}
+.email-urgency p{font-size:13px;font-weight:600;color:#7a5200;margin:0}
+.email-product-hero{
+  text-align:center;padding:20px;
+}
+.email-product-hero-img{
+  width:120px;height:120px;border-radius:var(--radius);
+  background:var(--cream);display:inline-flex;align-items:center;
+  justify-content:center;font-size:52px;margin-bottom:12px;
+}
+.email-product-hero-name{font-size:16px;font-weight:600;color:var(--text)}
+.email-product-hero-price{font-size:20px;font-weight:700;color:var(--navy);margin-top:4px}
+
+/* ─── PASSWORD TOGGLE ─── */
+.password-wrap{position:relative}
+.password-wrap .form-input{padding-right:44px}
+.password-toggle{
+  position:absolute;right:1px;top:1px;bottom:1px;width:40px;
+  background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--subtle);font-size:16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+}
+.password-toggle:hover{color:var(--text)}
+
+/* ─── RESPONSIVE ─── */
+@media(min-width:640px){
+  .email-preview-grid{grid-template-columns:1fr}
+  .wishlist-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:768px){
+  .section-panel{padding:32px 24px 60px}
+  .wishlist-grid{grid-template-columns:repeat(4,1fr)}
+  .account-tabs-mobile{display:none !important}
+  .account-sidebar{display:block}
+}
+@media(max-width:767px){
+  .account-layout{flex-direction:column;gap:0;padding:0 16px}
+  .account-sidebar{display:none}
+  .account-tabs-mobile{display:flex}
+  .account-main{width:100%}
+  .section-panel.wide{padding:24px 0 60px}
+  .table th:nth-child(3),.table td:nth-child(3){display:none}
+}
+@media(max-width:390px){
+  .top-nav{padding:0 14px;height:48px}
+  .section-tabs{top:48px;height:40px}
+  .page-content{padding-top:96px}
+  .section-tab{font-size:10px;padding:5px 12px}
+  .auth-card{padding:24px 18px}
+  .auth-title{font-size:20px}
+  .email-content{padding:20px 16px}
+  .email-header-bar{padding:20px 16px}
+  .wishlist-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .wish-img{height:130px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ TOP NAV ═══════════════ -->
+<nav class="top-nav">
+  <a href="#" class="top-nav-logo">
+    <div class="top-nav-logo-box"><span>K</span></div>
+    <span class="top-nav-name">Kanki Street</span>
+  </a>
+  <div class="top-nav-right">
+    <button class="top-nav-btn" onclick="switchAuth('login')" id="btn-login-nav">Iniciar Sesion</button>
+    <button class="top-nav-btn navy" onclick="switchAuth('register')" id="btn-register-nav">Crear Cuenta</button>
+  </div>
+</nav>
+
+<!-- ═══════════════ SECTION TABS ═══════════════ -->
+<div class="section-tabs">
+  <button class="section-tab active" data-section="login">Login</button>
+  <button class="section-tab" data-section="register">Crear Cuenta</button>
+  <button class="section-tab" data-section="account">Mi Cuenta</button>
+  <button class="section-tab" data-section="emails">Emails</button>
+</div>
+
+<main class="page-content">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1: LOGIN
+     ═══════════════════════════════════════════ -->
+<section class="section-panel active" id="sec-login">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-box"><span>K</span></div>
+      <h1 class="auth-title">Bienvenido de vuelta</h1>
+      <p class="auth-subtitle">Inicia sesion en tu cuenta Kanki Street</p>
+    </div>
+
+    <!-- Social Login -->
+    <button class="btn-social btn-google" style="margin-bottom:10px">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuar con Google
+    </button>
+    <button class="btn-social btn-apple">
+      <svg viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.32 2.32-2.11 4.45-3.74 4.25z"/></svg>
+      Continuar con Apple
+    </button>
+
+    <div class="divider"><span>o</span></div>
+
+    <!-- Email Login -->
+    <form onsubmit="return false">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="tu@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Contrasena</label>
+        <div class="password-wrap">
+          <input type="password" class="form-input" placeholder="Tu contrasena" autocomplete="current-password" id="login-pw">
+          <button type="button" class="password-toggle" onclick="togglePw('login-pw',this)">👁</button>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-navy btn-block" style="margin-top:8px">Iniciar Sesion</button>
+    </form>
+
+    <div class="auth-links" style="margin-top:16px">
+      <a href="#">Olvidaste tu contrasena?</a>
+    </div>
+    <div class="auth-links" style="margin-top:10px">
+      No tienes cuenta? <a onclick="showSection('register')">Crear una cuenta</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: CREAR CUENTA
+     ═══════════════════════════════════════════ -->
+<section class="section-panel" id="sec-register">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-box"><span>K</span></div>
+      <h1 class="auth-title">Crea tu cuenta</h1>
+      <p class="auth-subtitle">Unite a la comunidad Kanki Street</p>
+    </div>
+
+    <!-- Social Register -->
+    <button class="btn-social btn-google" style="margin-bottom:10px">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Registrarse con Google
+    </button>
+    <button class="btn-social btn-apple">
+      <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.32 2.32-2.11 4.45-3.74 4.25z"/></svg>
+      Registrarse con Apple
+    </button>
+
+    <div class="divider"><span>o</span></div>
+
+    <form onsubmit="return false">
+      <div class="form-group">
+        <label class="form-label">Nombre completo</label>
+        <input type="text" class="form-input" placeholder="Ej: Matias Gonzalez" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="tu@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Telefono</label>
+        <div class="phone-row">
+          <input type="text" class="phone-prefix" value="+56 9" readonly>
+          <input type="tel" class="form-input" placeholder="8765 4321" autocomplete="tel">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Contrasena</label>
+        <div class="password-wrap">
+          <input type="password" class="form-input" placeholder="Minimo 8 caracteres" id="reg-pw">
+          <button type="button" class="password-toggle" onclick="togglePw('reg-pw',this)">👁</button>
+        </div>
+        <p class="form-hint">Minimo 8 caracteres, una mayuscula y un numero</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirmar contrasena</label>
+        <div class="password-wrap">
+          <input type="password" class="form-input" placeholder="Repite tu contrasena" id="reg-pw2">
+          <button type="button" class="password-toggle" onclick="togglePw('reg-pw2',this)">👁</button>
+        </div>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="tyc">
+        <label for="tyc">Acepto los <a href="#">Terminos y Condiciones</a> y la <a href="#">Politica de Privacidad</a></label>
+      </div>
+      <button type="submit" class="btn btn-navy btn-block">Crear Cuenta</button>
+    </form>
+
+    <div class="auth-links" style="margin-top:16px">
+      Ya tienes cuenta? <a onclick="showSection('login')">Inicia sesion</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3: MI CUENTA
+     ═══════════════════════════════════════════ -->
+<section class="section-panel wide" id="sec-account">
+  <div class="account-layout">
+    <!-- Desktop Sidebar -->
+    <aside class="account-sidebar">
+      <div class="sidebar-nav">
+        <button class="sidebar-item active" data-view="orders"><span class="icon">📦</span> Mis Pedidos</button>
+        <button class="sidebar-item" data-view="data"><span class="icon">👤</span> Mis Datos</button>
+        <button class="sidebar-item" data-view="addresses"><span class="icon">📍</span> Mis Direcciones</button>
+        <button class="sidebar-item" data-view="wishlist"><span class="icon">❤️</span> Wishlist</button>
+        <div class="sidebar-sep"></div>
+        <button class="sidebar-item danger"><span class="icon">🚪</span> Cerrar Sesion</button>
+      </div>
+    </aside>
+
+    <!-- Mobile Tabs -->
+    <div class="account-tabs-mobile">
+      <button class="account-tab-m active" data-view="orders">Pedidos</button>
+      <button class="account-tab-m" data-view="data">Datos</button>
+      <button class="account-tab-m" data-view="addresses">Direcciones</button>
+      <button class="account-tab-m" data-view="wishlist">Wishlist</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="account-main">
+
+      <!-- ── MIS PEDIDOS ── -->
+      <div class="account-view active" id="view-orders">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Mis Pedidos</span>
+            <span style="font-size:12px;color:var(--text-secondary)">4 pedidos</span>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Pedido</th>
+                  <th>Fecha</th>
+                  <th>Productos</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:600">#KNK-0047</td>
+                  <td>28 abr 2026</td>
+                  <td>2 productos</td>
+                  <td style="font-weight:600">$67.980</td>
+                  <td><span class="badge badge-pending">Pendiente</span></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:600">#KNK-0039</td>
+                  <td>22 abr 2026</td>
+                  <td>1 producto</td>
+                  <td style="font-weight:600">$34.990</td>
+                  <td><span class="badge badge-confirmed">Confirmado</span></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:600">#KNK-0031</td>
+                  <td>15 abr 2026</td>
+                  <td>3 productos</td>
+                  <td style="font-weight:600">$112.970</td>
+                  <td><span class="badge badge-shipped">En camino</span></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:600">#KNK-0024</td>
+                  <td>05 abr 2026</td>
+                  <td>1 producto</td>
+                  <td style="font-weight:600">$44.990</td>
+                  <td><span class="badge badge-delivered">Entregado</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MIS DATOS ── -->
+      <div class="account-view" id="view-data">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Mis Datos</span>
+            <button class="btn btn-sm btn-ghost" id="btn-edit-data" onclick="toggleEditData()">Editar</button>
+          </div>
+          <div class="card-body">
+            <form onsubmit="return false">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div class="form-group">
+                  <label class="form-label">Nombre</label>
+                  <input type="text" class="form-input data-field" value="Matias" disabled>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Apellido</label>
+                  <input type="text" class="form-input data-field" value="Gonzalez" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input data-field" value="matias.gonzalez@gmail.com" disabled>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Telefono</label>
+                <div class="phone-row">
+                  <input type="text" class="phone-prefix" value="+56 9" readonly>
+                  <input type="tel" class="form-input data-field" value="8765 4321" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">RUT</label>
+                <input type="text" class="form-input data-field" value="19.876.543-2" disabled>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Fecha de nacimiento</label>
+                <input type="date" class="form-input data-field" value="1998-03-15" disabled>
+              </div>
+              <div id="data-actions" style="display:none;margin-top:12px;display:flex;gap:8px">
+                <button type="submit" class="btn btn-navy" id="btn-save-data">Guardar cambios</button>
+                <button type="button" class="btn btn-ghost" onclick="toggleEditData()">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MIS DIRECCIONES ── -->
+      <div class="account-view" id="view-addresses">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h2 style="font-size:18px;font-weight:700">Mis Direcciones</h2>
+          <button class="btn btn-sm btn-navy">+ Agregar</button>
+        </div>
+        <div class="address-card">
+          <div class="address-info">
+            <div class="address-name">Casa</div>
+            <div class="address-detail">Av. Providencia 1234, Depto 501<br>Providencia, Region Metropolitana<br>Santiago, Chile</div>
+            <span class="address-default">Principal</span>
+          </div>
+          <div class="address-actions">
+            <button class="btn btn-sm btn-ghost">Editar</button>
+            <button class="btn btn-sm btn-danger">Eliminar</button>
+          </div>
+        </div>
+        <div class="address-card">
+          <div class="address-info">
+            <div class="address-name">Oficina</div>
+            <div class="address-detail">Los Militares 5890, Piso 12<br>Las Condes, Region Metropolitana<br>Santiago, Chile</div>
+          </div>
+          <div class="address-actions">
+            <button class="btn btn-sm btn-ghost">Editar</button>
+            <button class="btn btn-sm btn-danger">Eliminar</button>
+          </div>
+        </div>
+        <div class="address-card">
+          <div class="address-info">
+            <div class="address-name">Casa Vina</div>
+            <div class="address-detail">San Martin 456<br>Vina del Mar, Region de Valparaiso<br>Valparaiso, Chile</div>
+          </div>
+          <div class="address-actions">
+            <button class="btn btn-sm btn-ghost">Editar</button>
+            <button class="btn btn-sm btn-danger">Eliminar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── WISHLIST ── -->
+      <div class="account-view" id="view-wishlist">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h2 style="font-size:18px;font-weight:700">Wishlist</h2>
+          <span style="font-size:13px;color:var(--text-secondary)">5 productos</span>
+        </div>
+        <div class="wishlist-grid">
+          <!-- Product 1 -->
+          <div class="wish-card">
+            <div class="wish-img">
+              🛹
+              <button class="wish-remove" title="Eliminar">✕</button>
+            </div>
+            <div class="wish-info">
+              <div class="wish-brand">Grizzly</div>
+              <div class="wish-name">Polera Grizzly OG Bear</div>
+              <div class="wish-price">$24.990</div>
+              <button class="btn btn-sm btn-navy btn-block" style="margin-top:8px">Agregar al carrito</button>
+            </div>
+          </div>
+          <!-- Product 2 -->
+          <div class="wish-card">
+            <div class="wish-img">
+              👟
+              <button class="wish-remove" title="Eliminar">✕</button>
+            </div>
+            <div class="wish-info">
+              <div class="wish-brand">Vans</div>
+              <div class="wish-name">Old Skool Black/White</div>
+              <div class="wish-price">$64.990</div>
+              <button class="btn btn-sm btn-navy btn-block" style="margin-top:8px">Agregar al carrito</button>
+            </div>
+          </div>
+          <!-- Product 3 -->
+          <div class="wish-card">
+            <div class="wish-img">
+              🧢
+              <button class="wish-remove" title="Eliminar">✕</button>
+            </div>
+            <div class="wish-info">
+              <div class="wish-brand">Thrasher</div>
+              <div class="wish-name">Gorro Thrasher Flame</div>
+              <div class="wish-price">$18.990<span class="old">$22.990</span></div>
+              <button class="btn btn-sm btn-navy btn-block" style="margin-top:8px">Agregar al carrito</button>
+            </div>
+          </div>
+          <!-- Product 4 -->
+          <div class="wish-card">
+            <div class="wish-img">
+              🎒
+              <button class="wish-remove" title="Eliminar">✕</button>
+            </div>
+            <div class="wish-info">
+              <div class="wish-brand">Herschel</div>
+              <div class="wish-name">Mochila Classic XL</div>
+              <div class="wish-price">$54.990</div>
+              <button class="btn btn-sm btn-navy btn-block" style="margin-top:8px">Agregar al carrito</button>
+            </div>
+          </div>
+          <!-- Product 5 -->
+          <div class="wish-card">
+            <div class="wish-img">
+              🧦
+              <button class="wish-remove" title="Eliminar">✕</button>
+            </div>
+            <div class="wish-info">
+              <div class="wish-brand">Stance</div>
+              <div class="wish-name">Calcetines Boyd St</div>
+              <div class="wish-price">$12.990</div>
+              <button class="btn btn-sm btn-navy btn-block" style="margin-top:8px">Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /account-main -->
+  </div><!-- /account-layout -->
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4-6: EMAIL TEMPLATES
+     ═══════════════════════════════════════════ -->
+<section class="section-panel wide" id="sec-emails">
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:22px;font-weight:700;letter-spacing:-0.02em">Email Templates</h2>
+    <p style="font-size:14px;color:var(--text-secondary);margin-top:4px">Plantillas transaccionales de Kanki Street. Click para expandir.</p>
+  </div>
+
+  <div class="email-preview-grid">
+
+    <!-- ══════ EMAIL 1: CONFIRMACION PEDIDO ══════ -->
+    <div class="email-preview-card" id="email-1">
+      <div class="email-preview-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="email-preview-tag order">Pedido</span>
+          <div class="email-preview-info">
+            <h3>Confirmacion de Pedido</h3>
+            <p>Detalle del pedido + datos para transferencia</p>
+          </div>
+        </div>
+        <button class="email-preview-toggle" onclick="toggleEmail(1)">Ver email</button>
+      </div>
+      <div class="email-body" id="email-body-1">
+        <div class="email-frame">
+          <div class="email-container">
+            <!-- Header -->
+            <div class="email-header-bar">
+              <div class="email-logo-box"><span>K</span></div>
+              <div class="email-brand">Kanki Street</div>
+              <div class="email-sub">Streetwear Culture</div>
+            </div>
+            <!-- Content -->
+            <div class="email-content">
+              <p class="greeting">Hola <strong>Matias</strong>,</p>
+              <h2>Recibimos tu pedido 🎉</h2>
+              <p>Tu pedido <strong>#KNK-0047</strong> fue registrado exitosamente. A continuacion el detalle de tu compra.</p>
+
+              <!-- Products -->
+              <div style="margin:20px 0">
+                <div class="email-product-row">
+                  <div class="email-product-img">🛹</div>
+                  <div class="email-product-info">
+                    <div class="email-product-name">Polera Grizzly OG Bear Tee</div>
+                    <div class="email-product-detail">Talla: M | Color: Negro | Qty: 1</div>
+                  </div>
+                  <div class="email-product-price">$24.990</div>
+                </div>
+                <div class="email-product-row">
+                  <div class="email-product-img">🧢</div>
+                  <div class="email-product-info">
+                    <div class="email-product-name">Gorro Thrasher Flame Logo</div>
+                    <div class="email-product-detail">Color: Negro | Qty: 1</div>
+                  </div>
+                  <div class="email-product-price">$18.990</div>
+                </div>
+              </div>
+
+              <!-- Totals -->
+              <div style="border-top:1px solid var(--border-w);padding-top:12px">
+                <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:14px">
+                  <span style="color:var(--text-secondary)">Subtotal</span>
+                  <span style="font-weight:500">$43.980</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:14px">
+                  <span style="color:var(--text-secondary)">Envio (Starken)</span>
+                  <span style="font-weight:500">$4.990</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:14px">
+                  <span style="color:var(--text-secondary)">Descuento (KANKI10)</span>
+                  <span style="font-weight:500;color:var(--success)">-$4.398</span>
+                </div>
+              </div>
+              <div class="email-total-row">
+                <span>Total</span>
+                <span>$44.572</span>
+              </div>
+
+              <!-- Bank Transfer -->
+              <div class="email-bank-box">
+                <div class="email-bank-title">🏦 Datos para Transferencia</div>
+                <div class="email-bank-row"><span>Banco</span><span>Banco Estado</span></div>
+                <div class="email-bank-row"><span>Tipo cuenta</span><span>Cuenta Vista</span></div>
+                <div class="email-bank-row"><span>Numero</span><span>12.345.678-9</span></div>
+                <div class="email-bank-row"><span>RUT</span><span>77.234.567-8</span></div>
+                <div class="email-bank-row"><span>Nombre</span><span>Kanki SpA</span></div>
+                <div class="email-bank-row"><span>Email</span><span>pagos@kankistreet.cl</span></div>
+                <div class="email-bank-row"><span>Monto</span><span style="color:var(--navy);font-weight:700">$44.572</span></div>
+              </div>
+
+              <a href="#" class="email-cta">Sube tu comprobante</a>
+
+              <p class="email-note">Tienes 24 horas para realizar la transferencia y subir el comprobante.<br>Si ya pagaste, solo sube la captura y nosotros validamos.</p>
+            </div>
+            <!-- Footer -->
+            <div class="email-footer">
+              <div class="email-social">
+                <a href="#" title="Instagram">IG</a>
+                <a href="#" title="TikTok">TK</a>
+                <a href="#" title="WhatsApp">WA</a>
+              </div>
+              <p>Kanki Street SpA | Santiago, Chile<br>Este email fue enviado a matias.gonzalez@gmail.com</p>
+              <p style="margin:0"><a href="#" style="color:var(--navy);text-decoration:underline;font-size:11px">Desuscribirme</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ EMAIL 2: PEDIDO DESPACHADO ══════ -->
+    <div class="email-preview-card" id="email-2">
+      <div class="email-preview-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="email-preview-tag shipping">Despacho</span>
+          <div class="email-preview-info">
+            <h3>Pedido Despachado</h3>
+            <p>Courier, tracking y estimacion de entrega</p>
+          </div>
+        </div>
+        <button class="email-preview-toggle" onclick="toggleEmail(2)">Ver email</button>
+      </div>
+      <div class="email-body" id="email-body-2">
+        <div class="email-frame">
+          <div class="email-container">
+            <!-- Header -->
+            <div class="email-header-bar">
+              <div class="email-logo-box"><span>K</span></div>
+              <div class="email-brand">Kanki Street</div>
+              <div class="email-sub">Streetwear Culture</div>
+            </div>
+            <!-- Content -->
+            <div class="email-content">
+              <p class="greeting">Hola <strong>Matias</strong>,</p>
+              <h2>Tu pedido va en camino 🚚</h2>
+              <p>Tu pedido <strong>#KNK-0031</strong> ya fue despachado y esta en ruta hacia ti.</p>
+
+              <!-- Tracking Info -->
+              <div class="email-tracking">
+                <div class="email-tracking-row"><span>Courier</span><span>Starken</span></div>
+                <div class="email-tracking-row"><span>N de seguimiento</span><span>STK-987654321</span></div>
+                <div class="email-tracking-row"><span>Entrega estimada</span><span>30 abr - 02 may 2026</span></div>
+                <div class="email-tracking-row"><span>Direccion</span><span>Av. Providencia 1234, Depto 501</span></div>
+              </div>
+
+              <a href="#" class="email-cta">Rastrear envio</a>
+
+              <!-- Products in order -->
+              <div style="margin:20px 0">
+                <p style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">Productos en tu envio:</p>
+                <div class="email-product-row">
+                  <div class="email-product-img">👟</div>
+                  <div class="email-product-info">
+                    <div class="email-product-name">Vans Old Skool</div>
+                    <div class="email-product-detail">Talla: 42 | Color: Black/White</div>
+                  </div>
+                  <div class="email-product-price">$64.990</div>
+                </div>
+                <div class="email-product-row">
+                  <div class="email-product-img">🧦</div>
+                  <div class="email-product-info">
+                    <div class="email-product-name">Calcetines Stance Boyd St</div>
+                    <div class="email-product-detail">Talla: M | Qty: 2</div>
+                  </div>
+                  <div class="email-product-price">$25.980</div>
+                </div>
+                <div class="email-product-row">
+                  <div class="email-product-img">🛹</div>
+                  <div class="email-product-info">
+                    <div class="email-product-name">Polera DGK All Day</div>
+                    <div class="email-product-detail">Talla: L | Color: Blanco</div>
+                  </div>
+                  <div class="email-product-price">$22.000</div>
+                </div>
+              </div>
+
+              <p class="email-note">Cualquier duda sobre tu envio, escribenos por WhatsApp al <strong>+56 9 3456 7890</strong> con tu numero de pedido.</p>
+            </div>
+            <!-- Footer -->
+            <div class="email-footer">
+              <div class="email-social">
+                <a href="#" title="Instagram">IG</a>
+                <a href="#" title="TikTok">TK</a>
+                <a href="#" title="WhatsApp">WA</a>
+              </div>
+              <p>Kanki Street SpA | Santiago, Chile<br>Este email fue enviado a matias.gonzalez@gmail.com</p>
+              <p style="margin:0"><a href="#" style="color:var(--navy);text-decoration:underline;font-size:11px">Desuscribirme</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ EMAIL 3: CARRITO ABANDONADO ══════ -->
+    <div class="email-preview-card" id="email-3">
+      <div class="email-preview-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="email-preview-tag cart">Recuperacion</span>
+          <div class="email-preview-info">
+            <h3>Carrito Abandonado</h3>
+            <p>Recordatorio de productos + urgencia 48h</p>
+          </div>
+        </div>
+        <button class="email-preview-toggle" onclick="toggleEmail(3)">Ver email</button>
+      </div>
+      <div class="email-body" id="email-body-3">
+        <div class="email-frame">
+          <div class="email-container">
+            <!-- Header -->
+            <div class="email-header-bar">
+              <div class="email-logo-box"><span>K</span></div>
+              <div class="email-brand">Kanki Street</div>
+              <div class="email-sub">Streetwear Culture</div>
+            </div>
+            <!-- Content -->
+            <div class="email-content">
+              <p class="greeting">Hey <strong>Matias</strong>,</p>
+              <h2>Dejaste algo en tu carrito 👀</h2>
+              <p>Estos productos te estan esperando, pero el stock es limitado y no podemos reservarlos para siempre.</p>
+
+              <!-- Product hero -->
+              <div class="email-product-hero">
+                <div class="email-product-hero-img">🎒</div>
+                <div class="email-product-hero-name">Mochila Herschel Classic XL</div>
+                <div class="email-product-hero-price">$54.990</div>
+              </div>
+
+              <!-- Urgency -->
+              <div class="email-urgency">
+                <p>⏰ Reservamos tu carrito por <strong>48 horas</strong></p>
+              </div>
+
+              <a href="#" class="email-cta">Completar mi compra</a>
+
+              <p style="font-size:14px;color:var(--text-secondary);text-align:center;margin:16px 0">Usa el codigo <strong style="color:var(--navy)">VUELVE10</strong> y llevate un <strong>10% de descuento</strong> en esta compra.</p>
+
+              <p class="email-note">Si ya completaste la compra, ignora este mensaje.<br>Si tienes dudas, escribenos por WhatsApp al <strong>+56 9 3456 7890</strong>.</p>
+            </div>
+            <!-- Footer -->
+            <div class="email-footer">
+              <div class="email-social">
+                <a href="#" title="Instagram">IG</a>
+                <a href="#" title="TikTok">TK</a>
+                <a href="#" title="WhatsApp">WA</a>
+              </div>
+              <p>Kanki Street SpA | Santiago, Chile<br>Este email fue enviado a matias.gonzalez@gmail.com</p>
+              <p style="margin:0"><a href="#" style="color:var(--navy);text-decoration:underline;font-size:11px">Desuscribirme</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /email-preview-grid -->
+</section>
+
+</main>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+/* ─── SECTION NAVIGATION ─── */
+const sectionTabs = document.querySelectorAll('.section-tab');
+const sectionPanels = document.querySelectorAll('.section-panel');
+
+function showSection(name) {
+  sectionTabs.forEach(t => t.classList.toggle('active', t.dataset.section === name));
+  sectionPanels.forEach(p => p.classList.toggle('active', p.id === 'sec-' + name));
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+sectionTabs.forEach(tab => {
+  tab.addEventListener('click', () => showSection(tab.dataset.section));
+});
+
+/* ─── AUTH SWITCH ─── */
+function switchAuth(mode) {
+  showSection(mode === 'register' ? 'register' : 'login');
+}
+
+/* ─── PASSWORD TOGGLE ─── */
+function togglePw(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
+/* ─── ACCOUNT TABS ─── */
+const sidebarItems = document.querySelectorAll('.sidebar-item[data-view]');
+const mobileTabs = document.querySelectorAll('.account-tab-m[data-view]');
+const accountViews = document.querySelectorAll('.account-view');
+
+function showAccountView(name) {
+  sidebarItems.forEach(i => i.classList.toggle('active', i.dataset.view === name));
+  mobileTabs.forEach(t => t.classList.toggle('active', t.dataset.view === name));
+  accountViews.forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+}
+
+sidebarItems.forEach(item => {
+  if (item.dataset.view) {
+    item.addEventListener('click', () => showAccountView(item.dataset.view));
+  }
+});
+mobileTabs.forEach(tab => {
+  tab.addEventListener('click', () => showAccountView(tab.dataset.view));
+});
+
+/* ─── EDIT DATA TOGGLE ─── */
+function toggleEditData() {
+  const fields = document.querySelectorAll('.data-field');
+  const actions = document.getElementById('data-actions');
+  const btn = document.getElementById('btn-edit-data');
+  const isDisabled = fields[0].disabled;
+
+  fields.forEach(f => f.disabled = !isDisabled);
+  if (isDisabled) {
+    actions.style.display = 'flex';
+    btn.style.display = 'none';
+  } else {
+    actions.style.display = 'none';
+    btn.style.display = '';
+  }
+}
+
+/* ─── EMAIL TOGGLE ─── */
+function toggleEmail(num) {
+  const body = document.getElementById('email-body-' + num);
+  const card = document.getElementById('email-' + num);
+  const btn = card.querySelector('.email-preview-toggle');
+  const isOpen = body.classList.contains('open');
+
+  if (isOpen) {
+    body.classList.remove('open');
+    card.classList.remove('expanded');
+    btn.textContent = 'Ver email';
+  } else {
+    body.classList.add('open');
+    card.classList.add('expanded');
+    btn.textContent = 'Cerrar';
+  }
+}
+</script>
+</body>
+</html>
