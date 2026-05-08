@@ -43,6 +43,94 @@ body::before{
 
 .container{max-width:1400px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
 
+/* ENV RIBBON */
+.env-ribbon{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(90deg,
+    rgba(196,154,58,.12) 0%,
+    rgba(15,27,46,.95) 35%,
+    rgba(15,27,46,.95) 65%,
+    rgba(37,211,102,.12) 100%);
+  border-bottom:1px solid rgba(196,154,58,.25);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:10px 24px;
+}
+.env-inner{
+  max-width:1400px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  flex-wrap:wrap;
+}
+.env-side{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 16px;border-radius:12px;
+  text-decoration:none;
+  transition:all .25s;
+  flex-shrink:0;
+}
+.env-side.qas{
+  background:rgba(196,154,58,.15);
+  border:1px solid rgba(196,154,58,.4);
+  color:var(--cream);
+  cursor:default;
+}
+.env-side.prod{
+  background:rgba(37,211,102,.08);
+  border:1px solid rgba(37,211,102,.3);
+  color:var(--cream);
+}
+.env-side.prod:hover{
+  background:rgba(37,211,102,.18);
+  border-color:#25D366;
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(37,211,102,.25);
+}
+.env-side .dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 12px var(--gold);
+  flex-shrink:0;
+}
+.env-side .dot.live{
+  background:#25D366;
+  box-shadow:0 0 12px #25D366;
+  animation:livePulse 1.6s ease-in-out infinite;
+}
+@keyframes livePulse{
+  0%,100%{box-shadow:0 0 12px #25D366;opacity:1}
+  50%{box-shadow:0 0 18px #25D366,0 0 30px rgba(37,211,102,.5);opacity:.7}
+}
+.env-side .lbl{
+  font-size:9px;letter-spacing:.2em;
+  color:var(--cream);opacity:.55;
+  text-transform:uppercase;font-weight:600;
+}
+.env-side strong{
+  font-size:13px;font-weight:700;
+  color:var(--cream);letter-spacing:.02em;
+}
+.env-side.qas strong{color:var(--gold)}
+.env-side.prod strong{color:#5CE08C}
+.env-side code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  color:var(--cream);opacity:.75;
+  padding:2px 8px;
+  background:rgba(245,237,216,.06);
+  border-radius:6px;
+}
+.env-arrow{
+  font-size:18px;color:var(--gold);opacity:.6;
+  font-weight:300;
+}
+@media(max-width:700px){
+  .env-ribbon{padding:8px 12px}
+  .env-inner{gap:8px;flex-direction:column}
+  .env-arrow{transform:rotate(90deg);font-size:14px;line-height:.5;margin:-4px 0}
+  .env-side .lbl{display:none}
+  .env-side code{font-size:9.5px}
+}
+
 /* HERO */
 .hero{padding:80px 0 60px;text-align:center}
 .hero .kicker{
@@ -351,13 +439,32 @@ body::before{
 </head>
 <body>
 
+<!-- ENV RIBBON — diferenciador QAS vs PROD -->
+<div class="env-ribbon">
+  <div class="env-inner">
+    <div class="env-side qas">
+      <span class="dot"></span>
+      <span class="lbl">ESTÁS EN</span>
+      <strong>QAS · Banco de Maquetas</strong>
+      <code>qas.kanki.smconnection.cl</code>
+    </div>
+    <div class="env-arrow">→</div>
+    <a class="env-side prod" href="https://kanki.smconnection.cl/" target="_blank">
+      <span class="dot live"></span>
+      <span class="lbl">IR A</span>
+      <strong>PROD · Tienda real</strong>
+      <code>kanki.smconnection.cl</code>
+    </a>
+  </div>
+</div>
+
 <div class="container">
 
   <!-- HERO -->
   <section class="hero">
     <div class="kicker">SmartConnection · Panchita</div>
     <h1>KANKI · <em>Banco de Maquetas</em></h1>
-    <p class="lead">Catálogo navegable de todas las maquetas HTML del proyecto. Diseño funcional, mobile-first, estilo surf-streetwear.</p>
+    <p class="lead">Catálogo navegable de todas las maquetas HTML del proyecto. Diseño funcional, mobile-first, estilo surf-streetwear.<br><strong style="color:var(--gold)">⚠ Esto es QAS — son maquetas de diseño, no la tienda en producción.</strong></p>
     <div class="stats">
       <div class="stat-pill"><span class="num">8</span><span class="lbl">Maquetas</span></div>
       <div class="stat-pill"><span class="num">3</span><span class="lbl">Categorías</span></div>
@@ -651,9 +758,14 @@ https://smartconnection-codehub.github.io/kanki-maquetas/embajadores/</pre>
     <h4>K · A · N · K · I</h4>
     <p>Banco de maquetas · Smart Connection · 2026</p>
     <p>Hosting: GitHub Pages · DNS: Route53 · Costo: $0/mes</p>
-    <p style="margin-top:12px">
-      <span class="url-pill">qas.kanki.smconnection.cl</span>
+    <p style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <span class="url-pill">🎨 QAS · qas.kanki.smconnection.cl</span>
+      <a class="url-pill prod" href="https://kanki.smconnection.cl/" target="_blank" style="text-decoration:none">🚀 PROD · kanki.smconnection.cl</a>
     </p>
+    <style>
+      .url-pill.prod{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.4);color:#5CE08C;cursor:pointer;transition:all .2s}
+      .url-pill.prod:hover{background:rgba(37,211,102,.2);border-color:#25D366}
+    </style>
     <p style="margin-top:14px;opacity:.5">Diseño: Panchita · Stack: HTML estático + Supabase Free + Apps Script + Gmail API</p>
   </footer>
 
