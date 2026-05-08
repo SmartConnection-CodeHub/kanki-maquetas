@@ -256,6 +256,69 @@ body::before{
 }
 .doc-card .sub{font-size:11px;color:var(--muted)}
 
+/* WA BLOCK */
+.wa-block{
+  background:linear-gradient(135deg,#1a2540 0%,#0F1B2E 100%);
+  border:1px solid rgba(196,154,58,.25);
+  border-radius:20px;
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+}
+.wa-block::before{
+  content:'';
+  position:absolute;top:0;right:0;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(37,211,102,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.wa-block pre{
+  background:rgba(245,237,216,.04);
+  border:1px solid rgba(245,237,216,.08);
+  border-radius:12px;
+  padding:18px 20px;
+  font-family:'JetBrains Mono','SF Mono',monospace;
+  font-size:12.5px;
+  color:var(--cream);
+  line-height:1.7;
+  white-space:pre-wrap;
+  word-break:break-all;
+  margin-bottom:16px;
+  position:relative;z-index:2;
+}
+.wa-actions{
+  display:flex;gap:10px;flex-wrap:wrap;
+  position:relative;z-index:2;
+}
+.btn-wa{
+  flex:1;min-width:200px;
+  padding:14px 18px;
+  border:none;border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:700;
+  letter-spacing:.05em;
+  cursor:pointer;
+  text-decoration:none;text-align:center;
+  transition:all .25s;
+}
+.btn-wa.primary{
+  background:linear-gradient(135deg,var(--gold) 0%,#D4A84A 100%);
+  color:var(--navy-deep);
+  box-shadow:0 6px 20px var(--gold-glow);
+}
+.btn-wa.primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px var(--gold-glow)}
+.btn-wa.green{
+  background:linear-gradient(135deg,#25D366 0%,#1FAD53 100%);
+  color:#fff;
+  box-shadow:0 6px 20px rgba(37,211,102,.35);
+}
+.btn-wa.green:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(37,211,102,.5)}
+.wa-hint{
+  font-size:11px;color:var(--cream);opacity:.5;
+  margin-top:14px;text-align:center;letter-spacing:.05em;
+  position:relative;z-index:2;
+}
+
 /* FOOTER */
 .footer{
   text-align:center;
@@ -542,6 +605,43 @@ body::before{
       </a>
     </div>
   </section>
+
+  <!-- COMPARTIR WHATSAPP -->
+  <section class="section">
+    <div class="section-head">
+      <h2>📲 <em>Compartir</em> por WhatsApp</h2>
+      <span class="count">4 maquetas principales</span>
+    </div>
+    <div class="wa-block">
+      <pre id="waText">🛒 Storefront (tienda)
+https://smartconnection-codehub.github.io/kanki-maquetas/storefront.html
+
+🖥️ Panel Admin
+https://smartconnection-codehub.github.io/kanki-maquetas/admin.html
+
+🤝 Panel Socios
+https://smartconnection-codehub.github.io/kanki-maquetas/panel-socios.html
+
+🎖️ Embajadores · KANKI Crew
+https://smartconnection-codehub.github.io/kanki-maquetas/embajadores/</pre>
+      <div class="wa-actions">
+        <button class="btn-wa primary" onclick="copyWA(this)">📋 Copiar al portapapeles</button>
+        <a class="btn-wa green" href="https://wa.me/?text=%F0%9F%9B%92%20Storefront%20(tienda)%0Ahttps%3A%2F%2Fsmartconnection-codehub.github.io%2Fkanki-maquetas%2Fstorefront.html%0A%0A%F0%9F%96%A5%EF%B8%8F%20Panel%20Admin%0Ahttps%3A%2F%2Fsmartconnection-codehub.github.io%2Fkanki-maquetas%2Fadmin.html%0A%0A%F0%9F%A4%9D%20Panel%20Socios%0Ahttps%3A%2F%2Fsmartconnection-codehub.github.io%2Fkanki-maquetas%2Fpanel-socios.html%0A%0A%F0%9F%8E%96%EF%B8%8F%20Embajadores%20%C2%B7%20KANKI%20Crew%0Ahttps%3A%2F%2Fsmartconnection-codehub.github.io%2Fkanki-maquetas%2Fembajadores%2F" target="_blank">💬 Abrir en WhatsApp</a>
+      </div>
+      <p class="wa-hint">Pegá esto en cualquier chat para mandar las 4 maquetas de un saque.</p>
+    </div>
+  </section>
+  <script>
+  function copyWA(btn){
+    const t=document.getElementById('waText').innerText;
+    navigator.clipboard.writeText(t).then(()=>{
+      const o=btn.innerText;
+      btn.innerText='✓ Copiado';
+      btn.style.background='var(--success)';
+      setTimeout(()=>{btn.innerText=o;btn.style.background=''},2000);
+    });
+  }
+  </script>
 
   <!-- FOOTER -->
   <footer class="footer">
