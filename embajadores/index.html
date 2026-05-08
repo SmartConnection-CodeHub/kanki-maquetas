@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KANKI CREW · Flujo Embajadores · Panchita</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#1B2F4E;
+  --navy-deep:#0F1B2E;
+  --gold:#C49A3A;
+  --gold-glow:rgba(196,154,58,.35);
+  --cream:#F5EDD8;
+  --cream-soft:#FAF5E5;
+  --sand:#E8D7AB;
+  --ocean:#2E5B8A;
+  --foam:#F0F5F8;
+  --ink:#0A1424;
+  --muted:#6B7B8E;
+  --danger:#C44D3A;
+  --success:#5A8C56;
+}
+html,body{font-family:'Inter',system-ui,sans-serif;background:var(--navy-deep);color:var(--cream);min-height:100vh;overflow-x:auto}
+
+/* SURF BACKGROUND */
+body{
+  background:
+    radial-gradient(ellipse at top,rgba(46,91,138,.4) 0%,transparent 50%),
+    radial-gradient(ellipse at bottom,rgba(196,154,58,.15) 0%,transparent 50%),
+    linear-gradient(180deg,var(--navy-deep) 0%,#0a1424 100%);
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' opacity='.04'%3E%3Cpath d='M0,100 Q300,30 600,100 T1200,100 V200 H0 Z' fill='%23C49A3A'/%3E%3Cpath d='M0,130 Q300,60 600,130 T1200,130 V200 H0 Z' fill='%23F5EDD8'/%3E%3C/svg%3E") repeat-x bottom;
+  background-size:1200px 200px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* HEADER */
+.header{
+  position:relative;
+  padding:40px 60px 20px;
+  z-index:2;
+  text-align:center;
+}
+.header .kicker{
+  font-size:11px;
+  letter-spacing:.4em;
+  color:var(--gold);
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:12px;
+}
+.header h1{
+  font-family:'Playfair Display',serif;
+  font-size:42px;
+  font-weight:900;
+  color:var(--cream);
+  letter-spacing:-.02em;
+  margin-bottom:8px;
+}
+.header h1 em{
+  font-style:italic;
+  color:var(--gold);
+  background:linear-gradient(135deg,var(--gold) 0%,#E5BC5C 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.header .subtitle{
+  font-size:14px;
+  color:var(--muted);
+  max-width:600px;
+  margin:0 auto;
+  line-height:1.6;
+}
+.header .meta{
+  display:inline-flex;
+  gap:20px;
+  margin-top:16px;
+  padding:8px 20px;
+  background:rgba(245,237,216,.05);
+  border:1px solid rgba(245,237,216,.1);
+  border-radius:30px;
+  font-size:11px;
+  color:var(--cream);
+  letter-spacing:.05em;
+}
+.header .meta span strong{color:var(--gold)}
+
+/* GALLERY */
+.gallery{
+  position:relative;
+  z-index:2;
+  padding:30px 60px 80px;
+  display:flex;
+  gap:32px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+}
+.gallery::-webkit-scrollbar{height:8px}
+.gallery::-webkit-scrollbar-track{background:rgba(245,237,216,.05)}
+.gallery::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px}
+
+/* IPHONE FRAME */
+.phone-wrap{
+  flex:0 0 auto;
+  scroll-snap-align:start;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+.phone-label{
+  font-family:'Playfair Display',serif;
+  font-size:13px;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:.05em;
+  text-align:center;
+  font-style:italic;
+}
+.phone-label .num{
+  display:inline-block;
+  width:24px;height:24px;
+  border:1.5px solid var(--gold);
+  border-radius:50%;
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-size:11px;
+  line-height:21px;
+  margin-right:6px;
+  color:var(--gold);
+}
+.phone-cap{
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:.04em;
+  margin-top:2px;
+}
+.iphone{
+  width:340px;
+  height:720px;
+  background:#0A0A0A;
+  border-radius:48px;
+  padding:10px;
+  position:relative;
+  box-shadow:
+    0 0 0 1px rgba(196,154,58,.15),
+    0 30px 80px rgba(0,0,0,.6),
+    0 10px 30px rgba(196,154,58,.1);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s;
+}
+.iphone:hover{
+  transform:translateY(-12px) scale(1.02);
+  box-shadow:
+    0 0 0 1px rgba(196,154,58,.4),
+    0 50px 100px rgba(0,0,0,.7),
+    0 20px 50px rgba(196,154,58,.25);
+}
+.iphone::before{
+  content:'';
+  position:absolute;
+  top:14px;left:50%;transform:translateX(-50%);
+  width:120px;height:30px;
+  background:#0A0A0A;
+  border-radius:0 0 18px 18px;
+  z-index:11;
+}
+.screen{
+  width:100%;
+  height:100%;
+  background:var(--cream);
+  border-radius:38px;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+
+/* STATUS BAR */
+.status-bar{
+  height:44px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  padding:0 28px 6px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+  flex-shrink:0;
+  background:transparent;
+  position:relative;
+  z-index:5;
+}
+.status-bar.dark{color:var(--cream)}
+.status-icons{display:flex;gap:5px;align-items:center;font-size:11px}
+
+/* SCREEN CONTENT */
+.content{
+  flex:1;
+  overflow-y:auto;
+  padding:6px 22px 24px;
+  position:relative;
+}
+.content::-webkit-scrollbar{display:none}
+
+/* COMMON */
+.brand-mark{
+  font-family:'Playfair Display',serif;
+  font-weight:900;
+  font-size:13px;
+  letter-spacing:.4em;
+  color:var(--navy);
+  text-align:center;
+  padding:8px 0 16px;
+}
+.brand-mark.gold{color:var(--gold)}
+.brand-mark.cream{color:var(--cream)}
+
+/* === SCREEN 1 — MODAL IG === */
+.s1{
+  background:
+    radial-gradient(ellipse at top,rgba(196,154,58,.15) 0%,transparent 60%),
+    var(--cream);
+}
+.s1-hero{text-align:center;padding:30px 0 20px}
+.s1-hero .icon-wrap{
+  width:72px;height:72px;
+  margin:0 auto 16px;
+  background:linear-gradient(135deg,var(--gold) 0%,#E5BC5C 100%);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;
+  box-shadow:0 10px 30px var(--gold-glow);
+}
+.s1-hero h2{
+  font-family:'Playfair Display',serif;
+  font-size:28px;
+  font-weight:900;
+  color:var(--navy);
+  letter-spacing:-.02em;
+  line-height:1.1;
+}
+.s1-hero h2 em{font-style:italic;color:var(--gold)}
+.s1-hero p{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:10px;
+  line-height:1.5;
+  padding:0 10px;
+}
+.benefit-list{
+  background:rgba(255,255,255,.6);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(27,47,78,.08);
+  border-radius:16px;
+  padding:18px 16px;
+  margin:16px 0;
+}
+.benefit-list li{
+  list-style:none;
+  display:flex;
+  gap:10px;
+  padding:8px 0;
+  font-size:13px;
+  color:var(--navy);
+  font-weight:500;
+}
+.benefit-list li::before{
+  content:'✓';
+  color:var(--gold);
+  font-weight:800;
+  font-size:14px;
+}
+.input-ig{
+  width:100%;
+  padding:14px 16px;
+  background:#fff;
+  border:1.5px solid var(--sand);
+  border-radius:12px;
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+  color:var(--navy);
+  margin-bottom:12px;
+}
+.input-ig::placeholder{color:#B5A57A}
+.btn{
+  display:block;
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:all .2s;
+  margin-top:10px;
+}
+.btn-primary{
+  background:var(--navy);
+  color:var(--cream);
+  box-shadow:0 8px 20px rgba(27,47,78,.3);
+}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold) 0%,#D4A84A 100%);
+  color:var(--navy-deep);
+  box-shadow:0 8px 24px var(--gold-glow);
+}
+.btn-ghost{
+  background:transparent;
+  color:var(--muted);
+  font-weight:600;
+}
+.btn-line{
+  background:transparent;
+  border:1.5px solid var(--navy);
+  color:var(--navy);
+}
+
+/* === SCREEN 2 — CONFIRMACIÓN CLIENTE === */
+.s2{
+  background:linear-gradient(180deg,var(--cream) 0%,var(--cream-soft) 100%);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding:60px 30px 40px;
+}
+.check-circle{
+  width:80px;height:80px;
+  background:linear-gradient(135deg,var(--success) 0%,#7BAF77 100%);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;color:#fff;
+  box-shadow:0 14px 40px rgba(90,140,86,.35);
+  margin-top:30px;margin-bottom:24px;
+}
+.s2 h3{
+  font-family:'Playfair Display',serif;
+  font-size:26px;color:var(--navy);font-weight:900;
+  margin-bottom:10px;letter-spacing:-.01em;
+}
+.coupon-card{
+  background:#fff;
+  border:1.5px dashed var(--gold);
+  border-radius:16px;
+  padding:18px 20px;
+  margin:20px 0;
+  width:100%;
+  position:relative;
+}
+.coupon-card .label{
+  font-size:10px;letter-spacing:.3em;color:var(--muted);
+  text-transform:uppercase;font-weight:600;
+}
+.coupon-card .code{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:900;color:var(--navy);
+  letter-spacing:.1em;margin:6px 0 4px;
+}
+.coupon-card .valid{font-size:11px;color:var(--gold);font-weight:600}
+.share-prompt{
+  background:rgba(196,154,58,.08);
+  border-radius:12px;
+  padding:14px;
+  font-size:12px;color:var(--navy);
+  margin:12px 0;
+  line-height:1.5;
+}
+
+/* === SCREEN 3 — INVITACIÓN EMBAJADOR === */
+.s3{
+  background:
+    radial-gradient(ellipse at top,rgba(196,154,58,.2) 0%,transparent 50%),
+    linear-gradient(180deg,var(--navy) 0%,#243b5e 100%);
+  color:var(--cream);
+}
+.crew-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;
+  background:rgba(196,154,58,.2);
+  border:1px solid var(--gold);
+  border-radius:30px;
+  font-size:10px;letter-spacing:.3em;
+  color:var(--gold);
+  font-weight:700;
+  text-transform:uppercase;
+  margin:20px auto;
+  display:block;
+  width:fit-content;
+}
+.s3 h2{
+  font-family:'Playfair Display',serif;
+  font-size:32px;
+  font-weight:900;
+  color:var(--cream);
+  text-align:center;
+  margin:8px 0;
+  line-height:1.05;
+  letter-spacing:-.02em;
+}
+.s3 h2 em{color:var(--gold);font-style:italic}
+.s3 .casual{
+  text-align:center;
+  font-size:13px;
+  color:var(--cream);
+  opacity:.85;
+  margin:14px 20px 22px;
+  line-height:1.5;
+  font-style:italic;
+}
+.feature-grid{
+  display:flex;flex-direction:column;gap:10px;
+}
+.feature-row{
+  display:flex;gap:12px;align-items:flex-start;
+  background:rgba(245,237,216,.06);
+  border-left:3px solid var(--gold);
+  padding:12px 14px;
+  border-radius:8px;
+}
+.feature-row .ico{font-size:18px;flex-shrink:0}
+.feature-row .txt{font-size:12.5px;line-height:1.5;color:var(--cream);font-weight:500}
+.feature-row .txt strong{color:var(--gold);font-weight:700}
+.fine-print{
+  text-align:center;
+  font-size:10px;
+  color:var(--cream);
+  opacity:.5;
+  margin:14px 0 8px;
+  letter-spacing:.05em;
+}
+
+/* === SCREEN 4 — GENERAR CÓDIGO === */
+.s4{background:var(--cream)}
+.s4 h3{
+  font-family:'Playfair Display',serif;
+  font-size:24px;color:var(--navy);font-weight:900;
+  text-align:center;margin:24px 0 8px;
+}
+.s4 .intro{
+  font-size:12px;color:var(--muted);
+  text-align:center;line-height:1.5;
+  margin:0 10px 22px;
+}
+.code-builder{
+  background:#fff;
+  border:1.5px solid var(--sand);
+  border-radius:16px;
+  padding:18px 16px;
+  margin-bottom:14px;
+}
+.code-builder .prefix{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:900;color:var(--navy);
+  letter-spacing:.05em;display:block;margin-bottom:8px;
+}
+.code-builder .input-row{
+  display:flex;align-items:center;
+  background:var(--cream-soft);
+  border-radius:10px;
+  padding:0 12px;
+}
+.code-builder input{
+  flex:1;
+  background:transparent;
+  border:none;
+  padding:12px 0;
+  font-family:'Inter',sans-serif;
+  font-size:15px;
+  font-weight:700;
+  color:var(--navy);
+  letter-spacing:.05em;
+  outline:none;
+}
+.code-builder .pen{font-size:14px;color:var(--gold)}
+.preview-final{
+  background:linear-gradient(135deg,var(--navy) 0%,#243b5e 100%);
+  color:var(--cream);
+  border-radius:14px;
+  padding:18px 14px;
+  text-align:center;
+  margin:14px 0;
+  position:relative;
+  box-shadow:0 10px 30px rgba(27,47,78,.3);
+}
+.preview-final .lbl{
+  font-size:9px;letter-spacing:.3em;color:var(--gold);
+  text-transform:uppercase;font-weight:700;margin-bottom:6px;
+}
+.preview-final .code{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:900;letter-spacing:.06em;
+}
+.status-row{
+  display:flex;justify-content:space-between;
+  font-size:11px;color:var(--muted);
+  margin:8px 4px 16px;
+}
+.status-row .ok{color:var(--success);font-weight:600}
+
+/* === SCREEN 5 — INFOGRAFÍA === */
+.s5{
+  background:linear-gradient(180deg,var(--cream) 0%,var(--cream-soft) 100%);
+}
+.s5 h3{
+  font-family:'Playfair Display',serif;
+  font-size:22px;color:var(--navy);font-weight:900;
+  text-align:center;margin:18px 0 16px;
+}
+.flow-diagram{
+  background:#fff;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:18px;
+  text-align:center;
+  border:1px solid rgba(196,154,58,.15);
+}
+.flow-step{
+  font-size:13px;font-weight:600;color:var(--navy);
+  padding:8px 0;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.flow-step .ico{font-size:20px}
+.flow-arrow{color:var(--gold);font-size:20px;line-height:.5}
+.flow-result{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:15px;
+  color:var(--gold);
+  font-weight:700;
+}
+.levels-list{display:flex;flex-direction:column;gap:8px}
+.lvl{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  background:#fff;
+  border-radius:10px;
+  border-left:3px solid;
+}
+.lvl.bronze{border-color:#C97B3F}
+.lvl.silver{border-color:#A8A8A8}
+.lvl.gold{border-color:var(--gold)}
+.lvl.crew{
+  border-color:var(--navy);
+  background:linear-gradient(135deg,var(--navy) 0%,#243b5e 100%);
+  color:var(--cream);
+}
+.lvl .lvl-ico{font-size:18px}
+.lvl .lvl-txt{flex:1}
+.lvl .lvl-name{font-size:12px;font-weight:800;letter-spacing:.05em}
+.lvl .lvl-desc{font-size:10.5px;opacity:.75;margin-top:1px}
+.lvl-here{
+  font-size:9px;color:var(--gold);font-weight:700;
+  background:rgba(196,154,58,.15);
+  padding:3px 8px;border-radius:30px;
+  text-transform:uppercase;letter-spacing:.1em;
+}
+
+/* === SCREEN 6 — EMAIL BIENVENIDA === */
+.s6{
+  background:#F0E8CD;
+  font-family:'Inter',sans-serif;
+}
+.email-frame{
+  background:#fff;
+  margin:18px 14px;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(27,47,78,.12);
+}
+.email-head{
+  background:var(--navy);
+  color:var(--cream);
+  padding:18px;
+  position:relative;
+}
+.email-head .from{font-size:10px;color:var(--gold);letter-spacing:.15em;margin-bottom:4px}
+.email-head .subj{
+  font-family:'Playfair Display',serif;
+  font-size:17px;font-weight:900;line-height:1.3;
+}
+.email-body{padding:18px}
+.email-body .greet{font-size:13px;color:var(--navy);margin-bottom:12px}
+.email-body .code-box{
+  background:var(--cream-soft);
+  padding:12px 14px;border-radius:8px;
+  margin:10px 0;
+  font-size:11.5px;color:var(--navy);
+  font-family:'JetBrains Mono',monospace;
+  border-left:3px solid var(--gold);
+}
+.email-body .code-box strong{color:var(--gold)}
+.email-body h4{
+  font-family:'Playfair Display',serif;
+  font-size:13px;color:var(--navy);
+  margin:16px 0 8px;letter-spacing:.05em;
+}
+.email-tier{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:10px 12px;
+  background:#FAF5E5;
+  border-radius:8px;
+  margin-bottom:6px;
+  font-size:11px;color:var(--navy);line-height:1.45;
+}
+.email-tier.here{
+  background:linear-gradient(90deg,var(--gold) 0%,transparent 100%);
+  color:var(--navy);
+  font-weight:700;
+}
+.email-tier .tag{
+  font-weight:800;font-size:11px;
+  display:flex;flex-direction:column;align-items:center;
+  min-width:50px;
+}
+.email-tier .tag span{font-size:14px}
+.email-tier .desc strong{color:var(--gold)}
+.email-tier.here .desc strong{color:var(--navy)}
+
+/* === SCREEN 7 — DASHBOARD EMBAJADOR === */
+.s7{background:var(--cream)}
+.dash-head{
+  background:linear-gradient(135deg,var(--navy) 0%,#243b5e 100%);
+  color:var(--cream);
+  padding:22px 18px 18px;
+  margin:-6px -22px 16px;
+  border-bottom:3px solid var(--gold);
+}
+.dash-head .crew-tag{
+  font-size:9px;letter-spacing:.3em;color:var(--gold);
+  text-transform:uppercase;font-weight:700;
+}
+.dash-head h3{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:900;margin:6px 0 4px;
+}
+.dash-head .level{
+  display:inline-flex;gap:6px;align-items:center;
+  font-size:11px;font-weight:600;
+}
+.code-display{
+  background:#fff;
+  border:1.5px dashed var(--gold);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:14px;
+}
+.code-display .lbl{font-size:9px;letter-spacing:.25em;color:var(--muted);font-weight:700;text-transform:uppercase}
+.code-display .val{
+  font-family:'Playfair Display',serif;
+  font-size:15px;font-weight:900;color:var(--navy);
+  margin:4px 0 8px;letter-spacing:.05em;
+}
+.code-display .actions{display:flex;gap:6px;margin-top:8px}
+.btn-mini{
+  flex:1;padding:8px;
+  background:var(--navy);color:var(--cream);
+  border:none;border-radius:8px;
+  font-size:10px;font-weight:700;letter-spacing:.05em;
+  cursor:pointer;
+}
+.btn-mini.gold{background:var(--gold);color:var(--navy-deep)}
+.code-display .link-row{
+  font-size:10.5px;color:var(--ocean);
+  font-family:'JetBrains Mono',monospace;
+  word-break:break-all;
+  margin-bottom:4px;
+}
+.metrics-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;
+}
+.metric-card{
+  background:#fff;
+  padding:12px;border-radius:10px;
+  border-top:2px solid var(--gold);
+}
+.metric-card .lbl{
+  font-size:9px;letter-spacing:.15em;color:var(--muted);
+  text-transform:uppercase;font-weight:700;
+}
+.metric-card .val{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:900;color:var(--navy);
+  margin:4px 0 2px;
+}
+.metric-card .bar{
+  height:4px;background:var(--cream-soft);border-radius:2px;overflow:hidden;
+}
+.metric-card .bar .fill{
+  height:100%;background:linear-gradient(90deg,var(--gold) 0%,#E5BC5C 100%);
+  border-radius:2px;
+}
+.metric-card .sub{font-size:10px;color:var(--muted);margin-top:4px}
+.progress-strip{
+  background:#fff;
+  padding:12px 14px;
+  border-radius:10px;
+  margin-bottom:14px;
+}
+.progress-strip .row{
+  display:flex;justify-content:space-between;
+  font-size:10.5px;font-weight:600;color:var(--navy);
+  margin-bottom:6px;
+}
+.progress-strip .row strong{color:var(--gold)}
+.progress-strip .bar{
+  height:6px;background:var(--cream-soft);border-radius:3px;overflow:hidden;
+}
+.progress-strip .fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--gold) 0%,#E5BC5C 100%);
+  border-radius:3px;
+}
+.events-list{margin-bottom:12px}
+.events-list h4{
+  font-size:10px;letter-spacing:.2em;color:var(--muted);
+  text-transform:uppercase;font-weight:700;margin-bottom:8px;
+}
+.event-row{
+  display:flex;gap:10px;align-items:center;
+  background:#fff;padding:10px 12px;
+  border-radius:8px;margin-bottom:4px;
+  font-size:11px;
+  cursor:pointer;
+  transition:background .2s;
+}
+.event-row:hover{background:var(--cream-soft)}
+.event-row .ico{font-size:14px;flex-shrink:0}
+.event-row .text{flex:1;color:var(--navy)}
+.event-row .text strong{color:var(--gold)}
+.event-row .delta{
+  font-size:10px;color:var(--success);font-weight:700;
+}
+.event-row .arrow{color:var(--muted);font-size:10px}
+
+/* === SCREEN 8-13 — NOTIFICATIONS === */
+.notif-screen{
+  background:linear-gradient(180deg,var(--navy-deep) 0%,#1a2540 100%);
+  position:relative;
+}
+.notif-screen::before{
+  content:'';
+  position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 800'%3E%3Cpath d='M0,400 Q100,350 200,400 T400,400 L400,800 L0,800Z' fill='%231B2F4E' opacity='.5'/%3E%3C/svg%3E") no-repeat bottom/cover;
+  opacity:.4;
+}
+.notif-screen .status-bar{color:var(--cream)}
+.lock-clock{
+  text-align:center;color:var(--cream);
+  margin:30px 0 24px;
+}
+.lock-clock .day{
+  font-size:13px;font-weight:500;opacity:.8;letter-spacing:.05em;
+}
+.lock-clock .time{
+  font-family:'Playfair Display',serif;
+  font-size:64px;font-weight:300;line-height:1;
+  letter-spacing:-.04em;margin-top:4px;
+}
+.notif-card{
+  background:rgba(245,237,216,.92);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-radius:18px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+  position:relative;
+  z-index:2;
+}
+.notif-card.dark{
+  background:rgba(27,47,78,.85);
+  color:var(--cream);
+}
+.notif-card .head{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;color:var(--navy);
+  letter-spacing:.05em;margin-bottom:6px;
+}
+.notif-card.dark .head{color:var(--gold)}
+.notif-card .head .dot{
+  width:18px;height:18px;
+  background:var(--gold);
+  border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--navy);font-size:11px;font-weight:900;
+}
+.notif-card .head .time{margin-left:auto;font-weight:500;opacity:.7;font-size:10px}
+.notif-card .title{
+  font-family:'Playfair Display',serif;
+  font-size:16px;font-weight:900;
+  color:var(--navy);margin-bottom:4px;
+  line-height:1.2;
+}
+.notif-card.dark .title{color:var(--cream)}
+.notif-card .body{
+  font-size:12px;color:var(--navy);
+  line-height:1.4;
+}
+.notif-card.dark .body{color:var(--cream);opacity:.9}
+.notif-card .body strong{color:var(--gold)}
+.notif-card .progress{
+  margin-top:8px;height:4px;
+  background:rgba(27,47,78,.15);
+  border-radius:2px;overflow:hidden;
+}
+.notif-card.dark .progress{background:rgba(245,237,216,.2)}
+.notif-card .progress .fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--gold) 0%,#E5BC5C 100%);
+  border-radius:2px;
+}
+.notif-card .delta-big{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:900;
+  color:var(--gold);
+  margin:4px 0;
+  text-align:center;letter-spacing:.05em;
+}
+.notif-card .actions{
+  display:flex;gap:6px;margin-top:8px;
+  border-top:1px solid rgba(27,47,78,.12);
+  padding-top:8px;
+}
+.notif-card.dark .actions{border-color:rgba(245,237,216,.15)}
+.notif-card .act{
+  flex:1;text-align:center;
+  font-size:10px;font-weight:700;
+  color:var(--gold);letter-spacing:.05em;
+  cursor:pointer;
+}
+.notif-card .act.solid{
+  background:var(--gold);color:var(--navy-deep);
+  padding:6px;border-radius:6px;
+}
+
+/* === SCREEN 12 — CHECKOUT === */
+.s12{background:var(--cream-soft)}
+.s12 .head{
+  font-family:'Playfair Display',serif;
+  font-size:18px;color:var(--navy);font-weight:900;
+  padding:14px 0 10px;letter-spacing:.05em;
+}
+.cart-line{
+  display:flex;justify-content:space-between;
+  padding:10px 0;
+  font-size:13px;color:var(--navy);
+  border-bottom:1px solid rgba(27,47,78,.08);
+}
+.cart-line .item{font-weight:500}
+.cart-line .price{font-weight:600}
+.subtotal-line{
+  display:flex;justify-content:space-between;
+  padding:12px 0 16px;
+  font-size:13px;color:var(--navy);font-weight:700;
+}
+.disc-card{
+  background:linear-gradient(135deg,var(--navy) 0%,#243b5e 100%);
+  color:var(--cream);
+  border-radius:14px;
+  padding:14px;
+  margin:8px 0 14px;
+  border:1px solid var(--gold);
+  position:relative;
+}
+.disc-card .badge{
+  position:absolute;top:-8px;right:14px;
+  background:var(--gold);color:var(--navy-deep);
+  padding:2px 10px;border-radius:30px;
+  font-size:9px;font-weight:800;letter-spacing:.15em;
+}
+.disc-card .title{
+  font-family:'Playfair Display',serif;
+  font-size:14px;font-weight:800;
+  margin-bottom:10px;letter-spacing:.03em;
+}
+.disc-card .opt{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:11px;line-height:1.4;
+  padding:6px 0;
+  cursor:pointer;
+}
+.disc-card .opt .radio{
+  width:14px;height:14px;border:1.5px solid var(--cream);border-radius:50%;
+  flex-shrink:0;margin-top:2px;
+}
+.disc-card .opt.selected .radio{
+  background:var(--gold);
+  border-color:var(--gold);
+}
+.disc-card .opt.selected .radio::after{
+  content:'';display:block;
+  width:6px;height:6px;background:var(--navy-deep);
+  border-radius:50%;margin:2px auto 0;
+}
+.disc-card .opt .warn{color:var(--gold);font-size:10px;margin-top:2px}
+.totals-block{
+  background:#fff;
+  border-radius:12px;padding:14px;
+}
+.tot-line{
+  display:flex;justify-content:space-between;
+  font-size:12px;color:var(--navy);
+  padding:5px 0;
+}
+.tot-line.disc{color:var(--success);font-weight:700}
+.tot-line.final{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:900;
+  border-top:1.5px solid var(--navy);
+  padding-top:10px;margin-top:6px;
+  letter-spacing:.04em;
+}
+
+/* === SCREEN 13 — EMAIL MENSUAL === */
+.s13{
+  background:#F0E8CD;
+}
+.email-frame.monthly .email-head{
+  background:linear-gradient(135deg,var(--gold) 0%,#D4A84A 100%);
+  color:var(--navy-deep);
+}
+.email-frame.monthly .email-head .from{color:var(--navy);opacity:.7}
+.stat-row{
+  display:flex;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--cream-soft);
+  font-size:12px;color:var(--navy);
+}
+.stat-row:last-child{border:none}
+.stat-row .lbl{}
+.stat-row .val{font-weight:800;color:var(--gold)}
+.next-meta{
+  background:linear-gradient(135deg,var(--navy) 0%,#243b5e 100%);
+  color:var(--cream);
+  border-radius:10px;padding:12px;
+  margin:12px 0;
+}
+.next-meta .lbl{font-size:9px;letter-spacing:.2em;color:var(--gold);font-weight:700}
+.next-meta .name{
+  font-family:'Playfair Display',serif;
+  font-size:16px;font-weight:900;margin:4px 0 8px;
+}
+.next-meta .bar{height:5px;background:rgba(245,237,216,.2);border-radius:3px;overflow:hidden}
+.next-meta .fill{height:100%;background:var(--gold);border-radius:3px}
+.next-meta .sub{font-size:10px;margin-top:6px;opacity:.85}
+.top-list h4{
+  font-family:'Playfair Display',serif;
+  font-size:13px;color:var(--navy);
+  margin:12px 0 6px;letter-spacing:.05em;
+}
+.top-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;padding:6px 0;color:var(--navy);
+}
+.top-row .who{font-weight:600}
+.top-row .what{flex:1;text-align:center;font-size:10px;color:var(--muted);font-style:italic}
+.top-row .amt{font-weight:800;color:var(--gold)}
+
+/* FOOTER */
+.gallery-footer{
+  text-align:center;
+  padding:30px 60px 60px;
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:.05em;
+  position:relative;z-index:2;
+}
+.gallery-footer p{margin-bottom:6px}
+.gallery-footer strong{color:var(--gold);font-family:'Playfair Display',serif}
+
+@media(max-width:600px){
+  .header{padding:24px 20px}
+  .header h1{font-size:30px}
+  .gallery{padding:20px}
+  .iphone{width:300px;height:640px;border-radius:42px}
+  .screen{border-radius:34px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="kicker">Smart Connection · Panchita</div>
+  <h1>KANKI <em>CREW</em></h1>
+  <p class="subtitle">Programa de embajadores naturales · flujo completo en 13 pantallas mobile · estilo surf-streetwear</p>
+  <div class="meta">
+    <span><strong>13</strong> pantallas</span>
+    <span><strong>Mobile</strong> first 375px</span>
+    <span><strong>Cero</strong> cash outflow</span>
+    <span><strong>Loop</strong> auto-fidelización</span>
+  </div>
+</div>
+
+<div class="gallery">
+
+  <!-- 1. MODAL IG -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">1</span>Modal Instagram</div>
+    <div class="phone-cap">trigger: post primer login · todos los clientes</div>
+    <div class="iphone"><div class="screen s1">
+      <div class="status-bar"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="brand-mark">K · A · N · K · I</div>
+        <div class="s1-hero">
+          <div class="icon-wrap">🎁</div>
+          <h2>+10% en tu <em>próxima</em></h2>
+          <p>Conectá tu Instagram y desbloqueá<br>perks que solo tienen los del crew.</p>
+        </div>
+        <ul class="benefit-list">
+          <li>10% off inmediato (cupón <strong>WELCOME10</strong>)</li>
+          <li>Acceso a drops antes que nadie</li>
+          <li>Te tagueamos si usás la marca</li>
+        </ul>
+        <input class="input-ig" placeholder="@  tu_usuario">
+        <button class="btn btn-gold">CONECTAR Y GANAR 10%</button>
+        <button class="btn btn-ghost">Después</button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 2. CONFIRM CLIENTE -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">2</span>Cliente normal</div>
+    <div class="phone-cap">followers &lt; 5K · cupón válido 7 días</div>
+    <div class="iphone"><div class="screen s2">
+      <div class="status-bar"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="brand-mark">K · A · N · K · I</div>
+      <div class="check-circle">✓</div>
+      <h3>¡Conectado!</h3>
+      <div class="coupon-card">
+        <div class="label">Tu cupón</div>
+        <div class="code">WELCOME10</div>
+        <div class="valid">Válido por 7 días</div>
+      </div>
+      <div class="share-prompt">
+        📲 <strong>Compartí tu compra</strong> y te tageamos en nuestras stories
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:auto">SEGUIR COMPRANDO</button>
+    </div></div>
+  </div>
+
+  <!-- 3. INVITACIÓN CREW -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">3</span>Invitación CREW</div>
+    <div class="phone-cap">followers ≥ 5K · sin mostrar números</div>
+    <div class="iphone"><div class="screen s3">
+      <div class="status-bar dark"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="brand-mark gold">K · A · N · K · I</div>
+        <div class="crew-badge">🎖️ KANKI · CREW</div>
+        <h2>Te queremos <em>en el crew</em></h2>
+        <p class="casual">Vimos tu Instagram y nos copa lo que hacés.<br>Sumate como embajador 🤙</p>
+        <div class="feature-grid">
+          <div class="feature-row">
+            <span class="ico">🎯</span>
+            <span class="txt">Te creamos un <strong>código con tu nombre</strong> (editable)</span>
+          </div>
+          <div class="feature-row">
+            <span class="ico">💸</span>
+            <span class="txt">Cada venta te suma <strong>5% acumulado</strong> para tu próxima compra</span>
+          </div>
+          <div class="feature-row">
+            <span class="ico">🚀</span>
+            <span class="txt">Subís de nivel: <strong>Bronze → Silver → Gold → Crew</strong></span>
+          </div>
+          <div class="feature-row">
+            <span class="ico">⛔</span>
+            <span class="txt">Sin costo. Sin compromiso. <strong>Sin letra chica.</strong></span>
+          </div>
+        </div>
+        <p class="fine-print">— programa solo por invitación —</p>
+        <button class="btn btn-gold">QUIERO SER EMBAJADOR</button>
+        <button class="btn btn-ghost" style="color:var(--cream);opacity:.7">Solo el 10% de cliente</button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 4. GENERAR CÓDIGO -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">4</span>Tu código</div>
+    <div class="phone-cap">editable · prefijo fijo KANKI-</div>
+    <div class="iphone"><div class="screen s4">
+      <div class="status-bar"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="brand-mark">K · A · N · K · I</div>
+        <h3>📝 Tu código único</h3>
+        <p class="intro">Te sugerimos uno con tu nombre, podés cambiarlo si querés.</p>
+        <div class="code-builder">
+          <span class="prefix">KANKI-</span>
+          <div class="input-row">
+            <input type="text" value="TOMASPEREZ">
+            <span class="pen">✏️</span>
+          </div>
+        </div>
+        <div class="preview-final">
+          <div class="lbl">Vista previa final</div>
+          <div class="code">KANKI-TOMASPEREZ</div>
+        </div>
+        <div class="status-row">
+          <span class="ok">✓ Disponible</span>
+          <span>Solo letras y números · máx 15</span>
+        </div>
+        <button class="btn btn-gold">CONFIRMAR MI CÓDIGO</button>
+        <button class="btn btn-ghost">← Volver</button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 5. INFOGRAFÍA -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">5</span>Cómo funciona</div>
+    <div class="phone-cap">flow + niveles · post-creación código</div>
+    <div class="iphone"><div class="screen s5">
+      <div class="status-bar"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="brand-mark">K · A · N · K · I</div>
+        <h3>🎯 Cómo funciona</h3>
+        <div class="flow-diagram">
+          <div class="flow-step"><span class="ico">👤</span>Compartís tu código</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><span class="ico">🛒</span>Alguien compra con él</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-result">+5% para tu próxima compra</div>
+        </div>
+        <div class="levels-list">
+          <div class="lvl bronze">
+            <span class="lvl-ico">🥉</span>
+            <div class="lvl-txt">
+              <div class="lvl-name">BRONZE</div>
+              <div class="lvl-desc">5%/venta · polerón cada 10 tags</div>
+            </div>
+            <span class="lvl-here">acá</span>
+          </div>
+          <div class="lvl silver">
+            <span class="lvl-ico">🥈</span>
+            <div class="lvl-txt">
+              <div class="lvl-name">SILVER · 10 ventas</div>
+              <div class="lvl-desc">7%/venta · drops 24h antes</div>
+            </div>
+          </div>
+          <div class="lvl gold">
+            <span class="lvl-ico">🥇</span>
+            <div class="lvl-txt">
+              <div class="lvl-name">GOLD · 25 ventas</div>
+              <div class="lvl-desc">10%/venta · colab CON TU NOMBRE</div>
+            </div>
+          </div>
+          <div class="lvl crew">
+            <span class="lvl-ico">💎</span>
+            <div class="lvl-txt">
+              <div class="lvl-name">CREW · top 10</div>
+              <div class="lvl-desc">12%/venta · revenue share + diseño</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-gold" style="margin-top:14px">ACTIVAR MI CÓDIGO</button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 6. EMAIL BIENVENIDA -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">6</span>Email bienvenida</div>
+    <div class="phone-cap">automático · explica niveles completos</div>
+    <div class="iphone"><div class="screen s6">
+      <div class="status-bar"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content" style="padding:0">
+        <div class="email-frame">
+          <div class="email-head">
+            <div class="from">crew@smconnection.cl</div>
+            <div class="subj">🎖️ Bienvenido al KANKI Crew</div>
+          </div>
+          <div class="email-body">
+            <div class="greet">Hola Tomás,</div>
+            <div class="code-box">
+              Tu código:<br><strong>KANKI-TOMASPEREZ</strong><br><br>
+              Tu link:<br>kanki.cl/?ref=TOMASPEREZ
+            </div>
+            <h4>📊 Empezás en BRONZE</h4>
+            <div class="email-tier here">
+              <div class="tag"><span>🥉</span>BRONZE</div>
+              <div class="desc"><strong>5%</strong> por cada venta · polerón gratis cada 10 etiquetas</div>
+            </div>
+            <div class="email-tier">
+              <div class="tag"><span>🥈</span>SILVER</div>
+              <div class="desc">A 10 ventas · <strong>7%</strong> · drops anticipados</div>
+            </div>
+            <div class="email-tier">
+              <div class="tag"><span>🥇</span>GOLD</div>
+              <div class="desc">A 25 ventas · <strong>10%</strong> · colab con tu nombre</div>
+            </div>
+            <div class="email-tier">
+              <div class="tag"><span>💎</span>CREW</div>
+              <div class="desc">Top 10 · <strong>12%</strong> + revenue share + diseño</div>
+            </div>
+            <div style="font-size:10px;color:var(--muted);margin-top:10px;text-align:center">Tope acumulable: 80% en cualquier nivel</div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 7. DASHBOARD -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">7</span>Dashboard CREW</div>
+    <div class="phone-cap">código · contadores · eventos clickeables</div>
+    <div class="iphone"><div class="screen s7">
+      <div class="status-bar"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="dash-head">
+          <div class="crew-tag">KANKI · CREW</div>
+          <h3>@tomas_perez</h3>
+          <div class="level">🥉 BRONZE · vas a SILVER</div>
+        </div>
+        <div class="code-display">
+          <div class="lbl">Tu código</div>
+          <div class="val">KANKI-TOMASPEREZ</div>
+          <div class="link-row">kanki.cl/?ref=TOMASPEREZ</div>
+          <div class="actions">
+            <button class="btn-mini">COPIAR</button>
+            <button class="btn-mini gold">COMPARTIR</button>
+          </div>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="lbl">Acumulado</div>
+            <div class="val">45%</div>
+            <div class="bar"><div class="fill" style="width:56%"></div></div>
+            <div class="sub">de 80% tope</div>
+          </div>
+          <div class="metric-card">
+            <div class="lbl">Etiquetas</div>
+            <div class="val">4/10</div>
+            <div class="bar"><div class="fill" style="width:40%"></div></div>
+            <div class="sub">a polerón gratis</div>
+          </div>
+        </div>
+        <div class="progress-strip">
+          <div class="row"><span>Hacia 🥈 SILVER</span><strong>4 / 10 ventas</strong></div>
+          <div class="bar"><div class="fill" style="width:40%"></div></div>
+        </div>
+        <div class="events-list">
+          <h4>Últimos eventos</h4>
+          <div class="event-row">
+            <span class="ico">📸</span>
+            <div class="text"><strong>@maria.lr</strong> te etiquetó · 2h</div>
+            <span class="arrow">→</span>
+          </div>
+          <div class="event-row">
+            <span class="ico">🛒</span>
+            <div class="text">Pedido <strong>#324</strong> · ayer</div>
+            <span class="delta">+5%</span>
+          </div>
+          <div class="event-row">
+            <span class="ico">📸</span>
+            <div class="text"><strong>@caro_h</strong> te etiquetó · ayer</div>
+            <span class="arrow">→</span>
+          </div>
+          <div class="event-row">
+            <span class="ico">🛒</span>
+            <div class="text">Pedido <strong>#318</strong> · 2 días</div>
+            <span class="delta">+5%</span>
+          </div>
+        </div>
+        <button class="btn btn-gold">USAR MI 45% AHORA</button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 8. NOTIF VENTA -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">8</span>+5% para vos</div>
+    <div class="phone-cap">push: alguien usó tu código</div>
+    <div class="iphone"><div class="screen notif-screen">
+      <div class="status-bar dark"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="lock-clock">
+          <div class="day">Martes 14 de mayo</div>
+          <div class="time">9:41</div>
+        </div>
+        <div class="notif-card">
+          <div class="head">
+            <div class="dot">K</div>
+            <span>KANKI</span>
+            <span class="time">ahora</span>
+          </div>
+          <div class="title">💸 +5% para vos</div>
+          <div class="body">
+            <strong>Joaquín P.</strong> compró con tu código.<br>
+            Acumulado: <strong>30% → 35%</strong>
+          </div>
+          <div class="delta-big">35%</div>
+          <div class="progress"><div class="fill" style="width:43%"></div></div>
+          <div class="actions">
+            <span class="act">Compartir código</span>
+            <span class="act solid">Ver panel</span>
+          </div>
+        </div>
+        <div class="notif-card" style="opacity:.7">
+          <div class="head">
+            <div class="dot">K</div>
+            <span>KANKI</span>
+            <span class="time">ayer</span>
+          </div>
+          <div class="title">+5% acumulado</div>
+          <div class="body">Otro pedido con tu código. Vas en <strong>30%</strong>.</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 9. NOTIF TAG -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">9</span>Te etiquetaron</div>
+    <div class="phone-cap">push: tag detectado vía webhook Meta</div>
+    <div class="iphone"><div class="screen notif-screen">
+      <div class="status-bar dark"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="lock-clock">
+          <div class="day">Sábado 18 de mayo</div>
+          <div class="time">14:23</div>
+        </div>
+        <div class="notif-card">
+          <div class="head">
+            <div class="dot">K</div>
+            <span>KANKI</span>
+            <span class="time">2m</span>
+          </div>
+          <div class="title">📸 Te etiquetaron</div>
+          <div class="body">
+            <strong>@carolina_h</strong> te tagueó en su story con tu polerón verde 🔥<br>
+            ✓ +1 etiqueta · vas <strong>5/10</strong> a polerón gratis
+          </div>
+          <div class="progress"><div class="fill" style="width:50%"></div></div>
+          <div class="actions">
+            <span class="act">Ver story</span>
+            <span class="act solid">Repostear</span>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 10. NOTIF SUBE NIVEL + DROP -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">10</span>Subiste a SILVER</div>
+    <div class="phone-cap">push: nivel + drop anticipado privilegio</div>
+    <div class="iphone"><div class="screen notif-screen">
+      <div class="status-bar dark"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="lock-clock">
+          <div class="day">Jueves 23 de mayo</div>
+          <div class="time">11:08</div>
+        </div>
+        <div class="notif-card">
+          <div class="head">
+            <div class="dot">K</div>
+            <span>KANKI · DROP EXCLUSIVO</span>
+            <span class="time">ahora</span>
+          </div>
+          <div class="title">🥈 ¡Subiste a SILVER!</div>
+          <div class="body">
+            Ahora ganás <strong>7% por venta</strong> y acceso a drops <strong>24h antes</strong>.<br><br>
+            Mañana lanzamos <strong>cápsula INVIERNO 26</strong>. Vos podés comprar HOY.<br>
+            Solo 50 personas tienen este link.
+          </div>
+          <div class="actions">
+            <span class="act solid">Ver cápsula privada</span>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 11. POLERÓN GRATIS -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">11</span>🎉 Polerón gratis</div>
+    <div class="phone-cap">push: 10 etiquetas alcanzadas</div>
+    <div class="iphone"><div class="screen notif-screen">
+      <div class="status-bar dark"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="lock-clock">
+          <div class="day">Lunes 27 de mayo</div>
+          <div class="time">17:52</div>
+        </div>
+        <div class="notif-card dark">
+          <div class="head">
+            <div class="dot">K</div>
+            <span>KANKI</span>
+            <span class="time">ahora</span>
+          </div>
+          <div class="title" style="color:var(--gold)">🎉 ¡Lo lograste!</div>
+          <div class="body">
+            10 etiquetas alcanzadas.<br>
+            <strong>Polerón GRATIS</strong> desbloqueado.<br><br>
+            Elegí color y talla.
+          </div>
+          <div class="code-box" style="background:rgba(196,154,58,.15);border:1px dashed var(--gold);padding:10px;border-radius:8px;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);font-weight:700;letter-spacing:.05em;text-align:center">
+            POLERON-GRATIS-PEREZ-1<br>
+            <span style="font-size:9px;opacity:.7;font-weight:500;letter-spacing:0">Válido 60 días</span>
+          </div>
+          <div class="actions">
+            <span class="act solid">Reclamar ahora</span>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 12. CHECKOUT CON DESCUENTO -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">12</span>Checkout con 45%</div>
+    <div class="phone-cap">aplica descuento acumulado · resetea</div>
+    <div class="iphone"><div class="screen s12">
+      <div class="status-bar"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content">
+        <div class="brand-mark">K · A · N · K · I</div>
+        <div class="head">CHECKOUT</div>
+        <div class="cart-line">
+          <span class="item">Polerón Verde Talla M</span>
+          <span class="price">$35.000</span>
+        </div>
+        <div class="cart-line">
+          <span class="item">Cap Negra</span>
+          <span class="price">$18.000</span>
+        </div>
+        <div class="subtotal-line">
+          <span>Subtotal</span>
+          <span>$53.000</span>
+        </div>
+        <div class="disc-card">
+          <span class="badge">CREW</span>
+          <div class="title">🎖️ Tenés 45% acumulado</div>
+          <div class="opt">
+            <div class="radio"></div>
+            <div>No usar — seguir acumulando hasta 80%</div>
+          </div>
+          <div class="opt selected">
+            <div class="radio"></div>
+            <div>
+              Aplicar mi 45% en esta compra
+              <div class="warn">⚠ se resetea a 0% después</div>
+            </div>
+          </div>
+        </div>
+        <div class="totals-block">
+          <div class="tot-line"><span>Subtotal</span><span>$53.000</span></div>
+          <div class="tot-line disc"><span>Embajador (-45%)</span><span>-$23.850</span></div>
+          <div class="tot-line final"><span>TOTAL</span><span>$29.150</span></div>
+        </div>
+        <button class="btn btn-gold" style="margin-top:14px">PAGAR $29.150</button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 13. EMAIL MENSUAL -->
+  <div class="phone-wrap">
+    <div class="phone-label"><span class="num">13</span>Email mensual</div>
+    <div class="phone-cap">resumen + próxima meta + top ventas</div>
+    <div class="iphone"><div class="screen s13">
+      <div class="status-bar"><span>9:41</span><span class="status-icons">●●●●● ◯ 100%</span></div>
+      <div class="content" style="padding:0">
+        <div class="email-frame monthly">
+          <div class="email-head">
+            <div class="from">crew@smconnection.cl</div>
+            <div class="subj">📊 Tu mes · KANKI Crew</div>
+          </div>
+          <div class="email-body">
+            <div class="greet">Hola @tomas_perez,</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Mayo 2026 · resumen automático</div>
+            <div class="stat-row"><span class="lbl">💰 Bonos acumulados</span><span class="val">$42.000</span></div>
+            <div class="stat-row"><span class="lbl">📸 Etiquetas</span><span class="val">8 (12/10 ✓)</span></div>
+            <div class="stat-row"><span class="lbl">🛒 Ventas con código</span><span class="val">6</span></div>
+            <div class="stat-row"><span class="lbl">🆕 Nivel</span><span class="val">🥈 SILVER</span></div>
+            <div class="next-meta">
+              <div class="lbl">Próxima meta</div>
+              <div class="name">🥇 GOLD</div>
+              <div class="bar"><div class="fill" style="width:80%"></div></div>
+              <div class="sub">20 / 25 ventas · falta poco para colab CON TU NOMBRE</div>
+            </div>
+            <div class="top-list">
+              <h4>📌 Top 3 ventas tuyas</h4>
+              <div class="top-row"><span class="who">@maria.lr</span><span class="what">Polerón verde</span><span class="amt">$35K</span></div>
+              <div class="top-row"><span class="who">@ana_g</span><span class="what">Cap negra</span><span class="amt">$18K</span></div>
+              <div class="top-row"><span class="who">@nico_st</span><span class="what">Polerón azul</span><span class="amt">$35K</span></div>
+            </div>
+            <div style="text-align:center;margin-top:14px">
+              <button class="btn btn-primary" style="font-size:11px;padding:10px;width:auto;display:inline-block">VER PANEL COMPLETO →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+</div>
+
+<div class="gallery-footer">
+  <p><strong>Panchita</strong> · Smart Connection · 2026-05-08</p>
+  <p>Tokens CSS Kanki: navy #1B2F4E · gold #C49A3A · cream #F5EDD8 · ocean #2E5B8A</p>
+  <p>Mobile-first 375px · estilo surf-streetwear · efectos glassmorphism + gold glow + olas SVG</p>
+  <p style="margin-top:12px;opacity:.5">scroll →  →  →  para ver las 13 pantallas · hover sobre iPhone para zoom</p>
+</div>
+
+</body>
+</html>
