@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B2F4E">
+<title>The Raider Hoodie — KANKI & Co.</title>
+<style>
+/* ═══ TOKENS ═══ */
+:root{
+  --navy:#1B2F4E; --navy-deep:#0a1525; --gold:#C49A3A; --gold-soft:rgba(196,154,58,0.15);
+  --cream:#F5EDD8; --ink:#1A1A1A; --ink-soft:#4a4a4a; --line:rgba(0,0,0,0.08);
+  --bg:#FAFAF7; --bg-elev:#FFFFFF; --shadow:0 8px 32px rgba(27,47,78,0.08);
+  --header-h:56px; --footer-h:0px; --cta-h:64px;
+  --font-sans:'Inter','SF Pro',system-ui,sans-serif; --font-display:'Playfair Display',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:calc(var(--cta-h) + env(safe-area-inset-bottom,0))}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.sr{position:absolute;left:-9999px}
+
+/* ═══ NAV ═══ */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);height:var(--header-h);display:flex;align-items:center;padding:0 16px;gap:12px}
+.nav-back{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:20px;color:var(--navy);transition:background 0.2s}
+.nav-back:hover{background:var(--gold-soft)}
+.nav-logo{flex:1;text-align:center;font-family:var(--font-display);font-weight:800;font-size:16px;letter-spacing:0.04em;color:var(--navy)}
+.nav-logo em{font-style:italic;color:var(--gold)}
+.nav-icons{display:flex;gap:4px}
+.nav-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:18px;color:var(--navy);position:relative;transition:background 0.2s}
+.nav-icon:hover{background:var(--gold-soft)}
+.cart-badge{position:absolute;top:6px;right:6px;background:var(--gold);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* ═══ BREADCRUMB ═══ */
+.crumb{display:flex;gap:6px;padding:12px 16px 0;font-size:11px;color:var(--ink-soft);letter-spacing:0.06em;text-transform:uppercase;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+.crumb::-webkit-scrollbar{display:none}
+.crumb span,.crumb a{flex-shrink:0}
+.crumb .sep{color:var(--line)}
+.crumb .current{color:var(--navy);font-weight:600}
+
+/* ═══ GALLERY ═══ */
+.gallery{position:relative;background:var(--bg-elev);margin-top:8px}
+.gallery-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;aspect-ratio:1/1}
+.gallery-track::-webkit-scrollbar{display:none}
+.gallery-slide{flex:0 0 100%;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0e8d4 0%,#fdf6e3 100%);position:relative;overflow:hidden}
+.gallery-slide:nth-child(2){background:linear-gradient(135deg,#1B2F4E 0%,#0a1525 100%)}
+.gallery-slide:nth-child(3){background:linear-gradient(135deg,#c49a3a 0%,#8a6c25 100%)}
+.gallery-slide:nth-child(4){background:linear-gradient(135deg,#2a1810 0%,#1a0e08 100%)}
+.gallery-emoji{font-size:7rem;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.15))}
+.gallery-tag{position:absolute;top:14px;left:14px;background:rgba(255,255,255,0.95);color:var(--navy);font-size:10px;font-weight:700;letter-spacing:0.1em;padding:6px 12px;border-radius:100px;text-transform:uppercase}
+.gallery-fav{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;font-size:18px;backdrop-filter:blur(8px);transition:transform 0.2s}
+.gallery-fav:active{transform:scale(0.92)}
+.gallery-fav.active{background:#fff;color:#e63946}
+.gallery-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.5);transition:all 0.3s}
+.dot.active{background:#fff;width:18px;border-radius:3px}
+
+/* ═══ INFO ═══ */
+.info{padding:20px 16px 28px;background:var(--bg-elev)}
+.brand-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.brand-tag{font-size:10px;font-weight:700;letter-spacing:0.18em;color:var(--gold);text-transform:uppercase}
+.stock{font-size:11px;color:#22c55e;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.stock::before{content:"●";font-size:8px}
+.title{font-family:var(--font-display);font-size:clamp(1.6rem,5vw,2.2rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;color:var(--navy);margin-bottom:6px}
+.subtitle{font-size:13px;color:var(--ink-soft);margin-bottom:16px;line-height:1.5}
+.rating{display:flex;align-items:center;gap:6px;margin-bottom:18px;font-size:13px}
+.stars{color:var(--gold);letter-spacing:1px}
+.rating-meta{color:var(--ink-soft);font-size:12px}
+
+.price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.price{font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--navy);letter-spacing:-0.02em}
+.price-old{font-size:14px;color:var(--ink-soft);text-decoration:line-through}
+.discount{background:#22c55e;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:0.04em}
+.installments{font-size:12px;color:var(--ink-soft);margin-bottom:24px}
+.installments strong{color:var(--navy)}
+
+/* ═══ VARIANTES ═══ */
+.variant-block{margin-bottom:22px}
+.variant-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.variant-label-text{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy)}
+.variant-label-value{font-size:12px;color:var(--ink-soft)}
+.variant-label-value strong{color:var(--ink)}
+.variant-options{display:flex;gap:8px;flex-wrap:wrap}
+.color-chip{width:36px;height:36px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all 0.2s;position:relative;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.08)}
+.color-chip.active{border-color:var(--navy);transform:scale(1.05)}
+.size-chip{min-width:48px;height:42px;padding:0 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13px;font-weight:600;color:var(--ink);background:#fff;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
+.size-chip:hover{border-color:var(--ink-soft)}
+.size-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.size-chip.disabled{color:var(--line);text-decoration:line-through;cursor:not-allowed;background:var(--bg)}
+.size-guide-link{font-size:11px;color:var(--gold);font-weight:600;text-decoration:underline;cursor:pointer}
+
+/* ═══ TABS ═══ */
+.tabs{margin-top:8px;background:var(--bg-elev);border-top:8px solid var(--bg)}
+.tab-headers{display:flex;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tab-headers::-webkit-scrollbar{display:none}
+.tab-btn{padding:14px 18px;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0;transition:all 0.2s}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--gold)}
+.tab-pane{display:none;padding:20px 16px;font-size:14px;line-height:1.7;color:var(--ink-soft)}
+.tab-pane.active{display:block}
+.tab-pane p{margin-bottom:12px}
+.tab-pane ul{padding-left:18px;margin-bottom:12px}
+.tab-pane li{margin-bottom:6px}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:13px}
+.spec-grid dt{font-weight:600;color:var(--ink);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px}
+.spec-grid dd{color:var(--ink-soft);margin-bottom:6px}
+
+/* ═══ REVIEWS preview ═══ */
+.reviews-block{padding:24px 16px;background:var(--bg-elev);border-top:8px solid var(--bg)}
+.reviews-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.reviews-title{font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--navy)}
+.reviews-link{font-size:12px;color:var(--gold);font-weight:600;text-decoration:underline}
+.review{padding:14px 0;border-bottom:1px solid var(--line)}
+.review:last-child{border:none;padding-bottom:0}
+.review-head{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px;color:var(--ink-soft)}
+.review-head strong{color:var(--ink);font-size:13px;font-weight:600}
+.review-stars{color:var(--gold);margin-bottom:6px;letter-spacing:1px;font-size:12px}
+.review-text{font-size:13px;line-height:1.6;color:var(--ink-soft)}
+
+/* ═══ RELATED ═══ */
+.related{padding:28px 16px 32px;background:var(--bg)}
+.related-title{font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:14px}
+.related-grid{display:flex;gap:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;margin:0 -16px;padding:0 16px 4px}
+.related-grid::-webkit-scrollbar{display:none}
+.related-card{flex:0 0 160px;scroll-snap-align:start}
+.related-img{width:100%;aspect-ratio:1/1;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:3rem;margin-bottom:8px;background:linear-gradient(135deg,#f0e8d4 0%,#fdf6e3 100%)}
+.related-card:nth-child(2) .related-img{background:linear-gradient(135deg,#1B2F4E,#0a1525)}
+.related-card:nth-child(3) .related-img{background:linear-gradient(135deg,#c49a3a,#8a6c25)}
+.related-card:nth-child(4) .related-img{background:linear-gradient(135deg,#2a1810,#1a0e08)}
+.related-name{font-size:13px;font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:3px}
+.related-price{font-size:13px;color:var(--ink);font-weight:700}
+
+/* ═══ STICKY CTA ═══ */
+.cta-bar{position:fixed;left:0;right:0;bottom:0;z-index:200;background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0));display:flex;gap:8px;align-items:center}
+.qty-stepper{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:12px;height:48px;flex-shrink:0}
+.qty-btn{width:36px;height:48px;font-size:18px;color:var(--navy);font-weight:600;display:flex;align-items:center;justify-content:center}
+.qty-val{min-width:28px;text-align:center;font-weight:700;font-size:14px;color:var(--ink)}
+.cta-add{flex:1;height:48px;background:var(--navy);color:#fff;border-radius:12px;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform 0.15s,background 0.2s}
+.cta-add:active{transform:scale(0.98)}
+.cta-add:hover{background:var(--navy-deep)}
+.cta-add .price-mini{font-weight:600;font-size:11px;opacity:0.7;letter-spacing:0.04em}
+.cta-buy{height:48px;padding:0 16px;background:var(--gold);color:var(--navy);border-radius:12px;font-weight:800;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.15s}
+.cta-buy:active{transform:scale(0.98)}
+
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:calc(var(--cta-h) + 24px + env(safe-area-inset-bottom,0));left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:12px 20px;border-radius:100px;font-size:13px;font-weight:600;box-shadow:var(--shadow);z-index:300;opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:8px}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ DESKTOP (≥768px) ═══ */
+@media(min-width:768px){
+  body{padding-bottom:0}
+  .nav{padding:0 32px;height:64px}
+  .nav-back{display:none}
+  .nav-logo{text-align:left;flex:0 0 auto;font-size:18px}
+  .nav-icons{margin-left:auto}
+  .crumb{padding:20px 32px 0;font-size:12px}
+  .product-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1280px;margin:0 auto;padding:24px 32px}
+  .gallery{margin:0;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);position:sticky;top:84px;align-self:start}
+  .gallery-track{aspect-ratio:1/1.1}
+  .info{padding:0;background:transparent}
+  .price{font-size:2.6rem}
+  .title{font-size:2.6rem}
+  .tabs{margin-top:48px;border-radius:16px;border-top:none;overflow:hidden;box-shadow:var(--shadow);max-width:1280px;margin-left:auto;margin-right:auto;width:calc(100% - 64px)}
+  .reviews-block{max-width:1280px;margin:32px auto;border-radius:16px;border-top:none;box-shadow:var(--shadow);width:calc(100% - 64px);padding:32px 40px}
+  .related{padding:48px 32px;max-width:1280px;margin:0 auto}
+  .related-title{font-size:1.8rem;margin-bottom:24px}
+  .related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;overflow:visible;margin:0;padding:0}
+  .related-card{flex:initial}
+  .cta-bar{position:static;border:none;background:transparent;padding:24px 0 0;backdrop-filter:none}
+  .cta-add{height:56px;font-size:14px}
+  .cta-buy{height:56px;font-size:13px}
+  .qty-stepper{height:56px}
+  .qty-btn{height:56px}
+}
+@media(min-width:1024px){
+  .product-grid{gap:64px;padding:32px 48px}
+  .title{font-size:3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<header class="nav">
+  <button class="nav-back" aria-label="Volver">←</button>
+  <div class="nav-logo">KANKI <em>& Co.</em></div>
+  <div class="nav-icons">
+    <button class="nav-icon" aria-label="Buscar">🔍</button>
+    <button class="nav-icon" aria-label="Carrito">
+      🛒<span class="cart-badge">2</span>
+    </button>
+    <button class="nav-icon" aria-label="Menú">☰</button>
+  </div>
+</header>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<nav class="crumb" aria-label="Migas">
+  <a href="#">Home</a>
+  <span class="sep">/</span>
+  <a href="#">Hombre</a>
+  <span class="sep">/</span>
+  <a href="#">Hoodies</a>
+  <span class="sep">/</span>
+  <span class="current">The Raider Hoodie</span>
+</nav>
+
+<!-- ═══ DETALLE — wrapper que se hace grid en desktop ═══ -->
+<div class="product-grid">
+
+  <!-- ═══ GALERÍA ═══ -->
+  <section class="gallery" aria-label="Imágenes del producto">
+    <span class="gallery-tag">Edición Surf · Drop 2026</span>
+    <button class="gallery-fav" id="favBtn" aria-label="Favorito">♡</button>
+    <div class="gallery-track" id="galleryTrack">
+      <div class="gallery-slide"><span class="gallery-emoji">🌊</span></div>
+      <div class="gallery-slide"><span class="gallery-emoji">🛹</span></div>
+      <div class="gallery-slide"><span class="gallery-emoji">🏄</span></div>
+      <div class="gallery-slide"><span class="gallery-emoji">🌀</span></div>
+    </div>
+    <div class="gallery-dots" id="galleryDots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </section>
+
+  <!-- ═══ INFO ═══ -->
+  <section class="info">
+    <div class="brand-row">
+      <span class="brand-tag">KANKI Originals</span>
+      <span class="stock">En stock — envío 24h</span>
+    </div>
+    <h1 class="title">The Raider Hoodie</h1>
+    <p class="subtitle">Algodón orgánico 380gsm con corte oversize. Bolsillo canguro reforzado, capucha forrada, gráfica bordada en pecho — del mar a la calle.</p>
+
+    <div class="rating" aria-label="4.8 de 5">
+      <span class="stars">★★★★★</span>
+      <span class="rating-meta">4.8 · 184 reseñas</span>
+    </div>
+
+    <div class="price-row">
+      <span class="price" id="priceMain">$54.990</span>
+      <span class="price-old">$69.990</span>
+      <span class="discount">−21%</span>
+    </div>
+    <p class="installments">o 3 cuotas de <strong>$18.330</strong> sin interés con WebPay</p>
+
+    <!-- Color -->
+    <div class="variant-block">
+      <div class="variant-label">
+        <span class="variant-label-text">Color</span>
+        <span class="variant-label-value">Color: <strong id="colorName">Navy</strong></span>
+      </div>
+      <div class="variant-options" id="colorRow">
+        <button class="color-chip active" style="background:#1B2F4E" data-color="Navy" aria-label="Navy"></button>
+        <button class="color-chip" style="background:#F5EDD8" data-color="Cream" aria-label="Cream"></button>
+        <button class="color-chip" style="background:#C49A3A" data-color="Gold" aria-label="Gold"></button>
+        <button class="color-chip" style="background:#2a1810" data-color="Espresso" aria-label="Espresso"></button>
+      </div>
+    </div>
+
+    <!-- Talla -->
+    <div class="variant-block">
+      <div class="variant-label">
+        <span class="variant-label-text">Talla</span>
+        <span class="size-guide-link" onclick="alert('Guía de tallas — pendiente')">📏 Guía de tallas</span>
+      </div>
+      <div class="variant-options" id="sizeRow">
+        <button class="size-chip" data-size="XS">XS</button>
+        <button class="size-chip" data-size="S">S</button>
+        <button class="size-chip active" data-size="M">M</button>
+        <button class="size-chip" data-size="L">L</button>
+        <button class="size-chip disabled" data-size="XL" disabled>XL</button>
+        <button class="size-chip" data-size="XXL">XXL</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ TABS ═══ -->
+<section class="tabs">
+  <div class="tab-headers" role="tablist">
+    <button class="tab-btn active" data-tab="desc" role="tab">Descripción</button>
+    <button class="tab-btn" data-tab="specs" role="tab">Detalles</button>
+    <button class="tab-btn" data-tab="ship" role="tab">Envío & Cambios</button>
+  </div>
+
+  <div class="tab-pane active" data-pane="desc">
+    <p>The Raider es la pieza ancla del drop 2026. Un hoodie pesado, hecho para durar — capucha amplia, cordón engomado y un corte que cae bien sobre cualquier base. Lo construimos con la idea de que vivir el mar y la ciudad no debería costarte el armario.</p>
+    <p>Cada Raider lleva el bordado del logo Kanki en pecho derecho, el badge "From Ocean to Asphalt" en la manga izquierda, y costuras dobles en hombros y bolsillo para soportar mucho uso real.</p>
+  </section>
+
+  <div class="tab-pane" data-pane="specs">
+    <dl class="spec-grid">
+      <div><dt>Material</dt><dd>100% algodón orgánico GOTS</dd></div>
+      <div><dt>Gramaje</dt><dd>380 gsm</dd></div>
+      <div><dt>Corte</dt><dd>Oversize / unisex</dd></div>
+      <div><dt>Capucha</dt><dd>Forrada · cordón engomado</dd></div>
+      <div><dt>Bolsillo</dt><dd>Canguro reforzado</dd></div>
+      <div><dt>Origen</dt><dd>Hecho en Chile 🇨🇱</dd></div>
+      <div><dt>Lavado</dt><dd>Frío 30°C · interior</dd></div>
+      <div><dt>Tinción</dt><dd>Reactiva, baja agua</dd></div>
+    </dl>
+  </div>
+
+  <div class="tab-pane" data-pane="ship">
+    <p><strong>Envío gratis</strong> en compras sobre $40.000 (Chile continental). Despacho en 24-48h hábiles desde Santiago.</p>
+    <ul>
+      <li>RM: hoy o mañana (Pickup point disponible)</li>
+      <li>Regiones: 2-4 días hábiles</li>
+      <li>Cambios y devoluciones gratis dentro de 30 días</li>
+      <li>Garantía de calidad: si la prenda falla, la cambiamos</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ REVIEWS ═══ -->
+<section class="reviews-block">
+  <div class="reviews-head">
+    <h2 class="reviews-title">Lo que dicen del Raider</h2>
+    <a href="#" class="reviews-link">Ver las 184 reseñas →</a>
+  </div>
+
+  <article class="review">
+    <div class="review-head"><strong>Matías P.</strong><span>· Hace 3 días · Talla M</span></div>
+    <div class="review-stars">★★★★★</div>
+    <p class="review-text">El gramaje es brutal — pesa pero abriga sin sobrecalentar. Lo uso surfeando temprano y después me lo dejo todo el día. Vale cada peso.</p>
+  </article>
+
+  <article class="review">
+    <div class="review-head"><strong>Camila R.</strong><span>· Hace 1 semana · Talla S</span></div>
+    <div class="review-stars">★★★★☆</div>
+    <p class="review-text">Súper cómodo y la capucha es enorme (lo cual amo). Le bajo media estrella porque la talla S queda más oversize de lo que esperaba — pedir una más chica si te gusta ajustado.</p>
+  </article>
+
+  <article class="review">
+    <div class="review-head"><strong>Diego L.</strong><span>· Hace 2 semanas · Talla L</span></div>
+    <div class="review-stars">★★★★★</div>
+    <p class="review-text">Lo compré para skate y no se ha movido del closet. El bolsillo canguro tiene un compartimento interno que ni vi al principio — buen detalle.</p>
+  </article>
+</section>
+
+<!-- ═══ RELACIONADOS ═══ -->
+<section class="related">
+  <h2 class="related-title">Va bien con</h2>
+  <div class="related-grid">
+    <a class="related-card" href="#">
+      <div class="related-img">🧢</div>
+      <p class="related-name">5-Panel Tide Cap</p>
+      <p class="related-price">$22.990</p>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-img">👖</div>
+      <p class="related-name">Asphalt Cargo Pant</p>
+      <p class="related-price">$48.990</p>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-img">🧦</div>
+      <p class="related-name">Crew Socks 3-pack</p>
+      <p class="related-price">$12.990</p>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-img">👕</div>
+      <p class="related-name">Raider Tee Basic</p>
+      <p class="related-price">$24.990</p>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ STICKY CTA ═══ -->
+<div class="cta-bar">
+  <div class="qty-stepper" role="group" aria-label="Cantidad">
+    <button class="qty-btn" id="qtyMinus" aria-label="−">−</button>
+    <span class="qty-val" id="qtyVal">1</span>
+    <button class="qty-btn" id="qtyPlus" aria-label="+">+</button>
+  </div>
+  <button class="cta-add" id="addBtn">
+    <span>Agregar — </span><span class="price-mini" id="priceMini">$54.990</span>
+  </button>
+  <button class="cta-buy" aria-label="Comprar ahora">Comprar</button>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast">✓ Agregado al carrito</div>
+
+<script>
+/* ═══ Galería swipe — dots sync ═══ */
+(function(){
+  const track = document.getElementById('galleryTrack');
+  const dots = document.querySelectorAll('#galleryDots .dot');
+  if(!track) return;
+  track.addEventListener('scroll', () => {
+    const idx = Math.round(track.scrollLeft / track.clientWidth);
+    dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+  }, {passive:true});
+  // Click en dot → ir al slide
+  dots.forEach((d,i) => d.addEventListener('click', () => {
+    track.scrollTo({left: i * track.clientWidth, behavior: 'smooth'});
+  }));
+})();
+
+/* ═══ Variantes color ═══ */
+(function(){
+  const row = document.getElementById('colorRow');
+  const name = document.getElementById('colorName');
+  row.addEventListener('click', e => {
+    const chip = e.target.closest('.color-chip');
+    if(!chip) return;
+    row.querySelectorAll('.color-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    name.textContent = chip.dataset.color;
+  });
+})();
+
+/* ═══ Variantes talla ═══ */
+(function(){
+  const row = document.getElementById('sizeRow');
+  row.addEventListener('click', e => {
+    const chip = e.target.closest('.size-chip');
+    if(!chip || chip.disabled) return;
+    row.querySelectorAll('.size-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  });
+})();
+
+/* ═══ Cantidad ═══ */
+(function(){
+  const minus = document.getElementById('qtyMinus');
+  const plus = document.getElementById('qtyPlus');
+  const val = document.getElementById('qtyVal');
+  const priceMini = document.getElementById('priceMini');
+  const unit = 54990;
+  let q = 1;
+  function render(){
+    val.textContent = q;
+    const total = unit * q;
+    priceMini.textContent = '$' + total.toLocaleString('es-CL');
+  }
+  minus.addEventListener('click', () => { if(q > 1){q--; render();} });
+  plus.addEventListener('click', () => { if(q < 9){q++; render();} });
+})();
+
+/* ═══ Tabs ═══ */
+(function(){
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const t = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === t));
+    });
+  });
+})();
+
+/* ═══ Favorito ═══ */
+(function(){
+  const fav = document.getElementById('favBtn');
+  fav.addEventListener('click', () => {
+    fav.classList.toggle('active');
+    fav.textContent = fav.classList.contains('active') ? '♥' : '♡';
+  });
+})();
+
+/* ═══ Add to cart toast ═══ */
+(function(){
+  const add = document.getElementById('addBtn');
+  const toast = document.getElementById('toast');
+  add.addEventListener('click', () => {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  });
+})();
+</script>
+</body>
+</html>
