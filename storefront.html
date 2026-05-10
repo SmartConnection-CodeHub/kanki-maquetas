@@ -213,6 +213,33 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
   body{overflow:auto !important}
 }
 
+/* ── EFECTOS MOBILE (≤768px) — Ken Burns + scroll-zoom out + tap burst ── */
+@media(max-width:768px){
+  /* Ken Burns sutil sobre el video activo — sensación cinematográfica */
+  @keyframes mobileKenBurns{
+    0%{transform:scale(1.02) translate3d(0,0,0)}
+    50%{transform:scale(1.08) translate3d(-1%,-0.6%,0)}
+    100%{transform:scale(1.02) translate3d(0,0,0)}
+  }
+  .hero-vid.active{animation:mobileKenBurns 18s ease-in-out infinite;will-change:transform}
+  .hero-vid{will-change:transform,opacity}
+
+  /* Tap burst — pulso suave con flash gold radial */
+  @keyframes mobileBurst{
+    0%{transform:scale(1.02)}
+    40%{transform:scale(1.08)}
+    100%{transform:scale(1.02)}
+  }
+  .hero-mobile-flash{
+    position:absolute;inset:0;z-index:4;pointer-events:none;
+    background:radial-gradient(circle at 50% 40%, rgba(196,154,58,0.32), transparent 62%);
+    opacity:0;
+  }
+  .hero.burst .hero-vid.active{animation:mobileBurst 0.55s cubic-bezier(0.22,1,0.36,1) both,mobileKenBurns 18s ease-in-out infinite 0.55s}
+  .hero.burst .hero-mobile-flash{animation:mobileFlashFade 0.55s ease-out forwards}
+  @keyframes mobileFlashFade{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+}
+
 /* ─── TYPOGRAPHY ─── */
 .eyebrow{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
 .t-display{font-size:clamp(2.2rem,5vw,3.2rem);font-weight:800;letter-spacing:-0.035em;line-height:1.08;color:var(--navy)}
@@ -926,6 +953,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 
 <!-- ═══ HERO ═══ -->
 <section class="hero" id="heroSection">
+  <div class="hero-mobile-flash" aria-hidden="true"></div>
   <div class="hero-vid-wrap" id="heroBg">
     <div class="hero-vid-fallback"></div>
     <!-- 🌊 V1 — SURF DRONE (preload=metadata + poster para carga rápida mobile) -->
@@ -1698,17 +1726,48 @@ window.addEventListener('scroll',()=>{
   }
   vids.forEach(v => v.el.addEventListener('error', ()=>{ v.el.style.display='none'; }));
 
-  // ── Parallax ──
+  // ── Parallax desktop + scroll-zoom mobile ──
   let ticking = false;
+  const heroEl = document.getElementById('heroSection');
   window.addEventListener('scroll',()=>{
     if(!ticking){ requestAnimationFrame(()=>{
+      const sy = window.scrollY;
       if(window.innerWidth > 767){
-        const o = window.scrollY * 0.28;
+        // Desktop: parallax (Ken Burns NO aplica aquí porque la animación CSS es @media mobile)
+        const o = sy * 0.28;
         vids.forEach(v=>{ v.el.style.transform = `translateY(${o}px)`; });
+      }
+      // Mobile: opacity fade al scroll (el scale lo hace Ken Burns CSS)
+      else if(heroEl){
+        const heroH = heroEl.offsetHeight || window.innerHeight;
+        const progress = Math.min(sy / heroH, 1);
+        vids.forEach(v=>{
+          v.el.style.opacity = v.el.classList.contains('active') ? (1 - progress*0.35) : 0;
+        });
       }
       ticking = false;
     }); ticking = true; }
   });
+
+  // ── Tap burst mobile (sin bloquear scroll, sin overlay) ──
+  (function(){
+    if(!heroEl) return;
+    let bursting = false;
+    function trig(){
+      if(bursting || window.innerWidth > 767) return;
+      bursting = true;
+      heroEl.classList.add('burst');
+      setTimeout(()=>{ heroEl.classList.remove('burst'); bursting = false; }, 580);
+    }
+    heroEl.addEventListener('click', e => {
+      if(e.target.closest('.btn-fill, .btn-ghost, a, button')) return;
+      trig();
+    });
+    heroEl.addEventListener('touchstart', e => {
+      if(e.target.closest('.btn-fill, .btn-ghost, a, button')) return;
+      trig();
+    }, {passive:true});
+  })();
 
   /* ── MUSIC — Lofi Surf Ambient — Web Audio API (100% local, sin internet) ──
      Para usar Island Flow real: descarga el MP3 como "island-flow.mp3"
