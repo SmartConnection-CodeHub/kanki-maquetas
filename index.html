@@ -2799,18 +2799,24 @@ document.querySelectorAll('.product-card').forEach(function(card){
   }
 
   /* FAB cluster mobile · agrupa los 4 FABs en un menú expandible */
-  @media (max-width: 640px) {
-    /* Esconder FABs originales · serán re-pintados por el cluster */
+  @media (max-width: 900px) {
+    /* Esconder FABs originales · cluster los reemplaza */
     .whatsapp-float,
     .back-top,
     #kanki-fab,
     .music-floating,
     #music-player {
-      visibility: hidden !important;
+      position: fixed !important;
+      left: -9999px !important;
+      opacity: 0 !important;
       pointer-events: none !important;
     }
 
     #qasFabCluster { display: flex !important; }
+
+    /* Grid productos: forzar 1 col en QAS preview hasta 600px (iPhone real Safari) */
+    .products-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+    .skeleton-grid { grid-template-columns: 1fr !important; }
   }
 
   #qasFabCluster {
