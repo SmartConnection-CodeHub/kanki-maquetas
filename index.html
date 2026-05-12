@@ -928,7 +928,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
     <a href="https://kanki.smconnection.cl/" target="_blank" style="color:#C49A3A;text-decoration:none;font-weight:700">↗ Ver PRD</a>
   </div>
 </div>
-<style>@keyframes _qasPulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } } body { padding-top:32px !important; } @media (max-width:640px) { #_qasBadge { padding:6px 12px; font-size:9.5px; } #_qasBadge a { font-size:10px; } #_qasBadge span:nth-child(2) { display:none; } body { padding-top:28px !important; } }</style>
+<style>
+  @keyframes _qasPulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+  :root { --qas-badge-h: 32px; }
+  .nav-global { top: var(--qas-badge-h) !important; }
+  .subnav { top: calc(var(--header-h) + var(--qas-badge-h)) !important; }
+  .brand-filter { top: calc(var(--header-h) + var(--subnav-h) + var(--qas-badge-h)) !important; }
+  @media (max-width:640px) {
+    :root { --qas-badge-h: 28px; }
+    #_qasBadge { padding:6px 12px; font-size:9.5px; }
+    #_qasBadge a { font-size:10px; }
+    #_qasBadge > div:first-child > span:last-child { display:none; }
+  }
+</style>
 
 <!-- ═══ NAV GLOBAL ═══ -->
 <nav class="nav-global" id="navGlobal">
