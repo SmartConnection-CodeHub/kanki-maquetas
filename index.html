@@ -916,31 +916,114 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 </head>
 <body>
 
-<!-- ═══ QAS BADGE · ambient stripe arriba ═══ -->
-<div id="_qasBadge" style="position:fixed;top:0;left:0;right:0;z-index:9997;background:linear-gradient(90deg, rgba(196,154,58,0.18), rgba(46,91,138,0.18), rgba(196,154,58,0.18));backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);color:#F5EDD8;font:600 11px 'JetBrains Mono','SF Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;padding:7px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid rgba(196,154,58,0.3)">
-  <div style="display:flex;align-items:center;gap:10px">
-    <span style="width:6px;height:6px;border-radius:50%;background:#C49A3A;box-shadow:0 0 10px #C49A3A;animation:_qasPulse 2s ease-in-out infinite"></span>
-    <span>🛒 KANKI · QAS · STAGING ENVIRONMENT</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:14px">
-    <a href="maquetas.html" style="color:#F5EDD8;opacity:0.7;text-decoration:none;transition:opacity 200ms" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">📐 Maquetas</a>
-    <span style="opacity:0.4">·</span>
-    <a href="https://kanki.smconnection.cl/" target="_blank" style="color:#C49A3A;text-decoration:none;font-weight:700">↗ Ver PRD</a>
+<!-- ═══ QAS BADGE · entra después de la cortina como eco split-panel ═══ -->
+<div id="_qasBadge" aria-hidden="true">
+  <div class="qas-side left"></div>
+  <div class="qas-side right"></div>
+  <div class="qas-content">
+    <div class="qas-left">
+      <span class="qas-dot"></span>
+      <span class="qas-label"><b>KANKI</b> · QAS · staging</span>
+    </div>
+    <div class="qas-right">
+      <a href="maquetas.html" class="qas-link">📐 Maquetas</a>
+      <span class="qas-sep">·</span>
+      <a href="https://kanki.smconnection.cl/" target="_blank" class="qas-link prd">↗ Ver PRD</a>
+    </div>
   </div>
 </div>
 <style>
-  @keyframes _qasPulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-  :root { --qas-badge-h: 32px; }
+  :root { --qas-badge-h: 28px; }
+  #_qasBadge {
+    position:fixed; top:0; left:0; right:0; z-index:7999;
+    height: var(--qas-badge-h);
+    pointer-events:none;
+    overflow:hidden;
+  }
+  #_qasBadge .qas-side {
+    position:absolute; top:0; bottom:0; width:50%;
+    background: linear-gradient(180deg, rgba(15,27,46,0.94), rgba(27,47,78,0.88));
+    backdrop-filter: saturate(160%) blur(20px);
+    -webkit-backdrop-filter: saturate(160%) blur(20px);
+    border-bottom:0.5px solid rgba(196,154,58,0.35);
+    transition: transform 880ms cubic-bezier(0.7,0,0.3,1);
+  }
+  #_qasBadge .qas-side.left  { left:0;  transform: translateX(-100%); }
+  #_qasBadge .qas-side.right { right:0; transform: translateX(100%); }
+  body.qas-shown #_qasBadge .qas-side.left  { transform: translateX(0); }
+  body.qas-shown #_qasBadge .qas-side.right { transform: translateX(0); }
+
+  #_qasBadge .qas-content {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 0 18px;
+    pointer-events:auto;
+    opacity:0;
+    transform: translateY(-8px);
+    transition: opacity 520ms ease 720ms, transform 520ms cubic-bezier(0.16,1,0.3,1) 720ms;
+  }
+  body.qas-shown #_qasBadge .qas-content { opacity:1; transform: translateY(0); }
+
+  #_qasBadge .qas-left, #_qasBadge .qas-right {
+    display:flex; align-items:center; gap:12px;
+    font:600 11px 'JetBrains Mono','SF Mono',monospace;
+    color:#F5EDD8; letter-spacing:0.12em; text-transform:uppercase;
+  }
+  #_qasBadge .qas-dot {
+    width:6px; height:6px; border-radius:50%;
+    background:#C49A3A; box-shadow:0 0 12px #C49A3A;
+    animation:_qasPulse 2.4s ease-in-out infinite 1.4s;
+  }
+  #_qasBadge .qas-label b { color:#C49A3A; letter-spacing:0.18em; }
+  #_qasBadge .qas-link {
+    color:#F5EDD8; text-decoration:none; opacity:0.75;
+    transition: opacity 200ms, transform 200ms; font-weight:500;
+  }
+  #_qasBadge .qas-link:hover { opacity:1; }
+  #_qasBadge .qas-link.prd { color:#C49A3A; font-weight:700; opacity:1; letter-spacing:0.14em; }
+  #_qasBadge .qas-link.prd:hover { transform: translateX(2px); }
+  #_qasBadge .qas-sep { color:#C49A3A; opacity:0.4; }
+
+  @keyframes _qasPulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.35; transform:scale(1.4); } }
+
+  /* Push storefront stickies abajo del badge */
   .nav-global { top: var(--qas-badge-h) !important; }
   .subnav { top: calc(var(--header-h) + var(--qas-badge-h)) !important; }
   .brand-filter { top: calc(var(--header-h) + var(--subnav-h) + var(--qas-badge-h)) !important; }
+
   @media (max-width:640px) {
-    :root { --qas-badge-h: 28px; }
-    #_qasBadge { padding:6px 12px; font-size:9.5px; }
-    #_qasBadge a { font-size:10px; }
-    #_qasBadge > div:first-child > span:last-child { display:none; }
+    :root { --qas-badge-h: 26px; }
+    #_qasBadge .qas-left, #_qasBadge .qas-right { font-size:9.5px; gap:8px; letter-spacing:0.08em; }
+    #_qasBadge .qas-content { padding:0 12px; }
+    #_qasBadge .qas-label { letter-spacing:0.1em; }
+    #_qasBadge .qas-label > span:not(b) { display:none; }
+    #_qasBadge .qas-link { font-size:10px; }
   }
 </style>
+<script>
+  // Sincronización con la cortina · badge entra DESPUÉS de que cortina se abre
+  (function(){
+    function showBadge(){ document.body.classList.add('qas-shown'); }
+    var curtain = document.getElementById('curtain-wrap');
+    if (!curtain || curtain.classList.contains('gone')) {
+      // Sin cortina o ya pasó → mostrar inmediato con stagger pequeño
+      setTimeout(showBadge, 240);
+      return;
+    }
+    // Observar cuando cortina abre (.open) o desaparece (.gone)
+    var obs = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        if (curtain.classList.contains('open') || curtain.classList.contains('gone')) {
+          setTimeout(showBadge, 380); // stagger después del split de la cortina
+          obs.disconnect();
+        }
+      });
+    });
+    obs.observe(curtain, { attributes: true, attributeFilter: ['class'] });
+    // Fallback: si en 8s no abre, mostrar igual
+    setTimeout(showBadge, 8000);
+  })();
+</script>
 
 <!-- ═══ NAV GLOBAL ═══ -->
 <nav class="nav-global" id="navGlobal">
