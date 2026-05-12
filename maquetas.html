@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KANKI · Banco de Maquetas</title>
+<meta name="description" content="Banco de diseño Kanki Street — todas las maquetas HTML en un solo lugar">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#1B2F4E;
+  --navy-deep:#0F1B2E;
+  --gold:#C49A3A;
+  --gold-glow:rgba(196,154,58,.35);
+  --cream:#F5EDD8;
+  --cream-soft:#FAF5E5;
+  --sand:#E8D7AB;
+  --ocean:#2E5B8A;
+  --ink:#0A1424;
+  --muted:#6B7B8E;
+  --success:#5A8C56;
+}
+html,body{font-family:'Inter',system-ui,sans-serif;background:var(--navy-deep);color:var(--cream);min-height:100vh}
+
+body{
+  background:
+    radial-gradient(ellipse at top,rgba(46,91,138,.4) 0%,transparent 50%),
+    radial-gradient(ellipse at bottom,rgba(196,154,58,.15) 0%,transparent 60%),
+    linear-gradient(180deg,var(--navy-deep) 0%,#0a1424 100%);
+  position:relative;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' opacity='.04'%3E%3Cpath d='M0,100 Q300,30 600,100 T1200,100 V200 H0 Z' fill='%23C49A3A'/%3E%3Cpath d='M0,130 Q300,60 600,130 T1200,130 V200 H0 Z' fill='%23F5EDD8'/%3E%3C/svg%3E") repeat-x bottom;
+  background-size:1200px 200px;
+  pointer-events:none;
+  z-index:0;
+}
+
+.container{max-width:1400px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+
+/* ENV RIBBON */
+.env-ribbon{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(90deg,
+    rgba(196,154,58,.12) 0%,
+    rgba(15,27,46,.95) 35%,
+    rgba(15,27,46,.95) 65%,
+    rgba(37,211,102,.12) 100%);
+  border-bottom:1px solid rgba(196,154,58,.25);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:10px 24px;
+}
+.env-inner{
+  max-width:1400px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  flex-wrap:wrap;
+}
+.env-side{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 16px;border-radius:12px;
+  text-decoration:none;
+  transition:all .25s;
+  flex-shrink:0;
+}
+.env-side.qas{
+  background:rgba(196,154,58,.15);
+  border:1px solid rgba(196,154,58,.4);
+  color:var(--cream);
+  cursor:default;
+}
+.env-side.prod{
+  background:rgba(37,211,102,.08);
+  border:1px solid rgba(37,211,102,.3);
+  color:var(--cream);
+}
+.env-side.prod:hover{
+  background:rgba(37,211,102,.18);
+  border-color:#25D366;
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(37,211,102,.25);
+}
+.env-side .dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 12px var(--gold);
+  flex-shrink:0;
+}
+.env-side .dot.live{
+  background:#25D366;
+  box-shadow:0 0 12px #25D366;
+  animation:livePulse 1.6s ease-in-out infinite;
+}
+@keyframes livePulse{
+  0%,100%{box-shadow:0 0 12px #25D366;opacity:1}
+  50%{box-shadow:0 0 18px #25D366,0 0 30px rgba(37,211,102,.5);opacity:.7}
+}
+.env-side .lbl{
+  font-size:9px;letter-spacing:.2em;
+  color:var(--cream);opacity:.55;
+  text-transform:uppercase;font-weight:600;
+}
+.env-side strong{
+  font-size:13px;font-weight:700;
+  color:var(--cream);letter-spacing:.02em;
+}
+.env-side.qas strong{color:var(--gold)}
+.env-side.prod strong{color:#5CE08C}
+.env-side code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  color:var(--cream);opacity:.75;
+  padding:2px 8px;
+  background:rgba(245,237,216,.06);
+  border-radius:6px;
+}
+.env-arrow{
+  font-size:18px;color:var(--gold);opacity:.6;
+  font-weight:300;
+}
+@media(max-width:700px){
+  .env-ribbon{padding:8px 12px}
+  .env-inner{gap:8px;flex-direction:column}
+  .env-arrow{transform:rotate(90deg);font-size:14px;line-height:.5;margin:-4px 0}
+  .env-side .lbl{display:none}
+  .env-side code{font-size:9.5px}
+}
+
+/* HERO */
+.hero{padding:80px 0 60px;text-align:center}
+.hero .kicker{
+  display:inline-block;
+  font-size:11px;letter-spacing:.4em;
+  color:var(--gold);text-transform:uppercase;font-weight:700;
+  padding:6px 16px;
+  background:rgba(196,154,58,.1);
+  border:1px solid rgba(196,154,58,.3);
+  border-radius:30px;
+  margin-bottom:24px;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:64px;font-weight:900;
+  line-height:1;letter-spacing:-.02em;
+  color:var(--cream);
+  margin-bottom:16px;
+}
+.hero h1 em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--gold) 0%,#E5BC5C 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero .lead{
+  font-size:17px;color:var(--cream);opacity:.7;
+  max-width:620px;margin:0 auto;line-height:1.6;
+}
+.hero .stats{
+  display:flex;gap:30px;justify-content:center;
+  margin-top:32px;flex-wrap:wrap;
+}
+.stat-pill{
+  display:flex;align-items:baseline;gap:8px;
+  padding:10px 20px;
+  background:rgba(245,237,216,.05);
+  border:1px solid rgba(245,237,216,.1);
+  border-radius:30px;
+}
+.stat-pill .num{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:900;color:var(--gold);
+}
+.stat-pill .lbl{
+  font-size:11px;letter-spacing:.15em;
+  color:var(--cream);opacity:.6;text-transform:uppercase;
+}
+
+/* SECTION */
+.section{margin-bottom:60px}
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-bottom:20px;
+  margin-bottom:24px;
+  border-bottom:1px solid rgba(245,237,216,.1);
+}
+.section-head h2{
+  font-family:'Playfair Display',serif;
+  font-size:32px;font-weight:900;
+  color:var(--cream);letter-spacing:-.01em;
+}
+.section-head h2 em{font-style:italic;color:var(--gold)}
+.section-head .count{
+  font-size:13px;color:var(--muted);
+  letter-spacing:.05em;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:24px;
+}
+
+/* CARD */
+.card{
+  background:linear-gradient(180deg,#1a2540 0%,#0F1B2E 100%);
+  border:1px solid rgba(245,237,216,.08);
+  border-radius:20px;
+  overflow:hidden;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),
+             box-shadow .35s,
+             border-color .35s;
+  position:relative;
+  display:flex;flex-direction:column;
+}
+.card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(196,154,58,.4);
+  box-shadow:
+    0 30px 60px rgba(0,0,0,.5),
+    0 10px 30px rgba(196,154,58,.15);
+}
+.card .preview{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/10;
+  overflow:hidden;
+  background:var(--cream);
+  border-bottom:1px solid rgba(245,237,216,.08);
+}
+.card .preview iframe{
+  position:absolute;top:0;left:0;
+  width:200%;height:200%;
+  transform:scale(.5);transform-origin:top left;
+  border:0;
+  pointer-events:none;
+}
+.card .preview .overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 0%,transparent 60%,rgba(15,27,46,.4) 100%);
+  pointer-events:none;
+}
+.card .preview .badge{
+  position:absolute;top:12px;left:12px;
+  padding:4px 10px;
+  background:var(--gold);color:var(--navy-deep);
+  font-size:9px;letter-spacing:.2em;font-weight:800;
+  border-radius:20px;text-transform:uppercase;
+  z-index:2;
+}
+.card .preview .badge.new{
+  background:var(--success);color:#fff;
+}
+.card .preview .badge.legacy{
+  background:rgba(245,237,216,.2);color:var(--cream);
+}
+.card .body{
+  padding:20px;flex:1;
+  display:flex;flex-direction:column;
+}
+.card h3{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:900;
+  color:var(--cream);margin-bottom:6px;
+  letter-spacing:-.01em;
+}
+.card .desc{
+  font-size:13px;color:var(--cream);opacity:.65;
+  line-height:1.5;margin-bottom:14px;flex:1;
+}
+.card .meta{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;
+}
+.card .tag{
+  font-size:10px;letter-spacing:.05em;
+  padding:3px 10px;
+  background:rgba(245,237,216,.06);
+  color:var(--cream);opacity:.7;
+  border-radius:20px;
+}
+.card .actions{
+  display:flex;gap:8px;
+  padding-top:14px;
+  border-top:1px solid rgba(245,237,216,.08);
+}
+.card .btn{
+  flex:1;padding:10px;
+  border-radius:8px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;
+  text-decoration:none;text-align:center;
+  transition:all .2s;
+  cursor:pointer;
+}
+.card .btn-primary{
+  background:linear-gradient(135deg,var(--gold) 0%,#D4A84A 100%);
+  color:var(--navy-deep);
+  box-shadow:0 4px 15px var(--gold-glow);
+}
+.card .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px var(--gold-glow)}
+.card .btn-ghost{
+  background:transparent;
+  border:1px solid rgba(245,237,216,.15);
+  color:var(--cream);
+}
+.card .btn-ghost:hover{background:rgba(245,237,216,.05);border-color:rgba(245,237,216,.3)}
+
+/* DOC ITEM (no preview) */
+.docs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;
+}
+.doc-card{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 20px;
+  background:rgba(245,237,216,.04);
+  border:1px solid rgba(245,237,216,.08);
+  border-radius:14px;
+  text-decoration:none;
+  transition:all .25s;
+}
+.doc-card:hover{
+  background:rgba(245,237,216,.08);
+  border-color:var(--gold);
+  transform:translateY(-2px);
+}
+.doc-card .ico{
+  width:42px;height:42px;
+  background:rgba(196,154,58,.15);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+.doc-card .info{flex:1}
+.doc-card .name{
+  font-size:13px;font-weight:700;color:var(--cream);
+  margin-bottom:2px;
+}
+.doc-card .sub{font-size:11px;color:var(--muted)}
+
+/* WA BLOCK */
+.wa-block{
+  background:linear-gradient(135deg,#1a2540 0%,#0F1B2E 100%);
+  border:1px solid rgba(196,154,58,.25);
+  border-radius:20px;
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+}
+.wa-block::before{
+  content:'';
+  position:absolute;top:0;right:0;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(37,211,102,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.wa-block pre{
+  background:rgba(245,237,216,.04);
+  border:1px solid rgba(245,237,216,.08);
+  border-radius:12px;
+  padding:18px 20px;
+  font-family:'JetBrains Mono','SF Mono',monospace;
+  font-size:12.5px;
+  color:var(--cream);
+  line-height:1.7;
+  white-space:pre-wrap;
+  word-break:break-all;
+  margin-bottom:16px;
+  position:relative;z-index:2;
+}
+.wa-actions{
+  display:flex;gap:10px;flex-wrap:wrap;
+  position:relative;z-index:2;
+}
+.btn-wa{
+  flex:1;min-width:200px;
+  padding:14px 18px;
+  border:none;border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:700;
+  letter-spacing:.05em;
+  cursor:pointer;
+  text-decoration:none;text-align:center;
+  transition:all .25s;
+}
+.btn-wa.primary{
+  background:linear-gradient(135deg,var(--gold) 0%,#D4A84A 100%);
+  color:var(--navy-deep);
+  box-shadow:0 6px 20px var(--gold-glow);
+}
+.btn-wa.primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px var(--gold-glow)}
+.btn-wa.green{
+  background:linear-gradient(135deg,#25D366 0%,#1FAD53 100%);
+  color:#fff;
+  box-shadow:0 6px 20px rgba(37,211,102,.35);
+}
+.btn-wa.green:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(37,211,102,.5)}
+.wa-hint{
+  font-size:11px;color:var(--cream);opacity:.5;
+  margin-top:14px;text-align:center;letter-spacing:.05em;
+  position:relative;z-index:2;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:60px 0 80px;
+  color:var(--muted);
+  font-size:12px;letter-spacing:.04em;
+}
+.footer h4{
+  font-family:'Playfair Display',serif;
+  font-size:18px;color:var(--gold);font-weight:900;
+  margin-bottom:8px;font-style:italic;
+}
+.footer p{margin-bottom:6px;line-height:1.6}
+.footer .url-pill{
+  display:inline-block;
+  margin-top:14px;padding:8px 18px;
+  background:rgba(196,154,58,.1);
+  border:1px solid rgba(196,154,58,.3);
+  border-radius:30px;
+  color:var(--gold);font-weight:700;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+
+@media(max-width:600px){
+  .hero h1{font-size:42px}
+  .section-head h2{font-size:24px}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Back to QAS link ═══ -->
+<div style="position:fixed;top:0;left:0;right:0;z-index:9997;background:linear-gradient(90deg, rgba(15,27,46,0.96), rgba(46,91,138,0.94), rgba(15,27,46,0.96));backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);color:#F5EDD8;font:500 11px 'Inter',sans-serif;letter-spacing:0.04em;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid rgba(196,154,58,0.3)">
+  <a href="index.html" style="color:#F5EDD8;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:500"><span style="transition:transform 200ms" onmouseover="this.style.transform='translateX(-3px)'" onmouseout="this.style.transform='translateX(0)'">←</span> Volver al QAS · storefront</a>
+  <span style="font:600 10px 'JetBrains Mono','SF Mono',monospace;letter-spacing:0.12em;color:#C49A3A">📐 GALERÍA DE MAQUETAS</span>
+</div>
+<style>body { padding-top:36px !important; }</style>
+
+
+<!-- ENV RIBBON — diferenciador QAS vs PROD -->
+<div class="env-ribbon">
+  <div class="env-inner">
+    <div class="env-side qas">
+      <span class="dot"></span>
+      <span class="lbl">ESTÁS EN</span>
+      <strong>QAS · Banco de Maquetas</strong>
+      <code>qas.kanki.smconnection.cl</code>
+    </div>
+    <div class="env-arrow">→</div>
+    <a class="env-side prod" href="https://kanki.smconnection.cl/" target="_blank">
+      <span class="dot live"></span>
+      <span class="lbl">IR A</span>
+      <strong>PROD · Tienda real</strong>
+      <code>kanki.smconnection.cl</code>
+    </a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="kicker">SmartConnection · Panchita</div>
+    <h1>KANKI · <em>Banco de Maquetas</em></h1>
+    <p class="lead">Catálogo navegable de todas las maquetas HTML del proyecto. Diseño funcional, mobile-first, estilo surf-streetwear.<br><strong style="color:var(--gold)">⚠ Esto es QAS — son maquetas de diseño, no la tienda en producción.</strong></p>
+    <div class="stats">
+      <div class="stat-pill"><span class="num">8</span><span class="lbl">Maquetas</span></div>
+      <div class="stat-pill"><span class="num">3</span><span class="lbl">Categorías</span></div>
+      <div class="stat-pill"><span class="num">$0</span><span class="lbl">Costo hosting</span></div>
+      <div class="stat-pill"><span class="num">2026</span><span class="lbl">Última versión</span></div>
+    </div>
+  </section>
+
+  <!-- STOREFRONT -->
+  <section class="section">
+    <div class="section-head">
+      <h2>🛒 <em>Storefront</em> — la tienda</h2>
+      <span class="count">3 versiones</span>
+    </div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge new">Última v2</span>
+          <iframe src="storefront-v2.html" loading="lazy" title="Storefront v2"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Storefront v2</h3>
+          <p class="desc">Versión más reciente de la tienda. Apple Nav, hero con video, productos con efectos surf, modo oscuro.</p>
+          <div class="meta">
+            <span class="tag">2026-04-29</span>
+            <span class="tag">659K</span>
+            <span class="tag">v2</span>
+          </div>
+          <div class="actions">
+            <a href="storefront-v2.html" class="btn btn-primary">Abrir</a>
+            <a href="storefront-v2.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge">v1</span>
+          <iframe src="storefront.html" loading="lazy" title="Storefront v1"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Storefront v1</h3>
+          <p class="desc">Primera versión de la tienda con catálogo completo. Conectada a Supabase en producción.</p>
+          <div class="meta">
+            <span class="tag">2026-04-13</span>
+            <span class="tag">642K</span>
+            <span class="tag">prod</span>
+          </div>
+          <div class="actions">
+            <a href="storefront.html" class="btn btn-primary">Abrir</a>
+            <a href="storefront.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge legacy">Classic</span>
+          <iframe src="storefront-classic.html" loading="lazy" title="Storefront classic"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Storefront Classic</h3>
+          <p class="desc">Versión inicial del proyecto. Referencia de diseño original Apple Nav navy/gold.</p>
+          <div class="meta">
+            <span class="tag">2026-04-13</span>
+            <span class="tag">638K</span>
+            <span class="tag">legacy</span>
+          </div>
+          <div class="actions">
+            <a href="storefront-classic.html" class="btn btn-primary">Abrir</a>
+            <a href="storefront-classic.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ADMIN & SOCIOS -->
+  <section class="section">
+    <div class="section-head">
+      <h2>🖥️ <em>Paneles internos</em></h2>
+      <span class="count">2 paneles</span>
+    </div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge new">Activo</span>
+          <iframe src="admin.html" loading="lazy" title="Admin"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Panel Admin</h3>
+          <p class="desc">Panel de administración para gestión de pedidos, productos y clientes. Login con Supabase Auth.</p>
+          <div class="meta">
+            <span class="tag">2026-04-29</span>
+            <span class="tag">94K</span>
+            <span class="tag">CRUD</span>
+          </div>
+          <div class="actions">
+            <a href="admin.html" class="btn btn-primary">Abrir</a>
+            <a href="admin.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge">Solo demo</span>
+          <iframe src="panel-socios.html" loading="lazy" title="Panel Socios"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Panel Socios</h3>
+          <p class="desc">Vista para Co-CEOs: equity, governance, gobierno de la marca. Solo en GitHub Pages, no llega a prod.</p>
+          <div class="meta">
+            <span class="tag">2026-04-14</span>
+            <span class="tag">441K</span>
+            <span class="tag">interno</span>
+          </div>
+          <div class="actions">
+            <a href="panel-socios.html" class="btn btn-primary">Abrir</a>
+            <a href="panel-socios.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- PROGRAMAS & FLOWS -->
+  <section class="section">
+    <div class="section-head">
+      <h2>🎖️ <em>Programas & flows</em></h2>
+      <span class="count">3 maquetas</span>
+    </div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge new">Nuevo · 8 may</span>
+          <iframe src="embajadores/" loading="lazy" title="Embajadores"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>KANKI Crew · Embajadores</h3>
+          <p class="desc">13 pantallas iPhone con flujo completo: invitación auto, código personalizable, niveles Bronze→Crew, dashboard con eventos.</p>
+          <div class="meta">
+            <span class="tag">2026-05-08</span>
+            <span class="tag">48K</span>
+            <span class="tag">13 pantallas</span>
+            <span class="tag">mobile</span>
+          </div>
+          <div class="actions">
+            <a href="embajadores/" class="btn btn-primary">Abrir</a>
+            <a href="embajadores/" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge">Email</span>
+          <iframe src="login-emails.html" loading="lazy" title="Login Emails"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Login & Emails</h3>
+          <p class="desc">Pantallas de autenticación, magic link, recuperación de password y plantillas de emails transaccionales.</p>
+          <div class="meta">
+            <span class="tag">2026-04-29</span>
+            <span class="tag">55K</span>
+            <span class="tag">auth</span>
+          </div>
+          <div class="actions">
+            <a href="login-emails.html" class="btn btn-primary">Abrir</a>
+            <a href="login-emails.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge">Tech</span>
+          <iframe src="arquitectura.html" loading="lazy" title="Arquitectura"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Arquitectura</h3>
+          <p class="desc">Diagrama del stack técnico: GitHub Pages + Supabase + APIs externas + flujo de datos.</p>
+          <div class="meta">
+            <span class="tag">2026-04-29</span>
+            <span class="tag">31K</span>
+            <span class="tag">diagrama</span>
+          </div>
+          <div class="actions">
+            <a href="arquitectura.html" class="btn btn-primary">Abrir</a>
+            <a href="arquitectura.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- DOCS -->
+  <section class="section">
+    <div class="section-head">
+      <h2>📚 <em>Documentos</em> técnicos</h2>
+      <span class="count">4 archivos</span>
+    </div>
+    <div class="docs-grid">
+      <a href="project-structure.md" class="doc-card">
+        <div class="ico">📋</div>
+        <div class="info">
+          <div class="name">project-structure.md</div>
+          <div class="sub">Estructura del proyecto</div>
+        </div>
+      </a>
+      <a href="supabase-schema.sql" class="doc-card">
+        <div class="ico">🗄️</div>
+        <div class="info">
+          <div class="name">supabase-schema.sql</div>
+          <div class="sub">Schema BD producción</div>
+        </div>
+      </a>
+      <a href="products.json" class="doc-card">
+        <div class="ico">📦</div>
+        <div class="info">
+          <div class="name">products.json</div>
+          <div class="sub">Catálogo de productos seed</div>
+        </div>
+      </a>
+      <a href=".env.local.example" class="doc-card">
+        <div class="ico">🔐</div>
+        <div class="info">
+          <div class="name">.env.local.example</div>
+          <div class="sub">Variables de entorno</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- COMPARTIR WHATSAPP -->
+  <section class="section">
+    <div class="section-head">
+      <h2>📲 <em>Compartir</em> por WhatsApp</h2>
+      <span class="count">5 maquetas (incluye catálogo)</span>
+    </div>
+    <div class="wa-block">
+      <pre id="waText">🎨 Banco de Maquetas (catálogo)
+https://smartconnection-codehub.github.io/kanki-maquetas/
+
+🛒 Storefront (tienda)
+https://smartconnection-codehub.github.io/kanki-maquetas/storefront.html
+
+🖥️ Panel Admin
+https://smartconnection-codehub.github.io/kanki-maquetas/admin.html
+
+🤝 Panel Socios
+https://smartconnection-codehub.github.io/kanki-maquetas/panel-socios.html
+
+🎖️ Embajadores · KANKI Crew
+https://smartconnection-codehub.github.io/kanki-maquetas/embajadores/</pre>
+      <div class="wa-actions">
+        <button class="btn-wa primary" onclick="copyWA(this)">📋 Copiar al portapapeles</button>
+        <a class="btn-wa green" href="https://wa.me/?text=%F0%9F%8E%A8%20Banco%20de%20Maquetas%20%28cat%C3%A1logo%29%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/%0A%0A%F0%9F%9B%92%20Storefront%20%28tienda%29%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/storefront.html%0A%0A%F0%9F%96%A5%EF%B8%8F%20Panel%20Admin%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/admin.html%0A%0A%F0%9F%A4%9D%20Panel%20Socios%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/panel-socios.html%0A%0A%F0%9F%8E%96%EF%B8%8F%20Embajadores%20%C2%B7%20KANKI%20Crew%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/embajadores/" target="_blank">💬 Abrir en WhatsApp</a>
+      </div>
+      <p class="wa-hint">Pegá esto en cualquier chat para mandar las 4 maquetas de un saque.</p>
+    </div>
+  </section>
+  <script>
+  function copyWA(btn){
+    const t=document.getElementById('waText').innerText;
+    navigator.clipboard.writeText(t).then(()=>{
+      const o=btn.innerText;
+      btn.innerText='✓ Copiado';
+      btn.style.background='var(--success)';
+      setTimeout(()=>{btn.innerText=o;btn.style.background=''},2000);
+    });
+  }
+  </script>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <h4>K · A · N · K · I</h4>
+    <p>Banco de maquetas · Smart Connection · 2026</p>
+    <p>Hosting: GitHub Pages · DNS: Route53 · Costo: $0/mes</p>
+    <p style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <span class="url-pill">🎨 QAS · qas.kanki.smconnection.cl</span>
+      <a class="url-pill prod" href="https://kanki.smconnection.cl/" target="_blank" style="text-decoration:none">🚀 PROD · kanki.smconnection.cl</a>
+    </p>
+    <style>
+      .url-pill.prod{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.4);color:#5CE08C;cursor:pointer;transition:all .2s}
+      .url-pill.prod:hover{background:rgba(37,211,102,.2);border-color:#25D366}
+    </style>
+    <p style="margin-top:14px;opacity:.5">Diseño: Panchita · Stack: HTML estático + Supabase Free + Apps Script + Gmail API</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
