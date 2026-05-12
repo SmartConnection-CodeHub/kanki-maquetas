@@ -2788,5 +2788,131 @@ document.querySelectorAll('.product-card').forEach(function(card){
   }
 });
 </script>
+
+<!-- ═══ QAS POLISH · scroll offset + FAB cluster mobile ═══ -->
+<style>
+  /* Fix sections h3 cortado detrás del badge + nav sticky */
+  .collection-card h3,
+  section h2[id], section h3[id],
+  .marquee-section, .featured-section, .collections-section, .product-section {
+    scroll-margin-top: calc(var(--header-h, 64px) + var(--qas-badge-h, 28px) + 16px);
+  }
+
+  /* FAB cluster mobile · agrupa los 4 FABs en un menú expandible */
+  @media (max-width: 640px) {
+    /* Esconder FABs originales · serán re-pintados por el cluster */
+    .whatsapp-float,
+    .back-top,
+    #kanki-fab,
+    .music-floating,
+    #music-player {
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    #qasFabCluster { display: flex !important; }
+  }
+
+  #qasFabCluster {
+    display: none;
+    position: fixed;
+    bottom: 20px; right: 16px;
+    z-index: 9998;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 12px;
+  }
+  #qasFabCluster .qfab {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(196,154,58,0.4);
+    background: rgba(15,27,46,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #F5EDD8;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    transition: transform 240ms cubic-bezier(0.16,1,0.3,1), opacity 240ms;
+  }
+  #qasFabCluster .qfab.master {
+    background: linear-gradient(135deg, #C49A3A, #8A6B23);
+    color: #0F1B2E;
+    border-color: rgba(255,255,255,0.18);
+    z-index: 2;
+    transition: transform 320ms cubic-bezier(0.16,1,0.3,1);
+  }
+  #qasFabCluster .qfab.master .icon { transition: transform 320ms cubic-bezier(0.4,0,0.2,1); display:inline-block; }
+  #qasFabCluster.open .qfab.master .icon { transform: rotate(45deg); }
+  #qasFabCluster .qfab.action { opacity: 0; transform: translateY(20px) scale(0.6); pointer-events: none; }
+  #qasFabCluster.open .qfab.action { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  #qasFabCluster.open .qfab.action:nth-child(2) { transition-delay: 60ms; }
+  #qasFabCluster.open .qfab.action:nth-child(3) { transition-delay: 120ms; }
+  #qasFabCluster.open .qfab.action:nth-child(4) { transition-delay: 180ms; }
+  #qasFabCluster.open .qfab.action:nth-child(5) { transition-delay: 240ms; }
+  #qasFabCluster .qfab.action:hover { transform: translateY(0) scale(1.1); }
+  #qasFabCluster .qfab.kanki { background: rgba(15,27,46,0.92); border: 2px solid #C49A3A; }
+  #qasFabCluster .qfab .badge { position:absolute; top:-4px; right:-4px; background:#C49A3A; color:#0F1B2E; font:700 10px sans-serif; min-width:18px; height:18px; padding:0 5px; border-radius:99px; display:flex; align-items:center; justify-content:center; }
+</style>
+
+<div id="qasFabCluster" aria-label="Menú flotante">
+  <!-- Master (siempre visible) -->
+  <button class="qfab master" id="qasFabToggle" aria-label="Abrir menú" aria-expanded="false">
+    <span class="icon">+</span>
+  </button>
+  <!-- Acciones (aparecen al abrir) -->
+  <button class="qfab action" id="qfabBack" title="Subir" aria-label="Subir al inicio">↑</button>
+  <button class="qfab action" id="qfabMusic" title="Música" aria-label="Música">♪</button>
+  <button class="qfab action" id="qfabChat" title="WhatsApp" aria-label="WhatsApp" style="background:#25D366;border-color:rgba(255,255,255,0.18);color:#fff">💬</button>
+  <button class="qfab action kanki" id="qfabKanki" title="Kanki" aria-label="Kanki">
+    <span>K</span>
+    <span class="badge">1</span>
+  </button>
+</div>
+
+<script>
+(function(){
+  var cluster = document.getElementById('qasFabCluster');
+  if (!cluster) return;
+  var toggle = document.getElementById('qasFabToggle');
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = cluster.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (cluster.classList.contains('open') && !cluster.contains(e.target)) {
+      cluster.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Delegar a los FABs reales que existan en el DOM
+  function clickReal(selector){
+    var el = document.querySelector(selector);
+    if (el) { el.click(); return true; }
+    return false;
+  }
+  document.getElementById('qfabBack').addEventListener('click', function(){
+    if (!clickReal('.back-top')) window.scrollTo({top:0, behavior:'smooth'});
+    cluster.classList.remove('open');
+  });
+  document.getElementById('qfabMusic').addEventListener('click', function(){
+    clickReal('.music-floating') || clickReal('#music-player') || clickReal('[class*="music"]');
+    cluster.classList.remove('open');
+  });
+  document.getElementById('qfabChat').addEventListener('click', function(){
+    if (!clickReal('.whatsapp-float')) {
+      window.open('https://wa.me/56912345678', '_blank');
+    }
+    cluster.classList.remove('open');
+  });
+  document.getElementById('qfabKanki').addEventListener('click', function(){
+    clickReal('#kanki-fab') || clickReal('[id*="kanki-fab"]');
+    cluster.classList.remove('open');
+  });
+})();
+</script>
 </body>
 </html>
