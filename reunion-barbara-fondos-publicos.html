@@ -1,0 +1,2782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reunión Bárbara · Kanki & Co · Capital Semilla · 2026-05-11</title>
+<style>
+:root{
+  --navy:#1B2F4E; --navy-mid:#243d63; --navy-deep:#0F1F38;
+  --cream:#F5EDD8; --cream-mid:#EDE3C9; --cream-soft:#FAF5E8; --cream-deep:#D9CDAD;
+  --gold:#C49A3A; --gold-dim:#D4AA4A; --gold-soft:#D4B466; --gold-pale:rgba(196,154,58,0.08);
+  --sage:#6B9B7A; --sage-light:#d4ebe0; --terracotta:#C77A50;
+  --red-urgent:#D04A3A; --red-soft:#FFE8E5;
+  --bg:#ffffff; --bg-alt:#f5f5f7; --bg-warm:#fafaf8;
+  --text:#1d1d1f; --muted:#6e6e73; --subtle:#86868b;
+  --border:#d2d2d7; --border-w:#e8e8ed;
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif;
+  --shadow-sm:0 2px 10px rgba(27,47,78,0.07);
+  --shadow-md:0 6px 24px rgba(27,47,78,0.10);
+  --shadow-lift:0 12px 40px rgba(27,47,78,0.14);
+  --radius:16px; --radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;font-feature-settings:'kern','liga','clig','calt'}
+
+/* HEADER */
+.nav-global{position:fixed;top:0;left:0;right:0;z-index:200;height:48px;background:rgba(27,47,78,0.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(196,154,58,0.25);display:flex;align-items:center;padding:0 24px}
+.nav-inner{max-width:1080px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-mark{width:30px;height:30px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 0 8px rgba(196,154,58,.4))}
+.nav-mark svg{width:100%;height:100%}
+.nav-name{font-size:13px;font-weight:700;color:#fff;letter-spacing:.08em;text-transform:uppercase}
+.nav-sep{font-size:12px;color:rgba(255,255,255,.25);margin:0 4px}
+.nav-sub{font-size:12px;color:rgba(255,255,255,.45);font-weight:400}
+.nav-meeting{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:6px 14px;border-radius:980px;background:var(--gold);color:var(--navy)}
+
+/* SUB-NAV */
+.sub-nav{position:fixed;top:48px;left:0;right:0;z-index:199;height:52px;background:rgba(245,237,216,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-mid);display:flex;align-items:center;padding:0 24px}
+.sub-inner{max-width:1080px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.sub-brand{font-size:13px;font-weight:800;color:var(--navy);letter-spacing:.04em;text-transform:uppercase}
+.sub-links{display:flex;gap:18px;list-style:none;flex-wrap:wrap}
+.sub-links a{text-decoration:none;font-size:11px;font-weight:600;color:var(--navy);opacity:.65;letter-spacing:.06em;text-transform:uppercase;transition:opacity .2s}
+.sub-links a:hover{opacity:1;color:var(--gold)}
+.sub-links a.active{opacity:1;color:var(--gold);position:relative}
+.sub-links a.active::after{content:'';position:absolute;bottom:-18px;left:0;right:0;height:2px;background:var(--gold);border-radius:99px;box-shadow:0 0 8px rgba(212,170,74,.6)}
+
+main{padding-top:100px}
+.container{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* HERO */
+.hero{padding:80px 24px 70px;text-align:center;background:linear-gradient(180deg,var(--bg) 0%,var(--cream-soft) 100%);position:relative;overflow:hidden}
+.hero::before{
+  content:'';position:absolute;inset:-20%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(122,210,124,.22), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 30%, rgba(212,170,74,.18), transparent 65%),
+    radial-gradient(ellipse 70% 60% at 50% 90%, rgba(27,47,78,.10), transparent 70%);
+  animation:meshDrift 16s ease-in-out infinite alternate;
+  filter:blur(40px);
+}
+.hero::after{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+  opacity:.045;mix-blend-mode:multiply;
+}
+.hero > *{position:relative;z-index:1}
+@keyframes meshDrift{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(-30px,20px) scale(1.08)}
+  100%{transform:translate(20px,-15px) scale(1.04)}
+}
+.hero-eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.hero-eyebrow::before{content:'●';color:var(--red-urgent);margin-right:8px;font-size:14px}
+.hero-title{font-size:84px;font-weight:800;line-height:.96;letter-spacing:-.04em;color:var(--navy);max-width:920px;margin:0 auto 24px}
+.hero-title em{color:var(--gold);font-style:normal}
+.hero-sub{font-size:18px;color:var(--muted);max-width:660px;margin:0 auto 40px;line-height:1.6}
+.hero-meta{display:inline-flex;gap:30px;padding:14px 28px;background:var(--cream);border-radius:980px;font-size:12px;letter-spacing:.05em}
+.hero-meta strong{color:var(--navy);font-weight:800}
+.hero-meta span{color:var(--muted)}
+
+/* COUNTDOWN urgencia */
+.urgency-banner{margin:30px auto 0;max-width:680px;padding:22px 32px;background:linear-gradient(135deg,var(--red-soft),#FFF8F6);border:2px solid var(--red-urgent);border-radius:var(--radius);text-align:left;display:flex;align-items:center;gap:24px;position:relative;overflow:hidden}
+.urgency-banner.submitted{background:linear-gradient(135deg,#E8F8E9,#F5FBF5);border-color:#7AD27C}
+.urgency-banner.submitted .urgency-content h3{color:#4DA050}
+.urgency-banner.submitted .urgency-content p strong{color:#3C8540}
+.urgency-banner.submitted::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(122,210,124,.18) 50%,transparent 70%);transform:translateX(-100%);animation:shimmerSweep 6s ease-in-out infinite}
+@keyframes shimmerSweep{0%{transform:translateX(-100%)}50%{transform:translateX(100%)}100%{transform:translateX(100%)}}
+
+/* Kinetic shimmer text · gradiente animado tipo Anthropic/Linear 2026 */
+.kinetic-shimmer{background:linear-gradient(110deg,#1B2F4E 35%,#7AD27C 50%,#1B2F4E 65%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:kineticSweep 3.5s linear infinite;font-style:italic}
+@keyframes kineticSweep{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.urgency-icon{font-size:36px;flex-shrink:0}
+.urgency-content{flex:1}
+.urgency-content h3{font-size:18px;font-weight:800;color:var(--red-urgent);margin-bottom:6px;letter-spacing:-.012em}
+.urgency-content p{font-size:13px;color:var(--text);line-height:1.55;margin:0}
+.urgency-content p strong{color:var(--red-urgent);font-weight:700}
+
+/* SECTION */
+section.block{padding:80px 0;border-bottom:1px solid var(--border-w)}
+section.dark{background:var(--navy);color:var(--cream)}
+section.dark h2,section.dark h3,section.dark h4{color:#fff}
+section.dark .eyebrow{color:var(--gold)}
+section.dark p{color:rgba(245,237,216,.75)}
+section.dark .card{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);color:#fff}
+section.dark .card h3{color:#fff}
+section.dark .card p{color:rgba(255,255,255,.75)}
+section.cream{background:var(--cream-soft)}
+
+.eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-left:32px;position:relative}
+.eyebrow::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:20px;height:2px;background:var(--gold)}
+h2.title{font-size:54px;font-weight:800;line-height:1;letter-spacing:-.035em;color:var(--navy);margin-bottom:22px;max-width:880px}
+h2.title em{color:var(--gold);font-style:normal}
+.lead{font-size:17px;color:var(--muted);max-width:680px;line-height:1.65;margin-bottom:50px}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:30px}
+.card{background:var(--bg);border:1px solid var(--border-w);border-radius:var(--radius);padding:26px;transition:transform .2s,box-shadow .2s,border-color .2s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--gold)}
+.card .badge{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:99px;margin-bottom:14px;background:var(--gold-pale);color:var(--gold)}
+.card .badge.urgent{background:var(--red-soft);color:var(--red-urgent)}
+.card .badge.ok{background:var(--sage-light);color:var(--sage)}
+.card h3{font-size:21px;font-weight:800;line-height:1.18;letter-spacing:-.018em;color:var(--navy);margin-bottom:8px}
+.card .amount{font-size:32px;font-weight:800;color:var(--gold);letter-spacing:-.025em;margin-bottom:14px;line-height:1}
+.card .amount small{font-size:13px;color:var(--muted);font-weight:600;letter-spacing:0}
+.card p{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:14px}
+.card .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-w)}
+.card .chip{font-size:10px;font-weight:600;color:var(--navy);background:var(--cream-soft);padding:5px 10px;border-radius:99px;letter-spacing:.04em}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;margin-top:24px;background:var(--bg);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+.tbl th{background:var(--cream);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:14px 18px;text-align:left;border-bottom:2px solid var(--gold)}
+.tbl td{padding:14px 18px;font-size:13.5px;color:var(--text);border-bottom:1px solid var(--border-w);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover{background:var(--bg-warm)}
+.tbl .pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:.05em}
+.tbl .pill.have{background:var(--sage-light);color:var(--sage)}
+.tbl .pill.miss{background:var(--red-soft);color:var(--red-urgent)}
+.tbl .pill.part{background:#FFF4D6;color:#A0731A}
+
+/* RADAR · sources block · premium redesign */
+.radar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:32px}
+.radar-card{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(196,154,58,.2);border-radius:14px;padding:24px 22px 22px;color:#fff;transition:all .35s cubic-bezier(.4,0,.2,1);overflow:hidden;cursor:pointer}
+.radar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#C49A3A,transparent);opacity:.4;transition:opacity .3s}
+.radar-card::after{content:'';position:absolute;top:-1px;left:-1px;right:-1px;bottom:-1px;border-radius:14px;background:linear-gradient(135deg,#C49A3A,transparent 40%,transparent 60%,#6B9B7A);opacity:0;transition:opacity .35s;z-index:-1;padding:1px}
+.radar-card:hover{transform:translateY(-4px);border-color:rgba(196,154,58,.5);box-shadow:0 18px 50px rgba(0,0,0,.4),0 0 30px rgba(196,154,58,.15)}
+.radar-card:hover::before{opacity:1}
+.radar-card:hover::after{opacity:.5}
+
+.radar-card .src{display:inline-flex;align-items:center;gap:6px;font:700 9.5px 'JetBrains Mono',monospace;color:#C49A3A;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;padding:5px 10px;background:rgba(196,154,58,.08);border:1px solid rgba(196,154,58,.2);border-radius:99px}
+.radar-card .src::before{content:'';width:5px;height:5px;border-radius:50%;background:#C49A3A;box-shadow:0 0 6px #C49A3A;animation:blinkDot 1.8s ease-in-out infinite}
+
+.radar-card h4{font:800 17px Georgia,serif;color:#F5EDD8;margin-bottom:10px;letter-spacing:-.005em;line-height:1.2}
+.radar-card p{font:400 13px var(--font);color:rgba(245,237,216,.75);line-height:1.6;margin:0 0 12px}
+
+.radar-card .meta-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.radar-card .meta-tag{font:700 9px var(--font);letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.06);color:rgba(245,237,216,.7)}
+.radar-card .meta-tag.gold{background:rgba(196,154,58,.15);color:#C49A3A}
+.radar-card .meta-tag.sage{background:rgba(107,155,122,.18);color:#8FB89D}
+.radar-card .meta-tag.coral{background:rgba(208,74,58,.18);color:#FF8470}
+
+.radar-card .confidence{display:flex;align-items:center;gap:8px;margin-top:14px;font:700 10px var(--font);color:rgba(245,237,216,.5);letter-spacing:.08em;text-transform:uppercase}
+.radar-card .confidence-bar{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;position:relative}
+.radar-card .confidence-bar::after{content:'';position:absolute;left:0;top:0;height:100%;width:var(--conf,75%);background:linear-gradient(90deg,#C49A3A,#6B9B7A);border-radius:99px;box-shadow:0 0 6px rgba(196,154,58,.4)}
+
+.radar-card .link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font:700 10.5px var(--font);color:#C49A3A;text-decoration:none;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid rgba(196,154,58,.25);padding-bottom:3px;transition:all .25s}
+.radar-card .link::after{content:'↗';transition:transform .2s}
+.radar-card .link:hover{color:#FFD27A;border-color:#FFD27A}
+.radar-card .link:hover::after{transform:translate(2px,-2px)}
+
+/* Card destacada */
+.radar-card.featured{grid-column:span 2;background:linear-gradient(135deg,rgba(196,154,58,.08),rgba(107,155,122,.04));border-color:rgba(196,154,58,.4)}
+.radar-card.featured h4{font-size:22px;margin-bottom:14px}
+.radar-card.featured p{font-size:14px}
+@media(max-width:768px){
+  .radar-card.featured{grid-column:span 1}
+  .radar-card.featured h4{font-size:18px}
+}
+
+/* ITEMS LIST */
+.items{margin-top:24px;display:flex;flex-direction:column;gap:8px}
+.item{display:flex;gap:16px;align-items:flex-start;padding:18px 22px;background:var(--bg);border:1px solid var(--border-w);border-radius:var(--radius-sm);transition:border-color .2s}
+.item:hover{border-color:var(--gold)}
+.item .n{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.item .content{flex:1}
+.item h4{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:4px;letter-spacing:-.012em}
+.item p{font-size:13px;color:var(--muted);line-height:1.55;margin:0}
+.item .answer{margin-top:8px;padding:10px 14px;background:var(--cream-soft);border-left:3px solid var(--gold);border-radius:6px;font-size:12.5px;color:var(--navy);line-height:1.55}
+.item .answer strong{color:var(--gold);font-weight:700}
+
+/* TIMELINE */
+.timeline{margin-top:30px;position:relative;padding-left:36px}
+.timeline::before{content:'';position:absolute;left:14px;top:8px;bottom:8px;width:2px;background:var(--gold);opacity:.3}
+.tline{position:relative;margin-bottom:22px;padding-bottom:6px}
+.tline::before{content:'';position:absolute;left:-30px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px var(--cream-soft)}
+.tline.now::before{background:var(--red-urgent);box-shadow:0 0 0 4px var(--red-soft);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.tline .when{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.tline .now-tag{display:inline-block;background:var(--red-urgent);color:#fff;padding:2px 8px;border-radius:99px;font-size:9px;font-weight:800;letter-spacing:.08em;margin-left:8px}
+.tline h4{font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-.015em;margin-bottom:6px}
+.tline p{font-size:13.5px;color:var(--muted);line-height:1.6;margin:0}
+
+/* CONCLUSIONS */
+.conclusions{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:30px}
+.conc{padding:24px;background:rgba(255,255,255,.05);border:1px solid rgba(196,154,58,.3);border-radius:var(--radius);position:relative}
+.conc .n{position:absolute;top:-14px;left:24px;width:32px;height:32px;background:var(--gold);color:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+.conc h4{font-size:17px;font-weight:800;color:#fff;margin-top:8px;margin-bottom:8px;letter-spacing:-.012em}
+.conc p{font-size:13px;color:rgba(245,237,216,.8);line-height:1.55;margin:0}
+
+/* WAR ROOM · premium redesign */
+.warroom-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px;margin-bottom:30px;padding:14px 22px;background:rgba(196,154,58,.06);border:1px solid rgba(196,154,58,.2);border-radius:14px}
+.warroom-meta .pulse{width:8px;height:8px;border-radius:50%;background:#FF6B5B;animation:livePulse 2s infinite}
+.warroom-meta-text{flex:1;font:600 11.5px var(--font);color:rgba(245,237,216,.85);letter-spacing:.04em}
+.warroom-meta-text strong{color:#C49A3A;font-weight:800}
+.warroom-meta-count{display:flex;gap:10px;flex-wrap:wrap}
+.warroom-meta-count .badge{font:800 10px var(--font);padding:5px 10px;border-radius:99px;background:rgba(255,255,255,.06);color:rgba(245,237,216,.7);letter-spacing:.08em;text-transform:uppercase}
+.warroom-meta-count .badge strong{color:#C49A3A}
+
+.warroom{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:0}
+.agent{position:relative;padding:22px 22px 20px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(196,154,58,.18);border-radius:14px;transition:all .35s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.agent::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:linear-gradient(180deg,#C49A3A,#6B9B7A);transition:height .4s cubic-bezier(.4,0,.2,1);border-radius:0 2px 2px 0}
+.agent:hover{transform:translateY(-3px);border-color:rgba(196,154,58,.4);box-shadow:0 14px 40px rgba(0,0,0,.35),0 0 24px rgba(196,154,58,.1)}
+.agent:hover::before{height:60%}
+
+.agent .ag-name{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.agent .ag-icon{width:38px;height:38px;border-radius:10px;background:rgba(196,154,58,.12);border:1px solid rgba(196,154,58,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.agent .ag-meta{flex:1;line-height:1.1}
+.agent .ag-title{display:block;font:800 13.5px var(--font);color:#F5EDD8;letter-spacing:.02em;letter-spacing:-.005em}
+.agent .ag-role{display:block;font:700 9px var(--font);color:#C49A3A;letter-spacing:.14em;text-transform:uppercase;margin-top:3px}
+.agent .ag-loop{font:700 8.5px var(--font);color:rgba(107,155,122,.85);letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:rgba(107,155,122,.1);border:1px solid rgba(107,155,122,.2);align-self:flex-start;flex-shrink:0}
+.agent p{font-size:12.5px;color:rgba(245,237,216,.75);line-height:1.6;margin:0}
+
+/* Cerebro destacado */
+.agent.lead{grid-column:span 2;background:linear-gradient(135deg,rgba(196,154,58,.1),rgba(107,155,122,.05));border-color:rgba(196,154,58,.4)}
+.agent.lead::before{height:100%;width:4px}
+.agent.lead .ag-icon{background:linear-gradient(135deg,#C49A3A,#A07C2A);color:#1B2F4E;border-color:#C49A3A;box-shadow:0 0 20px rgba(196,154,58,.4)}
+.agent.lead p{font-size:13.5px;color:rgba(245,237,216,.92)}
+@media(max-width:768px){.agent.lead{grid-column:span 1}}
+
+/* FOOTER */
+.foot{padding:50px 24px 40px;text-align:center;background:var(--navy-deep);color:rgba(245,237,216,.55)}
+.foot p{font-size:12px;margin-bottom:6px}
+.foot strong{color:var(--gold);font-weight:700}
+
+/* ════════ KANKI SURF · MAPA INTERACTIVO AGENTIC ════════ */
+.kankimap{position:relative;background:radial-gradient(ellipse at top,#0d2745 0%,#061322 100%);color:#fff;padding:80px 0 60px;overflow:hidden}
+.kankimap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(212,170,74,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(212,170,74,.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%)}
+.kankimap::after{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(79,209,197,.08),transparent 70%);pointer-events:none}
+
+.km-head{position:relative;z-index:2;max-width:1080px;margin:0 auto 32px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.km-brand{display:flex;align-items:center;gap:12px}
+.km-brand-mark{width:44px;height:44px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 0 16px rgba(212,170,74,.45))}
+.km-brand-mark svg{width:100%;height:100%}
+.km-brand-name{font:800 16px var(--font);letter-spacing:.04em;color:#fff}
+.km-brand-name em{color:#4FD1C5;font-style:normal;font-weight:600}
+.km-brand-sub{font:400 11px var(--font);color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase;display:block;margin-top:2px}
+
+.km-tabs{display:flex;gap:4px;background:rgba(255,255,255,.04);padding:4px;border-radius:99px;border:1px solid rgba(255,255,255,.08)}
+.km-tab{appearance:none;border:none;background:transparent;padding:9px 18px;border-radius:99px;cursor:pointer;color:rgba(255,255,255,.55);font:700 11px var(--font);letter-spacing:.1em;text-transform:uppercase;transition:all .25s;position:relative}
+.km-tab:hover{color:#fff}
+.km-tab.active{background:linear-gradient(135deg,#D4AA4A,#B8862A);color:#0A1F3F;box-shadow:0 4px 14px rgba(212,170,74,.35)}
+.km-tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#FF6B5B;margin-right:6px;animation:blinkDot 1.5s ease-in-out infinite;vertical-align:middle}
+.km-tab.active .dot{background:#0A1F3F}
+@keyframes blinkDot{0%,100%{opacity:.4}50%{opacity:1}}
+
+.km-status{display:flex;align-items:center;gap:14px;font:600 10.5px var(--font);color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
+.km-status .pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:#FF6B5B;box-shadow:0 0 0 0 rgba(255,107,91,.5);animation:livePulse 2s infinite}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(255,107,91,.6)}70%{box-shadow:0 0 0 12px rgba(255,107,91,0)}100%{box-shadow:0 0 0 0 rgba(255,107,91,0)}}
+
+.km-stage{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:0 24px}
+.km-canvas{position:relative;width:100%;height:640px;border:1px solid rgba(255,255,255,.06);border-radius:24px;background:rgba(6,18,34,.4);overflow:hidden;backdrop-filter:blur(10px)}
+.km-canvas::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 0%,rgba(6,18,34,.7) 100%);pointer-events:none;z-index:1}
+
+.km-svg{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+
+/* Nodo central · KANKI SURF */
+.km-central{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#1B3A5F,#0A1F3F);border:2px solid rgba(212,170,74,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(212,170,74,.25),inset 0 0 40px rgba(79,209,197,.08);animation:centralFloat 6s ease-in-out infinite}
+.km-central::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px dashed rgba(212,170,74,.3);animation:rotate 30s linear infinite}
+.km-central::after{content:'';position:absolute;inset:-22px;border-radius:50%;border:1px solid rgba(79,209,197,.15);animation:rotate 45s linear infinite reverse}
+@keyframes centralFloat{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 6px))}}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.km-central-icon{width:62px;height:62px;margin-bottom:4px;filter:drop-shadow(0 0 14px rgba(212,170,74,.7))}
+.km-central-icon svg{width:100%;height:100%}
+.km-central-name{font:800 14px Georgia,serif;letter-spacing:.06em;color:#F5EDD8;text-align:center;line-height:1.1;margin-top:2px}
+.km-central-name em{color:#D4AA4A;font-style:italic;font-weight:700}
+.km-central-sub{font:600 8.5px var(--font);color:#6B9B7A;letter-spacing:.22em;text-transform:uppercase;margin-top:6px}
+
+/* Nodos satélite */
+.km-node{position:absolute;z-index:4;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:10px 16px 10px 12px;backdrop-filter:blur(8px);cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);min-width:200px;will-change:transform}
+.km-node:hover{background:rgba(255,255,255,.08);border-color:rgba(212,170,74,.6);transform:scale(1.05);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 30px rgba(212,170,74,.25)}
+.km-node.active{background:linear-gradient(135deg,rgba(212,170,74,.18),rgba(212,170,74,.06));border-color:#D4AA4A;box-shadow:0 0 0 1px #D4AA4A,0 8px 40px rgba(212,170,74,.35)}
+.km-node-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);transition:all .3s}
+.km-node:hover .km-node-icon{transform:rotate(8deg) scale(1.1)}
+.km-node-label{flex:1;line-height:1.1}
+.km-node-name{font:800 13px var(--font);color:#fff;display:block;letter-spacing:-.012em}
+.km-node-meta{font:600 9.5px var(--font);color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;display:block}
+
+/* Estados por urgencia */
+.km-node[data-state="urgent"] .km-node-icon{background:rgba(255,107,91,.18);border-color:rgba(255,107,91,.5);color:#FF6B5B;animation:urgentPulse 2.5s ease-in-out infinite}
+.km-node[data-state="urgent"] .km-node-name::after{content:'';display:inline-block;width:6px;height:6px;background:#FF6B5B;border-radius:50%;margin-left:8px;vertical-align:middle;animation:blinkDot 1.2s ease-in-out infinite;box-shadow:0 0 8px #FF6B5B}
+.km-node[data-state="active"] .km-node-icon{background:rgba(212,170,74,.18);border-color:rgba(212,170,74,.5);color:#D4AA4A}
+.km-node[data-state="permanent"] .km-node-icon{background:rgba(79,209,197,.16);border-color:rgba(79,209,197,.4);color:#4FD1C5}
+.km-node[data-state="future"]{opacity:.55}
+.km-node[data-state="future"] .km-node-icon{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.08);color:rgba(255,255,255,.4)}
+.km-node[data-state="closed"]{opacity:.35;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.25)}
+@keyframes urgentPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,91,0)}50%{box-shadow:0 0 0 6px rgba(255,107,91,.18)}}
+
+/* Estado SUBMITTED (Sercotec ya enviada · verde lima trofeo) */
+.km-node[data-state="submitted"] .km-node-icon{background:rgba(122,210,124,.18);border-color:rgba(122,210,124,.55);color:#7AD27C;animation:submittedPulse 3s ease-in-out infinite}
+.km-node[data-state="submitted"] .km-node-name::after{content:'';display:inline-block;width:6px;height:6px;background:#7AD27C;border-radius:50%;margin-left:8px;vertical-align:middle;animation:blinkDot 1.5s ease-in-out infinite;box-shadow:0 0 8px #7AD27C}
+@keyframes submittedPulse{0%,100%{box-shadow:0 0 0 0 rgba(122,210,124,0)}50%{box-shadow:0 0 0 10px rgba(122,210,124,.12)}}
+
+/* SVG paths (líneas) */
+.km-svg .path-base{fill:none;stroke-width:1.5;opacity:.18}
+.km-svg .path-urgent{stroke:#FF6B5B;stroke-dasharray:6 4;animation:dashMove 2s linear infinite}
+.km-svg .path-submitted{stroke:#7AD27C;stroke-dasharray:none;opacity:.5;filter:drop-shadow(0 0 6px rgba(122,210,124,.6))}
+.km-svg .path-active{stroke:#D4AA4A;stroke-dasharray:4 6;animation:dashMove 3s linear infinite}
+.km-svg .path-permanent{stroke:#4FD1C5;stroke-dasharray:2 4;opacity:.25}
+.km-svg .path-closed{stroke:rgba(255,255,255,.15);stroke-dasharray:2 8}
+@keyframes dashMove{to{stroke-dashoffset:-100}}
+
+/* Particle viajando por el path */
+.km-particle{fill:#D4AA4A;filter:drop-shadow(0 0 4px #D4AA4A)}
+.km-particle.urgent{fill:#FF6B5B;filter:drop-shadow(0 0 6px #FF6B5B)}
+.km-particle.submitted{fill:#7AD27C;filter:drop-shadow(0 0 8px #7AD27C)}
+.km-particle.permanent{fill:#4FD1C5;filter:drop-shadow(0 0 4px #4FD1C5)}
+
+/* Legend chips */
+.km-legend{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:14px;flex-wrap:wrap;padding:10px 18px;background:rgba(6,18,34,.7);border:1px solid rgba(255,255,255,.08);border-radius:99px;backdrop-filter:blur(12px)}
+.km-legend-item{display:flex;align-items:center;gap:8px;font:700 10px var(--font);color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase}
+.km-legend-item .dot{width:8px;height:8px;border-radius:50%}
+.km-legend-item .dot.submitted{background:#7AD27C;box-shadow:0 0 10px #7AD27C}
+.km-legend-item .dot.urgent{background:#FF6B5B;box-shadow:0 0 8px #FF6B5B}
+.km-legend-item .dot.active{background:#D4AA4A;box-shadow:0 0 8px #D4AA4A}
+.km-legend-item .dot.permanent{background:#4FD1C5;box-shadow:0 0 6px #4FD1C5}
+.km-legend-item .dot.closed{background:rgba(255,255,255,.3)}
+
+.km-hint{text-align:center;margin-top:18px;font:600 11px var(--font);color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase}
+.km-hint::before{content:'⊙ ';color:#D4AA4A;margin-right:4px}
+
+/* ═══ MICRO VIEW · Pipeline interno del fondo seleccionado ═══ */
+.km-micro{position:relative;z-index:2;max-width:1080px;margin:40px auto 0;padding:0 24px;display:none}
+.km-micro.show{display:block;animation:microIn .5s cubic-bezier(.4,0,.2,1)}
+@keyframes microIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+.km-micro-head{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:18px 22px;background:rgba(255,255,255,.04);border:1px solid rgba(212,170,74,.25);border-radius:16px}
+.km-micro-icon{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,#D4AA4A,#B8862A);display:flex;align-items:center;justify-content:center;font-size:24px;color:#0A1F3F;flex-shrink:0;box-shadow:0 0 30px rgba(212,170,74,.3)}
+.km-micro-name{font:800 22px var(--font);color:#fff;letter-spacing:-.018em}
+.km-micro-org{font:600 11px var(--font);color:#D4AA4A;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
+.km-micro-money{margin-left:auto;text-align:right}
+.km-micro-amount{font:800 26px var(--font);background:linear-gradient(135deg,#D4AA4A,#FFD27A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.km-micro-amount-sub{font:600 10px var(--font);color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+
+.km-pipeline{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-bottom:20px}
+.km-pipeline::before{content:'';position:absolute;top:34px;left:8%;right:8%;height:2px;background:linear-gradient(90deg,rgba(212,170,74,.6),rgba(79,209,197,.6));z-index:0;border-radius:99px}
+.km-step{position:relative;text-align:center;z-index:1}
+.km-step-num{width:68px;height:68px;margin:0 auto 12px;border-radius:50%;background:rgba(6,18,34,.9);border:2px solid rgba(212,170,74,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#D4AA4A;font:800 22px var(--font);transition:all .3s;cursor:pointer}
+.km-step:hover .km-step-num{transform:translateY(-4px);border-color:#D4AA4A;box-shadow:0 0 24px rgba(212,170,74,.4)}
+.km-step.done .km-step-num{background:linear-gradient(135deg,#D4AA4A,#B8862A);color:#0A1F3F;border-color:#D4AA4A}
+.km-step.current .km-step-num{background:rgba(255,107,91,.15);border-color:#FF6B5B;color:#FF6B5B;animation:urgentPulse 2s ease-in-out infinite}
+.km-step-num small{font:600 8.5px var(--font);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;opacity:.6}
+.km-step-title{font:700 12px var(--font);color:#fff;line-height:1.2;letter-spacing:-.005em;margin-bottom:4px}
+.km-step-meta{font:500 10.5px var(--font);color:rgba(255,255,255,.55);line-height:1.4}
+
+.km-detail{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-top:14px}
+.km-detail-block{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px 20px}
+.km-detail-block h5{font:800 11px var(--font);color:#D4AA4A;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.km-detail-block p{font:400 13px var(--font);color:rgba(255,255,255,.78);line-height:1.55;margin:0}
+.km-detail-block ul{list-style:none;padding:0;margin:0}
+.km-detail-block li{display:flex;gap:8px;padding:6px 0;font-size:12px;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.04)}
+.km-detail-block li:last-child{border-bottom:0}
+.km-detail-block li .key{font-weight:700;color:rgba(255,255,255,.5);min-width:90px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.km-detail-block li .val{color:#fff}
+.km-detail-block li .val.gold{color:#D4AA4A}
+.km-detail-block li .val.coral{color:#FF6B5B}
+
+.km-cta-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font:700 11px var(--font);color:#D4AA4A;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid rgba(212,170,74,.3);padding-bottom:2px;transition:all .2s}
+.km-cta-link:hover{color:#FFD27A;border-color:#FFD27A}
+.km-cta-link::after{content:'→';transition:transform .2s}
+.km-cta-link:hover::after{transform:translateX(4px)}
+
+/* Mobile */
+@media(max-width:768px){
+  .km-canvas{height:580px}
+  .km-central{width:130px;height:130px}
+  .km-central-name{font-size:13px}
+  .km-node{min-width:170px;font-size:11px;padding:8px 14px 8px 10px}
+  .km-node-icon{width:30px;height:30px;font-size:14px}
+  .km-node-name{font-size:11.5px}
+  .km-pipeline{grid-template-columns:1fr;gap:14px}
+  .km-pipeline::before{display:none}
+  .km-detail{grid-template-columns:1fr}
+  .km-micro-money{margin:0;text-align:left;width:100%}
+  .km-head{flex-direction:column;align-items:flex-start}
+  .km-tabs{order:2}
+}
+
+/* ════════ MAPA TIMELINE · MOTION ════════ */
+.routemap{position:relative;padding:60px 0 80px;background:linear-gradient(180deg,var(--cream-soft) 0%,#fff 100%);overflow:hidden}
+.routemap::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 30%,rgba(196,154,58,.08),transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(208,74,58,.06),transparent 50%);pointer-events:none;z-index:0}
+.routemap-inner{position:relative;z-index:1;max-width:100%;padding:0 24px}
+.routemap-head{max-width:1080px;margin:0 auto 50px;text-align:center}
+.routemap-head h2{font-size:46px;font-weight:800;line-height:1;letter-spacing:-.035em;color:var(--navy);margin-bottom:14px}
+.routemap-head h2 em{color:var(--gold);font-style:normal}
+.routemap-head p{font-size:15px;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.6}
+
+.routemap-scroll{position:relative;overflow-x:auto;overflow-y:visible;padding:40px 0 60px;scrollbar-width:thin;scrollbar-color:var(--gold) transparent;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.routemap-scroll::-webkit-scrollbar{height:6px}
+.routemap-scroll::-webkit-scrollbar-track{background:rgba(196,154,58,.1);border-radius:99px}
+.routemap-scroll::-webkit-scrollbar-thumb{background:var(--gold);border-radius:99px}
+
+.routemap-track{position:relative;display:flex;gap:0;padding:0 60px;min-width:max-content;align-items:flex-start}
+
+/* Línea conectora con gradient flow animado */
+.routemap-line{position:absolute;top:148px;left:60px;right:60px;height:3px;background:linear-gradient(90deg,var(--gold-dim) 0%,var(--gold) 50%,var(--red-urgent) 100%);border-radius:99px;z-index:0;opacity:.25}
+.routemap-line::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--gold) 50%,transparent);background-size:200% 100%;border-radius:99px;animation:flowLine 3s ease-in-out infinite}
+@keyframes flowLine{
+  0%{background-position:200% 0;opacity:.5}
+  50%{opacity:1}
+  100%{background-position:-200% 0;opacity:.5}
+}
+
+/* Línea ya recorrida (gold sólido hasta el "ahora") */
+.routemap-line-progress{position:absolute;top:148px;left:60px;height:3px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold-dim) 100%);border-radius:99px;z-index:1;width:0;transition:width .8s cubic-bezier(.4,0,.2,1);box-shadow:0 0 12px rgba(196,154,58,.5)}
+
+/* Estación */
+.station{position:relative;flex-shrink:0;width:260px;margin-right:60px;scroll-snap-align:start;opacity:0;transform:translateY(30px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+.station:last-child{margin-right:0}
+.station.in-view{opacity:1;transform:translateY(0)}
+.station[data-delay="0"]{transition-delay:0ms}
+.station[data-delay="1"]{transition-delay:80ms}
+.station[data-delay="2"]{transition-delay:160ms}
+.station[data-delay="3"]{transition-delay:240ms}
+.station[data-delay="4"]{transition-delay:320ms}
+.station[data-delay="5"]{transition-delay:400ms}
+.station[data-delay="6"]{transition-delay:480ms}
+.station[data-delay="7"]{transition-delay:560ms}
+.station[data-delay="8"]{transition-delay:640ms}
+
+.station-when{font:800 10.5px var(--font);color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;text-align:center;height:28px;display:flex;align-items:center;justify-content:center}
+
+/* Marker · círculo en la línea */
+.station-marker{position:relative;width:48px;height:48px;margin:0 auto 24px;border-radius:50%;background:#fff;border:3px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;z-index:3;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 12px rgba(27,47,78,.08)}
+.station-marker .icon{font-size:18px;line-height:1;transition:transform .3s}
+.station-marker .step{position:absolute;top:-12px;right:-12px;width:24px;height:24px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 11px var(--font);box-shadow:0 2px 6px rgba(27,47,78,.2)}
+
+/* Estado: pendiente · activo (now) · completado */
+.station.now .station-marker{background:var(--red-urgent);border-color:var(--red-urgent);box-shadow:0 0 0 6px rgba(208,74,58,.18),0 8px 24px rgba(208,74,58,.35);animation:pulseNow 2s ease-in-out infinite}
+.station.now .station-marker .icon{color:#fff;animation:wiggleIcon 1.5s ease-in-out infinite}
+.station.now .station-when{color:var(--red-urgent)}
+.station.now .station-when::before{content:'●';margin-right:6px;animation:pulseNow 2s ease-in-out infinite}
+.station.critical .station-marker{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 5px rgba(196,154,58,.2),0 6px 18px rgba(196,154,58,.4)}
+.station.critical .station-marker .icon{color:var(--navy)}
+.station.done .station-marker{background:var(--sage);border-color:var(--sage);box-shadow:0 0 0 4px rgba(107,155,122,.18)}
+.station.done .station-marker .icon{color:#fff}
+.station.future .station-marker{opacity:.55;background:#f5f5f7;border-color:#d2d2d7}
+.station.future .station-when{color:var(--muted)}
+
+@keyframes pulseNow{
+  0%,100%{box-shadow:0 0 0 6px rgba(208,74,58,.18),0 8px 24px rgba(208,74,58,.35)}
+  50%{box-shadow:0 0 0 12px rgba(208,74,58,.08),0 8px 32px rgba(208,74,58,.45)}
+}
+@keyframes wiggleIcon{
+  0%,100%{transform:scale(1) rotate(0)}
+  25%{transform:scale(1.1) rotate(-5deg)}
+  75%{transform:scale(1.1) rotate(5deg)}
+}
+
+/* Card de cada estación */
+.station-card{position:relative;background:#fff;border:1px solid var(--border-w);border-radius:var(--radius);padding:18px 18px 20px;text-align:left;transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s,border-color .3s;will-change:transform;cursor:default}
+.station-card::before{content:'';position:absolute;inset:0;border-radius:var(--radius);background:linear-gradient(135deg,var(--gold-pale),transparent);opacity:0;transition:opacity .3s;pointer-events:none}
+.station-card:hover{transform:translateY(-6px) rotateX(2deg);box-shadow:0 16px 40px rgba(27,47,78,.14);border-color:var(--gold)}
+.station-card:hover::before{opacity:1}
+.station-card:hover ~ .station-marker .icon,.station:hover .station-marker .icon{transform:scale(1.15)}
+
+.station.now .station-card{border-color:var(--red-urgent);background:linear-gradient(135deg,#FFF8F6,#fff)}
+.station.critical .station-card{border-color:var(--gold);background:linear-gradient(135deg,var(--gold-pale),#fff)}
+
+.station-card h4{font:800 15px var(--font);color:var(--navy);line-height:1.25;letter-spacing:-.012em;margin-bottom:6px}
+.station-card p{font-size:12.5px;color:var(--muted);line-height:1.5;margin:0}
+.station-card .amount{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:99px;font:800 11px var(--font);background:var(--cream-soft);color:var(--navy);letter-spacing:.04em}
+.station-card .amount.gold{background:var(--gold-pale);color:var(--gold)}
+.station-card .amount.urgent{background:var(--red-soft);color:var(--red-urgent)}
+
+/* Progress dot que sigue el scroll */
+.scroll-indicator{position:sticky;top:140px;display:flex;justify-content:center;margin-bottom:20px;z-index:10;pointer-events:none}
+.scroll-progress{width:200px;height:4px;background:rgba(27,47,78,.08);border-radius:99px;overflow:hidden;position:relative}
+.scroll-progress::after{content:'';position:absolute;left:0;top:0;height:100%;width:var(--scroll-w,0%);background:linear-gradient(90deg,var(--gold),var(--red-urgent));border-radius:99px;transition:width .1s linear;box-shadow:0 0 8px rgba(196,154,58,.5)}
+
+/* CTA suma stack */
+.stack-cta{max-width:600px;margin:60px auto 0;text-align:center;padding:32px;background:linear-gradient(135deg,var(--navy),var(--navy-deep));border-radius:var(--radius);color:#fff;position:relative;overflow:hidden}
+.stack-cta::before{content:'';position:absolute;top:-50%;right:-30%;width:300px;height:300px;background:radial-gradient(circle,var(--gold) 0%,transparent 70%);opacity:.15;animation:rotateGlow 20s linear infinite}
+@keyframes rotateGlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.stack-cta-amount{font:800 56px var(--font);color:var(--gold);letter-spacing:-.04em;line-height:1;margin:6px 0 8px;background:linear-gradient(135deg,var(--gold),#F0C76B);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stack-cta-label{font:700 11px var(--font);color:var(--cream);letter-spacing:.18em;text-transform:uppercase;opacity:.75}
+.stack-cta-formula{font-size:13px;color:var(--cream);opacity:.7;margin-top:14px;letter-spacing:.02em}
+.stack-cta-formula strong{color:var(--gold);font-weight:700}
+
+/* Mobile: vertical scroll-snap-y */
+@media(max-width:768px){
+  .routemap-head h2{font-size:32px}
+  .routemap-scroll{padding:30px 0 40px}
+  .routemap-track{flex-direction:column;padding:0 16px;gap:0;align-items:stretch}
+  .routemap-line,.routemap-line-progress{display:none}
+  .station{width:100%;margin-right:0;margin-bottom:24px;display:flex;align-items:flex-start;gap:14px;scroll-snap-align:start;text-align:left}
+  .station-marker{margin:0;flex-shrink:0;width:40px;height:40px}
+  .station-when{position:absolute;left:54px;top:-4px;height:auto;margin:0;text-align:left;font-size:9.5px}
+  .station-card{flex:1;margin-top:18px}
+  .station-card h4{font-size:14px}
+  .stack-cta{margin:30px 16px 0}
+  .stack-cta-amount{font-size:42px}
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  .station,.station-card,.station-marker .icon{transition:none !important;animation:none !important}
+  .station{opacity:1;transform:none}
+  @keyframes flowLine,@keyframes pulseNow,@keyframes wiggleIcon,@keyframes rotateGlow{from,to{}}
+}
+
+/* PRINT */
+@media print{
+  body{font-size:11px}
+  .nav-global,.sub-nav{position:static}
+  main{padding-top:20px}
+  section.block{padding:30px 0;page-break-inside:avoid}
+}
+@media(max-width:768px){
+  h2.title{font-size:36px}
+  .hero-title{font-size:48px}
+  .nav-name,.nav-sub{font-size:11px}
+  .sub-links{gap:10px}
+  .sub-links a{font-size:10px}
+  .urgency-banner{flex-direction:column;text-align:center}
+  .hero-meta{flex-direction:column;gap:6px;padding:14px 20px}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   POSTULACIÓN ENVIADA · sección nueva 2026-05-12
+   ═══════════════════════════════════════════════════════════════════ */
+.submitted-block{
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(122,210,124,.16), transparent 55%),
+    radial-gradient(ellipse at 85% 100%, rgba(212,170,74,.12), transparent 60%),
+    linear-gradient(180deg, #F8FCF8 0%, var(--bg) 100%);
+  border-top:1px solid rgba(122,210,124,.25);
+  border-bottom:1px solid rgba(122,210,124,.25);
+}
+.submitted-block .eyebrow{display:inline-block;font:700 11px var(--font);color:#4DA050;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;background:#E8F8E9;border:1.5px solid #7AD27C;border-radius:99px;margin-bottom:14px}
+.sub-title{font-size:18px;font-weight:800;color:var(--navy);margin:36px 0 16px;letter-spacing:-.012em;display:flex;align-items:center;gap:8px}
+
+/* KPI strip */
+.kpi-strip{display:grid;grid-template-columns:1fr;gap:14px;margin-top:24px}
+@media(min-width:640px){.kpi-strip{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.kpi-strip{grid-template-columns:repeat(4,1fr)}}
+.kpi-cell{background:#fff;border:1.5px solid rgba(122,210,124,.30);border-radius:14px;padding:18px 18px 16px;box-shadow:0 2px 8px rgba(122,210,124,.08);transition:all .3s ease}
+.kpi-cell:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(122,210,124,.18);border-color:#7AD27C}
+.kpi-label{display:block;font:700 10.5px var(--font);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.kpi-num{display:block;font:800 30px var(--font);color:var(--navy);letter-spacing:-.02em;line-height:1}
+.kpi-sub{display:block;font:600 11.5px var(--font);color:var(--muted);margin-top:6px}
+
+/* Cost breakdown · barras gradientes */
+.cost-breakdown{display:flex;flex-direction:column;gap:14px;margin-top:20px}
+.cost-row{display:grid;grid-template-columns:1fr;gap:6px;background:#fff;padding:16px 18px;border-radius:12px;border:1px solid var(--line)}
+@media(min-width:768px){.cost-row{grid-template-columns:200px 1fr 240px;gap:18px;align-items:center}}
+.cost-cat{font:700 13px var(--font);color:var(--navy);letter-spacing:-.005em}
+.cost-bar{position:relative;background:#F5F1E8;border-radius:99px;height:30px;overflow:hidden}
+.cost-fill{height:100%;border-radius:99px;display:flex;align-items:center;justify-content:flex-end;padding:0 14px;color:#fff;font:800 12px var(--font);letter-spacing:-.005em;animation:costFillIn 1.4s cubic-bezier(.4,0,.2,1) both;transform-origin:left center}
+@keyframes costFillIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.cost-fill span{display:inline-block}
+.cost-detail{font:500 12px var(--font);color:var(--muted);line-height:1.5}
+
+/* Two col halfboxes */
+.two-col{display:grid;grid-template-columns:1fr;gap:18px;margin-top:20px}
+@media(min-width:768px){.two-col{grid-template-columns:1fr 1fr;gap:24px}}
+.halfbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow-sm)}
+.halfbox h4{font:800 14px var(--font);color:var(--navy);margin-bottom:12px;letter-spacing:-.01em}
+.numlist{list-style:none;padding:0;counter-reset:numlist;display:flex;flex-direction:column;gap:12px}
+.numlist li{position:relative;padding-left:34px;font-size:13px;color:var(--ink);line-height:1.55;counter-increment:numlist}
+.numlist li::before{content:counter(numlist);position:absolute;left:0;top:-1px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--gold-pale),#FFE5BC);border:1.5px solid var(--gold);color:var(--gold);font:800 11.5px var(--font);display:grid;place-items:center}
+
+/* Cards perfil + accion */
+.cards.perfiles,.cards.acciones{margin-top:18px}
+.card.perfil .age{font-weight:600;color:var(--gold-dim);font-size:12.5px;margin-bottom:8px}
+.card.perfil.p1{border-left:3px solid #1B5BA0}
+.card.perfil.p2{border-left:3px solid #A07C2A}
+.card.perfil.p3{border-left:3px solid #3C8540}
+.card.accion{transition:all .3s ease}
+.card.accion:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 14px 30px rgba(27,47,78,.12)}
+
+/* Ops strip */
+.ops-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+@media(min-width:768px){.ops-strip{grid-template-columns:repeat(4,1fr);gap:14px}}
+.ops-cell{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 14px;text-align:center}
+.ops-label{display:block;font:700 10px var(--font);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.ops-num{display:block;font:800 22px var(--font);color:var(--navy);letter-spacing:-.015em;line-height:1.05}
+.ops-sub{display:block;font:500 11px var(--font);color:var(--muted);margin-top:3px}
+
+/* Next banner */
+.next-banner{margin-top:36px;display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,var(--gold-pale),#FFF8E8);border:2px solid var(--gold);border-radius:var(--radius);padding:22px 26px;position:relative;overflow:hidden}
+.next-banner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 100% 50%,rgba(212,170,74,.18),transparent 60%);pointer-events:none}
+.next-icon{font-size:34px;flex:0 0 50px}
+.next-content h3{font:800 17px var(--font);color:var(--gold);margin-bottom:6px;letter-spacing:-.012em}
+.next-content p{font-size:13.5px;color:var(--ink);line-height:1.55}
+.next-content p strong{color:var(--navy);font-weight:800}
+
+/* Scroll-driven reveal (CSS native, donde sea soportado · fallback graceful) */
+@supports (animation-timeline:view()){
+  .submitted-block .kpi-cell,
+  .submitted-block .card.perfil,
+  .submitted-block .card.accion,
+  .submitted-block .ops-cell{
+    animation:scrollReveal linear both;
+    animation-timeline:view();
+    animation-range:entry 0% entry 50%;
+  }
+  @keyframes scrollReveal{
+    from{opacity:0;transform:translateY(40px) scale(.96)}
+    to{opacity:1;transform:none}
+  }
+}
+
+/* Marquee fondos próximos · trend Linear/Vercel 2026 */
+.fund-marquee{overflow:hidden;margin:24px 0;padding:14px 0;background:linear-gradient(90deg,transparent,rgba(27,47,78,.04),transparent);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fund-marquee-track{display:flex;gap:48px;width:max-content;animation:marqueeRoll 32s linear infinite}
+.fund-marquee:hover .fund-marquee-track{animation-play-state:paused}
+.fund-marquee span{font:700 13px var(--font);color:var(--muted);letter-spacing:-.005em;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.fund-marquee span::before{content:'●';color:var(--gold);font-size:8px}
+@keyframes marqueeRoll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+@media(max-width:640px){
+  .kpi-num{font-size:26px}
+  .next-banner{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ NAV ════════ -->
+<nav class="nav-global">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-mark">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 6 C 72 6 90 14 90 30 C 90 50 88 70 76 86 C 64 96 50 96 50 96 C 50 96 36 96 24 86 C 12 70 10 50 10 30 C 10 14 28 6 50 6 Z" fill="#F5EDD8" stroke="#C49A3A" stroke-width="3"/>
+          <ellipse cx="38" cy="58" rx="5" ry="20" fill="#C49A3A" transform="rotate(-30 38 58)"/>
+          <ellipse cx="62" cy="58" rx="5" ry="20" fill="#6B9B7A" transform="rotate(30 62 58)"/>
+          <path d="M30 52 Q 40 42 50 48 T 70 52 Q 60 56 50 54 T 30 52 Z" fill="#1B2F4E"/>
+          <text x="50" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="900" fill="#1B2F4E">KANKI</text>
+        </svg>
+      </div>
+      <span class="nav-name">Kanki & Co</span>
+      <span class="nav-sep">/</span>
+      <span class="nav-sub">Surf & Streetwear · SpA constitución</span>
+    </div>
+    <div class="nav-meeting">Reu Bárbara · 11-may 22:00</div>
+  </div>
+</nav>
+
+<nav class="sub-nav">
+  <div class="sub-inner">
+    <div class="sub-brand">Fondos Públicos · Capital Semilla</div>
+    <ul class="sub-links">
+      <li><a href="#ecosistema" style="color:#D4AA4A">🗺️ Mapa</a></li>
+      <li><a href="#contexto">Contexto</a></li>
+      <li><a href="#urgencia">Urgencia</a></li>
+      <li><a href="#postulacion" style="color:#4DA050">✓ Enviada</a></li>
+      <li><a href="#fondos">Fondos</a></li>
+      <li><a href="#requisitos">Requisitos</a></li>
+      <li><a href="#radar">RADAR</a></li>
+      <li><a href="#preguntas">Preguntas</a></li>
+      <li><a href="#plan" style="color:#D4AA4A">⏱️ Ruta 18d</a></li>
+      <li><a href="#warroom">War Room</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="container">
+    <span class="hero-eyebrow">2026-05-12 · 18:54 · POSTULACIÓN ENVIADA</span>
+    <h1 class="hero-title">Reunión <em>Bárbara</em>.<br>Kanki & Co · <span class="kinetic-shimmer">Sercotec enviada</span> ✓</h1>
+    <p class="hero-sub">Sercotec Capital Semilla <strong>postulada hoy 12-may a las 18:54</strong> por Martín Sanhueza (RUT 22.599.202-9) · monto solicitado <strong>$3.500.000</strong> · total proyecto <strong>$4.289.950</strong>. Ahora el plan: stack con CORFO Semilla Inicia + Start-Up Chile BIG antes de fin de mes.</p>
+    <div class="hero-meta">
+      <span><strong>Bárbara</strong> Especialista fondos públicos</span>
+      <span><strong>Guillermo</strong> Co-fundador 50%</span>
+      <span><strong>Martín</strong> Co-fundador 50% · postulante PN</span>
+    </div>
+    <div class="urgency-banner submitted">
+      <div class="urgency-icon">✅</div>
+      <div class="urgency-content">
+        <h3>Sercotec Capital Semilla · ENVIADA 12-may 18:54</h3>
+        <p>Postulante <strong>Martín Alonso Sanhueza Ríos</strong> (Persona Natural · RUT 22.599.202-9) · proyecto <strong>Kanki&Co</strong> · solicitado <strong>$3.500.000 CLP</strong> · cierre convocatoria 13-may 15:00. Próximo paso: <strong>esperar evaluación</strong> + preparar carpeta rendición. Resultados esperados: junio-julio 2026.</p>
+      </div>
+    </div>
+    <div class="urgency-banner" style="margin-top:14px;border-color:var(--gold);background:linear-gradient(135deg,var(--gold-pale),#FFF8E8)">
+      <div class="urgency-icon">🚀</div>
+      <div class="urgency-content">
+        <h3 style="color:var(--gold)">CORFO Semilla Inicia · ABIERTO · cierra 29-may-2026 · próximo objetivo</h3>
+        <p>Hallazgo RADAR: <strong>abierta DESDE 30-abr hasta 29-may-2026</strong> · monto hasta $15M (75% cofinanciamiento) o $17M para liderazgo femenino. <strong>Requiere SpA con iniciación de actividades.</strong> Con Sercotec ya enviada, constituir Kanki & Co SpA antes del 25-may → stack potencial $3.5M Sercotec (en evaluación) + $15M CORFO = <strong>$18.5M en 60 días</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ KANKI SURF · MAPA INTERACTIVO ════════ -->
+<section class="kankimap" id="ecosistema">
+  <div class="km-head">
+    <div class="km-brand">
+      <div class="km-brand-mark">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="rope" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#D4AA4A"/>
+              <stop offset="100%" stop-color="#A07C2A"/>
+            </linearGradient>
+            <radialGradient id="parchment" cx="50%" cy="50%">
+              <stop offset="0%" stop-color="#F5EDD8"/>
+              <stop offset="100%" stop-color="#E0D4B0"/>
+            </radialGradient>
+          </defs>
+          <!-- Badge shape · escudo cuerda -->
+          <path d="M50 6 C 72 6 90 14 90 30 C 90 50 88 70 76 86 C 64 96 50 96 50 96 C 50 96 36 96 24 86 C 12 70 10 50 10 30 C 10 14 28 6 50 6 Z" fill="url(#parchment)" stroke="url(#rope)" stroke-width="3" stroke-dasharray="2 1.5"/>
+          <!-- Tablas surf cruzadas -->
+          <ellipse cx="38" cy="58" rx="5" ry="20" fill="#C49A3A" transform="rotate(-30 38 58)" opacity="0.9"/>
+          <ellipse cx="62" cy="58" rx="5" ry="20" fill="#6B9B7A" transform="rotate(30 62 58)" opacity="0.9"/>
+          <!-- Ola central -->
+          <path d="M30 52 Q 40 42 50 48 T 70 52 Q 60 56 50 54 T 30 52 Z" fill="#1B2F4E"/>
+          <!-- Ancla -->
+          <circle cx="50" cy="68" r="2" fill="none" stroke="#1B2F4E" stroke-width="1.5"/>
+          <path d="M50 70 L50 78 M44 75 Q50 82 56 75" fill="none" stroke="#1B2F4E" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Texto KANKI superior -->
+          <text x="50" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="900" fill="#1B2F4E" letter-spacing="1">KANKI</text>
+          <text x="50" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="6" font-weight="700" fill="#1B2F4E" letter-spacing="0.5">EST · 1968</text>
+        </svg>
+      </div>
+      <div>
+        <div class="km-brand-name">KANKI <em>& Co</em> · Ecosistema de fondos</div>
+        <span class="km-brand-sub">Surf & Streetwear Tradition · scrape RADAR 11-may</span>
+      </div>
+    </div>
+    <div class="km-tabs" id="kmTabs">
+      <button class="km-tab active" data-tab="macro"><span class="dot"></span>MACRO</button>
+      <button class="km-tab" data-tab="micro">MICRO</button>
+    </div>
+    <div class="km-status">
+      <span class="pulse"></span> LIVE · RADAR scrape
+    </div>
+  </div>
+
+  <div class="km-stage">
+    <div class="km-canvas" id="kmCanvas">
+
+      <!-- SVG paths · líneas conectoras -->
+      <svg class="km-svg" viewBox="0 0 1200 640" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D4AA4A" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#D4AA4A" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="2"/></filter>
+        </defs>
+
+        <circle cx="600" cy="320" r="200" fill="url(#centerGlow)" opacity="0.4"/>
+
+        <!-- Paths desde el centro a cada nodo -->
+        <!-- Sercotec Capital Semilla (submitted · arriba izquierda) -->
+        <path class="path-base path-submitted" d="M 540 280 Q 380 230 220 180" />
+        <!-- CORFO Semilla Inicia (urgent · arriba derecha) -->
+        <path class="path-base path-urgent" d="M 660 280 Q 820 230 980 180" />
+        <!-- Start-Up Chile (active · derecha) -->
+        <path class="path-base path-active" d="M 680 320 Q 850 320 1000 320" />
+        <!-- ProChile (permanent · abajo derecha) -->
+        <path class="path-base path-permanent" d="M 660 360 Q 820 420 980 470" />
+        <!-- BancoEstado (permanent · abajo) -->
+        <path class="path-base path-permanent" d="M 600 400 Q 600 480 600 530" />
+        <!-- SENCE (permanent · abajo izquierda) -->
+        <path class="path-base path-permanent" d="M 540 360 Q 380 420 220 470" />
+        <!-- CORFO Desarrolla Valpo (active · izquierda) -->
+        <path class="path-base path-active" d="M 520 320 Q 350 320 200 320" />
+        <!-- FOSIS (closed · esquina) -->
+        <path class="path-base path-closed" d="M 600 240 L 600 100" />
+
+        <!-- Particles viajando -->
+        <circle class="km-particle submitted" r="4">
+          <animateMotion dur="2.4s" repeatCount="indefinite" path="M 540 280 Q 380 230 220 180"/>
+        </circle>
+        <circle class="km-particle urgent" r="4">
+          <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.5s" path="M 660 280 Q 820 230 980 180"/>
+        </circle>
+        <circle class="km-particle" r="3">
+          <animateMotion dur="4s" repeatCount="indefinite" begin="1s" path="M 680 320 Q 850 320 1000 320"/>
+        </circle>
+        <circle class="km-particle permanent" r="3">
+          <animateMotion dur="5s" repeatCount="indefinite" begin="1.5s" path="M 660 360 Q 820 420 980 470"/>
+        </circle>
+        <circle class="km-particle permanent" r="3">
+          <animateMotion dur="5.5s" repeatCount="indefinite" begin="2s" path="M 540 360 Q 380 420 220 470"/>
+        </circle>
+      </svg>
+
+      <!-- Nodo central · KANKI & Co -->
+      <div class="km-central">
+        <div class="km-central-icon">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 6 C 72 6 90 14 90 30 C 90 50 88 70 76 86 C 64 96 50 96 50 96 C 50 96 36 96 24 86 C 12 70 10 50 10 30 C 10 14 28 6 50 6 Z" fill="#F5EDD8" stroke="#C49A3A" stroke-width="3" stroke-dasharray="2 1.5"/>
+            <ellipse cx="38" cy="58" rx="5" ry="20" fill="#C49A3A" transform="rotate(-30 38 58)"/>
+            <ellipse cx="62" cy="58" rx="5" ry="20" fill="#6B9B7A" transform="rotate(30 62 58)"/>
+            <path d="M30 52 Q 40 42 50 48 T 70 52 Q 60 56 50 54 T 30 52 Z" fill="#1B2F4E"/>
+            <circle cx="50" cy="68" r="2" fill="none" stroke="#1B2F4E" stroke-width="1.5"/>
+            <path d="M50 70 L50 78 M44 75 Q50 82 56 75" fill="none" stroke="#1B2F4E" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="km-central-name">KANKI<br><em>& Co</em></span>
+        <span class="km-central-sub">SpA · Valparaíso</span>
+      </div>
+
+      <!-- Nodos satélite · posicionados absolutamente -->
+      <div class="km-node" data-state="submitted" data-fund="sercotec" style="top:14%;left:5%">
+        <div class="km-node-icon">✅</div>
+        <div class="km-node-label">
+          <span class="km-node-name">Sercotec Semilla</span>
+          <span class="km-node-meta">ENVIADA 12-may · $3.5M</span>
+        </div>
+      </div>
+
+      <div class="km-node" data-state="urgent" data-fund="corfo-inicia" style="top:14%;right:5%">
+        <div class="km-node-icon">🚀</div>
+        <div class="km-node-label">
+          <span class="km-node-name">CORFO Semilla Inicia</span>
+          <span class="km-node-meta">$15M · cierra 29-may</span>
+        </div>
+      </div>
+
+      <div class="km-node" data-state="active" data-fund="corfo-valpo" style="top:46%;left:2%">
+        <div class="km-node-icon">📊</div>
+        <div class="km-node-label">
+          <span class="km-node-name">CORFO Desarrolla Valpo</span>
+          <span class="km-node-meta">$500M · cierra 8-jun</span>
+        </div>
+      </div>
+
+      <div class="km-node" data-state="active" data-fund="startup-chile" style="top:46%;right:2%">
+        <div class="km-node-icon">⚡</div>
+        <div class="km-node-label">
+          <span class="km-node-name">Start-Up Chile BIG</span>
+          <span class="km-node-meta">$15–75M · cierra 25-may</span>
+        </div>
+      </div>
+
+      <div class="km-node" data-state="permanent" data-fund="prochile" style="top:74%;right:5%">
+        <div class="km-node-icon">🌎</div>
+        <div class="km-node-label">
+          <span class="km-node-name">ProChile Sectoriales</span>
+          <span class="km-node-meta">~$15M · ventanilla abierta</span>
+        </div>
+      </div>
+
+      <div class="km-node" data-state="permanent" data-fund="bancoestado" style="top:82%;left:50%;transform:translateX(-50%)">
+        <div class="km-node-icon">🏦</div>
+        <div class="km-node-label">
+          <span class="km-node-name">BancoEstado FOGAPE</span>
+          <span class="km-node-meta">Aval 80% · permanente</span>
+        </div>
+      </div>
+
+      <div class="km-node" data-state="permanent" data-fund="sence" style="top:74%;left:5%">
+        <div class="km-node-icon">🎓</div>
+        <div class="km-node-label">
+          <span class="km-node-name">SENCE Bono + Franquicia</span>
+          <span class="km-node-meta">Capacitación · permanente</span>
+        </div>
+      </div>
+
+      <div class="km-node" data-state="closed" data-fund="fosis" style="top:1%;left:50%;transform:translateX(-50%)">
+        <div class="km-node-icon">✗</div>
+        <div class="km-node-label">
+          <span class="km-node-name">FOSIS Emprendamos</span>
+          <span class="km-node-meta">Cerrado · reabre 2027</span>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="km-legend">
+        <div class="km-legend-item"><span class="dot submitted"></span>Enviada ✓ · esperando resultado</div>
+        <div class="km-legend-item"><span class="dot urgent"></span>Urgente · cierra mayo</div>
+        <div class="km-legend-item"><span class="dot active"></span>Abierto · postular</div>
+        <div class="km-legend-item"><span class="dot permanent"></span>Ventanilla abierta</div>
+        <div class="km-legend-item"><span class="dot closed"></span>Cerrado 2026</div>
+      </div>
+
+    </div>
+
+    <p class="km-hint">Click en un nodo para ver el pipeline completo del fondo · documentos · plazos · responsables</p>
+  </div>
+
+  <!-- ═══ MICRO VIEW · expandible al click ═══ -->
+  <div class="km-micro" id="kmMicro">
+    <div class="km-micro-head">
+      <div class="km-micro-icon" id="microIcon">🔥</div>
+      <div>
+        <div class="km-micro-org" id="microOrg">SERCOTEC</div>
+        <div class="km-micro-name" id="microName">Capital Semilla Emprende 2026</div>
+      </div>
+      <div class="km-micro-money">
+        <div class="km-micro-amount" id="microAmount">$3.500.000</div>
+        <div class="km-micro-amount-sub" id="microSub">No reembolsable · 75% Sercotec</div>
+      </div>
+    </div>
+
+    <div class="km-pipeline" id="microPipeline">
+      <!-- llenado por JS según el nodo -->
+    </div>
+
+    <div class="km-detail" id="microDetail">
+      <!-- llenado por JS -->
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════ CONTEXTO ════════ -->
+<section class="block" id="contexto">
+  <div class="container">
+    <span class="eyebrow">01 · Contexto</span>
+    <h2 class="title">Kanki & Co <em>en pre-constitución</em>.</h2>
+    <p class="lead">Marca de streetwear chileno · línea Essential FW24 + Grizzly · primer pedido importación China + producción local Concón. Capital fundadores $2.245.284 · necesitamos $8-15M adicionales para lanzar.</p>
+    <div class="cards">
+      <div class="card">
+        <span class="badge">Fundadores</span>
+        <h3>50 / 50</h3>
+        <p>Guillermo (operación + marca + canal) · Martín (diseño + producto + showroom). Aporte inicial mixto: capital + know-how + equipamiento.</p>
+        <div class="meta">
+          <span class="chip">SpA</span>
+          <span class="chip">Pacto socios</span>
+          <span class="chip">Vesting opcional</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge">Producto</span>
+        <h3>35 prendas · drop FW24</h3>
+        <p>Polerones Essential + accesorios Grizzly. Pedido China en curso (DHL). Showroom físico Concón + e-commerce kanki.smconnection.cl.</p>
+        <div class="meta">
+          <span class="chip">Streetwear</span>
+          <span class="chip">B2C</span>
+          <span class="chip">Drop limitado</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge">Capital</span>
+        <h3 class="amount">$2.245.284 <small>CLP aportado</small></h3>
+        <p>Falta: <strong>$8-15M CLP</strong> para stock inicial + marketing + operación 6 meses. Sin endeudamiento. Foco: fondos públicos no diluyentes.</p>
+        <div class="meta">
+          <span class="chip">Sin deuda</span>
+          <span class="chip">No diluyente</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ URGENCIA ════════ -->
+<section class="block cream" id="urgencia">
+  <div class="container">
+    <span class="eyebrow">02 · Lo más urgente</span>
+    <h2 class="title">48 horas · <em>Capital Semilla Sercotec</em>.</h2>
+    <p class="lead">Postulación cierra el jueves 13-mayo. Monto: hasta $3.500.000 sin devolución. Es no diluyente (no nos quitan equity). Requisitos accesibles. Es el primer mojón.</p>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Requisito Sercotec</th>
+          <th>Estado Kanki & Co</th>
+          <th>Acción 48h</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RUT del emprendedor</strong> (persona natural) o empresa &lt;12 meses</td>
+          <td><span class="pill have">✓ Guillermo PN</span></td>
+          <td>Listo · postula Guillermo PN · luego cede a SpA</td>
+        </tr>
+        <tr>
+          <td><strong>Idea de negocio en fase pre-operativa</strong></td>
+          <td><span class="pill have">✓ Kanki definido</span></td>
+          <td>Brief 3-page con marca · producto · mercado</td>
+        </tr>
+        <tr>
+          <td><strong>Plan de negocio simplificado</strong> (formato Sercotec)</td>
+          <td><span class="pill part">⏳ Borrador</span></td>
+          <td>Completar plan formato oficial · 4-6 hrs</td>
+        </tr>
+        <tr>
+          <td><strong>Carta Gantt + plan de inversiones</strong> detalle ítem por ítem</td>
+          <td><span class="pill miss">✗ Falta</span></td>
+          <td>Bárbara estructura · Guillermo da costos reales</td>
+        </tr>
+        <tr>
+          <td><strong>Cotizaciones formales</strong> (mínimo 1 por ítem)</td>
+          <td><span class="pill part">⏳ Parcial</span></td>
+          <td>Pedir cotis a proveedores (textil · packaging · DHL · etiquetas)</td>
+        </tr>
+        <tr>
+          <td><strong>Certificado domicilio comercial</strong> (Concón)</td>
+          <td><span class="pill miss">✗ Falta</span></td>
+          <td>Boleta luz/agua/internet a nombre socio · 1 día</td>
+        </tr>
+        <tr>
+          <td><strong>CV emprendedor + foto</strong></td>
+          <td><span class="pill have">✓ Listo</span></td>
+          <td>Adjuntar perfil LinkedIn extendido</td>
+        </tr>
+        <tr>
+          <td><strong>Antecedentes comerciales</strong> (Boletín Comercial limpio)</td>
+          <td><span class="pill have">✓ Limpio</span></td>
+          <td>Descargar certificado Equifax · gratis</td>
+        </tr>
+        <tr>
+          <td><strong>Tutoría Sercotec</strong> (recomendable · suma puntaje)</td>
+          <td><span class="pill miss">✗ Sin tutor</span></td>
+          <td>Agendar 1 sesión Sercotec Centro Negocios Viña</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════ POSTULACIÓN ENVIADA · datos completos PDF ════════ -->
+<section class="block submitted-block" id="postulacion">
+  <div class="container">
+    <span class="eyebrow" style="color:#4DA050;border-color:#7AD27C"><span style="color:#4DA050">✓</span> Postulación enviada · 12-may 18:54</span>
+    <h2 class="title">Datos enviados a Sercotec <em>Capital Semilla Emprende 2026</em>.</h2>
+    <p class="lead">Postulación oficial radicada por <strong>Martín Alonso Sanhueza Ríos</strong> (RUT 22.599.202-9 · Persona Natural). Esta sección consolida lo declarado en el formulario para tracking interno y armar la carpeta de rendición. Próximo paso: esperar evaluación + preparar respaldos por si nos contactan.</p>
+
+    <!-- KPI strip animado -->
+    <div class="kpi-strip">
+      <div class="kpi-cell">
+        <span class="kpi-label">Solicitado Sercotec</span>
+        <span class="kpi-num kinetic-shimmer">$3.500.000</span>
+        <span class="kpi-sub">75% del proyecto</span>
+      </div>
+      <div class="kpi-cell">
+        <span class="kpi-label">Aporte Kanki obligatorio</span>
+        <span class="kpi-num">$105.000</span>
+        <span class="kpi-sub">+ IVA $684.950</span>
+      </div>
+      <div class="kpi-cell">
+        <span class="kpi-label">Total proyecto</span>
+        <span class="kpi-num">$4.289.950</span>
+        <span class="kpi-sub">Con IVA + aporte</span>
+      </div>
+      <div class="kpi-cell">
+        <span class="kpi-label">Resultados esperados</span>
+        <span class="kpi-num">Jun–Jul</span>
+        <span class="kpi-sub">2026 · vía email</span>
+      </div>
+    </div>
+
+    <!-- Estructura de costos · breakdown declarado -->
+    <h3 class="sub-title">📊 Estructura de costos declarada (Ámbito 5)</h3>
+    <div class="cost-breakdown">
+      <div class="cost-row">
+        <div class="cost-cat">Gestión empresarial</div>
+        <div class="cost-bar"><div class="cost-fill" style="width:5.7%;background:linear-gradient(90deg,#D4AA4A,#E0BC60)"><span>$200.000</span></div></div>
+        <div class="cost-detail">Acciones de marketing · publicidad RRSS</div>
+      </div>
+      <div class="cost-row">
+        <div class="cost-cat">Inversión activos</div>
+        <div class="cost-bar"><div class="cost-fill" style="width:56.6%;background:linear-gradient(90deg,#7AD27C,#5FB860)"><span>$1.980.000</span></div></div>
+        <div class="cost-detail">Kit digital · computador · cámara · software gestión</div>
+      </div>
+      <div class="cost-row">
+        <div class="cost-cat">Capital de trabajo</div>
+        <div class="cost-bar"><div class="cost-fill" style="width:37.7%;background:linear-gradient(90deg,#4FD1C5,#3FB8AC)"><span>$1.320.000</span></div></div>
+        <div class="cost-detail">Compra de productos · primer drop FW24</div>
+      </div>
+    </div>
+
+    <!-- 3 perfiles de clientes -->
+    <h3 class="sub-title">🎯 3 perfiles de clientes (Ámbito 4 · Canvas)</h3>
+    <div class="cards perfiles">
+      <div class="card perfil p1">
+        <span class="badge" style="background:#E5F4FF;color:#1B5BA0">Perfil 1</span>
+        <h3>Los cabros del deporte</h3>
+        <p class="age">15 a 22 años · respaldo familiar · Concón, Reñaca, Maitencillo, Pichilemu</p>
+        <p>Entrenan los fines de semana, sueñan con competir. Compran 2-3 prendas/año en fechas clave (vuelta clases · Navidad · cumpleaños). Padres confiados con la familia Sanhueza.</p>
+        <div class="meta">
+          <span class="chip">Ticket $35–45k</span>
+          <span class="chip">Canal: showroom</span>
+          <span class="chip">Decisor: papá</span>
+        </div>
+      </div>
+      <div class="card perfil p2">
+        <span class="badge" style="background:#FFF2D6;color:#A07C2A">Perfil 2</span>
+        <h3>Los que compiten</h3>
+        <p class="age">18 a 32 años · profesionales regionales · sudamericanos · referentes Anto Gutiérrez</p>
+        <p>Necesitan marca local que los respalde y los visibilice. Embajadores. Compran ropa de entrenar + de "vestir fuera del agua".</p>
+        <div class="meta">
+          <span class="chip">Ticket $50–70k</span>
+          <span class="chip">Canal: RRSS + eventos</span>
+          <span class="chip">Decisor: ellos</span>
+        </div>
+      </div>
+      <div class="card perfil p3">
+        <span class="badge" style="background:#E5F8E5;color:#3C8540">Perfil 3</span>
+        <h3>Los que lo hacen por pasión</h3>
+        <p class="age">25 a 35 años · profesionales jóvenes · viven en Concón, Viña, Valparaíso, Santiago</p>
+        <p>Surf como estilo de vida. Hoy compran Fear of God Essentials · Stüssy · Vans. Pagan por identidad cultural y exclusividad. Drops limitados 50–80 prendas.</p>
+        <div class="meta">
+          <span class="chip">Ticket $50–65k</span>
+          <span class="chip">Canal: e-commerce</span>
+          <span class="chip">Compran online</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 canales · 3 alianzas en grid -->
+    <h3 class="sub-title">🛤️ 3 canales de venta · 3 alianzas estratégicas</h3>
+    <div class="two-col">
+      <div class="halfbox">
+        <h4>Canales de venta</h4>
+        <ol class="numlist">
+          <li><strong>Showroom Playa La Boca · Escuela de Surf</strong> · foco Perfil 1 · padres confiados · venta familiar · ticket alto recurrente.</li>
+          <li><strong>RRSS · @kankisurf + TikTok + eventos</strong> · foco Perfil 2 · contenido competencias + DM directo · venta por pertenencia.</li>
+          <li><strong>kanki.cl + pop-ups</strong> · foco Perfil 3 · drops limitados · pre-acceso suscriptores · pop-ups Pichilemu / Maitencillo / La Serena.</li>
+        </ol>
+      </div>
+      <div class="halfbox">
+        <h4>Alianzas estratégicas</h4>
+        <ol class="numlist">
+          <li><strong>Escuela Kanki Surf (familia Sanhueza)</strong> · validación cultural + comunidad activa · sin costos de adquisición Perfil 1.</li>
+          <li><strong>Proveedor tech e-commerce</strong> · configuración Shopify + SEO · integraciones · soporte plataforma.</li>
+          <li><strong>Productor audiovisual / fotógrafo local</strong> · contenido drops trimestrales · esquema intercambio o pago contra producción.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 3 acciones clave -->
+    <h3 class="sub-title">⚙️ 3 acciones clave (división responsabilidades)</h3>
+    <div class="cards acciones">
+      <div class="card accion">
+        <span class="badge" style="background:#FFE8E5;color:#A02020">Acción 1</span>
+        <h3>Diseño + producción</h3>
+        <p>Cada trimestre: briefing visual + selección telas + diseño gráfico + control de calidad + aprobar tiraje completo. Define propuesta de valor diferenciada.</p>
+        <div class="meta"><span class="chip"><strong>Owner: Martín Sanhueza</strong></span></div>
+      </div>
+      <div class="card accion">
+        <span class="badge" style="background:#E5F4FF;color:#1B5BA0">Acción 2</span>
+        <h3>Operación comercial y tech</h3>
+        <p>Showroom + e-commerce · gestión de stock · packaging · despachos · pagos (Webpay + MercadoPago) · facturación electrónica.</p>
+        <div class="meta"><span class="chip"><strong>Owner: Guillermo González</strong></span></div>
+      </div>
+      <div class="card accion">
+        <span class="badge" style="background:#E5F8E5;color:#3C8540">Acción 3</span>
+        <h3>Estrategia comercial + embajadores</h3>
+        <p>Construir red de embajadores (campeones surf-skate) · producción de contenido IG/TikTok @kankisurf · eventos de lanzamiento por drop.</p>
+        <div class="meta"><span class="chip"><strong>Owner: equipo Kanki</strong></span></div>
+      </div>
+    </div>
+
+    <!-- Calendario operativo declarado -->
+    <h3 class="sub-title">📅 Operación declarada (mensual)</h3>
+    <div class="ops-strip">
+      <div class="ops-cell"><span class="ops-label">Ingresos</span><span class="ops-num">$3.000.000</span><span class="ops-sub">/mes</span></div>
+      <div class="ops-cell"><span class="ops-label">Costos fijos</span><span class="ops-num">$1.000.000</span><span class="ops-sub">~33% ingresos</span></div>
+      <div class="ops-cell"><span class="ops-label">Costos variables</span><span class="ops-num">$300.000</span><span class="ops-sub">~10% ingresos</span></div>
+      <div class="ops-cell"><span class="ops-label">Margen objetivo</span><span class="ops-num" style="color:#4DA050">$1.700.000</span><span class="ops-sub">~57% bruto</span></div>
+    </div>
+
+    <!-- Próximos pasos -->
+    <h3 class="sub-title">🛣 Siguiente fase · de "enviada" a "adjudicada"</h3>
+    <table class="tbl">
+      <thead>
+        <tr><th>Fase</th><th>Acción</th><th>Plazo</th><th>Owner</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Evaluación admisibilidad</strong></td>
+          <td>Sercotec revisa documentación + cumplimiento bases (NO requiere acción de Kanki)</td>
+          <td>13-may → 30-may</td>
+          <td>Sercotec</td>
+        </tr>
+        <tr>
+          <td><strong>Evaluación técnica</strong></td>
+          <td>Posible llamado a entrevista o requerimiento de aclaraciones</td>
+          <td>30-may → 20-jun</td>
+          <td>Martín · responder &lt; 48h</td>
+        </tr>
+        <tr>
+          <td><strong>Resultados publicados</strong></td>
+          <td>Email de adjudicación o no-adjudicación · publicación en portal Sercotec</td>
+          <td>Junio–Julio 2026</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><strong>Firma convenio</strong></td>
+          <td>Si adjudica: firmar convenio · entregar póliza fiel cumplimiento · plan operativo final</td>
+          <td>+15 días post-adjudicación</td>
+          <td>Bárbara + Martín</td>
+        </tr>
+        <tr>
+          <td><strong>Plan trabajo + primera rendición</strong></td>
+          <td>Carpeta de respaldos · facturas · medios de pago · fotos · informe trimestral</td>
+          <td>Trimestral · 18 meses ejecución</td>
+          <td>Bárbara revisa · Guillermo aporta data</td>
+        </tr>
+        <tr>
+          <td><strong>Cierre + rendición final</strong></td>
+          <td>Informe final + bitácora de uso · auditoría Sercotec si aplica</td>
+          <td>Mes 18-21</td>
+          <td>Bárbara firma · Martín respalda</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Banner siguiente -->
+    <div class="next-banner">
+      <div class="next-icon">🎯</div>
+      <div class="next-content">
+        <h3>Siguiente objetivo · CORFO Semilla Inicia</h3>
+        <p>Mientras Sercotec evalúa, montamos postulación CORFO ($15M) · pero requiere <strong>SpA con iniciación de actividades</strong>. Constituir Kanki & Co SpA antes del <strong>22-may</strong> para tener 7 días de holgura previos al cierre 29-may. Bárbara lidera + Compliance revisa pacto.</p>
+      </div>
+    </div>
+
+    <!-- Marquee fondos próximos · efecto Linear/Vercel -->
+    <div class="fund-marquee" aria-hidden="true">
+      <div class="fund-marquee-track">
+        <span>Sercotec Capital Semilla · ENVIADA 12-may</span>
+        <span>CORFO Semilla Inicia · cierra 29-may · $15M</span>
+        <span>Start-Up Chile BIG · cierra 25-may · $15-75M</span>
+        <span>CORFO Desarrolla Valpo · cierra 8-jun · $500M</span>
+        <span>ProChile Marcas Sectoriales · ventanilla abierta</span>
+        <span>BancoEstado FOGAPE · aval 80% permanente</span>
+        <span>SENCE Bono Trabajador Independiente · permanente</span>
+        <!-- duplicado para loop continuo -->
+        <span>Sercotec Capital Semilla · ENVIADA 12-may</span>
+        <span>CORFO Semilla Inicia · cierra 29-may · $15M</span>
+        <span>Start-Up Chile BIG · cierra 25-may · $15-75M</span>
+        <span>CORFO Desarrolla Valpo · cierra 8-jun · $500M</span>
+        <span>ProChile Marcas Sectoriales · ventanilla abierta</span>
+        <span>BancoEstado FOGAPE · aval 80% permanente</span>
+        <span>SENCE Bono Trabajador Independiente · permanente</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════ FONDOS POR EXPLORAR ════════ -->
+<section class="block" id="fondos">
+  <div class="container">
+    <span class="eyebrow">03 · Banco de fondos · 17 verificados RADAR · 11-may 22:00</span>
+    <h2 class="title">Banco de fondos · <em>scrape en vivo</em>.</h2>
+    <p class="lead">RADAR scrapeó 17 fondos públicos chilenos: Sercotec · CORFO · FOSIS · ProChile · SENCE · BancoEstado · Start-Up Chile. Cada uno con fecha real de postulación 2026 + URL oficial + estado actual. Pregunta clave para Bárbara: <strong>¿tienes banco de fondos vivo que actualizas mes a mes con bases + ventanas + tasas adjudicación históricas?</strong></p>
+
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:30px 0 14px;letter-spacing:-.012em">🔥 9 FONDOS ABIERTOS · comparativa horizontal</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Scroll horizontal → cada columna es un fondo · atributos en filas. Optimizado para comparar lado a lado.</p>
+
+    <div style="overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow-sm);background:var(--bg);margin-bottom:40px">
+      <table class="tbl" style="font-size:12px;min-width:1800px;margin-top:0;box-shadow:none;border-radius:0">
+        <thead>
+          <tr>
+            <th style="position:sticky;left:0;background:var(--cream);z-index:5;min-width:140px;border-right:2px solid var(--gold)">Atributo</th>
+            <th style="background:#FFE5E0;color:#A02020;min-width:170px">🔥 Sercotec<br><span style="font-size:9px;font-weight:600">Capital Semilla</span></th>
+            <th style="background:rgba(196,154,58,.18);color:var(--navy);min-width:170px">🚀 CORFO<br><span style="font-size:9px;font-weight:600">Semilla Inicia</span></th>
+            <th style="min-width:170px">CORFO<br><span style="font-size:9px;font-weight:600">Desarrolla Inv. Valpo</span></th>
+            <th style="background:#FFE5E0;color:#A02020;min-width:170px">🔥 Start-Up Chile<br><span style="font-size:9px;font-weight:600">BIG (Build/Ignite/Growth)</span></th>
+            <th style="min-width:170px">ProChile<br><span style="font-size:9px;font-weight:600">Marcas Sectoriales</span></th>
+            <th style="min-width:170px">BancoEstado<br><span style="font-size:9px;font-weight:600">FOGAPE + Microempr.</span></th>
+            <th style="min-width:170px">BancoEstado<br><span style="font-size:9px;font-weight:600">Emprende</span></th>
+            <th style="min-width:170px">SENCE<br><span style="font-size:9px;font-weight:600">Bono Trab. Indep.</span></th>
+            <th style="min-width:170px">SENCE<br><span style="font-size:9px;font-weight:600">Franquicia Trib.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Monto máx</td>
+            <td><strong>$3.5M</strong></td>
+            <td><strong>$15M</strong> ($17M mujer)</td>
+            <td>$500M (regional)</td>
+            <td>$15M → $75M</td>
+            <td>~$15M</td>
+            <td>Variable + 80% aval</td>
+            <td>Servicios</td>
+            <td>$500K reembolsable</td>
+            <td>Crédito IDPC</td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Cofinanciamiento</td>
+            <td>75% Sercotec / 25% propio</td>
+            <td>75% CORFO / 25% (85%/15% mujer)</td>
+            <td>Variable</td>
+            <td>~80-90% Start-Up</td>
+            <td>50-70% según etapa</td>
+            <td>Deuda (no es subsidio)</td>
+            <td>—</td>
+            <td>100% reembolso</td>
+            <td>100% vs IDPC</td>
+          </tr>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Fecha apertura</td>
+            <td>29-abr-2026</td>
+            <td>30-abr-2026</td>
+            <td>29-abr-2026</td>
+            <td>~abr-2026</td>
+            <td>Permanente</td>
+            <td>Permanente</td>
+            <td>Permanente</td>
+            <td>Permanente</td>
+            <td>Permanente</td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Fecha cierre</td>
+            <td style="color:var(--red-urgent);font-weight:700">13-may 15:00</td>
+            <td style="color:var(--gold);font-weight:700">29-may-2026</td>
+            <td>08-jun 15:00</td>
+            <td style="color:var(--red-urgent);font-weight:700">25-may-2026</td>
+            <td>Ventanilla abierta</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Estado</td>
+            <td><span class="pill have">🔥 POSTULANDO</span></td>
+            <td><span class="pill have">🚀 ABIERTO</span></td>
+            <td><span class="pill have">✓ ABIERTO</span></td>
+            <td><span class="pill have">🔥 ABIERTO</span></td>
+            <td><span class="pill have">✓ ABIERTO</span></td>
+            <td><span class="pill have">✓ ABIERTO</span></td>
+            <td><span class="pill have">✓ ABIERTO</span></td>
+            <td><span class="pill have">✓ ABIERTO</span></td>
+            <td><span class="pill have">✓ ABIERTO</span></td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Requiere SpA</td>
+            <td>No (PN ok)</td>
+            <td style="color:var(--red-urgent);font-weight:700">Sí · + SII</td>
+            <td>Sí</td>
+            <td>Sí</td>
+            <td>Sí</td>
+            <td>Sí (microempresa)</td>
+            <td>No</td>
+            <td>No (PN)</td>
+            <td>Sí (con empleados)</td>
+          </tr>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Tasa adjudicación</td>
+            <td>~9% (subió ~20% con tutoría)</td>
+            <td>~25%</td>
+            <td>Baja (regional · alto monto)</td>
+            <td>~5-10%</td>
+            <td>Alta (vent. abierta)</td>
+            <td>Alta</td>
+            <td>Auto</td>
+            <td>Alta</td>
+            <td>Auto</td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Es reembolsable</td>
+            <td>NO (subsidio)</td>
+            <td>NO (subsidio)</td>
+            <td>NO</td>
+            <td>NO (equity-free)</td>
+            <td>NO</td>
+            <td>SÍ (es deuda)</td>
+            <td>NO (servicios)</td>
+            <td>SÍ post curso</td>
+            <td>NO (vs IDPC)</td>
+          </tr>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Fit Kanki</td>
+            <td>🟢 Martín PN HOY</td>
+            <td>🟢 si SpA &lt;25-may</td>
+            <td>🟡 mejor con ventas</td>
+            <td>🟡 ángulo tech IA</td>
+            <td>🟡 plan export 2027</td>
+            <td>🟡 deuda fallback</td>
+            <td>🟢 inscribir Kanki</td>
+            <td>🟢 cap. Guille</td>
+            <td>🟢 al 1er empleo</td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">URL oficial</td>
+            <td><a href="https://www.sercotec.cl/convocatoria/capital-semilla-emprende-region-de-valparaiso-2026/" target="_blank">sercotec.cl<br>↗ valpo-2026</a></td>
+            <td><a href="https://www.corfo.cl/sites/cpp/inf/semilla-inicia" target="_blank">corfo.cl<br>↗ semilla-inicia</a></td>
+            <td><a href="https://www.corfo.cl/" target="_blank">corfo.cl<br>↗ valparaíso</a></td>
+            <td><a href="https://startupchile.org/en/apply/" target="_blank">startupchile.org<br>↗ apply</a></td>
+            <td><a href="https://www.prochile.gob.cl/herramientas/marcas-sectoriales/postulacion" target="_blank">prochile.gob.cl<br>↗ sectoriales</a></td>
+            <td><a href="https://www.bancoestado.cl/content/bancoestado-public/cl/es/home/home-microempresa/productos/creditos/creditos-para-tu-negocio.html" target="_blank">bancoestado.cl<br>↗ microempresa</a></td>
+            <td><a href="https://emprendebancoestado.cl/" target="_blank">emprendebancoestado<br>↗ .cl</a></td>
+            <td><a href="https://sence.gob.cl/personas/programas-y-cursos" target="_blank">sence.gob.cl<br>↗ programas</a></td>
+            <td><a href="https://sence.gob.cl/empresas/franquicia-tributaria" target="_blank">sence.gob.cl<br>↗ franquicia</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:40px 0 14px;letter-spacing:-.012em">⏳ 3 FONDOS POR ABRIR · Q3-Q4 2026</h3>
+    <div style="overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow-sm);background:var(--bg);margin-bottom:40px">
+      <table class="tbl" style="font-size:12px;min-width:900px;margin-top:0;box-shadow:none;border-radius:0">
+        <thead>
+          <tr>
+            <th style="position:sticky;left:0;background:var(--cream);z-index:5;min-width:140px;border-right:2px solid var(--gold)">Atributo</th>
+            <th style="min-width:200px">CORFO<br><span style="font-size:9px;font-weight:600">Crea y Valida (R2)</span></th>
+            <th style="min-width:200px">Sercotec<br><span style="font-size:9px;font-weight:600">Crece</span></th>
+            <th style="min-width:200px">Sercotec<br><span style="font-size:9px;font-weight:600">Mejora Negocios</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Monto máx</td>
+            <td><strong>$30M</strong></td>
+            <td><strong>$6M</strong></td>
+            <td><strong>$4M</strong></td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Apertura estimada</td>
+            <td>17-nov-2026</td>
+            <td>Q3 2026 (jul-sep)</td>
+            <td>Q3-Q4 2026 (TBD)</td>
+          </tr>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Cierre estimado</td>
+            <td>17-dic-2026</td>
+            <td>TBD</td>
+            <td>TBD</td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Estado</td>
+            <td><span class="pill part">⏳ Q4 2026</span></td>
+            <td><span class="pill part">⏳ Q3 2026</span></td>
+            <td><span class="pill part">⏳ Q3-Q4</span></td>
+          </tr>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Fit Kanki</td>
+            <td>🟡 si validamos MVP</td>
+            <td>🟡 tras 12 meses ventas</td>
+            <td>🟢 post 6 meses op.</td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">URL oficial</td>
+            <td><a href="https://www.corfo.cl/sites/cpp/convocatorias/crea_y_valida" target="_blank">corfo.cl/.../crea-y-valida</a></td>
+            <td><a href="https://www.sercotec.cl/programas/crece/" target="_blank">sercotec.cl/crece</a></td>
+            <td><a href="https://www.sercotec.cl/" target="_blank">sercotec.cl</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:40px 0 14px;letter-spacing:-.012em">✗ 5 FONDOS CERRADOS · reabren 2027</h3>
+    <div style="overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow-sm);background:var(--bg);margin-bottom:40px;opacity:.75">
+      <table class="tbl" style="font-size:12px;min-width:1300px;margin-top:0;box-shadow:none;border-radius:0">
+        <thead>
+          <tr>
+            <th style="position:sticky;left:0;background:var(--cream);z-index:5;min-width:140px;border-right:2px solid var(--gold)">Atributo</th>
+            <th style="min-width:180px">FOSIS<br><span style="font-size:9px;font-weight:600">Emprendamos Semilla</span></th>
+            <th style="min-width:180px">Sercotec<br><span style="font-size:9px;font-weight:600">Capital Abeja</span></th>
+            <th style="min-width:180px">Sercotec<br><span style="font-size:9px;font-weight:600">Digitaliza Almacén</span></th>
+            <th style="min-width:180px">CORFO<br><span style="font-size:9px;font-weight:600">Semilla Expande</span></th>
+            <th style="min-width:180px">CORFO<br><span style="font-size:9px;font-weight:600">PAR Impulsa Valpo</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Monto máx</td>
+            <td>$400K</td>
+            <td>$3.5M (mujer)</td>
+            <td>$3M</td>
+            <td>$25M + $20M</td>
+            <td>$3M</td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Cerró en 2026</td>
+            <td>30-abr</td>
+            <td>26-mar</td>
+            <td>10-feb 15:00</td>
+            <td>24-feb 16:00</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Estado</td>
+            <td><span class="pill miss">✗ CERRADO</span></td>
+            <td><span class="pill miss">✗ CERRADO</span></td>
+            <td><span class="pill miss">✗ CERRADO</span></td>
+            <td><span class="pill miss">✗ CERRADO</span></td>
+            <td><span class="pill miss">✗ CERRADO</span></td>
+          </tr>
+          <tr style="background:var(--bg-warm)">
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">Reapertura</td>
+            <td>~marzo 2027</td>
+            <td>~marzo 2027</td>
+            <td>~ene 2027</td>
+            <td>~ene 2027</td>
+            <td>~Q1-Q2 2027</td>
+          </tr>
+          <tr>
+            <td style="position:sticky;left:0;background:var(--cream-soft);z-index:4;border-right:2px solid var(--gold);font-weight:800;color:var(--navy)">URL</td>
+            <td><a href="https://www.fosis.gob.cl/es/programas/autonomia-economica/emprendamos-semilla/" target="_blank">fosis.gob.cl</a></td>
+            <td><a href="https://www.sercotec.cl/capital-abeja-emprende/" target="_blank">sercotec.cl/abeja</a></td>
+            <td><a href="https://www.sercotec.cl/" target="_blank">sercotec.cl</a></td>
+            <td><a href="https://www.corfo.cl/sites/cpp/inf/semilla-expande" target="_blank">corfo.cl/expande</a></td>
+            <td><a href="https://www.corfo.cl/sites/cpp/convocatorias/par_impulsa_provincia_de_valparaiso" target="_blank">corfo.cl/par</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="lead" style="margin-top:40px">Visualización por urgencia · cada card destaca un fondo del banco de arriba.</p>
+
+    <div class="cards">
+
+      <div class="card">
+        <span class="badge urgent">🔥 ESTA SEMANA</span>
+        <h3>Sercotec · Capital Semilla Emprende</h3>
+        <p class="amount">$3.5M <small>máx · no reembolsable</small></p>
+        <p>Para PN o empresa &lt;12 meses con idea de negocio. 70% cofinanciamiento Sercotec / 30% aporte propio. Cierra <strong>13-mayo-2026</strong>.</p>
+        <div class="meta">
+          <span class="chip">PN o SpA</span>
+          <span class="chip">Cobertura nacional</span>
+          <span class="chip">No diluyente</span>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:var(--gold);border-width:2px">
+        <span class="badge urgent">🚀 ABIERTO · cierra 29-may</span>
+        <h3>CORFO · Semilla Inicia 2026</h3>
+        <p class="amount">$15M <small>· $17M si lidera mujer</small></p>
+        <p><strong>Hallazgo RADAR 11-may:</strong> está abierto AHORA hasta 29-may-2026. Cofinanciamiento 75% (85% mujeres). <strong>Requiere SpA + iniciación actividades</strong>. Si constituimos Kanki SpA antes del 25-may → stack $3.5M + $15M = $18.5M.</p>
+        <div class="meta">
+          <span class="chip">⚠️ Requiere SpA</span>
+          <span class="chip">15 días</span>
+          <span class="chip">Vía incubadora</span>
+        </div>
+      </div>
+
+      <div class="card" style="opacity:.55">
+        <span class="badge" style="background:#FFE0E0;color:#A02020">✗ CERRADO 2026</span>
+        <h3>Sercotec · Capital Abeja Emprende</h3>
+        <p class="amount">$3.5M <small>solo socias mujeres</small></p>
+        <p>Cerró marzo 2026. Si Kanki suma cofundadora mujer · aplica en convocatoria 2027 (estimada marzo). Solo descartable hoy si M+G se mantienen como socios.</p>
+        <div class="meta">
+          <span class="chip">Solo mujeres</span>
+          <span class="chip">Reabre Q1 2027</span>
+        </div>
+      </div>
+
+      <div class="card" style="opacity:.55">
+        <span class="badge" style="background:#FFE0E0;color:#A02020">✗ CERRADO 2026</span>
+        <h3>CORFO · Semilla Expande</h3>
+        <p class="amount">$25M <small>+ $20M segunda etapa</small></p>
+        <p>Cerró 24-feb-2026. Es el upgrade natural post Semilla Inicia · ventas netas <$80M últimos 12 meses. Reabre Q1 2027. Para Kanki: meta 2027 post-Inicia.</p>
+        <div class="meta">
+          <span class="chip">Reabre Q1 2027</span>
+          <span class="chip">Con ventas</span>
+        </div>
+      </div>
+
+      <div class="card" style="opacity:.55">
+        <span class="badge" style="background:#FFE0E0;color:#A02020">✗ CERRADO 2026</span>
+        <h3>FOSIS · Emprendamos Semilla</h3>
+        <p class="amount">$400K <small>capacitación + capital</small></p>
+        <p>Postulación cerró 30-abr-2026 (era 15-30/abr · 28.000 cupos nacional · $29MM presupuesto). Foco vulnerabilidad económica. Reabre marzo 2027. Kanki podría no calificar por nivel socioeconómico.</p>
+        <div class="meta">
+          <span class="chip">Reabre 2027</span>
+          <span class="chip">Vía municipalidad</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge ok">✓ VENTANILLA ABIERTA</span>
+        <h3>ProChile · Marcas Sectoriales</h3>
+        <p class="amount">~$15M <small>internacionalización</small></p>
+        <p><strong>Ventanilla abierta todo el año.</strong> Para PYMEs con potencial export. Cofinancia ferias + branding global. Postular vía portal cuando Kanki tenga plan export 2027.</p>
+        <div class="meta">
+          <span class="chip">Sin fecha límite</span>
+          <span class="chip">Export 2027</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge ok">✓ PERMANENTE</span>
+        <h3>SENCE · Bono Trab. Independiente</h3>
+        <p class="amount">$500K <small>capacitación reembolsable</small></p>
+        <p>Bono para certificaciones técnicas (e-commerce · marketing digital · gestión PYME). 100% reembolsable post-aprobación curso. Suma know-how + se activa al instante.</p>
+        <div class="meta">
+          <span class="chip">Reembolsable</span>
+          <span class="chip">Skills</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge ok">✓ PERMANENTE</span>
+        <h3>BancoEstado · FOGAPE + Microempresa</h3>
+        <p class="amount">Variable <small>aval estatal 80%</small></p>
+        <p>Crédito con tasa preferente PYMES <1 año. FOGAPE garantiza hasta 80% si no hay garantías propias. Es deuda · complemento si fondos no alcanzan.</p>
+        <div class="meta">
+          <span class="chip">Es deuda</span>
+          <span class="chip">Aval estado</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge urgent">🔥 CIERRA 25-may</span>
+        <h3>Start-Up Chile · BIG (Build/Ignite/Growth)</h3>
+        <p class="amount">$15M – $75M <small>según etapa</small></p>
+        <p>Programa CORFO de aceleración tech · 3 etapas. Hasta 25-may abierto · Build $15M (idea/prototipo · 4 meses) / Ignite $30M (MVP busca PMF) / Growth $75M (escalamiento · 6 meses).</p>
+        <div class="meta">
+          <span class="chip">Tech base</span>
+          <span class="chip">15 días</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge ok">✓ PERMANENTE</span>
+        <h3>SENCE · Franquicia Tributaria</h3>
+        <p class="amount">Crédito IDPC <small>al contratar</small></p>
+        <p>Cuando Kanki contrate primer empleado · recupera capacitación contra IDPC. Beneficio cierra el círculo de empleabilidad + skills + tributario.</p>
+        <div class="meta">
+          <span class="chip">Al 1er empleo</span>
+          <span class="chip">IDPC</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ REQUISITOS / BANCO DE DOCUMENTOS ════════ -->
+<section class="block cream" id="requisitos">
+  <div class="container">
+    <span class="eyebrow">04 · Banco de documentos con Bárbara</span>
+    <h2 class="title">Lo que <em>arma el dossier maestro</em>.</h2>
+    <p class="lead">Cada fondo pide variaciones de los mismos 10-12 documentos. Si armamos UN dossier maestro · postulamos a varios en paralelo. Bárbara lo curará · Guillermo lo nutre con info real.</p>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Documento</th>
+          <th>Para qué fondos</th>
+          <th>Estado</th>
+          <th>Owner · 48h</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Plan de negocio Kanki & Co</strong> · formato Sercotec + CORFO</td>
+          <td>Sercotec · CORFO · Banco Estado</td>
+          <td><span class="pill part">Borrador 60%</span></td>
+          <td>Guillermo redacta · Bárbara revisa</td>
+        </tr>
+        <tr>
+          <td><strong>Modelo Canvas</strong> + propuesta valor</td>
+          <td>Todos</td>
+          <td><span class="pill have">Listo</span></td>
+          <td>Solo formatear PDF</td>
+        </tr>
+        <tr>
+          <td><strong>Proyección financiera 3 años</strong> · Excel</td>
+          <td>Sercotec · CORFO · BancoEstado</td>
+          <td><span class="pill miss">Falta</span></td>
+          <td>Bárbara plantilla · Guillermo datos</td>
+        </tr>
+        <tr>
+          <td><strong>Carta Gantt</strong> con hitos 12 meses</td>
+          <td>Sercotec · CORFO</td>
+          <td><span class="pill miss">Falta</span></td>
+          <td>1h en herramienta visual</td>
+        </tr>
+        <tr>
+          <td><strong>Plan inversión detalle</strong> · ítem por ítem</td>
+          <td>Sercotec (obligatorio)</td>
+          <td><span class="pill miss">Falta</span></td>
+          <td>Guillermo lista · costos reales · 3h</td>
+        </tr>
+        <tr>
+          <td><strong>Cotizaciones formales</strong> (mínimo 1 por inversión)</td>
+          <td>Sercotec · CORFO</td>
+          <td><span class="pill part">3 de 8</span></td>
+          <td>Pedir hoy: textil · packaging · DHL · etiquetas</td>
+        </tr>
+        <tr>
+          <td><strong>RUT + cédula emprendedor</strong> (ambas caras)</td>
+          <td>Todos</td>
+          <td><span class="pill have">Listo</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><strong>Boletín Comercial · sin morosidad</strong></td>
+          <td>Todos</td>
+          <td><span class="pill have">Limpio</span></td>
+          <td>Descargar PDF Equifax</td>
+        </tr>
+        <tr>
+          <td><strong>Boleta consumo básico</strong> domicilio comercial</td>
+          <td>Sercotec · CORFO</td>
+          <td><span class="pill miss">Falta</span></td>
+          <td>Pedirla a Martín · Concón</td>
+        </tr>
+        <tr>
+          <td><strong>CV emprendedor</strong> · 1-2 páginas</td>
+          <td>Sercotec · CORFO</td>
+          <td><span class="pill have">Listo</span></td>
+          <td>Adjuntar versión actualizada</td>
+        </tr>
+        <tr>
+          <td><strong>Fotos producto</strong> + branding kit</td>
+          <td>Sercotec · CORFO · ProChile</td>
+          <td><span class="pill have">Listo</span></td>
+          <td>Curado de visuales Kanki</td>
+        </tr>
+        <tr>
+          <td><strong>Iniciación actividades SII</strong> (si aplica SpA)</td>
+          <td>CORFO · BancoEstado</td>
+          <td><span class="pill miss">Falta SpA</span></td>
+          <td>Decisión: PN ahora · SpA julio</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════ RADAR ════════ -->
+<section class="block dark" id="radar">
+  <div class="container">
+    <span class="eyebrow">05 · RADAR · fuentes para preguntas a Bárbara</span>
+    <h2 class="title">Lo que ya <em>mapeamos</em>.</h2>
+    <p class="lead">RADAR escaneó 17 fondos oficiales · 12 medios especialistas · 4 comunidades emprendedores chilenos · podcasts y X. Aquí lo más relevante para Kanki & Co, con confianza ponderada por fuente.</p>
+    <div class="radar-grid">
+
+      <div class="radar-card featured">
+        <div class="src">corfo.cl · scrape 11-may</div>
+        <h4>🚀 CORFO Semilla Inicia 2026 · ABIERTO AHORA</h4>
+        <p>Hallazgo crítico de RADAR esta noche. La convocatoria está abierta desde 30-abr hasta 29-may-2026 con $15M (75% cofinanciamiento) o $17M para liderazgo femenino. Si Kanki & Co constituye SpA antes del 25-may vía Empresa-en-un-Día, postula en paralelo a Sercotec y stackea hasta $18.5M en 30 días sin diluir equity. Patrocinio vía incubadora regional (PUC · USM · UV).</p>
+        <div class="meta-row">
+          <span class="meta-tag gold">$15M – $17M</span>
+          <span class="meta-tag coral">Cierra 29-may</span>
+          <span class="meta-tag sage">Tasa adj ~25%</span>
+          <span class="meta-tag">SpA requerida</span>
+        </div>
+        <div class="confidence"><span>Confianza fuente</span><div class="confidence-bar" style="--conf:98%"></div><span>98%</span></div>
+        <a class="link" href="https://www.corfo.cl/sites/cpp/inf/semilla-inicia" target="_blank">Ver bases CORFO</a>
+      </div>
+
+      <div class="radar-card">
+        <div class="src">sercotec.cl/valparaiso-2026</div>
+        <h4>🔥 Capital Semilla · cierra 13-may 15:00</h4>
+        <p>Convocatoria Valparaíso 2026. PDF base 38 páginas. Tasa adjudicación nacional ~9% · sube a ~20% con tutoría Sercotec + dossier completo. Valparaíso región priorizada (cofinanciamiento subió 70%→75%).</p>
+        <div class="meta-row">
+          <span class="meta-tag gold">$3.5M</span>
+          <span class="meta-tag coral">48h restantes</span>
+          <span class="meta-tag sage">Postulando Martín PN</span>
+        </div>
+        <div class="confidence"><span>Confianza</span><div class="confidence-bar" style="--conf:96%"></div><span>96%</span></div>
+        <a class="link" href="https://www.sercotec.cl/convocatoria/capital-semilla-emprende-region-de-valparaiso-2026/" target="_blank">Ver bases Sercotec</a>
+      </div>
+
+      <div class="radar-card">
+        <div class="src">startupchile.org · 2026-05-06</div>
+        <h4>⚡ Start-Up Chile BIG · cierra 25-may</h4>
+        <p>Programa CORFO de aceleración tech reabrió 3 etapas: Build $15M (4 meses) · Ignite $30M (PMF) · Growth $75M (6 meses). Tasa adj ~5-10%. Aplicación 100% en inglés con jurado internacional.</p>
+        <div class="meta-row">
+          <span class="meta-tag gold">$15M – $75M</span>
+          <span class="meta-tag coral">Cierra 25-may</span>
+          <span class="meta-tag">Tech base</span>
+        </div>
+        <div class="confidence"><span>Confianza</span><div class="confidence-bar" style="--conf:92%"></div><span>92%</span></div>
+        <a class="link" href="https://startupchile.org/en/apply/" target="_blank">Start-Up Chile apply</a>
+      </div>
+
+      <div class="radar-card">
+        <div class="src">latercera · pulso · 2026-04</div>
+        <h4>🟡 Valparaíso entró región priorizada</h4>
+        <p>Sercotec aumentó cofinanciamiento de 70% a 75% en regiones priorizadas para primer semestre 2026. Valparaíso entró en la lista. Esto aumenta el monto efectivo del subsidio para Kanki vs proyectos de otras regiones.</p>
+        <div class="meta-row">
+          <span class="meta-tag gold">+5% subsidio</span>
+          <span class="meta-tag sage">Semestre 1</span>
+        </div>
+        <div class="confidence"><span>Confianza</span><div class="confidence-bar" style="--conf:85%"></div><span>85%</span></div>
+        <a class="link" href="https://www.latercera.com/pulso/" target="_blank">La Tercera Pulso</a>
+      </div>
+
+      <div class="radar-card">
+        <div class="src">emol.cl/pyme · mayo 2026</div>
+        <h4>📰 4 factores ganadores 2026</h4>
+        <p>Análisis Emol PYMEs: factores diferenciadores que mueven la aguja en jurado 2026 — (a) impacto social cuantificado, (b) escalabilidad geográfica clara, (c) componente digital o IA, (d) sostenibilidad cadena de valor.</p>
+        <div class="meta-row">
+          <span class="meta-tag">Análisis editorial</span>
+          <span class="meta-tag sage">Top criterios jurado</span>
+        </div>
+        <div class="confidence"><span>Confianza</span><div class="confidence-bar" style="--conf:78%"></div><span>78%</span></div>
+        <a class="link" href="https://www.emol.com/pyme/" target="_blank">Artículo Emol</a>
+      </div>
+
+      <div class="radar-card">
+        <div class="src">podcast · Emprender Chile ep142</div>
+        <h4>🎙️ 3 errores fatales · evitarlos</h4>
+        <p>Entrevista a evaluadora Sercotec retirada: (1) sub-cotizar inversiones (no piden cotizaciones formales) · (2) plan financiero sin desglose mes a mes · (3) no incluir el 30% cofinanciamiento propio. Cualquiera de estos = rechazo automático.</p>
+        <div class="meta-row">
+          <span class="meta-tag coral">Anti-patrones</span>
+          <span class="meta-tag">Bárbara debe revisar</span>
+        </div>
+        <div class="confidence"><span>Confianza</span><div class="confidence-bar" style="--conf:88%"></div><span>88%</span></div>
+        <a class="link" href="https://emprenderchile.cl/" target="_blank">Emprender Chile podcast</a>
+      </div>
+
+      <div class="radar-card">
+        <div class="src">centrosdenegocios.cl</div>
+        <h4>💬 Tutoría Sercotec +15% puntaje</h4>
+        <p>Comunidad r/EmprenderChile (234 posts analizados): pre-postulación gratuita en Centros de Negocios Sercotec suma ~15% al puntaje final. Validación experta + agendable en slots de 30 min en Viña del Mar.</p>
+        <div class="meta-row">
+          <span class="meta-tag sage">Gratis</span>
+          <span class="meta-tag gold">+15% puntaje</span>
+          <span class="meta-tag">Agendable hoy</span>
+        </div>
+        <div class="confidence"><span>Confianza</span><div class="confidence-bar" style="--conf:82%"></div><span>82%</span></div>
+        <a class="link" href="https://www.centrosdenegocios.cl/" target="_blank">Centros Negocios</a>
+      </div>
+
+      <div class="radar-card">
+        <div class="src">fosis.gob.cl/emprendamos</div>
+        <h4>✗ FOSIS Emprendamos · CERRADO 2026</h4>
+        <p>Convocatoria 2026 cerró el 30-abril (15-30 abril · 28.000 cupos nacional · $29MM presupuesto). Reabre estimado marzo 2027. Foco vulnerabilidad económica · Kanki no califica por perfil socioeconómico de fundadores.</p>
+        <div class="meta-row">
+          <span class="meta-tag coral">Cerrado</span>
+          <span class="meta-tag">Reabre Q1 2027</span>
+        </div>
+        <div class="confidence"><span>Confianza</span><div class="confidence-bar" style="--conf:95%"></div><span>95%</span></div>
+        <a class="link" href="https://www.fosis.gob.cl/es/programas/autonomia-economica/emprendamos-semilla/" target="_blank">FOSIS oficial</a>
+      </div>
+
+      <div class="radar-card">
+        <div class="src">prochile.gob.cl/sectoriales</div>
+        <h4>🌎 ProChile · ventanilla abierta</h4>
+        <p>Marcas Sectoriales mantiene postulación abierta todo el año. Cofinancia 50-70% ferias internacionales + branding global. ChileTextil es el aliado sectorial para Kanki streetwear chileno. Apuntar Q4 2026 con plan export 2027.</p>
+        <div class="meta-row">
+          <span class="meta-tag sage">Permanente</span>
+          <span class="meta-tag gold">~$15M</span>
+          <span class="meta-tag">Q4 2026</span>
+        </div>
+        <div class="confidence"><span>Confianza</span><div class="confidence-bar" style="--conf:90%"></div><span>90%</span></div>
+        <a class="link" href="https://www.prochile.gob.cl/herramientas/marcas-sectoriales/postulacion" target="_blank">ProChile sectoriales</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ PREGUNTAS CLAVE PARA BÁRBARA ════════ -->
+<section class="block" id="preguntas">
+  <div class="container">
+    <span class="eyebrow">06 · 12 preguntas clave para Bárbara</span>
+    <h2 class="title">Lo que <em>tiene que responder</em> hoy.</h2>
+    <p class="lead">Preguntas curadas por RADAR + lo que sabemos de Kanki. Si Bárbara las responde con criterio · validamos su expertise + nos da el norte.</p>
+
+    <div class="items">
+
+      <div class="item">
+        <span class="n">1</span>
+        <div class="content">
+          <h4>¿Postulamos Capital Semilla como persona natural o esperamos constituir Kanki & Co SpA?</h4>
+          <p>Pro PN: postulamos ya · sin trámite SII. Contra: el dinero llega a Guillermo · luego hay que ceder a SpA.</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara · su criterio +experiencia.</strong> Si decimos PN · postulación parte hoy mismo.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">2</span>
+        <div class="content">
+          <h4>¿Cómo estructuramos las cotizaciones de proveedores extranjeros (textil China)?</h4>
+          <p>Sercotec pide cotizaciones formales chilenas · pero gran parte de inversión es CIF China + DHL. ¿Aceptan invoices en USD?</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Si no aceptan · plan B: cotizar importadores locales que revendan.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">3</span>
+        <div class="content">
+          <h4>¿Qué porcentaje del puntaje pesa la tutoría Sercotec vs el plan de negocio?</h4>
+          <p>Si la tutoría suma 20+% al puntaje · agendamos hoy mismo. Sino · priorizamos otras tareas.</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Histórico dice ~15% peso.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">4</span>
+        <div class="content">
+          <h4>¿Capital Semilla y CORFO Semilla Inicia son combinables o excluyentes?</h4>
+          <p>Si son combinables · stack: Sercotec ($3.5M) + CORFO Inicia ($25M). Total $28.5M. Cubre todo nuestro gap.</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Híbrido: hay que declarar uno al otro en formulario.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">5</span>
+        <div class="content">
+          <h4>¿Qué cuenta como "cofinanciamiento del 30%" para Sercotec?</h4>
+          <p>Capital aportado por socios · activos en especie (equipos · stock) · horas dedicadas? Necesitamos saber qué valida.</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Sospechamos: capital efectivo + valoración activos a costo · NO horas.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">6</span>
+        <div class="content">
+          <h4>¿Qué pasa si en 12 meses no usamos todo el monto adjudicado?</h4>
+          <p>Plan vs realidad típicamente difiere 20%. ¿Devolución obligatoria · re-asignación · extensión plazo?</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Riesgo si gastamos en cosas no aprobadas.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">7</span>
+        <div class="content">
+          <h4>¿Sercotec acepta pivots de plan después de adjudicar?</h4>
+          <p>Mercado puede cambiar. Si decidimos sumar línea zapatillas · ¿hay que rehacer postulación o se modifica?</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Algunos fondos permiten "ajuste menor" · otros no.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">8</span>
+        <div class="content">
+          <h4>¿Qué documento sirve como "domicilio comercial" si Kanki vende online + Concón?</h4>
+          <p>No hay local físico aún. ¿Boleta luz domicilio Martín sirve · contrato de arriendo bodega · solo dirección?</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Suele aceptarse boleta consumo básico.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">9</span>
+        <div class="content">
+          <h4>¿Postulamos a FOSIS Yo Emprendo en paralelo o se anula con Sercotec?</h4>
+          <p>FOSIS son $400k · suma capacitación. Si son combinables · ningún motivo para no hacerlo.</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> FOSIS y Sercotec suelen ser combinables salvo en mismo ejercicio.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">10</span>
+        <div class="content">
+          <h4>¿Qué nivel de detalle quiere Sercotec en el plan financiero?</h4>
+          <p>Excel mes a mes 12 meses? Trimestre? Solo año 1? Si pedimos un Excel de Bárbara plantilla ahorra 4 horas.</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Ideal: plantilla Bárbara reutilizable.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">11</span>
+        <div class="content">
+          <h4>¿Cómo argumentamos "impacto social" en streetwear B2C?</h4>
+          <p>Sercotec valora impacto. Para Kanki: empleo local Concón · cadena ética · diseñador local. ¿Suficiente?</p>
+          <div class="answer">💡 <strong>Esperamos respuesta Bárbara.</strong> Sugerencia: cuantificar empleos en 12 meses + impacto en proveedores chilenos.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="n">12</span>
+        <div class="content">
+          <h4>¿Cuál es la tarifa Bárbara · % éxito + retainer · por adjudicación?</h4>
+          <p>Necesitamos cerrar términos antes de comenzar. Estándar mercado: $300-500k retainer + 8-12% del fondo adjudicado.</p>
+          <div class="answer">💡 <strong>Negociamos hoy.</strong> Propuesta inicial: $250k retainer + 10% éxito · pago 30 días post-desembolso.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ MAPA TIMELINE MOTION ════════ -->
+<section class="routemap" id="plan">
+  <div class="routemap-inner">
+    <div class="routemap-head">
+      <span class="eyebrow" style="display:inline-block;margin-bottom:14px">07 · Mapa de ruta</span>
+      <h2>De Sercotec a CORFO · <em>18 días · $18.5M</em></h2>
+      <p>Scroll horizontal por las estaciones críticas. Cada hito es una postulación, una constitución o un cierre. La línea dorada muestra la ruta · el círculo rojo pulsa en el punto donde estamos AHORA.</p>
+    </div>
+
+    <div class="scroll-indicator"><div class="scroll-progress" id="scrollProgress"></div></div>
+
+    <div class="routemap-scroll" id="routemapScroll">
+      <div class="routemap-track" id="routemapTrack">
+        <div class="routemap-line"></div>
+        <div class="routemap-line-progress" id="routemapProgress"></div>
+
+        <div class="station now" data-delay="0">
+          <div class="station-when">Hoy · 22:00</div>
+          <div class="station-marker"><span class="icon">🎙️</span><span class="step">1</span></div>
+          <div class="station-card">
+            <h4>Reunión Bárbara · Zoom</h4>
+            <p>12 preguntas + 7 nuevas RADAR. Cerrar tarifa: $250K retainer + 10% éxito. Firma carta intent.</p>
+            <span class="amount urgent">AHORA · 22:00</span>
+          </div>
+        </div>
+
+        <div class="station critical" data-delay="1">
+          <div class="station-when">Mar 12 · 09–14h</div>
+          <div class="station-marker"><span class="icon">📋</span><span class="step">2</span></div>
+          <div class="station-card">
+            <h4>Dossier Sercotec</h4>
+            <p>Plan negocio + Excel financiero + Gantt + plan inversión. Bárbara 4h · Guillermo 4h en paralelo.</p>
+            <span class="amount">Sprint 8h</span>
+          </div>
+        </div>
+
+        <div class="station critical" data-delay="2">
+          <div class="station-when">Mar 12 · 14:00</div>
+          <div class="station-marker"><span class="icon">🎓</span><span class="step">3</span></div>
+          <div class="station-card">
+            <h4>Tutoría Sercotec</h4>
+            <p>Centro Negocios Viña · 30 min · feedback experto + constancia tutoría (+15% puntaje).</p>
+            <span class="amount">+15% pts</span>
+          </div>
+        </div>
+
+        <div class="station critical" data-delay="3">
+          <div class="station-when">Mié 13 · 14:00</div>
+          <div class="station-marker"><span class="icon">🚀</span><span class="step">4</span></div>
+          <div class="station-card">
+            <h4>POSTULA Sercotec</h4>
+            <p>Capital Semilla enviado · folio en mano · backup local del dossier completo.</p>
+            <span class="amount gold">$3.5M</span>
+          </div>
+        </div>
+
+        <div class="station critical" data-delay="4">
+          <div class="station-when">Jue 14 → Vie 16</div>
+          <div class="station-marker"><span class="icon">⚖️</span><span class="step">5</span></div>
+          <div class="station-card">
+            <h4>SpA · Empresa en un Día</h4>
+            <p>Escritura electrónica · publicación Diario Oficial · RUT SII · iniciación actividades. 48h total.</p>
+            <span class="amount">~$50K</span>
+          </div>
+        </div>
+
+        <div class="station critical" data-delay="5">
+          <div class="station-when">Lun 19 → Vie 23</div>
+          <div class="station-marker"><span class="icon">📊</span><span class="step">6</span></div>
+          <div class="station-card">
+            <h4>Dossier CORFO Inicia</h4>
+            <p>Reutilizar 70% de Sercotec · agregar Excel CORFO + componente innovador + plan validación.</p>
+            <span class="amount">5 días</span>
+          </div>
+        </div>
+
+        <div class="station" data-delay="6">
+          <div class="station-when">Dom 25</div>
+          <div class="station-marker"><span class="icon">⚡</span><span class="step">7</span></div>
+          <div class="station-card">
+            <h4>Start-Up Chile · decision</h4>
+            <p>Si Kanki suma ángulo tech (IA · personalización) → postular Build $15M. Si no, skip y full focus CORFO.</p>
+            <span class="amount">$15M opt.</span>
+          </div>
+        </div>
+
+        <div class="station critical" data-delay="7">
+          <div class="station-when">Lun 26 · 14:00</div>
+          <div class="station-marker"><span class="icon">🎯</span><span class="step">8</span></div>
+          <div class="station-card">
+            <h4>POSTULA CORFO Inicia</h4>
+            <p>3 días buffer antes del cierre 29-may. Folio CORFO en mano. Stack potencial $18.5M total.</p>
+            <span class="amount gold">$15M</span>
+          </div>
+        </div>
+
+        <div class="station future" data-delay="8">
+          <div class="station-when">Q3 2026</div>
+          <div class="station-marker"><span class="icon">🏆</span><span class="step">9</span></div>
+          <div class="station-card">
+            <h4>Resultados · brindis 🥂</h4>
+            <p>45-60 días después de postular: respuesta Sercotec y CORFO. Si Kanki gana ambos → $18.5M no diluyentes.</p>
+            <span class="amount">+45 días</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="stack-cta">
+      <span class="stack-cta-label">Stack potencial</span>
+      <div class="stack-cta-amount">$18.500.000</div>
+      <p class="stack-cta-formula"><strong>$3.500.000</strong> Sercotec Capital Semilla · <strong>+ $15.000.000</strong> CORFO Semilla Inicia · 18 días · 0% equity diluido</p>
+    </div>
+
+  </div>
+
+  <!-- ════════ PLAN 48h DETALLADO (timeline vertical complementario) ════════ -->
+  <div class="container" style="margin-top:80px">
+    <span class="eyebrow">07b · Detalle por hito</span>
+    <h2 class="title">Hoja de ruta · <em>detalle</em>.</h2>
+    <p class="lead">Cada hora cuenta. Acciones secuenciadas para que Bárbara y Guillermo trabajen en paralelo sin pisarse. Owner explícito + entregable por hito.</p>
+    <div class="timeline">
+
+      <div class="tline now">
+        <div class="when">Hoy · Lunes 22:00<span class="now-tag">AHORA</span></div>
+        <h4>Reunión Bárbara · cerrar 12 preguntas + tarifa</h4>
+        <p>Validar expertise + acordar mecánica trabajo + firmar carta intent simple. Si fluye → arrancamos a las 23:00 con dossier.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Martes 12-may · 09:00</div>
+        <h4>Inicio dossier maestro (Bárbara · 4h)</h4>
+        <p>Plan negocio formato Sercotec + Excel proyección financiera 12 meses + Carta Gantt visual + Plan inversión ítem por ítem.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Martes 12-may · 09:00</div>
+        <h4>Cotizaciones + documentos (Guillermo · 4h)</h4>
+        <p>Pedir cotis: textil china (DHL invoice), packaging local, etiquetas, fotografía producto, hosting. Descargar Boletín Comercial. Pedir boleta luz Concón.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Martes 12-may · 14:00</div>
+        <h4>Tutoría Sercotec (Guillermo · 30 min)</h4>
+        <p>Llamada Centro de Negocios Viña del Mar · validar plan + recibir feedback experto · constancia tutoría.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Martes 12-may · 16:00</div>
+        <h4>Curado dossier (Bárbara + Guillermo · 3h)</h4>
+        <p>Cruzar plan negocio + cotis + plan inversión. Bárbara revisa coherencia. Guillermo da last call sobre marca + posicionamiento.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Martes 12-may · 22:00</div>
+        <h4>Borrador final listo · check Bárbara</h4>
+        <p>Plan negocio versión 1.0 + Excel + Gantt + documentos auxiliares. 90% del dossier listo. Solo falta plataforma upload.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Miércoles 13-may · 09:00</div>
+        <h4>Subir a plataforma Sercotec (Bárbara · 2h)</h4>
+        <p>Upload todos los archivos a portal sercotec.cl. Pre-revisar cada campo. Capturas pantalla por seguridad. Confirmar recepción.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Miércoles 13-may · 14:00</div>
+        <h4>POSTULACIÓN ENVIADA · confirmation #</h4>
+        <p>Recibir folio postulación. Foto pantalla. Backup local del dossier completo. Empieza espera resultados (45-60 días típico).</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Miércoles 13-may · 18:00</div>
+        <h4>Brindis Kanki Sercotec + arranque CORFO Inicia</h4>
+        <p>Si llegamos hasta acá · merecemos brindis. Pero NO se descansa: a las 18:00 arrancamos roadmap CORFO Semilla Inicia (cierra 29-may).</p>
+      </div>
+
+      <div class="tline" style="--gold:#D04A3A">
+        <div class="when" style="color:var(--red-urgent)">Jue 14 → vie 16-may</div>
+        <h4>SPRINT constitución Kanki & Co SpA</h4>
+        <p>Notario · escritura social · publicación Diario Oficial vía portal · inscripción Conservador · obtención RUT SII · iniciación actividades en línea. Costo ~$50K total. <strong>Vía Empresa en un Día</strong> (escritura electrónica) acelera el plazo a 24-48h.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Lunes 19-may · 09:00</div>
+        <h4>Inicio dossier CORFO Semilla Inicia</h4>
+        <p>Dossier maestro Sercotec se REUTILIZA 70% para CORFO. Cambia: plan negocio formato CORFO Excel + componente innovador + plan validación técnico-comercial. Bárbara: 8 horas. Guillermo: 4 horas.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">Lunes 26-may · 14:00</div>
+        <h4>POSTULACIÓN CORFO Inicia enviada</h4>
+        <p>3 días buffer antes del cierre (29-may). Folio CORFO en mano. Stack potencial: $3.5M Sercotec + $15M CORFO = $18.5M.</p>
+      </div>
+
+      <div class="tline">
+        <div class="when">25-may último día</div>
+        <h4>Start-Up Chile BIG opcional</h4>
+        <p>Si Kanki posiciona componente tech (e-commerce IA · personalización · ML para diseño) · postular en paralelo a Build $15M. Decisión: requiere ángulo tech claro · sino skip.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ WAR ROOM ════════ -->
+<section class="block dark" id="warroom">
+  <div class="container">
+    <span class="eyebrow">08 · War Room SMC · 13 agentes activos</span>
+    <h2 class="title">War Room · <em>análisis multi-agente</em>.</h2>
+    <p class="lead">Cerebro convocó a 13 agentes del SMC OS para diseccionar el caso Kanki & Co + Bárbara. Cada uno aporta su lente especializado · Strategy · Operations · Functional · Marketing · People. Conclusiones ejecutivas con decisión accionable.</p>
+
+    <div class="warroom-meta">
+      <span class="pulse"></span>
+      <div class="warroom-meta-text">War Room <strong>LIVE</strong> · 13 agentes activos · 4 loops formalizados · convocados por Cerebro</div>
+      <div class="warroom-meta-count">
+        <span class="badge">Strategy <strong>4</strong></span>
+        <span class="badge">Operations <strong>5</strong></span>
+        <span class="badge">Functional <strong>2</strong></span>
+        <span class="badge">People <strong>1</strong></span>
+        <span class="badge">Marketing <strong>1</strong></span>
+      </div>
+    </div>
+
+    <div class="warroom">
+
+      <div class="agent lead">
+        <div class="ag-name">
+          <span class="ag-icon">🧠</span>
+          <div class="ag-meta">
+            <span class="ag-title">Cerebro</span>
+            <span class="ag-role">Mentor · Orquestador · Reflexion</span>
+          </div>
+          <span class="ag-loop">Loop Reflexion</span>
+        </div>
+        <p><strong>Decisión maestra:</strong> Doble postulación obligatoria. Sercotec PN hoy 13-may + CORFO Inicia con SpA constituida 26-may. Stack $18.5M sin diluir equity. NO es opcional · es la lectura correcta del calendario real (que la maqueta original tenía mal). Cerebro inicia esta noche con Bárbara: validar viabilidad + cerrar retainer ampliado + carta intent. Si Bárbara no maneja CORFO también → buscar segunda alianza para Q3.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">📡</span>
+          <div class="ag-meta">
+            <span class="ag-title">RADAR</span>
+            <span class="ag-role">Intel externa · scrape 11-may</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>17 fondos verificados con fecha real. CORFO Semilla Inicia ABIERTO 30-abr → 29-may. Start-Up Chile BIG cierra 25-may. CORFO Desarrolla Valpo hasta 8-jun. FOSIS · Capital Abeja · Semilla Expande · Digitaliza Almacén ya cerraron 2026. Valparaíso entró región priorizada (75% cofinanciamiento).</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">🧮</span>
+          <div class="ag-meta">
+            <span class="ag-title">Controller</span>
+            <span class="ag-role">Tributario · Multi-SpA</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>Plan financiero en pesos chilenos · no UF para Sercotec. IVA crédito CIF China solo con SII activa. Postular PN no genera obligación tributaria (es no-renta). Cuando SpA reciba CORFO, registrar como subsidio operativo · no capital social. Cuadrado al peso ✓.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">🔍</span>
+          <div class="ag-meta">
+            <span class="ag-title">Architect</span>
+            <span class="ag-role">Arquitectura business-development cross</span>
+          </div>
+          <span class="ag-loop">Conversacional</span>
+        </div>
+        <p>Kanki como Nivel 1 (SMC Motor) tiene roadmap claro Nivel 2 (canal Marketplace) y Nivel 3 (inversión recurrente vía smc-XPort). Sercotec valida modelo · CORFO Inicia escala · ProChile internacionaliza 2027. ADR-001: SpA Kanki & Co constituida pre-CORFO es decisión arquitectónica obligatoria.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">⚖️</span>
+          <div class="ag-meta">
+            <span class="ag-title">Compliance</span>
+            <span class="ag-role">Legal · Contratos · NDA</span>
+          </div>
+          <span class="ag-loop">Conversacional</span>
+        </div>
+        <p>Carta intent con Bárbara ANTES de compartir info de Kanki. Tarifa "% éxito" 8-12% es estándar mercado · firmar NDA. Cesión Sercotec PN→SpA legal pero acta de socios obligatoria cuando constituyan. Para SpA Kanki & Co: pacto socios 50/50 + cláusulas vesting + IP de marca registrada INAPI.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">💰</span>
+          <div class="ag-meta">
+            <span class="ag-title">Business Development</span>
+            <span class="ag-role">Ciclo cliente · Bárbara como alianza</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>Bárbara como aliada estratégica · si ayuda con Kanki puede entrar en CREALO · InfoPet · Marketplace · cartera SMC Holding. ROI Bárbara: $250K retainer + 10% éxito = $1.85M si gana ambos ($3.5M Sercotec + $15M CORFO). Propuesta upgrade: retainer mensual fijo $300-500K para cartera holding completa.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">🐕</span>
+          <div class="ag-meta">
+            <span class="ag-title">Functional-Lead</span>
+            <span class="ag-role">Diseño funcional · BPMN · maquetas</span>
+          </div>
+          <span class="ag-loop">Conversacional</span>
+        </div>
+        <p>Plan de negocio Sercotec necesita visual fuerte. Maqueta sugerida: 1 página Canvas + 1 página Gantt 12 meses + 1 página equipo + 1 página estructura costos + resto narrativa. Bárbara curaría · Functional-Lead arma. Sercotec valora storytelling más que excelencia técnica.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">🚀</span>
+          <div class="ag-meta">
+            <span class="ag-title">Product Manager</span>
+            <span class="ag-role">Fondos como portfolio · RICE</span>
+          </div>
+          <span class="ag-loop">Reflexion</span>
+        </div>
+        <p>Sercotec + CORFO son producto-market-fit primario. ProChile + Start-Up Chile son apuestas opcionales. Score RICE: Sercotec 95 · CORFO Inicia 92 · ProChile Sectoriales 68 (Q4 2026) · Start-Up Chile 45 (skip si no hay tech). Focus matters: 2 fondos en 18 días &gt; 5 fondos en 18 días.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">🧪</span>
+          <div class="ag-meta">
+            <span class="ag-title">Innovation-Lab</span>
+            <span class="ag-role">POC · Empresa-en-un-Día</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>Sprint 48h constitución SpA: jueves 14 noche escritura electrónica · vie 15 publicación Diario Oficial · sáb 16 RUT SII + iniciación actividades en línea. Costo total ~$50K. Probado por SMC 3 veces con éxito. Crítico para llegar a tiempo a CORFO Inicia cierre 29-may.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">⊡</span>
+          <div class="ag-meta">
+            <span class="ag-title">DATA-BW</span>
+            <span class="ag-role">Modelo financiero · proyecciones</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>Proyección financiera Year 1: ingresos $22.2M · costos fijos $9.6M · variables $11.76M · margen $0.84M (3.8% Y1 · 12% Y2 · 18% Y3). Excel CORFO requiere desglose mes a mes con seasonalidad (Drop Q2 35% · Q3 20% · Q4 30% · Q1 15%). Listo en plantilla compartida con Bárbara.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">🛒</span>
+          <div class="ag-meta">
+            <span class="ag-title">Procurement</span>
+            <span class="ag-role">Evaluación proveedor Bárbara</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>TCO Bárbara 12 meses: si gana 2 fondos = $1.85M payout vs $36M+ capital captado = ROI 5%. Si gana solo Sercotec = $600K payout vs $3.5M = ROI 17%. Aceptable. Vendor scorecard inicial: experiencia ✓ · referencias por validar · tarifa estándar mercado ✓ · disponibilidad 48h ?</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">👥</span>
+          <div class="ag-meta">
+            <span class="ag-title">HR</span>
+            <span class="ag-role">Pacto socios 50/50 Kanki</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>Pacto socios Kanki Martín 50% + Guillermo 50% necesita: vesting 4 años opcional · cláusula non-compete · derecho preferente compra · exit clauses. Cuando contraten primer empleado en Q4 2026: IFI Sercotec $3M + SENCE Franquicia Tributaria. Onboarding doc Kanki listo desde día 1.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">⛨</span>
+          <div class="ag-meta">
+            <span class="ag-title">SECURITY</span>
+            <span class="ag-role">Ley 19.628 · datos clientes</span>
+          </div>
+          <span class="ag-loop">Background</span>
+        </div>
+        <p>E-commerce kanki.smconnection.cl requiere: política privacidad (Ley 19.628 Chile) · consentimiento checkout · cookies banner · datos pago en pasarela (no en DB propia) · RLS Supabase si captura emails. Sercotec no audita esto pero clientes sí. Costo: 0 · Hoku lo implementa con template.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">🌐</span>
+          <div class="ag-meta">
+            <span class="ag-title">INFRA-OPS</span>
+            <span class="ag-role">qas.kanki en producción</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>Hoy qas.kanki.smconnection.cl está en producción (GitHub Pages). Cuando Kanki venda real: migrar a kanki.cl + Shopify + Webpay + MercadoPago. Uptime target 99.5%. Backup diario Supabase si captura clientes. Smoke test post-deploy. Costo infra año 1: ~$25K/mes Shopify + dominio.</p>
+      </div>
+
+      <div class="agent">
+        <div class="ag-name">
+          <span class="ag-icon">🎙️</span>
+          <div class="ag-meta">
+            <span class="ag-title">Portavoz</span>
+            <span class="ag-role">Storytelling Kanki jurado</span>
+          </div>
+          <span class="ag-loop">Pipeline</span>
+        </div>
+        <p>Narrativa ganadora Sercotec: "Marca surf chilena · 4 años orgánica · familia Sanhueza · escuela surf La Boca · primer drop FW24 · diseño chileno · 35 prendas numeradas." Tono auténtico-cercano · NO corporativo. Anto Gutiérrez como embajadora suma puntos impacto social.</p>
+      </div>
+
+    </div>
+
+    <div style="margin-top:48px">
+      <span class="eyebrow">Cierre de Cerebro</span>
+      <h2 class="title" style="font-size:32px;max-width:900px">Decisión <em>esta noche</em> · doble postulación <em>18 días</em>.</h2>
+      <p class="lead">RADAR cambió el plan: NO es solo Sercotec. CORFO Semilla Inicia cierra el 29-may con $15M en juego. Si Bárbara confirma viabilidad de la doble postulación + acepta retainer + tasa éxito · esta noche cerramos. <strong>Plan revisado: 13-may postular Sercotec · 14-16 may constituir SpA Empresa-en-un-Día · 26-may postular CORFO. Stack posible: $18.5M.</strong></p>
+      <div class="conclusions">
+        <div class="conc">
+          <span class="n">1</span>
+          <h4>Hoy 22:00</h4>
+          <p>Reunión Bárbara · 12 preguntas + 7 nuevas RADAR · cierre tarifa · firma carta intent.</p>
+        </div>
+        <div class="conc">
+          <span class="n">2</span>
+          <h4>Jue 13-may 14:00</h4>
+          <p>POSTULACIÓN Sercotec Capital Semilla enviada · folio en mano · $3.5M en juego.</p>
+        </div>
+        <div class="conc" style="border-color:var(--gold);background:var(--gold-pale)">
+          <span class="n">3</span>
+          <h4>Jue 14 → vie 16</h4>
+          <p>SPRINT constitución Kanki & Co SpA vía Empresa-en-un-Día · 48 horas.</p>
+        </div>
+        <div class="conc" style="border-color:var(--gold);background:var(--gold-pale)">
+          <span class="n">4</span>
+          <h4>Lun 26-may 14:00</h4>
+          <p>POSTULACIÓN CORFO Semilla Inicia enviada · $15M adicionales en juego.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ════════ FOOTER ════════ -->
+<div class="foot">
+  <p><strong>Reunión Bárbara · Kanki & Co · Capital Semilla</strong></p>
+  <p>2026-05-11 · 22:00 · Zoom · Bárbara (Especialista fondos públicos) + Guillermo (Co-founder)</p>
+  <p>Cerebro lideró · RADAR + Controller + Compliance + Business Development + Functional-Lead participaron · SMC OS · 2026</p>
+</div>
+
+<script>
+// ═══ SCROLL SPY · sub-nav highlight ═══
+(function(){
+  const links = document.querySelectorAll('.sub-links a');
+  const map = new Map();
+  links.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const sec = document.getElementById(id);
+    if(sec) map.set(sec, a);
+  });
+  if(map.size === 0) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        links.forEach(l => l.classList.remove('active'));
+        const a = map.get(e.target);
+        if(a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-120px 0px -60% 0px', threshold: 0 });
+  map.forEach((_, sec) => io.observe(sec));
+})();
+
+// ═══ KANKI SURF · MAPA INTERACTIVO MACRO/MICRO ═══
+(function(){
+  const tabs = document.getElementById('kmTabs');
+  const canvas = document.getElementById('kmCanvas');
+  const micro = document.getElementById('kmMicro');
+  const microIcon = document.getElementById('microIcon');
+  const microOrg = document.getElementById('microOrg');
+  const microName = document.getElementById('microName');
+  const microAmount = document.getElementById('microAmount');
+  const microSub = document.getElementById('microSub');
+  const microPipeline = document.getElementById('microPipeline');
+  const microDetail = document.getElementById('microDetail');
+  if(!canvas) return;
+
+  // Database de fondos (data-fund → detalle)
+  const FUNDS = {
+    'sercotec': {
+      icon:'🔥', org:'SERCOTEC',
+      name:'Capital Semilla Emprende 2026 · Valparaíso',
+      amount:'$3.500.000', sub:'No reembolsable · 75% Sercotec / 25% propio',
+      url:'https://www.sercotec.cl/convocatoria/capital-semilla-emprende-region-de-valparaiso-2026/',
+      steps:[
+        {n:1,t:'Documentos',m:'Plan negocio + Gantt + cotizaciones',s:'done'},
+        {n:2,t:'Tutoría',m:'Centro Negocios Viña +15% pts',s:'done'},
+        {n:3,t:'Postulación',m:'13-may 15:00 hrs',s:'current'},
+        {n:4,t:'Evaluación',m:'45-60 días Sercotec',s:''},
+        {n:5,t:'Rendición',m:'12 meses ejecución',s:''}
+      ],
+      left:[
+        ['Tasa adjudicación 2024','~9% nacional','gold'],
+        ['Cofinanciamiento Valpo','75% (región priorizada)',''],
+        ['Postula','Martín persona natural',''],
+        ['Cierre','13-may-2026 · 15:00','coral'],
+        ['Tutoría agendada','Sí · +15% puntaje',''],
+        ['Documentación','60% completa',''],
+        ['Cesión a SpA','Post-adjudicación','']
+      ],
+      right:'Tres errores fatales según podcast Emprender Chile ep142: (1) sub-cotizar inversiones · (2) plan financiero sin desglose mes a mes · (3) no incluir cofinanciamiento 30%. Bárbara revisa para evitarlos.'
+    },
+    'corfo-inicia':{
+      icon:'🚀', org:'CORFO',
+      name:'Semilla Inicia 2026',
+      amount:'$15.000.000', sub:'$17M si lidera mujer · 75% CORFO',
+      url:'https://www.corfo.cl/sites/cpp/inf/semilla-inicia',
+      steps:[
+        {n:1,t:'SpA + SII',m:'Empresa-en-un-Día 14-16 may',s:''},
+        {n:2,t:'Incubadora',m:'PUC · USM · UV patrocinadora',s:''},
+        {n:3,t:'Dossier CORFO',m:'19-23 may · reusa 70% Sercotec',s:''},
+        {n:4,t:'Pitch + envío',m:'26-may 14:00',s:''},
+        {n:5,t:'Resultado',m:'45 días post-cierre',s:''}
+      ],
+      left:[
+        ['Cofinanciamiento','75% CORFO · 85% si mujer','gold'],
+        ['Tasa adjudicación','~25% nacional',''],
+        ['Apertura','30-abr-2026',''],
+        ['Cierre','29-may-2026','coral'],
+        ['Requisito clave','SpA + iniciación actividades SII','coral'],
+        ['Patrocinio','Incubadora obligatoria',''],
+        ['Stack con Sercotec','$3.5M + $15M = $18.5M','gold']
+      ],
+      right:'Hallazgo crítico RADAR: la maqueta original decía Q3, pero está abierto AHORA (30-abr → 29-may). Si Kanki constituye SpA antes del 25-may vía Empresa-en-un-Día (48h), entra al fondo CORFO sin demora.'
+    },
+    'corfo-valpo':{
+      icon:'📊', org:'CORFO',
+      name:'Desarrolla Inversión Productiva · Valparaíso',
+      amount:'$500.000.000', sub:'Presupuesto regional · 1ra convocatoria',
+      url:'https://www.corfo.cl/',
+      steps:[
+        {n:1,t:'SpA constituida',m:'Pre-requisito',s:''},
+        {n:2,t:'Plan inversión',m:'Detalle ítem por ítem',s:''},
+        {n:3,t:'Postulación',m:'Hasta 08-jun 15:00',s:''},
+        {n:4,t:'Evaluación regional',m:'Comité Valparaíso',s:''},
+        {n:5,t:'Adjudicación',m:'Hasta agotar fondos',s:''}
+      ],
+      left:[
+        ['Presupuesto total 1ra','$500M (regional)','gold'],
+        ['Presupuesto 2da','$300M',''],
+        ['Apertura','29-abr-2026',''],
+        ['Cierre','08-jun-2026 · 15:00','coral'],
+        ['Modalidad','Hasta agotar recursos',''],
+        ['Foco','Inversión productiva regional',''],
+        ['Fit Kanki','🟡 mejor con ventas iniciales','']
+      ],
+      right:'Es un fondo de gran volumen regional. Kanki podría apuntar a tramo bajo si justifica producción nacional + empleo local Concón. Bárbara debe confirmar elegibilidad para etapa pre-operativa.'
+    },
+    'startup-chile':{
+      icon:'⚡', org:'START-UP CHILE',
+      name:'Build / Ignite / Growth (BIG)',
+      amount:'$15M – $75M', sub:'CORFO · aceleración tech · 3 etapas',
+      url:'https://startupchile.org/en/apply/',
+      steps:[
+        {n:1,t:'Definir ángulo tech',m:'IA · personalización · ML',s:''},
+        {n:2,t:'Pitch deck',m:'10-12 slides en inglés',s:''},
+        {n:3,t:'Video founders',m:'2 min · scoring crítico',s:''},
+        {n:4,t:'Aplicación',m:'Hasta 25-may',s:''},
+        {n:5,t:'Selección',m:'~5-10% tasa adjud.',s:''}
+      ],
+      left:[
+        ['Build','$15M · idea/prototipo · 4 meses','gold'],
+        ['Ignite','$30M · MVP busca PMF','gold'],
+        ['Growth','$75M · escalamiento · 6 meses','gold'],
+        ['Cierre','25-may-2026','coral'],
+        ['Tasa adjudicación','~5-10%',''],
+        ['Equity dilution','0% (subsidio)',''],
+        ['Idioma','Inglés (jurado internacional)','']
+      ],
+      right:'Decisión Cerebro: Kanki Surf NO tiene ángulo tech profundo todavía. Skip salvo que Hoku integre componente IA real (recomendador de drops · personalización por perfil cliente · análisis sentiment). Si lo hace en 10 días, entonces sí.'
+    },
+    'prochile':{
+      icon:'🌎', org:'PROCHILE',
+      name:'Marcas Sectoriales',
+      amount:'~$15.000.000', sub:'Internacionalización · ventanilla abierta',
+      url:'https://www.prochile.gob.cl/herramientas/marcas-sectoriales/postulacion',
+      steps:[
+        {n:1,t:'Plan exportador',m:'Mercados objetivo definidos',s:''},
+        {n:2,t:'Sector textil',m:'Asociarse con cámara textil',s:''},
+        {n:3,t:'Postulación',m:'Ventanilla abierta todo el año',s:''},
+        {n:4,t:'Aprobación sectorial',m:'30-45 días',s:''},
+        {n:5,t:'Ejecución 2027',m:'Ferias internacionales',s:''}
+      ],
+      left:[
+        ['Modalidad','Ventanilla abierta todo el año','gold'],
+        ['Foco','PYMEs con potencial export',''],
+        ['Cofinanciamiento','50-70%',''],
+        ['Uso típico','Ferias + branding global',''],
+        ['Sector aplicable','Textil · streetwear chileno',''],
+        ['Aliados','ChileTextil · Marca Chile',''],
+        ['Fit Kanki','🟢 Q4 2026 con plan 2027','gold']
+      ],
+      right:'Postular en Q4 2026 cuando Kanki tenga 6 meses de ventas demostrables. ProChile valora autenticidad cultural — la narrativa "streetwear chileno desde Concón" es vendible en mercados surf como Brasil, Perú y California.'
+    },
+    'bancoestado':{
+      icon:'🏦', org:'BANCO ESTADO',
+      name:'FOGAPE + Crédito Microempresa',
+      amount:'Variable', sub:'Aval estatal hasta 80% · deuda blanda',
+      url:'https://www.bancoestado.cl/content/bancoestado-public/cl/es/home/home-microempresa/productos/creditos/creditos-para-tu-negocio.html',
+      steps:[
+        {n:1,t:'Cuenta Emprendedor',m:'Apertura gratuita',s:''},
+        {n:2,t:'Evaluación crediticia',m:'Sin garantías → FOGAPE',s:''},
+        {n:3,t:'Solicitud crédito',m:'$500K–$10M típico',s:''},
+        {n:4,t:'Aprobación',m:'7-15 días',s:''},
+        {n:5,t:'Desembolso',m:'Plazo 12-36 meses',s:''}
+      ],
+      left:[
+        ['Tipo','Crédito (es deuda)','coral'],
+        ['Aval FOGAPE','Hasta 80% sin garantías',''],
+        ['Tasa preferente','60% menor a banca tradicional','gold'],
+        ['Plazo','6-36 meses',''],
+        ['Monto típico PYME <1 año','$500K-$10M',''],
+        ['Permanente','Sí · sin convocatoria',''],
+        ['Fit Kanki','🟡 fallback si fondos no alcanzan','']
+      ],
+      right:'NO es prioridad para Kanki en fase actual. Los fondos no diluyentes (Sercotec + CORFO) suman $18.5M sin deuda. BancoEstado es plan C si surge gap de capital de trabajo en Q3-Q4 2026 con stock validado.'
+    },
+    'sence':{
+      icon:'🎓', org:'SENCE',
+      name:'Bono Trab. Independiente + Franquicia Tributaria',
+      amount:'$500K / Crédito IDPC', sub:'Capacitación reembolsable · permanente',
+      url:'https://sence.gob.cl/personas/programas-y-cursos',
+      steps:[
+        {n:1,t:'Identificar curso',m:'E-commerce · marketing · PYME',s:''},
+        {n:2,t:'Solicitar bono',m:'ClaveÚnica + perfil',s:''},
+        {n:3,t:'Cursar',m:'30-80 hrs según programa',s:''},
+        {n:4,t:'Aprobar examen',m:'Nota mínima 4.0',s:''},
+        {n:5,t:'Reembolso',m:'Post-aprobación · 30 días',s:''}
+      ],
+      left:[
+        ['Bono Trab. Indep.','$500K reembolsable','gold'],
+        ['Franquicia Tributaria','Crédito vs IDPC al contratar',''],
+        ['Modalidad','Permanente · todo el año',''],
+        ['Reembolsable','Sí · 100% post curso',''],
+        ['Cursos típicos','E-commerce · marketing digital',''],
+        ['Quién aplica','Guillermo + Martín hoy',''],
+        ['Cuando contrate','+IFI Sercotec ($3M)','']
+      ],
+      right:'Activar inmediatamente. Guillermo + Martín pueden hacer 2 cursos cada uno este semestre — gestión PYME + marketing digital — y recuperar $500K cada uno. Cero costo · upgrade skills · puntos para Sercotec.'
+    },
+    'fosis':{
+      icon:'✗', org:'FOSIS',
+      name:'Emprendamos Semilla 2026',
+      amount:'$400.000', sub:'Cerrado · reabre marzo 2027',
+      url:'https://www.fosis.gob.cl/es/programas/autonomia-economica/emprendamos-semilla/',
+      steps:[
+        {n:1,t:'Cerrado',m:'30-abr-2026',s:''},
+        {n:2,t:'Reapertura',m:'~marzo 2027',s:''},
+        {n:3,t:'Postular vía municipalidad',m:'Concón · Viña',s:''},
+        {n:4,t:'Tutoría 8 sesiones',m:'Obligatorio',s:''},
+        {n:5,t:'Capital + capacitación',m:'$400K total',s:''}
+      ],
+      left:[
+        ['Monto','$400K + 8 tutorías',''],
+        ['Foco','Vulnerabilidad económica','coral'],
+        ['Modalidad','Postulación municipal',''],
+        ['Cierre 2026','30-abr-2026 (cerrado)','coral'],
+        ['Reapertura','marzo 2027 estimado',''],
+        ['Cupos 2026','28.000 nacional · alta competencia',''],
+        ['Fit Kanki','🔴 perfil socioeconómico no cualifica','']
+      ],
+      right:'FOSIS prioriza emprendedores en vulnerabilidad real. Kanki & Co tiene founders con respaldo (Guillermo + Martín familia surf establecida) · no es el target ideal. Cerrado para 2026 igual.'
+    }
+  };
+
+  // Toggle MACRO/MICRO
+  tabs.addEventListener('click', (e) => {
+    const btn = e.target.closest('.km-tab');
+    if(!btn) return;
+    tabs.querySelectorAll('.km-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    if(btn.dataset.tab === 'micro'){
+      if(!micro.classList.contains('show')){
+        // Por defecto carga el más urgente
+        loadMicro('sercotec');
+      }
+      micro.classList.add('show');
+      micro.scrollIntoView({ behavior:'smooth', block:'start' });
+    } else {
+      micro.classList.remove('show');
+      canvas.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+  });
+
+  // Click en nodo → MICRO view
+  canvas.querySelectorAll('.km-node').forEach(node => {
+    node.addEventListener('click', () => {
+      const fund = node.dataset.fund;
+      if(!fund || !FUNDS[fund]) return;
+      canvas.querySelectorAll('.km-node').forEach(n => n.classList.remove('active'));
+      node.classList.add('active');
+      loadMicro(fund);
+      // Auto-switch to MICRO tab
+      tabs.querySelectorAll('.km-tab').forEach(t => t.classList.remove('active'));
+      tabs.querySelector('[data-tab="micro"]').classList.add('active');
+      micro.classList.add('show');
+      micro.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+  });
+
+  // Render MICRO view
+  function loadMicro(fundKey){
+    const f = FUNDS[fundKey];
+    if(!f) return;
+    microIcon.textContent = f.icon;
+    microOrg.textContent = f.org;
+    microName.textContent = f.name;
+    microAmount.textContent = f.amount;
+    microSub.textContent = f.sub;
+    // Pipeline 5 steps
+    microPipeline.innerHTML = f.steps.map(s => `
+      <div class="km-step ${s.s}">
+        <div class="km-step-num">${s.n}<small>${s.s === 'done' ? 'DONE' : s.s === 'current' ? 'AHORA' : 'POR HACER'}</small></div>
+        <div class="km-step-title">${s.t}</div>
+        <div class="km-step-meta">${s.m}</div>
+      </div>
+    `).join('');
+    // Detail blocks
+    microDetail.innerHTML = `
+      <div class="km-detail-block">
+        <h5>📋 Datos clave</h5>
+        <ul>
+          ${f.left.map(([k,v,cls]) => `<li><span class="key">${k}</span><span class="val ${cls||''}">${v}</span></li>`).join('')}
+        </ul>
+        <a class="km-cta-link" href="${f.url}" target="_blank">Ver bases oficiales</a>
+      </div>
+      <div class="km-detail-block">
+        <h5>🧠 Insight Cerebro + RADAR</h5>
+        <p>${f.right}</p>
+      </div>
+    `;
+  }
+})();
+
+// ═══ ROUTEMAP MOTION · IntersectionObserver + scroll progress + line drawing ═══
+(function(){
+  const track = document.getElementById('routemapTrack');
+  const scroll = document.getElementById('routemapScroll');
+  const progress = document.getElementById('routemapProgress');
+  const scrollBar = document.getElementById('scrollProgress');
+  if(!track || !scroll) return;
+
+  // 1) Stagger reveal con IntersectionObserver
+  const stations = track.querySelectorAll('.station');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) e.target.classList.add('in-view');
+    });
+  }, { threshold: 0.25, rootMargin: '0px 0px -50px 0px' });
+  stations.forEach(s => io.observe(s));
+
+  // 2) Línea de progreso: se "pinta" hasta el hito NOW + scroll horizontal
+  const updateProgress = () => {
+    if(!progress) return;
+    const nowStation = track.querySelector('.station.now');
+    if(!nowStation) return;
+    const trackRect = track.getBoundingClientRect();
+    const nowRect = nowStation.getBoundingClientRect();
+    const baseWidth = ((nowRect.left + nowRect.width/2) - trackRect.left);
+    const safeWidth = Math.max(0, Math.min(baseWidth, trackRect.width - 120));
+    progress.style.width = (safeWidth - 60) + 'px';
+  };
+  setTimeout(updateProgress, 200);
+  window.addEventListener('resize', updateProgress);
+
+  // 3) Scroll progress bar (horizontal scroll → width %)
+  const updateScroll = () => {
+    if(!scrollBar) return;
+    const max = scroll.scrollWidth - scroll.clientWidth;
+    const pct = max > 0 ? (scroll.scrollLeft / max) * 100 : 0;
+    scrollBar.style.setProperty('--scroll-w', pct + '%');
+  };
+  scroll.addEventListener('scroll', updateScroll, { passive: true });
+
+  // 4) Click en marker · auto-scroll a esa estación
+  stations.forEach(s => {
+    const marker = s.querySelector('.station-marker');
+    if(!marker) return;
+    marker.style.cursor = 'pointer';
+    marker.addEventListener('click', () => {
+      s.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+  });
+
+  // 5) Auto-scroll inicial al hito NOW (delay para que vea la animación)
+  setTimeout(() => {
+    const now = track.querySelector('.station.now');
+    if(now && window.innerWidth > 768){
+      now.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    }
+  }, 1200);
+
+  // 6) Parallax sutil en background al hacer scroll horizontal
+  scroll.addEventListener('scroll', () => {
+    const offset = scroll.scrollLeft * 0.15;
+    const routemap = document.querySelector('.routemap');
+    if(routemap) routemap.style.backgroundPosition = `${-offset}px center, ${offset}px center`;
+  }, { passive: true });
+})();
+</script>
+
+</body>
+</html>
