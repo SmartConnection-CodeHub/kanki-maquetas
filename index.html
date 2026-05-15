@@ -915,19 +915,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 </style>
 </head>
 <body>
-<!-- SMC PIN GATE · v5 · PIN: hoku · acceso interno SMC Connection -->
+<!-- SMC PIN GATE · v6 · PIN: kanki ·-->
 <style>
 #smcPinGate{position:fixed;inset:0;z-index:99999;background:#0A0E14;display:flex;align-items:center;justify-content:center;font-family:'Inter','72',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;padding:24px}
 #smcPinGate::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(0,229,176,.08) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(0,112,242,.06) 0%,transparent 50%);pointer-events:none}
-#smcPinGate .pc{position:relative;background:rgba(20,28,38,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(0,229,176,.18);border-radius:20px;padding:40px 44px 36px;max-width:560px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06)}
+#smcPinGate .pc{position:relative;background:rgba(20,28,38,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(0,229,176,.18);border-radius:20px;padding:40px 44px 36px;max-width:640px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06)}
 #smcPinGate .pb{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px}
 #smcPinGate .pc-cloud{width:42px;height:42px;flex-shrink:0;color:#00E5B0;filter:drop-shadow(0 0 8px rgba(0,229,176,.5))}
 #smcPinGate .pn{font-size:28px;font-weight:700;letter-spacing:.14em;line-height:1}
 #smcPinGate .pn .s{color:#fff}#smcPinGate .pn .c{color:#00E5B0}
 #smcPinGate h2{font-size:24px;font-weight:700;color:#fff;letter-spacing:-.02em;margin:0 0 6px}
 #smcPinGate p.sub{font-size:13.5px;color:rgba(255,255,255,.5);margin:0 0 22px;letter-spacing:.01em}
-#smcPinGate .bxs{display:flex;justify-content:center;gap:12px;margin-bottom:14px}
-#smcPinGate .bx{width:64px;height:64px;background:rgba(10,18,26,.7);border:1.5px solid rgba(255,255,255,.08);border-radius:14px;font-size:28px;font-weight:700;color:#fff;text-align:center;outline:none;text-transform:uppercase;font-family:inherit;caret-color:transparent;transition:all 220ms cubic-bezier(0.65,0.05,0.36,1)}
+#smcPinGate .bxs{display:flex;justify-content:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+#smcPinGate .bx{width:56px;height:64px;background:rgba(10,18,26,.7);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;font-size:26px;font-weight:700;color:#fff;text-align:center;outline:none;text-transform:uppercase;font-family:inherit;caret-color:transparent;transition:all 220ms cubic-bezier(0.65,0.05,0.36,1)}
 #smcPinGate .bx:focus{border-color:#00E5B0;box-shadow:0 0 0 4px rgba(0,229,176,.15),0 0 20px rgba(0,229,176,.25)}
 #smcPinGate .bx.f{border-color:rgba(0,229,176,.5);background:rgba(0,229,176,.05)}
 #smcPinGate .ht{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.04em;margin-bottom:6px}
@@ -941,40 +941,45 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
   <div class="pc">
     <div class="pb">
       <svg class="pc-cloud" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M48 44H18a10 10 0 0 1 0-20 14 14 0 0 1 27.4 4A8 8 0 1 1 48 44z"/><path d="M28 32l4 4 8-8" stroke-width="2.5"/></svg>
-      <div class="pn"><span class="s">SMART</span><span class="c">CONNECTION</span></div>
+      <div class="pn"><span class="s">SMART</span><span class="c">CO4ECTION</span></div>
     </div>
-    <h2 id="smcPinTitle">Kanki Maquetas</h2>
+    <h2>Kanki · Maquetas</h2>
     <p class="sub">Ingresa tu PIN de acceso</p>
     <div class="bxs" id="smcPinBxs">
       <input class="bx" type="text" maxlength="1" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" inputmode="text">
       <input class="bx" type="text" maxlength="1" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" inputmode="text">
       <input class="bx" type="text" maxlength="1" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" inputmode="text">
       <input class="bx" type="text" maxlength="1" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" inputmode="text">
+      <input class="bx" type="text" maxlength="1" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" inputmode="text">
     </div>
-    <div class="ht">4 caracteres</div>
+    <div class="ht">5 caracteres</div>
     <div class="er" id="smcPinErr"></div>
     <div class="ft">SMC Connection SpA · acceso autorizado</div>
   </div>
 </div>
 <script>
 (function(){
-  var PIN = "HOKU";
+  var PIN = "KANKI";
+  var KEY = "kanki";
+  var V = "v6";
   var g = document.getElementById("smcPinGate");
   var w = document.getElementById("smcPinBxs");
   var bx = w.querySelectorAll(".bx");
   var er = document.getElementById("smcPinErr");
-  if (localStorage.getItem("smc_pin_v") !== "v5"){
-    sessionStorage.removeItem("smc_pin_ok_v5");
-    localStorage.setItem("smc_pin_v","v5");
+  var skey = "smc_pin_" + KEY + "_" + V;
+  var vkey = "smc_pin_v_" + KEY;
+  if (localStorage.getItem(vkey) !== V){
+    Object.keys(sessionStorage).forEach(function(k){ if (k.indexOf("smc_pin_" + KEY) === 0) sessionStorage.removeItem(k); });
+    localStorage.setItem(vkey, V);
   }
-  if (sessionStorage.getItem("smc_pin_ok_v5") === "1"){ g.style.display = "none"; }
+  if (sessionStorage.getItem(skey) === "1"){ g.style.display = "none"; }
   else { setTimeout(function(){ bx[0].focus(); }, 200); }
   function code(){ return Array.from(bx).map(function(b){ return (b.value||"").toUpperCase(); }).join(""); }
   function val(){
     var c = code();
-    if (c.length < 4) return;
+    if (c.length < 5) return;
     if (c === PIN){
-      sessionStorage.setItem("smc_pin_ok_v5","1");
+      sessionStorage.setItem(skey, "1");
       bx.forEach(function(b){ b.classList.add("f"); });
       g.style.transition = "opacity 400ms ease, transform 400ms ease";
       setTimeout(function(){ g.style.opacity = "0"; g.style.transform = "scale(1.04)"; }, 200);
@@ -1005,14 +1010,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
     });
     b.addEventListener("paste", function(e){
       e.preventDefault();
-      var t = (e.clipboardData||window.clipboardData).getData("text").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);
+      var t = (e.clipboardData||window.clipboardData).getData("text").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,5);
       bx.forEach(function(box, idx){ box.value = t[idx] || ""; if (t[idx]) box.classList.add("f"); });
-      if (t.length === 4) setTimeout(val, 80);
-      else bx[Math.min(t.length, 3)].focus();
+      if (t.length === 5) setTimeout(val, 80);
+      else bx[Math.min(t.length, 4)].focus();
     });
   });
 })();
 </script>
+
+
 
 
 <!-- ═══ QAS BADGE · entra después de la cortina como eco split-panel ═══ -->
