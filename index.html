@@ -1,248 +1,389 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kanki · Banco de Maquetas por Ambiente</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Kanki · Mapa de Ambientes</title>
 <style>
-:root {
-  --bg: #0a0a0a;
-  --surface: #161616;
-  --surface-elev: #1f1f1f;
-  --border: #2a2a2a;
-  --text: #f5f5f5;
-  --text-dim: #888;
-  --accent: #ff6b00;
-  --gh: #2da44e;
-  --qas: #f59e0b;
-  --prd: #ef4444;
-  --local: #6366f1;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
-body { padding: 24px 16px 80px; }
+  :root{
+    --navy:#1B2F4E;--navy-2:#0e1a2e;--gold:#C49A3A;--cream:#F5EDD8;
+    --ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--bg:#fafaf7;--card:#ffffff;
+    --ok:#16a34a;--warn:#ca8a04;--err:#dc2626;--info:#0ea5e9;--legacy:#94a3b8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{scroll-behavior:smooth}
+  body{font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+  a{color:inherit;text-decoration:none}
 
-.header { max-width: 1400px; margin: 0 auto 24px; }
-.header h1 { font-size: clamp(20px, 4vw, 32px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
-.header h1 .skate { display: inline-block; transform: rotate(-8deg); margin-right: 6px; }
-.header p { color: var(--text-dim); font-size: 14px; }
+  header{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:var(--cream);padding:36px 20px 28px;text-align:center;position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  header .kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  header h1{font:800 30px/1.1 'Times New Roman',serif;letter-spacing:.5px;color:#fff;margin:6px 0 4px}
+  header p{font-size:13px;opacity:.85;max-width:580px;margin:8px auto 0}
+  header .meta{margin-top:14px;font-size:11px;opacity:.7;font-family:monospace}
 
-.filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; max-width: 1400px; margin-left: auto; margin-right: auto; }
-.filter {
-  background: var(--surface); border: 1px solid var(--border); color: var(--text);
-  padding: 8px 14px; border-radius: 999px; font-size: 13px; cursor: pointer;
-  transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
-}
-.filter:hover { background: var(--surface-elev); border-color: var(--accent); }
-.filter.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
-.filter .dot { width: 8px; height: 8px; border-radius: 50%; }
+  nav.filters{position:sticky;top:0;background:rgba(250,250,247,.92);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);z-index:10;padding:12px 20px}
+  nav.filters .wrap{max-width:1180px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  nav.filters button{padding:6px 14px;font:600 12px/1 system-ui;background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--mute);cursor:pointer;transition:all .15s ease;letter-spacing:.04em}
+  nav.filters button:hover{border-color:var(--navy);color:var(--navy)}
+  nav.filters button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 
-main { max-width: 1400px; margin: 0 auto; }
+  main{max-width:1180px;margin:0 auto;padding:28px 20px 48px}
 
-.env-section { margin: 32px 0; }
-.env-section.hidden { display: none; }
-.env-header {
-  display: flex; align-items: center; gap: 12px; padding: 12px 0;
-  border-bottom: 1px solid var(--border); margin-bottom: 16px;
-}
-.env-badge {
-  padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.05em; text-transform: uppercase;
-}
-.env-badge.gh-maquetas { background: var(--gh); color: #fff; }
-.env-badge.gh-preview { background: var(--gh); color: #fff; opacity: 0.7; }
-.env-badge.qas { background: var(--qas); color: #000; }
-.env-badge.prd { background: var(--prd); color: #fff; }
-.env-title { font-size: 15px; font-weight: 600; }
-.env-url { font-size: 12px; color: var(--text-dim); font-family: 'SF Mono', Menlo, monospace; }
-.env-url a { color: var(--text-dim); text-decoration: none; }
-.env-url a:hover { color: var(--accent); }
+  section.env{margin-bottom:32px;border-radius:16px;background:var(--card);border:1px solid var(--line);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+  section.env.hidden{display:none}
+  section.env > header{padding:20px 24px;background:linear-gradient(135deg,var(--navy),#1f3556);color:#fff;text-align:left;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  section.env > header::after{display:none}
+  section.env h2{font:700 18px/1.2 system-ui;color:var(--gold);display:flex;align-items:center;gap:10px}
+  section.env .url{font:600 12px/1 monospace;color:#fff;background:rgba(255,255,255,.08);padding:5px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.12);word-break:break-all}
+  section.env .url a{color:#fff}
+  section.env .url a:hover{color:var(--gold);text-decoration:underline}
+  section.env .infra{padding:14px 24px;background:var(--cream);border-bottom:1px solid var(--line);font-size:12px;color:var(--navy);display:flex;flex-wrap:wrap;gap:14px}
+  section.env .infra span{display:inline-flex;align-items:center;gap:6px}
+  section.env .infra code{font:600 11px monospace;color:var(--navy)}
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-}
+  .groups{padding:20px 24px}
+  .group{margin-bottom:22px}
+  .group:last-child{margin-bottom:0}
+  .group h3{font:600 11px/1 system-ui;text-transform:uppercase;letter-spacing:.12em;color:var(--mute);margin-bottom:12px;padding-bottom:8px;border-bottom:1px dashed var(--line);display:flex;align-items:center;gap:8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
 
-.card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-  overflow: hidden; cursor: pointer; transition: all 0.25s ease;
-  position: relative; display: flex; flex-direction: column;
-}
-.card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 40px rgba(255, 107, 0, 0.2); }
+  a.card,.card{display:flex;flex-direction:column;padding:14px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);transition:all .15s ease;position:relative}
+  a.card:hover{transform:translateY(-1px);border-color:var(--gold);background:#fff;box-shadow:0 4px 12px rgba(27,47,78,.08)}
+  .card .row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+  .card .name{font-weight:600;font-size:14px;color:var(--navy);line-height:1.3}
+  .card .meta{font:11px/1.4 monospace;color:var(--mute);margin-top:2px;word-break:break-all}
+  .card .desc{font-size:12px;color:var(--mute);margin-top:6px;line-height:1.4}
+  .card.dead{opacity:.55;cursor:default}
+  .card.dead:hover{transform:none;border-color:var(--line);box-shadow:none}
 
-.card-preview {
-  position: relative; aspect-ratio: 16 / 10; overflow: hidden;
-  background: #000; border-bottom: 1px solid var(--border);
-}
-.card-preview iframe {
-  width: 250%; height: 250%; border: 0; pointer-events: none;
-  transform: scale(0.4); transform-origin: 0 0;
-  background: #fff;
-}
-.card-preview .overlay {
-  position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);
-  opacity: 0; transition: opacity 0.25s; pointer-events: none;
-  display: flex; align-items: flex-end; padding: 12px; font-size: 11px; color: #fff;
-  font-family: 'SF Mono', Menlo, monospace;
-}
-.card:hover .card-preview .overlay { opacity: 1; }
-.card-preview .ext-icon {
-  position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-  width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
-  opacity: 0; transition: opacity 0.25s; font-size: 14px;
-}
-.card:hover .card-preview .ext-icon { opacity: 1; }
+  .badge{display:inline-block;font:600 10px/1.4 system-ui;padding:2px 7px;border-radius:5px;letter-spacing:.04em}
+  .b-ok{background:rgba(22,163,74,.12);color:var(--ok)}
+  .b-new{background:rgba(196,154,58,.18);color:#8a6a17}
+  .b-warn{background:rgba(202,138,4,.14);color:var(--warn)}
+  .b-err{background:rgba(220,38,38,.12);color:var(--err)}
+  .b-info{background:rgba(14,165,233,.12);color:var(--info)}
+  .b-legacy{background:rgba(148,163,184,.18);color:var(--legacy)}
+  .b-gap{font-weight:700}
 
-.card-body { padding: 12px 14px; }
-.card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.card-meta { font-size: 11px; color: var(--text-dim); display: flex; gap: 8px; align-items: center; }
-.card-meta .file { font-family: 'SF Mono', Menlo, monospace; }
+  section.gaps{margin-top:32px;border-radius:16px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+  section.gaps > header{padding:18px 24px;background:#fff;border-bottom:1px solid var(--line)}
+  section.gaps h2{font:700 16px/1.2 system-ui;color:var(--navy)}
+  section.gaps p{font-size:12px;color:var(--mute);margin-top:4px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{text-align:left;padding:10px 16px;background:var(--bg);color:var(--mute);font:600 11px/1 system-ui;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--line)}
+  tbody td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:var(--bg)}
+  td.gap-n{font:700 12px monospace;color:var(--mute);width:32px}
+  td.sev{width:40px;text-align:center;font-size:16px}
+  td.owner{font-size:12px;color:var(--mute);white-space:nowrap}
+  td.est{font:600 11px monospace;color:var(--navy);white-space:nowrap}
 
-.empty-state { text-align: center; color: var(--text-dim); padding: 48px 16px; font-size: 14px; }
+  footer{padding:24px 20px;text-align:center;color:var(--mute);font-size:12px;border-top:1px solid var(--line);margin-top:32px}
+  footer code{font:11px monospace;background:#fff;padding:2px 6px;border:1px solid var(--line);border-radius:4px}
+  footer .stack{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:8px}
 
-footer { max-width: 1400px; margin: 60px auto 0; padding-top: 24px; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 12px; text-align: center; }
-footer a { color: var(--accent); text-decoration: none; }
-
-@media (max-width: 640px) {
-  body { padding: 16px 12px 60px; }
-  .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .card-preview iframe { transform: scale(0.3); width: 333%; height: 333%; }
-  .header h1 { font-size: 22px; }
-  .env-header { flex-wrap: wrap; }
-}
-@media (max-width: 420px) {
-  .grid { grid-template-columns: 1fr; }
-}
+  @media (max-width:600px){
+    header h1{font-size:24px}
+    section.env > header{flex-direction:column;align-items:flex-start}
+    .grid{grid-template-columns:1fr}
+    table{font-size:12px}
+    tbody td{padding:9px 12px}
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1><span class="skate">🛹</span>Kanki · Banco de Maquetas por Ambiente</h1>
-  <p>16 páginas × 4 ambientes · click en cualquier card para abrir la página real</p>
-</div>
+<header>
+  <p class="kicker">Smart Connection × Martín</p>
+  <h1>Kanki · Mapa de Ambientes</h1>
+  <p>Inventario navegable de los 4 ambientes (DEV · GitHub · QAS · PRD) con enlaces directos a cada ruta, asset y panel.</p>
+  <div class="meta">snapshot 2026-05-25 · 4 ambientes · 11 gaps</div>
+</header>
 
-<div class="filters" id="filters">
-  <button class="filter active" data-env="all">Todos</button>
-  <button class="filter" data-env="gh-maquetas"><span class="dot" style="background:var(--gh)"></span>GitHub Maquetas</button>
-  <button class="filter" data-env="gh-preview"><span class="dot" style="background:var(--gh);opacity:.7"></span>GitHub Preview</button>
-  <button class="filter" data-env="qas"><span class="dot" style="background:var(--qas)"></span>AWS QAS</button>
-  <button class="filter" data-env="prd"><span class="dot" style="background:var(--prd)"></span>AWS PRD</button>
-</div>
+<nav class="filters">
+  <div class="wrap">
+    <button class="active" data-filter="all">Todos</button>
+    <button data-filter="dev">💻 DEV (local)</button>
+    <button data-filter="gh">🐙 GitHub</button>
+    <button data-filter="qas">🧪 QAS</button>
+    <button data-filter="prd">🚀 PRD</button>
+  </div>
+</nav>
 
-<main id="banco"></main>
+<main>
+
+  <section class="env" data-env="dev">
+    <header>
+      <h2>💻 DEV · Local Filesystem</h2>
+      <span class="url"><code>~/Downloads/SmartConnection/CLAUDE-Projects/</code></span>
+    </header>
+    <div class="infra">
+      <span>💵 $0/mes</span>
+      <span>📅 desde 2026-04</span>
+      <span>🚀 deploy: <code>save manual</code></span>
+      <span>🔐 SSL: <code>n/a</code></span>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h3>🎨 maquetas/kanki-street/ · 21 archivos · sandbox visual</h3>
+        <div class="grid">
+          <div class="card dead"><div class="row"><span class="name">2026-05-25_161500-cortinas-mobile-v3</span><span class="badge b-new">🆕</span></div><span class="meta">/maquetas/kanki-street/</span><span class="desc">Última iteración · apertura cortinas mobile v3</span></div>
+          <div class="card dead"><div class="row"><span class="name">2026-05-10_131415-storefront</span><span class="badge b-ok">tienda</span></div><span class="meta">scroll-zoom storefront</span></div>
+          <div class="card dead"><div class="row"><span class="name">2026-05-09_140335-producto-detalle</span><span class="badge b-ok">PDP</span></div><span class="meta">galería + variantes</span></div>
+          <div class="card dead"><div class="row"><span class="name">2026-05-08_181500-storefront-mobile-zoom</span><span class="badge b-ok">tienda</span></div><span class="meta">base port PRD</span></div>
+          <div class="card dead"><div class="row"><span class="name">+ 17 maquetas históricas</span><span class="badge b-legacy">abril+mayo</span></div><span class="meta">admin · storefront · panel-socios · brand</span></div>
+          <div class="card dead"><div class="row"><span class="name">📁 rfp/ + tablas/</span><span class="badge b-info">data</span></div><span class="meta">RFP Kanki Street + 3 tablas</span></div>
+        </div>
+      </div>
+      <div class="group">
+        <h3>🛠 codigo/kanki-street/ · clon repo PRD</h3>
+        <div class="grid">
+          <div class="card dead"><div class="row"><span class="name">index.html (385 KB)</span><span class="badge b-ok">app real</span></div><span class="meta">cortina + hero + 9 productos</span></div>
+          <div class="card dead"><div class="row"><span class="name">📁 admin/ carrito/ embajadores/</span><span class="badge b-ok">rutas</span></div><span class="meta">mi-cuenta/ productos/ socios/</span></div>
+          <div class="card dead"><div class="row"><span class="name">📁 css/ + js/ (11 módulos)</span><span class="badge b-info">stack</span></div><span class="meta">app · auth · cart · chat · store · socios · admin · supabase</span></div>
+          <div class="card dead"><div class="row"><span class="name">📁 supabase/ + img/</span><span class="badge b-info">data</span></div><span class="meta">schemas + assets locales</span></div>
+        </div>
+      </div>
+      <div class="group">
+        <h3>🛠 codigo/kanki-maquetas/ · clon de ESTE repo</h3>
+        <div class="grid">
+          <div class="card dead"><div class="row"><span class="name">17 HTMLs + assets</span><span class="badge b-info">pre-deploy</span></div><span class="meta">stage GitHub Pages</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="env" data-env="gh">
+    <header>
+      <h2>🐙 GitHub · estático</h2>
+      <span class="url">SmartConnection-CodeHub</span>
+    </header>
+    <div class="infra">
+      <span>💵 $0/mes</span>
+      <span>🚀 deploy: <code>git push origin main</code> → ~30-60s</span>
+      <span>🔐 SSL: GitHub Pages cert</span>
+      <span>📅 desde 2026-04</span>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h3>📦 kanki-maquetas · ESTE repo · iteración visual</h3>
+        <div class="grid">
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/" target="_blank" rel="noopener"><div class="row"><span class="name">🏠 Index (este mapa)</span><span class="badge b-new">🆕 mapa</span></div><span class="meta">smartconnection-codehub.github.io/kanki-maquetas/</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/index-original.html" target="_blank" rel="noopener"><div class="row"><span class="name">Index original</span><span class="badge b-legacy">backup</span></div><span class="meta">/index-original.html · pre-mapa</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/storefront.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront</span><span class="badge b-ok">tienda</span></div><span class="meta">/storefront.html · scroll-zoom mobile</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/storefront-v2.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront v2</span><span class="badge b-ok">tienda</span></div><span class="meta">/storefront-v2.html · cortina reveal</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/storefront-classic.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront classic</span><span class="badge b-ok">tienda</span></div><span class="meta">/storefront-classic.html</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/producto-detalle.html" target="_blank" rel="noopener"><div class="row"><span class="name">Producto detalle</span><span class="badge b-ok">PDP</span></div><span class="meta">/producto-detalle.html</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/embajadores/" target="_blank" rel="noopener"><div class="row"><span class="name">Embajadores</span><span class="badge b-ok">crew</span></div><span class="meta">/embajadores/index.html · 49KB</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/login-emails.html" target="_blank" rel="noopener"><div class="row"><span class="name">Login & Emails</span><span class="badge b-ok">auth</span></div><span class="meta">/login-emails.html</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/admin.html" target="_blank" rel="noopener"><div class="row"><span class="name">Admin panel</span><span class="badge b-ok">interno</span></div><span class="meta">/admin.html · 96KB</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/panel-socios.html" target="_blank" rel="noopener"><div class="row"><span class="name">Panel socios</span><span class="badge b-ok">interno</span></div><span class="meta">/panel-socios.html · 452KB</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/arquitectura.html" target="_blank" rel="noopener"><div class="row"><span class="name">Arquitectura</span><span class="badge b-info">doc</span></div><span class="meta">/arquitectura.html</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/maquetas.html" target="_blank" rel="noopener"><div class="row"><span class="name">Maquetas legacy index</span><span class="badge b-legacy">legacy</span></div><span class="meta">/maquetas.html</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/reunion-barbara-fondos-publicos.html" target="_blank" rel="noopener"><div class="row"><span class="name">Reunión Bárbara · fondos</span><span class="badge b-info">doc</span></div><span class="meta">/reunion-barbara-fondos-publicos.html</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/supabase-schema.sql" target="_blank" rel="noopener"><div class="row"><span class="name">Supabase schema SQL</span><span class="badge b-info">data</span></div><span class="meta">/supabase-schema.sql · 27KB</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/products.json" target="_blank" rel="noopener"><div class="row"><span class="name">products.json (mock)</span><span class="badge b-info">data</span></div><span class="meta">/products.json · 5KB</span></a>
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-maquetas/project-structure.md" target="_blank" rel="noopener"><div class="row"><span class="name">project-structure.md</span><span class="badge b-info">doc</span></div><span class="meta">/project-structure.md · 13KB</span></a>
+          <a class="card" href="https://github.com/SmartConnection-CodeHub/kanki-maquetas" target="_blank" rel="noopener"><div class="row"><span class="name">🐙 Ver repo en GitHub</span><span class="badge b-info">source</span></div><span class="meta">SmartConnection-CodeHub/kanki-maquetas</span></a>
+        </div>
+      </div>
+      <div class="group">
+        <h3>📦 kanki-preview · branch de preview · 2026-05-25</h3>
+        <div class="grid">
+          <a class="card" href="https://smartconnection-codehub.github.io/kanki-preview/" target="_blank" rel="noopener"><div class="row"><span class="name">Index preview</span><span class="badge b-new">🆕</span></div><span class="meta">smartconnection-codehub.github.io/kanki-preview/</span></a>
+          <a class="card" href="https://github.com/SmartConnection-CodeHub/kanki-preview" target="_blank" rel="noopener"><div class="row"><span class="name">🐙 Repo en GitHub</span><span class="badge b-info">source</span></div><span class="meta">SmartConnection-CodeHub/kanki-preview</span></a>
+        </div>
+      </div>
+      <div class="group">
+        <h3>📦 kanki-street · PRD repo · branch main · auto-deploy Amplify</h3>
+        <div class="grid">
+          <a class="card" href="https://github.com/SmartConnection-CodeHub/kanki-street" target="_blank" rel="noopener"><div class="row"><span class="name">🐙 Repo PRD</span><span class="badge b-info">source</span></div><span class="meta">SmartConnection-CodeHub/kanki-street</span></a>
+          <a class="card" href="https://github.com/SmartConnection-CodeHub/kanki-street/commits/main" target="_blank" rel="noopener"><div class="row"><span class="name">Historial commits main</span><span class="badge b-info">log</span></div><span class="meta">último: 2bf9dd1 feat: /embajadores placeholder</span></a>
+          <a class="card" href="https://github.com/SmartConnection-CodeHub/kanki-street/tree/gh-pages" target="_blank" rel="noopener"><div class="row"><span class="name">Branch gh-pages</span><span class="badge b-legacy">legacy</span></div><span class="meta">heritage page</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="env" data-env="qas">
+    <header>
+      <h2>🧪 QAS · AWS sa-east-1 · staging</h2>
+      <span class="url"><a href="https://qas.kanki.smconnection.cl/" target="_blank" rel="noopener">qas.kanki.smconnection.cl</a></span>
+    </header>
+    <div class="infra">
+      <span>💵 ~USD 1-5/mes</span>
+      <span>🪣 S3 <code>kanki-qas</code> (versioning ON)</span>
+      <span>🚀 CloudFront <code>E1HUCNDZ302JPS</code></span>
+      <span>🔒 ACM cert *.kanki.smconnection.cl</span>
+      <span>📅 creado 2026-05-25 War Room</span>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h3>🛒 Storefront (raíz QAS)</h3>
+        <div class="grid">
+          <a class="card" href="https://qas.kanki.smconnection.cl/storefront.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront</span><span class="badge b-ok">tienda</span></div><span class="meta">/storefront.html · scroll-zoom mobile</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/storefront-v2.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront v2</span><span class="badge b-ok">tienda</span></div><span class="meta">/storefront-v2.html · cortina reveal</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/storefront-classic.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront classic</span><span class="badge b-ok">tienda</span></div><span class="meta">/storefront-classic.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/producto-detalle.html" target="_blank" rel="noopener"><div class="row"><span class="name">Producto detalle</span><span class="badge b-ok">PDP</span></div><span class="meta">/producto-detalle.html · 25KB</span></a>
+          <div class="card dead"><div class="row"><span class="name">/productos.html</span><span class="badge b-warn">gap #2</span></div><span class="meta">aún no en QAS · está en PRD</span></div>
+          <div class="card dead"><div class="row"><span class="name">/carrito.html</span><span class="badge b-warn">gap #1</span></div><span class="meta">aún no en QAS · está en PRD</span></div>
+        </div>
+      </div>
+      <div class="group">
+        <h3>👥 Crew (raíz QAS)</h3>
+        <div class="grid">
+          <a class="card" href="https://qas.kanki.smconnection.cl/embajadores/" target="_blank" rel="noopener"><div class="row"><span class="name">Embajadores</span><span class="badge b-ok">crew</span></div><span class="meta">/embajadores/index.html · 49KB</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/login-emails.html" target="_blank" rel="noopener"><div class="row"><span class="name">Login & Emails</span><span class="badge b-ok">auth</span></div><span class="meta">/login-emails.html</span></a>
+        </div>
+      </div>
+      <div class="group">
+        <h3>🖥 Paneles internos (raíz QAS)</h3>
+        <div class="grid">
+          <a class="card" href="https://qas.kanki.smconnection.cl/admin.html" target="_blank" rel="noopener"><div class="row"><span class="name">Admin</span><span class="badge b-ok">panel</span></div><span class="meta">/admin.html · 96KB</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/panel-socios.html" target="_blank" rel="noopener"><div class="row"><span class="name">Panel socios</span><span class="badge b-ok">panel</span></div><span class="meta">/panel-socios.html · 452KB</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/arquitectura.html" target="_blank" rel="noopener"><div class="row"><span class="name">Arquitectura</span><span class="badge b-info">doc</span></div><span class="meta">/arquitectura.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas.html" target="_blank" rel="noopener"><div class="row"><span class="name">Maquetas index legacy</span><span class="badge b-legacy">legacy</span></div><span class="meta">/maquetas.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/reunion-barbara-fondos-publicos.html" target="_blank" rel="noopener"><div class="row"><span class="name">Reunión Bárbara · fondos</span><span class="badge b-info">doc</span></div><span class="meta">/reunion-barbara-fondos-publicos.html</span></a>
+        </div>
+      </div>
+      <div class="group">
+        <h3>🆕 /maquetas/ · galería navegable · subida hoy 2026-05-25</h3>
+        <div class="grid">
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/" target="_blank" rel="noopener"><div class="row"><span class="name">🏠 Galería index</span><span class="badge b-new">🆕</span></div><span class="meta">/maquetas/ · 21 maquetas agrupadas por mes</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-05-25_161500-cortinas-mobile-v3.html" target="_blank" rel="noopener"><div class="row"><span class="name">Cortinas mobile v3</span><span class="badge b-new">apertura</span></div><span class="meta">2026-05-25 16:15</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-05-25_160500-cortinas-mobile-v2.html" target="_blank" rel="noopener"><div class="row"><span class="name">Cortinas mobile v2</span><span class="badge b-new">apertura</span></div><span class="meta">2026-05-25 16:05</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-05-25_152500-cortinas-mobile-10.html" target="_blank" rel="noopener"><div class="row"><span class="name">Cortinas mobile 10</span><span class="badge b-new">apertura</span></div><span class="meta">2026-05-25 15:25</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-05-10_131415-storefront.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront 10-may</span><span class="badge b-ok">tienda</span></div><span class="meta">2026-05-10 13:14</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-05-09_140335-producto-detalle.html" target="_blank" rel="noopener"><div class="row"><span class="name">Producto detalle</span><span class="badge b-ok">PDP</span></div><span class="meta">2026-05-09 14:03</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-05-08_181500-storefront-mobile-zoom.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront mobile-zoom</span><span class="badge b-ok">tienda</span></div><span class="meta">2026-05-08 18:15 · base port PRD</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-04-29_183000-storefront-v2.html" target="_blank" rel="noopener"><div class="row"><span class="name">Storefront v2 (cortina)</span><span class="badge b-ok">tienda</span></div><span class="meta">2026-04-29 18:30</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-04-29_183000-login-emails.html" target="_blank" rel="noopener"><div class="row"><span class="name">Login & Emails</span><span class="badge b-ok">auth</span></div><span class="meta">2026-04-29 18:30</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-04-29_182500-arquitectura.html" target="_blank" rel="noopener"><div class="row"><span class="name">Arquitectura</span><span class="badge b-info">doc</span></div><span class="meta">2026-04-29 18:25</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-04-29_154700-admin.html" target="_blank" rel="noopener"><div class="row"><span class="name">Admin 29-abr</span><span class="badge b-ok">panel</span></div><span class="meta">2026-04-29 15:47</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/2026-04-14_114139-panel-socios-v2.html" target="_blank" rel="noopener"><div class="row"><span class="name">Panel socios v2</span><span class="badge b-ok">panel</span></div><span class="meta">2026-04-14 11:41</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/kanki-surf-platform.html" target="_blank" rel="noopener"><div class="row"><span class="name">Kanki Surf Platform</span><span class="badge b-info">brand</span></div><span class="meta">/maquetas/kanki-surf-platform.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/kanki-surf-rider-ux.html" target="_blank" rel="noopener"><div class="row"><span class="name">Surf Rider UX</span><span class="badge b-info">brand</span></div><span class="meta">/maquetas/kanki-surf-rider-ux.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/kanki-surf-v3.html" target="_blank" rel="noopener"><div class="row"><span class="name">Kanki Surf v3</span><span class="badge b-info">brand</span></div><span class="meta">/maquetas/kanki-surf-v3.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/rfp/2026-05-11-rfp-kanki-street.html" target="_blank" rel="noopener"><div class="row"><span class="name">RFP Kanki Street</span><span class="badge b-info">propuesta</span></div><span class="meta">/maquetas/rfp/2026-05-11-rfp-kanki-street.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/tablas/2026-05-11-tabla-1-marcas.html" target="_blank" rel="noopener"><div class="row"><span class="name">Tabla 1 · Marcas</span><span class="badge b-info">data</span></div><span class="meta">/maquetas/tablas/2026-05-11-tabla-1-marcas.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/tablas/2026-05-11-tabla-2-stack-3-ambientes.html" target="_blank" rel="noopener"><div class="row"><span class="name">Tabla 2 · Stack 3 ambientes</span><span class="badge b-info">data</span></div><span class="meta">/maquetas/tablas/2026-05-11-tabla-2-stack-3-ambientes.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/tablas/2026-05-11-tabla-3-pendientes-escalamiento.html" target="_blank" rel="noopener"><div class="row"><span class="name">Tabla 3 · Pendientes</span><span class="badge b-info">data</span></div><span class="meta">/maquetas/tablas/2026-05-11-tabla-3-pendientes-escalamiento.html</span></a>
+          <a class="card" href="https://qas.kanki.smconnection.cl/maquetas/LEGACY-2026-04-10-kanki-apple-nav.html" target="_blank" rel="noopener"><div class="row"><span class="name">Apple-nav legacy</span><span class="badge b-legacy">legacy</span></div><span class="meta">/maquetas/LEGACY-2026-04-10-kanki-apple-nav.html</span></a>
+        </div>
+      </div>
+      <div class="group">
+        <h3>⏸️ Pendientes QAS</h3>
+        <div class="grid">
+          <div class="card dead"><div class="row"><span class="name">Supabase QAS</span><span class="badge b-warn">pendiente</span></div><span class="meta">decisión arq · branch $25/mes vs schema $0</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="env" data-env="prd">
+    <header>
+      <h2>🚀 PRD · AWS sa-east-1 · producción</h2>
+      <span class="url"><a href="https://kanki.smconnection.cl/" target="_blank" rel="noopener">kanki.smconnection.cl</a></span>
+    </header>
+    <div class="infra">
+      <span>💵 ~USD 5-15/mes</span>
+      <span>📦 Amplify <code>d2k04qno1njsqu</code></span>
+      <span>🚀 CloudFront <code>d3ewdch1a6ivht</code></span>
+      <span>🗄️ Supabase <code>yjjtbwfgtoepsevvkzta</code></span>
+      <span>📅 desde 2026-03</span>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h3>🛒 Storefront</h3>
+        <div class="grid">
+          <a class="card" href="https://kanki.smconnection.cl/" target="_blank" rel="noopener"><div class="row"><span class="name">Home (app real)</span><span class="badge b-ok">live</span></div><span class="meta">/ · 385KB · cortina + hero + 9 productos + chat Groq</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/productos/" target="_blank" rel="noopener"><div class="row"><span class="name">Producto detalle</span><span class="badge b-ok">PDP</span></div><span class="meta">/productos/?slug=X · 3.8KB modular</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/carrito/" target="_blank" rel="noopener"><div class="row"><span class="name">Carrito</span><span class="badge b-ok">cart</span></div><span class="meta">/carrito/ · 10.7KB drawer + WhatsApp</span></a>
+          <div class="card dead"><div class="row"><span class="name">Checkout flow</span><span class="badge b-err b-gap">gap #3 🔴</span></div><span class="meta">bloqueante venta · ETA 2-3d</span></div>
+        </div>
+      </div>
+      <div class="group">
+        <h3>👥 Crew</h3>
+        <div class="grid">
+          <a class="card" href="https://kanki.smconnection.cl/embajadores/" target="_blank" rel="noopener"><div class="row"><span class="name">Embajadores</span><span class="badge b-new">🆕 hoy</span></div><span class="meta">/embajadores/ · 8.8KB placeholder modular · LIVE 2026-05-25 16:32</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/mi-cuenta/" target="_blank" rel="noopener"><div class="row"><span class="name">Mi cuenta</span><span class="badge b-ok">auth</span></div><span class="meta">/mi-cuenta/ · 5.4KB · cubre login</span></a>
+          <div class="card dead"><div class="row"><span class="name">Registro/perfil ampliado</span><span class="badge b-warn b-gap">gap #4</span></div><span class="meta">ETA 0.5d</span></div>
+        </div>
+      </div>
+      <div class="group">
+        <h3>🖥 Paneles</h3>
+        <div class="grid">
+          <a class="card" href="https://kanki.smconnection.cl/admin/" target="_blank" rel="noopener"><div class="row"><span class="name">Admin</span><span class="badge b-ok">panel</span></div><span class="meta">/admin/ · 10.3KB</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/socios/" target="_blank" rel="noopener"><div class="row"><span class="name">Socios</span><span class="badge b-ok">panel</span></div><span class="meta">/socios/ · 4.7KB con KPIs</span></a>
+        </div>
+      </div>
+      <div class="group">
+        <h3>🧱 Stack runtime</h3>
+        <div class="grid">
+          <a class="card" href="https://kanki.smconnection.cl/css/styles.css" target="_blank" rel="noopener"><div class="row"><span class="name">/css/styles.css</span><span class="badge b-info">CSS</span></div><span class="meta">design tokens + componentes</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/js/store.js" target="_blank" rel="noopener"><div class="row"><span class="name">/js/store.js</span><span class="badge b-info">JS</span></div><span class="meta">lógica catálogo + product detail</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/js/cart.js" target="_blank" rel="noopener"><div class="row"><span class="name">/js/cart.js</span><span class="badge b-info">JS</span></div><span class="meta">drawer + checkout WhatsApp</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/js/auth.js" target="_blank" rel="noopener"><div class="row"><span class="name">/js/auth.js</span><span class="badge b-info">JS</span></div><span class="meta">Supabase auth</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/js/chat.js" target="_blank" rel="noopener"><div class="row"><span class="name">/js/chat.js</span><span class="badge b-info">JS</span></div><span class="meta">widget Groq Edge Function</span></a>
+          <a class="card" href="https://kanki.smconnection.cl/js/supabase-init.js" target="_blank" rel="noopener"><div class="row"><span class="name">/js/supabase-init.js</span><span class="badge b-info">JS</span></div><span class="meta">init cliente Supabase</span></a>
+          <div class="card dead"><div class="row"><span class="name">+ 5 módulos JS</span><span class="badge b-legacy">app · socios · admin · supabase.umd · app-supabase</span></div><span class="meta">11 módulos totales</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gaps" id="gaps">
+    <header>
+      <h2>🔴 Gaps activos · post sesión 2026-05-25</h2>
+      <p>Diferencias entre QAS y PRD detectadas. Prioridad RICE: 🔴 alta · 🟠 alta urgente · 🟡 media · 🟢 baja.</p>
+    </header>
+    <table>
+      <thead><tr><th>#</th><th>Sev</th><th>Gap</th><th>Owner</th><th>Estim</th></tr></thead>
+      <tbody>
+        <tr><td class="gap-n">3</td><td class="sev">🔴</td><td><strong>Checkout flow</strong> (todos los ambientes · bloqueante venta)</td><td class="owner">🎨 Fiori + 🔧 ABAP + 🐾 Hoku</td><td class="est">2-3d</td></tr>
+        <tr><td class="gap-n">8</td><td class="sev">🟠</td><td><strong>Schema drift Supabase QAS↔PRD</strong></td><td class="owner">🔧 ABAP</td><td class="est">0.5d</td></tr>
+        <tr><td class="gap-n">1</td><td class="sev">🟡</td><td>/carrito.html en QAS (sandbox visual)</td><td class="owner">🐕 Functional-Lead → 🎨 Fiori</td><td class="est">0.5d</td></tr>
+        <tr><td class="gap-n">2</td><td class="sev">🟡</td><td>/productos.html en QAS (sandbox visual)</td><td class="owner">🐕 Functional-Lead → 🎨 Fiori</td><td class="est">0.5d</td></tr>
+        <tr><td class="gap-n">4</td><td class="sev">🟡</td><td>Registro/perfil ampliado</td><td class="owner">🐕 Functional-Lead</td><td class="est">0.5d</td></tr>
+        <tr><td class="gap-n">5</td><td class="sev">🟡</td><td>Producto detalle con galería+variantes (port maqueta)</td><td class="owner">🎨 Fiori + 🔧 ABAP</td><td class="est">1.5d</td></tr>
+        <tr><td class="gap-n">6</td><td class="sev">🟢</td><td>Embajadores port real (placeholder ya live · falta upgrade)</td><td class="owner">🎨 Fiori + 🔧 ABAP</td><td class="est">1.5d</td></tr>
+        <tr><td class="gap-n">7</td><td class="sev">🟡</td><td>Panel socios port a PRD</td><td class="owner">🎨 Fiori + 🔧 ABAP</td><td class="est">2d</td></tr>
+        <tr><td class="gap-n">9</td><td class="sev">🟢</td><td>DEV server formal (vite/live-server)</td><td class="owner">🛠 Pipeline</td><td class="est">0.5d</td></tr>
+        <tr><td class="gap-n">10</td><td class="sev">🟡</td><td>Login & Emails port a PRD</td><td class="owner">🔧 ABAP + 🎨 Fiori</td><td class="est">1d</td></tr>
+        <tr><td class="gap-n">11</td><td class="sev">🟢</td><td>404 / robots / sitemap en PRD</td><td class="owner">🛠 Pipeline</td><td class="est">0.5d</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
 
 <footer>
-  Banco generado automaticamente · <a href="https://github.com/SmartConnection-CodeHub/kanki-maquetas" target="_blank">repo en GitHub</a> · creado War Room 2026-05-25
+  <p>Kanki · Smart Connection × Martín · Sociedad streetwear/surf · Fundada 2020 (herencia surf 1968)</p>
+  <div class="stack">
+    <span><code>S3 kanki-qas</code></span>
+    <span><code>CF E1HUCNDZ302JPS</code></span>
+    <span><code>Amplify d2k04qno1njsqu</code></span>
+    <span><code>Supabase yjjtbwfgtoepsevvkzta</code></span>
+  </div>
+  <p style="margin-top:10px">Mapa generado automáticamente · regenerar tras cambios estructurales · Cerebro/Sentinela 2026-05-25</p>
 </footer>
 
 <script>
-const ENVS = {
-  'gh-maquetas': {
-    name: 'GitHub Maquetas',
-    desc: 'kanki-maquetas · sirviendo directo desde GH Pages',
-    url: 'https://smartconnection-codehub.github.io/kanki-maquetas/',
-    base: 'https://smartconnection-codehub.github.io/kanki-maquetas/',
-    badgeClass: 'gh-maquetas'
-  },
-  'gh-preview': {
-    name: 'GitHub Preview',
-    desc: 'kanki-preview · espejo sin custom domain',
-    url: 'https://smartconnection-codehub.github.io/kanki-preview/',
-    base: 'https://smartconnection-codehub.github.io/kanki-preview/',
-    badgeClass: 'gh-preview'
-  },
-  'qas': {
-    name: 'AWS QAS',
-    desc: 'qas.kanki.smconnection.cl · S3 + CloudFront (War Room 2026-05-25)',
-    url: 'https://qas.kanki.smconnection.cl/',
-    base: 'https://qas.kanki.smconnection.cl/',
-    badgeClass: 'qas'
-  },
-  'prd': {
-    name: 'AWS PRD',
-    desc: 'kanki.smconnection.cl · app real con Supabase',
-    url: 'https://kanki.smconnection.cl/',
-    base: 'https://kanki.smconnection.cl/',
-    badgeClass: 'prd'
-  }
-};
-
-const PAGES_STATIC = [
-  { file: 'storefront.html', title: 'Storefront', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'storefront-v2.html', title: 'Storefront v2', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'storefront-classic.html', title: 'Storefront Classic', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'producto-detalle.html', title: 'Producto Detalle', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'admin.html', title: 'Panel Admin', envs: ['gh-maquetas','gh-preview','qas','prd'] },
-  { file: 'panel-socios.html', title: 'Panel Socios', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'embajadores/', title: 'Embajadores', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'login-emails.html', title: 'Login & Emails', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'arquitectura.html', title: 'Arquitectura', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'maquetas.html', title: 'Maquetas', envs: ['gh-maquetas','gh-preview','qas'] },
-  { file: 'reunion-barbara-fondos-publicos.html', title: 'Reunion Barbara', envs: ['gh-maquetas','gh-preview','qas'] }
-];
-
-const PAGES_PRD_ONLY = [
-  { file: 'index.html', title: 'Storefront (real)', envs: ['prd'] },
-  { file: 'productos.html', title: 'Productos', envs: ['prd'] },
-  { file: 'carrito.html', title: 'Carrito', envs: ['prd'] }
-];
-
-function buildCard(envKey, page) {
-  const env = ENVS[envKey];
-  const url = env.base + page.file;
-  return `
-    <a class="card" href="${url}" target="_blank" rel="noopener">
-      <div class="card-preview">
-        <iframe src="${url}" loading="lazy" sandbox="allow-scripts allow-same-origin" title="${page.title}"></iframe>
-        <div class="ext-icon">↗</div>
-        <div class="overlay">${url}</div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">${page.title}</div>
-        <div class="card-meta"><span class="file">${page.file}</span></div>
-      </div>
-    </a>
-  `;
-}
-
-function renderBanco() {
-  const main = document.getElementById('banco');
-  let html = '';
-  for (const [envKey, env] of Object.entries(ENVS)) {
-    const allPages = [...PAGES_STATIC, ...PAGES_PRD_ONLY].filter(p => p.envs.includes(envKey));
-    if (!allPages.length) continue;
-    html += `
-      <section class="env-section" data-env="${envKey}">
-        <div class="env-header">
-          <span class="env-badge ${env.badgeClass}">${env.name}</span>
-          <div>
-            <div class="env-title">${env.desc}</div>
-            <div class="env-url"><a href="${env.url}" target="_blank" rel="noopener">${env.url}</a></div>
-          </div>
-        </div>
-        <div class="grid">
-          ${allPages.map(p => buildCard(envKey, p)).join('')}
-        </div>
-      </section>
-    `;
-  }
-  main.innerHTML = html;
-}
-
-document.getElementById('filters').addEventListener('click', e => {
-  if (!e.target.matches('.filter')) return;
-  document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
-  e.target.classList.add('active');
-  const env = e.target.dataset.env;
-  document.querySelectorAll('.env-section').forEach(s => {
-    s.classList.toggle('hidden', env !== 'all' && s.dataset.env !== env);
-  });
-});
-
-renderBanco();
+  const btns = document.querySelectorAll('nav.filters button');
+  const sections = document.querySelectorAll('section.env');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    const f = b.dataset.filter;
+    sections.forEach(s => {
+      if (f === 'all') s.classList.remove('hidden');
+      else s.classList.toggle('hidden', s.dataset.env !== f);
+    });
+    window.scrollTo({top: 0, behavior:'smooth'});
+  }));
 </script>
-
 </body>
 </html>
