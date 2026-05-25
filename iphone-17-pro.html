@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Kanki Storefront — Mobile Genérico (375×812)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(ellipse at top, #2a2a2a 0%, #0a0a0a 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #aaa;
+    padding: 24px;
+    gap: 18px;
+  }
+  .meta {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888;
+  }
+  .meta strong { color: #fff; font-weight: 600; }
+  .meta .pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #1f1f1f;
+    border: 1px solid #333;
+    margin: 0 4px;
+    font-size: 11px;
+  }
+  .phone {
+    position: relative;
+    width: 405px;
+    height: 842px;
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+    border-radius: 52px;
+    padding: 15px;
+    box-shadow:
+      0 0 0 2px #2a2a2a,
+      0 30px 80px rgba(0,0,0,0.6),
+      inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .screen {
+    width: 375px;
+    height: 812px;
+    border-radius: 38px;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+  }
+  .notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 28px;
+    background: #000;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 1000;
+    pointer-events: none;
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .controls {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .controls a {
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: #1f1f1f;
+    border: 1px solid #333;
+    color: #ddd;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .controls a:hover { background: #2f2f2f; }
+</style>
+</head>
+<body>
+  <div class="meta">
+    <span class="pill">Mobile genérico</span>
+    <span class="pill">viewport <strong>375×812</strong></span>
+    <span class="pill">Mobile First baseline</span>
+    <span class="pill">cubre iPhone SE→16 / Android medio</span>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="notch"></div>
+      <iframe src="storefront.html" title="Kanki Storefront" loading="eager"></iframe>
+    </div>
+  </div>
+
+  <div class="controls">
+    <a href="storefront.html" target="_blank">Abrir desktop ↗</a>
+    <a href="https://qas.kanki.smconnection.cl" target="_blank">QAS live ↗</a>
+  </div>
+</body>
+</html>
