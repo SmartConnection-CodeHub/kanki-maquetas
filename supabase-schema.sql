@@ -1,3 +1,11 @@
+-- KANKI · supabase-schema.sql v2 · regenerado desde migrations PRD --
+-- Source: SmartConnection-CodeHub/kanki-street/supabase/migrations/*.sql + seed.sql
+-- Generated: 2026-05-26 01:54:22 UTC
+-- Migrations included: 5 + seed.sql
+
+-- ============================================================
+-- 20260429000000_initial_schema.sql
+-- ============================================================
 -- =============================================================================
 -- KANKI STREET — Supabase Schema
 -- Versión: 1.0.0 | Fecha: 2026-04-29
@@ -597,3 +605,365 @@ INSERT INTO config (key, value) VALUES
     "status": "fase_2_pendiente"
   }'
 );
+
+-- ============================================================
+-- 20260430000000_kanki_base_schema.sql
+-- ============================================================
+-- Kanki Street — Schema base
+
+CREATE TABLE IF NOT EXISTS categories (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  slug TEXT NOT NULL UNIQUE,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
+DO $$ BEGIN CREATE POLICY "categories_public_read" ON categories FOR SELECT USING (true); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+CREATE TABLE IF NOT EXISTS products (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  description TEXT,
+  price INTEGER NOT NULL,
+  compare_price INTEGER,
+  category TEXT,
+  status TEXT DEFAULT 'active' CHECK (status IN ('active','sold_out','coming_soon','draft')),
+  stock INTEGER DEFAULT 0,
+  sizes TEXT[] DEFAULT '{}',
+  images TEXT[] DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+DO $$ BEGIN CREATE POLICY "products_public_read" ON products FOR SELECT USING (status != 'draft'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+CREATE TABLE IF NOT EXISTS customers (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id),
+  name TEXT,
+  email TEXT,
+  phone TEXT,
+  address TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS orders (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  customer_id UUID REFERENCES customers(id),
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending','payment_review','confirmed','shipped','delivered','cancelled')),
+  total INTEGER NOT NULL,
+  shipping_address TEXT,
+  notes TEXT,
+  tracking_number TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS order_items (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
+  product_id UUID REFERENCES products(id),
+  product_name TEXT NOT NULL,
+  size TEXT DEFAULT 'única',
+  quantity INTEGER NOT NULL DEFAULT 1,
+  unit_price INTEGER NOT NULL
+);
+ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS payment_proofs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_id UUID REFERENCES orders(id),
+  image_url TEXT NOT NULL,
+  uploaded_at TIMESTAMPTZ DEFAULT now(),
+  verified BOOLEAN DEFAULT false,
+  verified_by UUID REFERENCES auth.users(id),
+  verified_at TIMESTAMPTZ
+);
+ALTER TABLE payment_proofs ENABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS bank_accounts (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  bank_name TEXT NOT NULL,
+  account_type TEXT NOT NULL,
+  account_number TEXT NOT NULL,
+  rut TEXT NOT NULL,
+  holder_name TEXT NOT NULL,
+  email TEXT,
+  active BOOLEAN DEFAULT true
+);
+ALTER TABLE bank_accounts ENABLE ROW LEVEL SECURITY;
+DO $$ BEGIN CREATE POLICY "bank_accounts_public_read" ON bank_accounts FOR SELECT USING (active = true); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+CREATE TABLE IF NOT EXISTS order_notes (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES auth.users(id),
+  note TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE order_notes ENABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS chat_conversations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_identifier TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE chat_conversations ENABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS chat_messages (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  conversation_id UUID REFERENCES chat_conversations(id) ON DELETE CASCADE,
+  role TEXT NOT NULL CHECK (role IN ('user','assistant','system')),
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
+
+-- ============================================================
+-- 20260430003744_add_user_roles.sql
+-- ============================================================
+create type user_role as enum ('cliente', 'admin', 'socio');
+
+create table user_roles (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  role user_role not null default 'cliente',
+  created_at timestamptz not null default now(),
+  unique (user_id, role)
+);
+
+alter table user_roles enable row level security;
+
+create policy "Users can read own roles"
+  on user_roles for select
+  using (auth.uid() = user_id);
+
+create policy "Service role manages all roles"
+  on user_roles for all
+  using (auth.role() = 'service_role');
+
+-- Auto-assign 'cliente' role on signup
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.user_roles (user_id, role) values (new.id, 'cliente');
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+-- ============================================================
+-- 20260430010000_admin_rls_policies.sql
+-- ============================================================
+-- =============================================================================
+-- FASE 0.1 — RLS para que admins puedan UPDATE orders directo desde browser
+-- =============================================================================
+
+-- Admin puede actualizar orders (cambiar estado, tracking, etc.)
+CREATE POLICY "orders_admin_update" ON orders FOR UPDATE
+  USING (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid() AND role = 'admin'
+    )
+  );
+
+-- Admin puede leer TODAS las orders (no solo las suyas)
+CREATE POLICY "orders_admin_read" ON orders FOR SELECT
+  USING (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid() AND role = 'admin'
+    )
+  );
+
+-- Admin puede leer order_notes
+CREATE POLICY "order_notes_admin_read" ON order_notes FOR SELECT
+  USING (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid() AND role = 'admin'
+    )
+  );
+
+-- Admin puede insertar order_notes
+CREATE POLICY "order_notes_admin_insert" ON order_notes FOR INSERT
+  WITH CHECK (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid() AND role = 'admin'
+    )
+  );
+
+-- Admin puede leer y gestionar products
+CREATE POLICY "products_admin_manage" ON products FOR ALL
+  USING (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid() AND role = 'admin'
+    )
+  );
+
+-- Admin puede leer customers
+CREATE POLICY "customers_admin_read" ON customers FOR SELECT
+  USING (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid() AND role = 'admin'
+    )
+  );
+
+-- Socio puede leer orders (para KPIs)
+CREATE POLICY "orders_socio_read" ON orders FOR SELECT
+  USING (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid() AND role = 'socio'
+    )
+  );
+
+-- Socio puede leer products (para KPIs)
+CREATE POLICY "products_socio_read" ON products FOR SELECT
+  USING (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid() AND role = 'socio'
+    )
+  );
+
+-- Authenticated users can INSERT chat_messages (para el chatbot)
+CREATE POLICY "chat_msg_user_insert" ON chat_messages FOR INSERT
+  WITH CHECK (
+    auth.role() = 'authenticated' AND
+    EXISTS (
+      SELECT 1 FROM chat_conversations c
+      WHERE c.id = conversation_id AND c.user_identifier = auth.uid()::TEXT
+    )
+  );
+
+-- Authenticated users can INSERT chat_conversations
+CREATE POLICY "chat_conv_user_insert" ON chat_conversations FOR INSERT
+  WITH CHECK (
+    auth.role() = 'authenticated' AND
+    user_identifier = auth.uid()::TEXT
+  );
+
+-- Authenticated users can INSERT orders (crear pedido)
+CREATE POLICY "orders_customer_insert" ON orders FOR INSERT
+  WITH CHECK (auth.role() = 'authenticated');
+
+-- ============================================================
+-- 20260430020000_orders_payment_pipeline.sql
+-- ============================================================
+-- Orders: agregar columnas para pipeline de pago completo
+
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_name TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_email TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_phone TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS shipping_comuna TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS notes_customer TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS items JSONB;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS subtotal INTEGER;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS shipping_cost INTEGER;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_method TEXT DEFAULT 'bank_transfer';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS source TEXT DEFAULT 'website';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS order_number TEXT;
+
+-- Actualizar constraint de status para coincidir con admin panel
+ALTER TABLE orders DROP CONSTRAINT IF EXISTS orders_status_check;
+ALTER TABLE orders ADD CONSTRAINT orders_status_check
+  CHECK (status IN ('pending_payment','payment_uploaded','confirmed','preparing','shipped','delivered','cancelled'));
+ALTER TABLE orders ALTER COLUMN status SET DEFAULT 'pending_payment';
+
+-- Trigger auto-generar order_number
+CREATE OR REPLACE FUNCTION generate_order_number()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.order_number := 'KS-' || TO_CHAR(NOW(), 'YYMM') || '-' || LPAD(FLOOR(RANDOM() * 10000)::TEXT, 4, '0');
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS set_order_number ON orders;
+CREATE TRIGGER set_order_number
+  BEFORE INSERT ON orders
+  FOR EACH ROW
+  WHEN (NEW.order_number IS NULL)
+  EXECUTE FUNCTION generate_order_number();
+
+-- RLS: permitir insert anónimo (checkout sin login)
+DO $$ BEGIN
+  CREATE POLICY "orders_anon_insert" ON orders FOR INSERT WITH CHECK (true);
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+-- RLS: permitir lectura pública (para confirmación de pedido)
+DO $$ BEGIN
+  CREATE POLICY "orders_public_read" ON orders FOR SELECT USING (true);
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+-- RLS: permitir update autenticado (admin)
+DO $$ BEGIN
+  CREATE POLICY "orders_auth_update" ON orders FOR UPDATE USING (auth.role() = 'authenticated');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+-- RLS para order_items: insert público, lectura pública
+DO $$ BEGIN
+  CREATE POLICY "order_items_public_insert" ON order_items FOR INSERT WITH CHECK (true);
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  CREATE POLICY "order_items_public_read" ON order_items FOR SELECT USING (true);
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+-- ============================================================
+-- seed.sql
+-- ============================================================
+-- Kanki Street — Seed data
+
+INSERT INTO categories (name, slug) VALUES
+  ('Polerones', 'polerones'),
+  ('Essentials', 'essentials'),
+  ('Girls and Motors', 'girls-and-motors'),
+  ('Lookbook', 'lookbook')
+ON CONFLICT (slug) DO NOTHING;
+
+INSERT INTO products (name, slug, description, price, compare_price, category, status, stock, sizes, images) VALUES
+  ('Heritage Wave Hoodie', 'heritage-wave-hoodie',
+   'Poleron oversize con bordado wave. Algodón 100%, interior afelpado.',
+   34990, 44990, 'Polerones', 'active', 25,
+   ARRAY['S','M','L','XL'],
+   ARRAY['/img/products/hoodie-wave-1.jpg','/img/products/hoodie-wave-2.jpg']),
+  ('Essential Tee Classic', 'essential-tee-classic',
+   'Polera básica corte regular. Algodón peinado 180g.',
+   14990, NULL, 'Essentials', 'active', 50,
+   ARRAY['S','M','L','XL','XXL'],
+   ARRAY['/img/products/tee-classic-1.jpg']),
+  ('Surf Camp Cap', 'surf-camp-cap',
+   'Gorro dad hat con bordado Kanki. Ajuste metálico.',
+   12990, 15990, 'Essentials', 'active', 30,
+   ARRAY['única'],
+   ARRAY['/img/products/cap-surf-1.jpg'])
+ON CONFLICT (slug) DO NOTHING;
+
+INSERT INTO bank_accounts (bank_name, account_type, account_number, rut, holder_name, email) VALUES
+  ('BCI', 'Cuenta Corriente', '12345678', '12.345.678-9', 'Kanki Street SpA', 'pagos@kanki.cl')
+ON CONFLICT DO NOTHING;
