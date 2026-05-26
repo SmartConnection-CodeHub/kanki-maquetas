@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Checkout · Maqueta · KANKI STREET</title>
+<style>
+  :root{--navy:#1B2F4E;--gold:#C49A3A;--cream:#F5EDD8;--bg:#fafaf7;--bg-alt:#f5f5f7;--ink:#1d1d1f;--mute:#6b7280;--line:#e5e7eb;--success:#16a34a;--err:#dc2626}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font:15px/1.55 -apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--ink);background:var(--bg-alt)}
+  .nav-top{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+  .nav-top .logo{font:700 16px/1 'Times New Roman',serif;color:var(--navy)}
+  .nav-top .secure{font:600 11px/1 system-ui;color:var(--success);display:inline-flex;align-items:center;gap:6px}
+
+  /* Stepper */
+  .stepper{max-width:520px;margin:24px auto 0;padding:0 20px;display:flex;align-items:center;gap:8px}
+  .step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
+  .step .circle{width:32px;height:32px;border-radius:50%;background:#e5e7eb;color:var(--mute);font:700 13px system-ui;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .step.active .circle{background:var(--navy);color:#fff}
+  .step.done .circle{background:var(--success);color:#fff}
+  .step .label{font:600 11px/1 system-ui;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+  .step.active .label{color:var(--navy)}
+  .step:not(:last-child)::after{content:"";position:absolute;left:55%;top:16px;width:90%;height:2px;background:#e5e7eb;z-index:-1}
+  .step.done:not(:last-child)::after{background:var(--success)}
+
+  main{max-width:520px;margin:0 auto;padding:24px 20px 100px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px 20px;margin-bottom:16px}
+  .card h2{font:700 18px/1.2 system-ui;color:var(--navy);margin-bottom:4px}
+  .card p.subtitle{font-size:13px;color:var(--mute);margin-bottom:18px}
+
+  .field{margin-bottom:14px}
+  .field label{display:block;font:600 12px/1 system-ui;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:8px;font:15px/1.4 system-ui;background:var(--bg);transition:border-color .15s}
+  .field input:focus,.field select:focus{border-color:var(--gold);outline:none;background:#fff}
+  .field .hint{font-size:11px;color:var(--mute);margin-top:4px}
+  .field .err{font-size:11px;color:var(--err);margin-top:4px;display:none}
+
+  .field.check{display:flex;align-items:center;gap:8px}
+  .field.check input{width:auto}
+  .field.check label{margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--ink);font-weight:500}
+
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+  /* Pay options */
+  .pay-opt{border:2px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;margin-bottom:10px;transition:all .15s}
+  .pay-opt.selected{border-color:var(--navy);background:rgba(196,154,58,.05)}
+  .pay-opt .head{display:flex;justify-content:space-between;align-items:center}
+  .pay-opt .head .name{font-weight:600;font-size:14px;color:var(--navy)}
+  .pay-opt .head .fee{font:600 11px monospace;color:var(--mute)}
+  .pay-opt .desc{font-size:12px;color:var(--mute);margin-top:4px}
+
+  /* Sticky bottom CTA */
+  .cta-sticky{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:14px 20px;display:flex;gap:10px;align-items:center;z-index:10}
+  .cta-sticky .total{flex:1;font:700 18px/1 system-ui;color:var(--navy)}
+  .cta-sticky .total small{display:block;font:500 11px/1.2 system-ui;color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+  .cta-sticky button{padding:13px 22px;background:var(--navy);color:#fff;border:none;border-radius:10px;font:600 14px system-ui;cursor:pointer;display:flex;align-items:center;gap:8px}
+  .cta-sticky button:hover{background:#0e1a2e}
+
+  /* Order summary */
+  .summary{margin-top:16px;font-size:13px}
+  .summary-row{display:flex;justify-content:space-between;padding:6px 0;color:var(--mute)}
+  .summary-row.total{padding-top:10px;border-top:1px solid var(--line);color:var(--navy);font-weight:700;font-size:15px}
+
+  /* Confirmation success state */
+  .success-state{text-align:center;padding:40px 20px}
+  .success-state .icon{font-size:64px;color:var(--success);margin-bottom:12px}
+  .success-state h2{font:800 24px/1.2 system-ui;color:var(--navy);margin-bottom:8px}
+  .success-state p{color:var(--mute);max-width:380px;margin:0 auto 24px;line-height:1.5}
+  .success-state .order-id{font:700 18px monospace;background:var(--cream);color:var(--navy);padding:8px 16px;border-radius:8px;display:inline-block;margin-bottom:24px}
+  .success-state .actions{display:flex;flex-direction:column;gap:10px}
+  .success-state .actions a{padding:14px;border-radius:10px;font:600 14px system-ui;text-decoration:none;text-align:center}
+  .success-state .actions a.wa{background:#25d366;color:#fff}
+  .success-state .actions a.home{background:#fff;color:var(--navy);border:1px solid var(--line)}
+
+  /* View toggle (maqueta only) */
+  .demo-toggle{position:fixed;top:60px;right:10px;background:#000;color:#fff;border-radius:8px;padding:8px;z-index:100;font:600 11px system-ui;display:flex;gap:4px;flex-direction:column}
+  .demo-toggle button{background:none;color:#fff;border:1px solid #444;border-radius:4px;padding:4px 8px;cursor:pointer;font:11px system-ui}
+  .demo-toggle button.active{background:var(--gold);color:#000;border-color:var(--gold)}
+
+  .view{display:none}
+  .view.active{display:block}
+
+  @media (max-width:600px){
+    .row{grid-template-columns:1fr}
+    .demo-toggle{top:auto;bottom:90px;right:8px}
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-top">
+  <a href="/" class="logo">Kanki Street</a>
+  <span class="secure">🔒 Compra segura</span>
+</div>
+
+<!-- Demo toggle (sólo maqueta) -->
+<div class="demo-toggle">
+  <strong style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#888;text-align:center;margin-bottom:4px">Vista demo</strong>
+  <button class="active" data-view="contacto">1 · Contacto</button>
+  <button data-view="envio">2 · Envío</button>
+  <button data-view="pago">3 · Pago</button>
+  <button data-view="confirmacion">✓ Confirmación</button>
+</div>
+
+<!-- Stepper · contexto del paso actual -->
+<div class="stepper">
+  <div class="step active" data-step="contacto"><div class="circle">1</div><div class="label">Contacto</div></div>
+  <div class="step" data-step="envio"><div class="circle">2</div><div class="label">Envío</div></div>
+  <div class="step" data-step="pago"><div class="circle">3</div><div class="label">Pago</div></div>
+  <div class="step" data-step="confirmacion"><div class="circle">✓</div><div class="label">Listo</div></div>
+</div>
+
+<main>
+
+  <!-- VISTA 1 · CONTACTO -->
+  <div class="view active" id="view-contacto">
+    <div class="card">
+      <h2>Datos de contacto</h2>
+      <p class="subtitle">Te enviaremos el número de orden y tracking aquí.</p>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" placeholder="hola@email.com">
+        <div class="hint">Confirmación + tracking del pedido</div>
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="tel" placeholder="+56 9 1234 5678">
+        <div class="hint">WhatsApp para coordinar entrega</div>
+      </div>
+      <div class="field">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Nombre Apellido">
+      </div>
+      <div class="field check">
+        <input type="checkbox" id="newsletter" checked>
+        <label for="newsletter">Quiero recibir drops y ofertas (1 email/mes)</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA 2 · ENVÍO -->
+  <div class="view" id="view-envio">
+    <div class="card">
+      <h2>¿Dónde te lo enviamos?</h2>
+      <p class="subtitle">Envíos por Chilexpress · 2-7 días según región.</p>
+      <div class="row">
+        <div class="field">
+          <label>Región</label>
+          <select>
+            <option>Metropolitana</option>
+            <option>Valparaíso</option>
+            <option>Bío Bío</option>
+            <option>Antofagasta</option>
+            <option>Magallanes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Comuna</label>
+          <select><option>Las Condes</option><option>Providencia</option><option>Ñuñoa</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Calle y número</label>
+        <input type="text" placeholder="Ej: Av Apoquindo 4501">
+      </div>
+      <div class="field">
+        <label>Departamento / Casa (opcional)</label>
+        <input type="text" placeholder="Ej: 1502">
+      </div>
+      <div class="field">
+        <label>Notas para repartidor</label>
+        <textarea rows="2" placeholder="Ej: Dejar con conserje"></textarea>
+      </div>
+      <div class="summary">
+        <div class="summary-row"><span>Subtotal · 2 items</span><span>$72.000</span></div>
+        <div class="summary-row"><span>Envío (RM · 2 días)</span><span>$3.990</span></div>
+        <div class="summary-row total"><span>Total</span><span>$75.990</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA 3 · PAGO -->
+  <div class="view" id="view-pago">
+    <div class="card">
+      <h2>¿Cómo pagás?</h2>
+      <p class="subtitle">Pago seguro · sin almacenamos datos de tarjeta.</p>
+
+      <div class="pay-opt selected">
+        <div class="head"><div class="name">💳 WebPay Plus</div><div class="fee">comisión 3.49%</div></div>
+        <div class="desc">Tarjeta crédito/débito · redirect Transbank · instantáneo</div>
+      </div>
+
+      <div class="pay-opt">
+        <div class="head"><div class="name">⚡ Khipu</div><div class="fee">comisión 1%</div></div>
+        <div class="desc">Transferencia bancaria directa · BancoEstado, BCI, Itaú, Santander · instantáneo</div>
+      </div>
+
+      <div class="pay-opt">
+        <div class="head"><div class="name">🏦 Transferencia manual</div><div class="fee">sin comisión · 6h validación</div></div>
+        <div class="desc">Te mostramos datos · envías pantallazo por WhatsApp</div>
+      </div>
+
+      <div class="field check" style="margin-top:18px">
+        <input type="checkbox" id="terms">
+        <label for="terms">Acepto los <a href="#" style="color:var(--navy);text-decoration:underline">términos y devoluciones</a></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA 4 · CONFIRMACIÓN -->
+  <div class="view" id="view-confirmacion">
+    <div class="card">
+      <div class="success-state">
+        <div class="icon">✓</div>
+        <h2>¡Compra confirmada!</h2>
+        <p>Te enviamos el detalle y tracking a <strong>hola@email.com</strong>. Coordinamos despacho en 24h.</p>
+        <div class="order-id">N° KK-2026-0042</div>
+        <div class="actions">
+          <a class="wa" href="#">📱 Hablar por WhatsApp con Kanki</a>
+          <a class="home" href="/">← Volver a la tienda</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="cta-sticky" id="cta-sticky">
+  <div class="total"><small>Total</small>$75.990</div>
+  <button id="cta-btn">Continuar →</button>
+</div>
+
+<script>
+  // Maqueta demo · cambio de view con toggle
+  const toggleBtns = document.querySelectorAll('.demo-toggle button');
+  const views = document.querySelectorAll('.view');
+  const steps = document.querySelectorAll('.step');
+  const stepsOrder = ['contacto', 'envio', 'pago', 'confirmacion'];
+  const ctaSticky = document.getElementById('cta-sticky');
+  const ctaBtn = document.getElementById('cta-btn');
+
+  function switchView(name) {
+    toggleBtns.forEach(b => b.classList.toggle('active', b.dataset.view === name));
+    views.forEach(v => v.classList.toggle('active', v.id === `view-${name}`));
+    const idx = stepsOrder.indexOf(name);
+    steps.forEach((s, i) => {
+      s.classList.toggle('active', i === idx);
+      s.classList.toggle('done', i < idx);
+    });
+    ctaSticky.style.display = name === 'confirmacion' ? 'none' : 'flex';
+    ctaBtn.textContent = name === 'pago' ? 'Pagar →' : 'Continuar →';
+  }
+
+  toggleBtns.forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
+  ctaBtn.addEventListener('click', () => {
+    const current = stepsOrder.findIndex(s => document.getElementById(`view-${s}`).classList.contains('active'));
+    if (current < stepsOrder.length - 1) switchView(stepsOrder[current + 1]);
+  });
+</script>
+
+</body>
+</html>
