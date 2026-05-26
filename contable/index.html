@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>Contable SMC · Mapa de Ambientes</title>
+<style>
+:root{--brand:#059669;--brand-2:#064e3b;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--bg:#fafaf7;--card:#fff;--cream:#d1fae5;--ok:#16a34a;--info:#0ea5e9;--legacy:#94a3b8}
+*{box-sizing:border-box;margin:0;padding:0}body{font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg)}a{color:inherit;text-decoration:none}
+header{background:linear-gradient(135deg,var(--brand-2),#022c22);color:#fff;padding:32px 20px 24px;text-align:center}
+header h1{font:800 26px/1.1 'Times New Roman',serif;color:var(--cream);margin:6px 0}
+header p{font-size:13px;opacity:.85;max-width:540px;margin:6px auto 0}
+header .nav{margin-top:12px;display:inline-flex;gap:8px;font-size:11px}
+header .nav a{padding:4px 10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;color:#fff}
+main{max-width:1100px;margin:0 auto;padding:24px 20px 40px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:18px}
+section h2{font:700 16px/1.2 system-ui;color:var(--brand-2);border-bottom:2px solid var(--brand);padding-bottom:6px;margin-bottom:12px}
+.infra{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--brand-2);margin-bottom:10px}
+.infra code{background:var(--cream);padding:2px 7px;border-radius:4px;font:600 11px monospace}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:6px}
+a.card,.card{display:flex;flex-direction:column;padding:9px 11px;background:var(--bg);border:1px solid var(--line);border-radius:8px;min-height:54px;transition:all .15s}
+a.card:hover{border-color:var(--brand);transform:translateY(-1px);box-shadow:0 3px 10px rgba(5,150,105,.12)}
+.card .name{font:600 12.5px/1.25 system-ui;color:var(--brand-2)}
+.card .meta{font:9.5px/1.35 monospace;color:var(--mute);margin-top:1px;word-break:break-all}
+.card.dead{opacity:.55}
+.badge{display:inline-block;font:600 9px/1.3 system-ui;padding:1px 6px;border-radius:4px;margin-left:6px}
+.b-ok{background:rgba(22,163,74,.12);color:var(--ok)}.b-info{background:rgba(14,165,233,.12);color:var(--info)}.b-legacy{background:rgba(148,163,184,.18);color:var(--legacy)}
+footer{padding:20px;text-align:center;color:var(--mute);font-size:11px;border-top:1px solid var(--line);margin-top:24px}
+</style></head>
+<body>
+<header>
+<p style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);opacity:.7">Smart Connection · Holding</p>
+<h1>🧮 Contable SMC · Mapa de Ambientes</h1>
+<p>Panel tributario SMC SpA · 16 secciones · simulador + chatbot FAQ + alertas · HTML+S3+CloudFront</p>
+<div class="nav"><a href="../">← Kanki</a><a href="../marketplace/">Marketplace</a><a href="../intranet/">Intranet</a><a href="../infopet/">InfoPet</a><a href="https://contable.smconnection.cl/" target="_blank">App live</a></div>
+</header>
+
+<main>
+<section>
+<h2>🚀 PRD · contable.smconnection.cl</h2>
+<div class="infra"><span>Stack <code>HTML+JS vanilla</code></span><span>Hosting <code>S3+CloudFront EQRHA7F762L6K</code></span><span>Bucket <code>smc-area-contable.smconnection.cl</code></span><span>Repo <code>smc-area-contable</code> 🔒</span></div>
+<div class="grid">
+<a class="card" href="https://contable.smconnection.cl/" target="_blank"><span class="name">Panel principal</span><span class="badge b-ok">SPA</span><span class="meta">/ · single-page con tabs</span></a>
+<a class="card" href="https://contable.smconnection.cl/#capital" target="_blank"><span class="name">Capital</span><span class="meta">#capital</span></a>
+<a class="card" href="https://contable.smconnection.cl/#contable" target="_blank"><span class="name">Contable</span><span class="meta">#contable · libros</span></a>
+<a class="card" href="https://contable.smconnection.cl/#iva" target="_blank"><span class="name">IVA (F29)</span><span class="meta">#iva · mensual</span></a>
+<a class="card" href="https://contable.smconnection.cl/#renta" target="_blank"><span class="name">Renta (F22)</span><span class="meta">#renta · anual</span></a>
+<a class="card" href="https://contable.smconnection.cl/#retiros" target="_blank"><span class="name">Retiros socios</span><span class="meta">#retiros · 50%-50%</span></a>
+<a class="card" href="https://contable.smconnection.cl/#proyeccion" target="_blank"><span class="name">Proyección</span><span class="meta">#proyeccion · simulador</span></a>
+<a class="card" href="https://contable.smconnection.cl/#gastos" target="_blank"><span class="name">Gastos</span><span class="meta">#gastos · clasificados</span></a>
+<a class="card" href="https://contable.smconnection.cl/#estado" target="_blank"><span class="name">Estado SII</span><span class="meta">#estado</span></a>
+<a class="card" href="https://contable.smconnection.cl/#fondos" target="_blank"><span class="name">Fondos públicos</span><span class="meta">#fondos · CORFO+Sercotec</span></a>
+<a class="card" href="https://contable.smconnection.cl/#banca" target="_blank"><span class="name">Banca</span><span class="meta">#banca · CC SpA</span></a>
+<a class="card" href="https://contable.smconnection.cl/#wallet" target="_blank"><span class="name">Wallet</span><span class="meta">#wallet · BCI</span></a>
+<a class="card" href="https://contable.smconnection.cl/#estrategias" target="_blank"><span class="name">Estrategias</span><span class="meta">#estrategias · tax optimization</span></a>
+<a class="card" href="https://contable.smconnection.cl/#riesgos" target="_blank"><span class="name">Riesgos</span><span class="meta">#riesgos · matriz</span></a>
+<a class="card" href="https://contable.smconnection.cl/#calendario" target="_blank"><span class="name">Calendario</span><span class="meta">#calendario · F29/F22 deadlines</span></a>
+<a class="card" href="https://contable.smconnection.cl/#roadmap" target="_blank"><span class="name">Roadmap</span><span class="meta">#roadmap · futuras features</span></a>
+</div>
+</section>
+
+<section>
+<h2>🧱 Stack runtime + datos</h2>
+<div class="grid">
+<div class="card dead"><span class="name">HTML+CSS+JS puro</span><span class="meta">SPA con scroll-snap tabs</span></div>
+<div class="card dead"><span class="name">Chatbot FAQ</span><span class="meta">consultas tributarias rápidas</span></div>
+<div class="card dead"><span class="name">Alertas calendario</span><span class="meta">F29 mensual · F22 abril</span></div>
+<div class="card dead"><span class="name">SII Chile (Controller)</span><span class="meta">9 formularios · 10 gotchas documentados</span></div>
+</div>
+</section>
+
+<section>
+<h2>📚 Memorias linkeadas</h2>
+<div class="grid">
+<div class="card dead"><span class="name">project_smc_area_contable</span><span class="meta">16 secciones · pipeline + dependencias</span></div>
+<div class="card dead"><span class="name">project_smc_spa_legal</span><span class="meta">RUT 76.811.863-9 · cédula vigente</span></div>
+<div class="card dead"><span class="name">reference_sii_chile_complete</span><span class="meta">catálogo operativo SII · skills /sii-*</span></div>
+</div>
+</section>
+</main>
+
+<footer>SMC OS · Controller · CONTROLLER agent + coordina con Gladys · snapshot 2026-05-25</footer>
+</body></html>
