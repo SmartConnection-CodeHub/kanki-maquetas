@@ -40,7 +40,7 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: var(--font); color: var(--black); background: var(--white); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { font-family: var(--font); color: var(--black); background: var(--foam); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 img { max-width: 100%; height: auto; display: block; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
@@ -81,7 +81,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* ── HEADER ── */
 .header {
   position: sticky; top: 0; z-index: 1000;
-  background: rgba(255,255,255,0.97);
+  background: rgba(248,244,239,0.97);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   transition: box-shadow var(--t);
@@ -110,13 +110,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .nav-drop { position: relative; }
 .nav-drop__menu {
   display: none; position: absolute; top: calc(100% + 12px); left: 0;
-  background: var(--white); border: 1px solid var(--border);
+  background: var(--foam); border: 1px solid var(--border);
   min-width: 200px; padding: 8px 0; border-radius: var(--r-md);
   box-shadow: var(--shadow); z-index: 100;
 }
 .nav-drop:hover .nav-drop__menu { display: block; }
 .nav-drop__menu a { display: block; padding: 10px 20px; font-size: 11px; }
-.nav-drop__menu a:hover { background: var(--gray-light); color: var(--sunset); }
+.nav-drop__menu a:hover { background: var(--sand); color: var(--sunset); }
 
 .header__logo a {
   font-size: 24px; font-weight: 900; letter-spacing: 0.08em;
@@ -263,7 +263,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding: 28px 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  background: var(--white);
+  background: var(--foam);
 }
 .brand-strip__inner {
   display: flex; align-items: center; justify-content: center;
@@ -365,7 +365,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .brand-card {
   position: relative; overflow: hidden; border-radius: var(--r-md);
   cursor: pointer; aspect-ratio: 3/4; display: block;
-  background: var(--gray-light);
+  background: #e8e1d5;
 }
 .brand-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .brand-card:hover .brand-card__img { transform: scale(1.06); }
@@ -401,7 +401,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .pcard { display: flex; flex-direction: column; gap: 14px; }
 .pcard__wrap {
   position: relative; overflow: hidden;
-  border-radius: var(--r-sm); background: var(--gray-light);
+  border-radius: var(--r-sm); background: #e8e1d5;
 }
 .pcard__wrap img { aspect-ratio: 3/4; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .pcard:hover .pcard__wrap img { transform: scale(1.04); }
@@ -1047,7 +1047,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 <!-- ══ ANNOUNCEMENT BAR ══ -->
 <div class="ann-bar">
-  <span>🌊 Surf × Street · Viña del Mar</span>
+  <span>🌊 Surf × Street · La Boca, Concón</span>
   <span class="ann-sep">|</span>
   <span>Envío Gratis sobre $50.000 CLP</span>
   <span class="ann-sep">|</span>
@@ -1166,7 +1166,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     <div class="split__content reveal">
       <div class="split__label">La Ola</div>
       <div class="split__title">SURF<br>CULTURE</div>
-      <p class="split__desc">El Pacífico como estilo de vida. Reñaca, Maitencillo, Pichilemu — la costa chilena en cada prenda.</p>
+      <p class="split__desc">El Pacífico como estilo de vida. Concón, Reñaca, Maitencillo, Pichilemu — la costa chilena en cada prenda.</p>
       <a href="#surf-school" class="btn btn-teal">Conoce Más</a>
     </div>
   </div>
@@ -1190,36 +1190,25 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <div class="cultura__text reveal">
         <div class="eyebrow eyebrow--teal" style="color:var(--teal-light); --before-bg:var(--teal-light);">LA CULTURA KANKI</div>
         <h2>DONDE EL OCÉANO<br>SE ENCUENTRA<br>CON <em>LA CALLE</em></h2>
-        <p>Nacimos en Viña del Mar — una ciudad donde el surf y el streetwear viven en el mismo cuerpo. Kanki no es solo ropa: es la actitud del que madruga a surfear y en la noche sale con la mejor fit.</p>
+        <p>Nacimos en Playa La Boca, Concón — donde el Pacífico te despierta antes que cualquier alarma. Kanki no es solo ropa: es la actitud del que madruga a surfear y en la noche sale con la mejor fit.</p>
         <p>Distribuimos las marcas más buscadas del mundo directamente en Chile. Sin intermediarios innecesarios, con autenticidad garantizada en cada prenda.</p>
         <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
           <a href="#productos" class="btn btn-sunset">Ver Colección</a>
           <a href="#surf-school" class="btn btn-teal">Escuela de Surf</a>
         </div>
-        <div class="cultura__stats">
-          <div>
-            <div class="stat__num">+15</div>
-            <div class="stat__label">Unidades Mes 1</div>
-          </div>
-          <div>
-            <div class="stat__num">3</div>
-            <div class="stat__label">Marcas Premium</div>
-          </div>
-          <div>
-            <div class="stat__num">0</div>
-            <div class="stat__label">CAC Publicidad</div>
-          </div>
-        </div>
+        <p style="margin-top:32px; padding-top:32px; border-top:1px solid rgba(255,255,255,0.1); font-size:15px; color:rgba(255,255,255,0.45); line-height:1.8; font-style:italic; letter-spacing:0.02em;">
+          "La ola no espera — tampoco nosotros."
+        </p>
       </div>
       <div class="cultura__visual reveal delay-2">
         <div class="cultura__img cultura__img--tall">
-          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&auto=format&fit=crop" alt="Costa Pacífico Chile" loading="lazy">
+          <img src="foto-essential-1.jpeg" alt="FOG Essentials Kanki" loading="lazy">
         </div>
         <div class="cultura__img">
-          <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=400&q=80&auto=format&fit=crop" alt="Streetwear" loading="lazy">
+          <img src="foto-essential-2.jpeg" alt="FOG Essentials Kanki" loading="lazy">
         </div>
         <div class="cultura__img">
-          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&auto=format&fit=crop" alt="Kanki vibes" loading="lazy">
+          <img src="foto-essential-3.jpeg" alt="FOG Essentials Kanki" loading="lazy">
         </div>
       </div>
     </div>
@@ -1292,8 +1281,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   </div>
 
   <!-- Productos FOG -->
-  <div class="products-section" id="fog-products">
-    <div class="container">
+  <div class="products-section" id="fog-products" style="background: linear-gradient(180deg, #ede7dc 0%, var(--foam) 30%, var(--foam) 70%, #ede7dc 100%); position:relative; overflow:hidden;">
+    <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; user-select:none;">
+      <span style="font-size:200px; font-weight:900; letter-spacing:-0.04em; text-transform:uppercase; color:rgba(12,27,46,0.035); line-height:1; white-space:nowrap;">ESSENTIALS</span>
+    </div>
+    <div class="container" style="position:relative; z-index:1;">
       <div class="pg-header">
         <div>
           <div class="eyebrow eyebrow--teal">Fear of God Essentials</div>
@@ -1509,52 +1501,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   </div>
 </div>
 
-<!-- ══ LOOKBOOK ══ -->
-<section class="lookbook" id="lookbook">
-  <div class="container">
-    <div style="display:flex; align-items:flex-end; justify-content:space-between;">
-      <div>
-        <div class="eyebrow">Estilo de Vida</div>
-        <h2 class="sec-title">LOOKBOOK<br><em>FW24</em></h2>
-      </div>
-      <a href="#" class="pg-view-all reveal">Ver galería</a>
-    </div>
-    <div class="lookbook__grid">
-      <!-- 1: La Boca Concón — donde nació Kanki 2020 -->
-      <div class="lb-item lb-item--tall reveal">
-        <img src="https://images.unsplash.com/photo-1468108985000-979c9ff0db25?w=700&q=80&auto=format&fit=crop" alt="La Boca Concón" loading="lazy">
-        <div class="lb-item__overlay"><span class="lb-item__label">La Boca · Concón · 2020</span></div>
-      </div>
-      <!-- 2: Surf en el Pacífico chileno -->
-      <div class="lb-item lb-item--wide reveal delay-1">
-        <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=900&q=80&auto=format&fit=crop&crop=top" alt="Surf Pacífico Chileno" loading="lazy">
-        <div class="lb-item__overlay"><span class="lb-item__label">Pacífico Chileno · Surf Culture</span></div>
-      </div>
-      <!-- 3: Skate × Street — cultura Grizzly / Stussy -->
-      <div class="lb-item reveal delay-2">
-        <img src="https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=500&q=80&auto=format&fit=crop" alt="Skate Concón" loading="lazy">
-        <div class="lb-item__overlay"><span class="lb-item__label">Skate × Street · Concón</span></div>
-      </div>
-      <!-- 4: Costa rocosa Pacífico — identidad Kanki -->
-      <div class="lb-item reveal delay-1">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&q=80&auto=format&fit=crop&crop=right" alt="Costa Pacífico Kanki" loading="lazy">
-        <div class="lb-item__overlay"><span class="lb-item__label">Costa Pacífico · Identidad Kanki</span></div>
-      </div>
-      <!-- 5: FOG Essentials hoodie — streetwear chileno -->
-      <div class="lb-item reveal delay-2">
-        <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=500&q=80&auto=format&fit=crop" alt="FOG Essentials Chile" loading="lazy">
-        <div class="lb-item__overlay"><span class="lb-item__label">FW24 · FOG Essentials · Chile</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ WAVE INVERSO ══ -->
-<div class="wave-div" style="background:var(--white); margin-top:-1px;">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="height:80px;">
-    <path fill="#0c1b2e" d="M0,0 C360,80 1080,0 1440,80 L1440,80 L0,80 Z"/>
-  </svg>
-</div>
 
 <!-- ══ COLLECTIONS ══ -->
 <section class="cols-dark" id="colecciones">
@@ -1715,7 +1661,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <div class="valor reveal delay-1">
         <div class="valor__icon">🌊</div>
         <div class="valor__title">Del Pacífico</div>
-        <p class="valor__desc">Nacidos en Viña del Mar. La energía de la costa en cada prenda que distribuimos.</p>
+        <p class="valor__desc">Nacidos en Playa La Boca, Concón. La energía del Pacífico en cada prenda que distribuimos.</p>
       </div>
       <div class="valor reveal delay-2">
         <div class="valor__icon">✓</div>
@@ -1741,7 +1687,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   <div class="container" style="position:relative;z-index:2;">
     <div class="surf-school__badge">PRÓXIMAMENTE</div>
     <h2>ESCUELA DE<br><em>KANKI SURF</em></h2>
-    <p>El siguiente paso de Kanki: llevar la cultura del surf directamente al agua. Clases, comunidad y estilo — desde la costa de Viña del Mar.</p>
+    <p>El siguiente paso de Kanki: llevar la cultura del surf directamente al agua. Clases, comunidad y estilo — desde donde todo empezó: Playa La Boca, Concón.</p>
     <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
       <a href="#newsletter" class="btn btn-teal">Notificarme del Launch</a>
       <a href="#" class="btn btn-outline-white">Saber Más</a>
@@ -1761,7 +1707,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       </div>
       <div class="surf-feature">
         <div class="surf-feature__icon">📍</div>
-        Viña del Mar
+        La Boca · Concón
       </div>
       <div class="surf-feature">
         <div class="surf-feature__icon">🌊</div>
@@ -1775,14 +1721,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 <div class="ticker ticker--teal">
   <div class="ticker__track">
     <span class="ticker__item">ESCUELA KANKI SURF</span>
-    <span class="ticker__item">VIÑA DEL MAR</span>
+    <span class="ticker__item">LA BOCA · CONCÓN</span>
     <span class="ticker__item">REÑACA</span>
     <span class="ticker__item">MAITENCILLO</span>
     <span class="ticker__item">PICHILEMU</span>
     <span class="ticker__item">PACIFIC COAST</span>
     <span class="ticker__item">SURF × STREET</span>
     <span class="ticker__item">ESCUELA KANKI SURF</span>
-    <span class="ticker__item">VIÑA DEL MAR</span>
+    <span class="ticker__item">LA BOCA · CONCÓN</span>
     <span class="ticker__item">REÑACA</span>
     <span class="ticker__item">MAITENCILLO</span>
     <span class="ticker__item">PICHILEMU</span>
