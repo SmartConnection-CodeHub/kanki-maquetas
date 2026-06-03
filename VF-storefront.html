@@ -1318,6 +1318,166 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .eyebrow { font-size: 9px; gap: 6px; }
   .eyebrow::before { width: 14px; }
 }
+
+/* ══════════════════════════════════════
+   KANKI — EFECTOS DE BOTONES & MOBILE
+   ══════════════════════════════════════ */
+
+* { -webkit-tap-highlight-color: transparent; }
+
+.btn,
+.pcard__add,
+.nl-btn,
+.cart-checkout,
+.qv-btn-add,
+.qv-btn-wa,
+.col-tile__btn,
+.sz-btn,
+.qty-btn,
+.qv-qty-btn,
+#search-btn {
+  position: relative;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.kanki-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 1;
+  animation: kanki-ripple 0.6s cubic-bezier(0.4,0,0.2,1) forwards;
+  pointer-events: none;
+}
+@keyframes kanki-ripple {
+  to { transform: scale(1); opacity: 0; }
+}
+
+.btn:active                  { transform: scale(0.96) translateY(1px) !important; transition: transform 0.08s ease !important; }
+.btn-sunset:active           { box-shadow: 0 0 0 5px rgba(232,101,26,0.28) !important; }
+.btn-teal:active             { box-shadow: 0 0 0 5px rgba(26,143,130,0.28) !important; }
+.btn-ocean:active            { box-shadow: 0 0 0 5px rgba(12,27,46,0.25) !important; }
+.nl-btn:active               { transform: scale(0.97) !important; background: #0a1624 !important; transition: all 0.08s ease !important; }
+.cart-checkout:active        { transform: scale(0.97) !important; box-shadow: 0 0 0 5px rgba(232,101,26,0.28) !important; transition: all 0.08s ease !important; }
+.qv-btn-add:active           { transform: scale(0.97) !important; transition: all 0.08s ease !important; }
+.qv-btn-wa:active            { transform: scale(0.97) !important; background: #1a9d4e !important; transition: all 0.08s ease !important; }
+.sz-btn:not(.agotado):active { transform: scale(0.91) !important; background: var(--ocean) !important; color: #fff !important; border-color: var(--ocean) !important; transition: all 0.08s ease !important; }
+.qty-btn:active              { background: var(--ocean) !important; color: #fff !important; transform: scale(0.87) !important; transition: all 0.08s ease !important; }
+.qv-qty-btn:active           { background: var(--gray-light) !important; transform: scale(0.9) !important; transition: all 0.08s ease !important; }
+.wa-float:active             { transform: scale(0.91) !important; transition: transform 0.08s ease !important; }
+[aria-label="Carrito"]:active,
+[aria-label="Cuenta"]:active,
+#search-btn:active           { transform: scale(0.88) !important; opacity: 0.7 !important; transition: all 0.08s ease !important; }
+
+.wa-ping {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background: #25D366;
+  animation: wa-ping 2.4s ease-out infinite;
+  z-index: 998;
+  pointer-events: none;
+}
+@keyframes wa-ping {
+  0%   { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(2.3); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .btn                   { min-height: 46px; }
+  .footer__col li a      { min-height: 38px; display: flex; align-items: center; }
+  .mob-links a           { min-height: 50px; }
+  .qty-btn               { width: 32px; height: 32px; font-size: 17px; }
+  .qv-qty-btn            { width: 48px; height: 48px; }
+  .qv-qty-num            { line-height: 48px; }
+
+  .brand-card:active .brand-card__cta { opacity: 1 !important; transform: none !important; }
+  .brand-card:active .brand-card__img { transform: scale(1.05) !important; }
+  .col-tile:active .col-tile__btn     { opacity: 1 !important; transform: translateY(0) !important; background: var(--white); color: var(--ocean); }
+  .lb-item:active .lb-item__overlay   { opacity: 1 !important; }
+  .pcard:active .pcard__wrap img      { transform: scale(1.04) !important; }
+}
+
+@media (max-width: 480px) {
+  .btn     { min-height: 44px; }
+  .wa-ping { bottom: 18px; right: 14px; width: 46px; height: 46px; }
+}
+
+/* ══════════════════════════════════════
+   PRODUCT CARDS — TRANSICIONES SUAVES
+   ══════════════════════════════════════ */
+
+/* Elevación muy sutil de la card completa */
+.pcard {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pcard:hover { transform: translateY(-3px); }
+
+/* Imagen: zoom lento y apenas perceptible */
+.pcard__wrap img {
+  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.pcard:hover .pcard__wrap img { transform: scale(1.04) !important; }
+
+/* Sombra muy suave */
+.pcard__wrap {
+  transition: box-shadow 0.7s ease !important;
+}
+.pcard:hover .pcard__wrap {
+  box-shadow: 0 16px 36px rgba(12,27,46,0.13);
+}
+
+/* Overlay oscuro muy tenue y lento */
+.pcard__wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(12,27,46,0.42) 0%,
+    rgba(12,27,46,0.06) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.pcard:hover .pcard__wrap::after { opacity: 1; }
+
+/* Z-index para que todo quede sobre el overlay */
+.pcard__badge { position: absolute; z-index: 3; }
+
+/* "Comprar Ahora": slide + fade lento y sin resorte */
+.pcard__add {
+  z-index: 4;
+  opacity: 0;
+  transform: translateY(100%);
+  transition:
+    transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   0.55s ease !important;
+}
+.pcard:hover .pcard__add {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Vista Rápida: fade gradual */
+.pcard__qv {
+  transition:
+    opacity   0.55s ease,
+    transform 0.55s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Mobile: sin hover, botón siempre visible */
+@media (max-width: 768px) {
+  .pcard:hover              { transform: none; }
+  .pcard:hover .pcard__wrap { box-shadow: none; }
+  .pcard:hover .pcard__wrap::after { opacity: 0; }
+  .pcard__add               { opacity: 1 !important; }
+  .pcard:active             { transform: scale(0.98); transition: transform 0.12s ease; }
+}
 </style>
 </head>
 <body>
@@ -1338,7 +1498,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   <div class="container">
     <div class="header__inner">
       <nav class="header__nav">
-        <a href="#">Inicio</a>
+        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Inicio</a>
         <div class="nav-drop">
           <a href="#">Colecciones ▾</a>
           <div class="nav-drop__menu">
@@ -1347,8 +1507,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
             <a href="#stussy">Stussy</a>
           </div>
         </div>
-        <a href="#">Best Sellers</a>
-        <a href="#">Lookbook</a>
+        <a href="#best-sellers">Best Sellers</a>
+        <a href="#cultura">¿Quiénes somos?</a>
       </nav>
 
       <div class="header__logo" style="text-align:center;">
@@ -1359,10 +1519,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       </div>
 
       <div class="header__actions">
-        <button aria-label="Buscar">
+        <button aria-label="Buscar" id="search-btn">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
-        <a href="#" aria-label="Cuenta">
+        <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20consultar%20mi%20pedido" target="_blank" aria-label="Cuenta">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
         <a href="#" aria-label="Carrito" style="position:relative;display:flex;align-items:center;">
@@ -1392,7 +1552,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       Dos mundos. Una identidad. Fear of God Essentials, Grizzly y Stussy — distribuidos desde Viña del Mar para todo Chile.
     </p>
     <div class="hero__actions">
-      <a href="#productos" class="btn btn-sunset">Compra Ahora</a>
+      <a href="#fog" class="btn btn-sunset">Compra Ahora</a>
       <a href="#colecciones" class="btn btn-outline-white">Ver Colecciones</a>
     </div>
   </div>
@@ -1455,7 +1615,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <div class="split__label">La Calle</div>
       <div class="split__title">STREET<br>WEAR</div>
       <p class="split__desc">Premium internacional en suelo chileno. FOG, Grizzly y Stussy con autenticidad garantizada.</p>
-      <a href="#productos" class="btn btn-sunset">Ver Productos</a>
+      <a href="#fog" class="btn btn-sunset">Ver Productos</a>
     </div>
   </div>
 </div>
@@ -1470,7 +1630,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
         <p>Nacimos en Playa La Boca, Concón — donde el Pacífico te despierta antes que cualquier alarma. Kanki no es solo ropa: es la actitud del que madruga a surfear y en la noche sale con la mejor fit.</p>
         <p>Distribuimos las marcas más buscadas del mundo directamente en Chile. Sin intermediarios innecesarios, con autenticidad garantizada en cada prenda.</p>
         <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
-          <a href="#productos" class="btn btn-sunset">Ver Colección</a>
+          <a href="#fog" class="btn btn-sunset">Ver Colección</a>
           <a href="#surf-school" class="btn btn-teal">Escuela de Surf</a>
         </div>
         <p style="margin-top:32px; padding-top:32px; border-top:1px solid rgba(255,255,255,0.1); font-size:15px; color:rgba(255,255,255,0.45); line-height:1.8; font-style:italic; letter-spacing:0.02em;">
@@ -1549,7 +1709,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <div class="brand-price-range">Desde $99.990 CLP</div>
       <div class="brand-actions">
         <a href="#fog-products" class="btn btn-ocean">Ver Productos</a>
-        <a href="#" class="btn btn-outline-sunset">Saber Más</a>
+        <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20info%20sobre%20Fear%20of%20God%20Essentials" target="_blank" class="btn btn-outline-sunset">Saber Más</a>
       </div>
     </div>
     <div class="brand-banner__img">
@@ -1568,7 +1728,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
           <div class="eyebrow eyebrow--teal">Fear of God Essentials</div>
           <h2 class="sec-title" style="color:var(--ocean);">COLECCIÓN <em>FW24</em></h2>
         </div>
-        <a href="#" class="pg-view-all">Ver todo</a>
+        <a href="#fog" class="pg-view-all">Ver todo</a>
       </div>
       <div class="products-grid">
 
@@ -1687,7 +1847,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <div class="brand-price-range">Desde $48.990 CLP</div>
       <div class="brand-actions">
         <a href="#grizzly-products" class="btn btn-sunset">Ver Productos</a>
-        <a href="#" class="btn btn-teal">Skate Chile</a>
+        <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20info%20de%20Grizzly%20Griptape" target="_blank" class="btn btn-teal">Skate Chile</a>
       </div>
     </div>
   </div>
@@ -1861,7 +2021,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
         <div class="eyebrow eyebrow--white">Explora</div>
         <h2 class="cols-title">TODAS LAS<br>COLECCIONES</h2>
       </div>
-      <a href="#" class="pg-view-all" style="color:rgba(255,255,255,0.5);">Ver todas</a>
+      <a href="#marcas" class="pg-view-all" style="color:rgba(255,255,255,0.5);">Ver todas</a>
     </div>
     <div class="cols-grid">
 
@@ -1940,14 +2100,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 </section>
 
 <!-- ══ BEST SELLERS ══ -->
-<section class="products-section products-section--cream">
+<section class="products-section products-section--cream" id="best-sellers">
   <div class="container">
     <div class="pg-header">
       <div>
         <div class="eyebrow">Los más vendidos</div>
         <h2 class="sec-title">BEST <em>SELLERS</em></h2>
       </div>
-      <a href="#" class="pg-view-all">Ver todo</a>
+      <a href="#best-sellers" class="pg-view-all">Ver todo</a>
     </div>
     <div class="products-grid">
       <article class="pcard reveal delay-1">
@@ -2144,30 +2304,30 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <div class="footer__col">
         <h4>Comprar</h4>
         <ul>
-          <li><a href="#">Todo Kanki</a></li>
-          <li><a href="#">FOG Essentials</a></li>
-          <li><a href="#">Grizzly</a></li>
-          <li><a href="#">Stussy</a></li>
-          <li><a href="#">Best Sellers</a></li>
+          <li><a href="#marcas">Todo Kanki</a></li>
+          <li><a href="#fog">FOG Essentials</a></li>
+          <li><a href="#grizzly">Grizzly</a></li>
+          <li><a href="#stussy">Stussy</a></li>
+          <li><a href="#best-sellers">Best Sellers</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4>Kanki</h4>
         <ul>
-          <li><a href="#">Sobre Nosotros</a></li>
-          <li><a href="#">Escuela de Surf</a></li>
-          <li><a href="#">Lookbook</a></li>
-          <li><a href="#">Autenticidad</a></li>
-          <li><a href="#">Envíos</a></li>
+          <li><a href="#cultura">Sobre Nosotros</a></li>
+          <li><a href="#surf-school">Escuela de Surf</a></li>
+          <li><a href="#colecciones">Lookbook</a></li>
+          <li><a href="https://wa.me/56957807766?text=Hola%20Kanki!%20%C2%BFC%C3%B3mo%20verifico%20la%20autenticidad%20de%20mi%20prenda?" target="_blank">Autenticidad</a></li>
+          <li><a href="#valores">Envíos</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4>Ayuda</h4>
         <ul>
-          <li><a href="#">WhatsApp</a></li>
-          <li><a href="#">Devoluciones</a></li>
-          <li><a href="#">Mi Cuenta</a></li>
-          <li><a href="#">Seguir Pedido</a></li>
+          <li><a href="https://wa.me/56957807766" target="_blank">WhatsApp</a></li>
+          <li><a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20hacer%20una%20devoluci%C3%B3n" target="_blank">Devoluciones</a></li>
+          <li><a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20consultar%20mi%20pedido" target="_blank">Mi Cuenta</a></li>
+          <li><a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20saber%20el%20estado%20de%20mi%20pedido" target="_blank">Seguir Pedido</a></li>
         </ul>
         <div style="margin-top:20px; font-size:11px; color:rgba(255,255,255,0.25); line-height:1.7;">
           KANKI SpA<br>
@@ -2179,9 +2339,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     <div class="footer__bottom">
       <p>&copy; 2026 KANKI SpA. Todos los derechos reservados.</p>
       <div class="footer__legal-links">
-        <a href="#">Privacidad</a>
-        <a href="#">Términos</a>
-        <a href="#">Devoluciones</a>
+        <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Consulta%20sobre%20privacidad" target="_blank">Privacidad</a>
+        <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Consulta%20sobre%20t%C3%A9rminos" target="_blank">Términos</a>
+        <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20hacer%20una%20devoluci%C3%B3n" target="_blank">Devoluciones</a>
       </div>
       <div class="footer__payments">
         <span>Transferencia</span>
@@ -2193,6 +2353,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 </footer>
 
 <!-- ══ WHATSAPP FLOAT ══ -->
+<div class="wa-ping" aria-hidden="true"></div>
 <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20info%20de%20sus%20productos" target="_blank" class="wa-float" aria-label="WhatsApp">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -2323,16 +2484,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     <div class="mob-brand">KANKI &amp; CO</div>
     <div class="mob-tag">Surf × Street · Chile</div>
     <div class="mob-links">
-      <a href="#">Inicio <span>›</span></a>
-      <a href="#fog">FOG Essentials <span>›</span></a>
-      <a href="#grizzly">Grizzly <span>›</span></a>
-      <a href="#stussy">Stussy <span>›</span></a>
-      <a href="#">Best Sellers <span>›</span></a>
-      <a href="#">Lookbook <span>›</span></a>
-      <a href="#surf-school" style="color:var(--teal-light);">Escuela de Surf 🌊 <span>›</span></a>
+      <a href="#" onclick="closeMob();window.scrollTo({top:0,behavior:'smooth'});return false;">Inicio <span>›</span></a>
+      <a href="#fog" onclick="closeMob()">FOG Essentials <span>›</span></a>
+      <a href="#grizzly" onclick="closeMob()">Grizzly <span>›</span></a>
+      <a href="#stussy" onclick="closeMob()">Stussy <span>›</span></a>
+      <a href="#best-sellers" onclick="closeMob()">Best Sellers <span>›</span></a>
+      <a href="#cultura" onclick="closeMob()">¿Quiénes somos? <span>›</span></a>
+      <a href="#surf-school" onclick="closeMob()" style="color:var(--teal-light);">Escuela de Surf 🌊 <span>›</span></a>
     </div>
     <div class="mob-cta">
-      <a href="#" class="btn btn-sunset btn-full">Comprar Ahora</a>
+      <a href="#fog" onclick="closeMob()" class="btn btn-sunset btn-full">Comprar Ahora</a>
     </div>
   </div>
 </nav>
@@ -2696,10 +2857,28 @@ const mobNav  = document.getElementById('mob-nav');
 const mobClose= document.getElementById('mob-close');
 const mobBg   = document.getElementById('mob-bg');
 const openMob = () => { mobNav.classList.add('open'); document.body.style.overflow = 'hidden'; };
-const closeMob= () => { mobNav.classList.remove('open'); document.body.style.overflow = ''; };
+window.closeMob = () => { mobNav.classList.remove('open'); document.body.style.overflow = ''; };
 hamBtn?.addEventListener('click', openMob);
-mobClose?.addEventListener('click', closeMob);
-mobBg?.addEventListener('click', closeMob);
+mobClose?.addEventListener('click', window.closeMob);
+mobBg?.addEventListener('click', window.closeMob);
+
+/* ── Búsqueda ── */
+document.getElementById('search-btn')?.addEventListener('click', () => {
+  const q = prompt('¿Qué estás buscando?');
+  if (!q) return;
+  const ql = q.toLowerCase();
+  if (ql.includes('fog') || ql.includes('fear') || ql.includes('essentials') || ql.includes('hoodie')) {
+    document.getElementById('fog').scrollIntoView({ behavior: 'smooth' });
+  } else if (ql.includes('grizzly') || ql.includes('skate') || ql.includes('griptape')) {
+    document.getElementById('grizzly').scrollIntoView({ behavior: 'smooth' });
+  } else if (ql.includes('stussy') || ql.includes('street')) {
+    document.getElementById('stussy').scrollIntoView({ behavior: 'smooth' });
+  } else if (ql.includes('surf') || ql.includes('escuela')) {
+    document.getElementById('surf-school').scrollIntoView({ behavior: 'smooth' });
+  } else {
+    document.getElementById('marcas').scrollIntoView({ behavior: 'smooth' });
+  }
+});
 
 /* ── Sticky header ── */
 const hdr = document.getElementById('hdr');
@@ -2730,6 +2909,45 @@ document.getElementById('nl-btn')?.addEventListener('click', () => {
 
 /* init */
 renderCart();
+
+/* ══ RIPPLE EFFECT ══ */
+(function() {
+  function addRipple(el, e, color) {
+    const rect = el.getBoundingClientRect();
+    const size = Math.sqrt(rect.width * rect.width + rect.height * rect.height) * 2;
+    const x = (e.clientX - rect.left) - size / 2;
+    const y = (e.clientY - rect.top) - size / 2;
+    const r = document.createElement('span');
+    r.className = 'kanki-ripple';
+    r.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + x + 'px;top:' + y + 'px;background:' + color + ';';
+    el.appendChild(r);
+    r.addEventListener('animationend', function() { r.remove(); });
+  }
+
+  document.addEventListener('pointerdown', function(e) {
+    /* Botones oscuros / colored → ripple blanco */
+    var solid = e.target.closest('.btn-sunset,.btn-ocean,.btn-teal,.nl-btn,.cart-checkout,.qv-btn-add,.qv-btn-wa,.pcard__add,.col-tile__btn');
+    if (solid) { addRipple(solid, e, 'rgba(255,255,255,0.3)'); return; }
+
+    /* Botones outline → ripple semitransparente de su color */
+    var outline = e.target.closest('.btn-outline-sunset');
+    if (outline) { addRipple(outline, e, 'rgba(232,101,26,0.2)'); return; }
+    var outlineW = e.target.closest('.btn-outline-white');
+    if (outlineW) { addRipple(outlineW, e, 'rgba(255,255,255,0.2)'); return; }
+
+    /* Size buttons */
+    var sz = e.target.closest('.sz-btn');
+    if (sz && !sz.classList.contains('agotado')) { addRipple(sz, e, 'rgba(12,27,46,0.14)'); return; }
+
+    /* Qty buttons */
+    var qty = e.target.closest('.qty-btn,.qv-qty-btn');
+    if (qty) { addRipple(qty, e, 'rgba(12,27,46,0.12)'); return; }
+
+    /* Search */
+    var srch = e.target.closest('#search-btn');
+    if (srch) { addRipple(srch, e, 'rgba(12,27,46,0.1)'); return; }
+  });
+})();
 </script>
 </body>
 </html>
