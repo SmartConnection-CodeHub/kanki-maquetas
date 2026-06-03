@@ -474,7 +474,7 @@ body::before{
     <h1>KANKI · <em>Banco de Maquetas</em></h1>
     <p class="lead">Catálogo navegable de todas las maquetas HTML del proyecto. Diseño funcional, mobile-first, estilo surf-streetwear.<br><strong style="color:var(--gold)">⚠ Esto es QAS — son maquetas de diseño, no la tienda en producción.</strong></p>
     <div class="stats">
-      <div class="stat-pill"><span class="num">8</span><span class="lbl">Maquetas</span></div>
+      <div class="stat-pill"><span class="num">9</span><span class="lbl">Maquetas</span></div>
       <div class="stat-pill"><span class="num">3</span><span class="lbl">Categorías</span></div>
       <div class="stat-pill"><span class="num">$0</span><span class="lbl">Costo hosting</span></div>
       <div class="stat-pill"><span class="num">2026</span><span class="lbl">Última versión</span></div>
@@ -485,13 +485,55 @@ body::before{
   <section class="section">
     <div class="section-head">
       <h2>🛒 <em>Storefront</em> — la tienda</h2>
-      <span class="count">3 versiones</span>
+      <span class="count">5 versiones</span>
     </div>
     <div class="grid">
 
       <article class="card">
         <div class="preview">
-          <span class="badge new">Última v2</span>
+          <span class="badge new">V Final · Actual</span>
+          <iframe src="VF-storefront.html" loading="lazy" title="Storefront V Final"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Storefront V Final</h3>
+          <p class="desc">Versión Shopify activa con FOG Essentials, Grizzly y Stussy. Carrito funcional, quick view con tallas reales, escuela de surf, WhatsApp integrado.</p>
+          <div class="meta">
+            <span class="tag">2026-06-02</span>
+            <span class="tag">Shopify</span>
+            <span class="tag">carrito</span>
+            <span class="tag">quick view</span>
+          </div>
+          <div class="actions">
+            <a href="VF-storefront.html" class="btn btn-primary">Abrir</a>
+            <a href="VF-storefront.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge new">Mobile First</span>
+          <iframe src="mobile-storefront.html" loading="lazy" title="Mobile Storefront"></iframe>
+          <div class="overlay"></div>
+        </div>
+        <div class="body">
+          <h3>Storefront Mobile First</h3>
+          <p class="desc">Diseñado desde 390px. Bottom nav, carruseles horizontales por marca, quick view en sheet, cart drawer inferior, WA integrado y ripple effects.</p>
+          <div class="tags">
+            <span class="tag">nuevo</span>
+            <span class="tag">mobile</span>
+          </div>
+          <div class="actions">
+            <a href="mobile-storefront.html" class="btn btn-primary">Abrir</a>
+            <a href="mobile-storefront.html" target="_blank" class="btn btn-ghost">Tab nueva</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="preview">
+          <span class="badge">v2</span>
           <iframe src="storefront-v2.html" loading="lazy" title="Storefront v2"></iframe>
           <div class="overlay"></div>
         </div>
@@ -565,17 +607,17 @@ body::before{
 
       <article class="card">
         <div class="preview">
-          <span class="badge new">Activo</span>
+          <span class="badge new">Actualizado</span>
           <iframe src="admin.html" loading="lazy" title="Admin"></iframe>
           <div class="overlay"></div>
         </div>
         <div class="body">
           <h3>Panel Admin</h3>
-          <p class="desc">Panel de administración para gestión de pedidos, productos y clientes. Login con Supabase Auth.</p>
+          <p class="desc">Actualizado con estética Kanki, 13 productos reales, stock por talla, filtro Stussy, alertas de stock crítico y botón Ver Tienda.</p>
           <div class="meta">
-            <span class="tag">2026-04-29</span>
-            <span class="tag">94K</span>
-            <span class="tag">CRUD</span>
+            <span class="tag">2026-06-02</span>
+            <span class="tag">13 productos</span>
+            <span class="tag">3 marcas</span>
           </div>
           <div class="actions">
             <a href="admin.html" class="btn btn-primary">Abrir</a>
@@ -618,18 +660,18 @@ body::before{
 
       <article class="card">
         <div class="preview">
-          <span class="badge new">Nuevo · 8 may</span>
+          <span class="badge new">Actualizado</span>
           <iframe src="embajadores/" loading="lazy" title="Embajadores"></iframe>
           <div class="overlay"></div>
         </div>
         <div class="body">
           <h3>KANKI Crew · Embajadores</h3>
-          <p class="desc">13 pantallas iPhone con flujo completo: invitación auto, código personalizable, niveles Bronze→Crew, dashboard con eventos.</p>
+          <p class="desc">13 pantallas iPhone con flujo completo. Estética Kanki actualizada — paleta ocean/teal/sunset igual al Storefront V Final.</p>
           <div class="meta">
-            <span class="tag">2026-05-08</span>
-            <span class="tag">48K</span>
+            <span class="tag">2026-06-02</span>
             <span class="tag">13 pantallas</span>
             <span class="tag">mobile</span>
+            <span class="tag">Kanki theme</span>
           </div>
           <div class="actions">
             <a href="embajadores/" class="btn btn-primary">Abrir</a>
@@ -725,14 +767,14 @@ body::before{
   <section class="section">
     <div class="section-head">
       <h2>📲 <em>Compartir</em> por WhatsApp</h2>
-      <span class="count">5 maquetas (incluye catálogo)</span>
+      <span class="count">5 links · versiones actuales</span>
     </div>
     <div class="wa-block">
       <pre id="waText">🎨 Banco de Maquetas (catálogo)
 https://smartconnection-codehub.github.io/kanki-maquetas/
 
-🛒 Storefront (tienda)
-https://smartconnection-codehub.github.io/kanki-maquetas/storefront.html
+🛍️ Storefront V Final
+https://smartconnection-codehub.github.io/kanki-maquetas/shopify-preview.html
 
 🖥️ Panel Admin
 https://smartconnection-codehub.github.io/kanki-maquetas/admin.html
@@ -744,9 +786,9 @@ https://smartconnection-codehub.github.io/kanki-maquetas/panel-socios.html
 https://smartconnection-codehub.github.io/kanki-maquetas/embajadores/</pre>
       <div class="wa-actions">
         <button class="btn-wa primary" onclick="copyWA(this)">📋 Copiar al portapapeles</button>
-        <a class="btn-wa green" href="https://wa.me/?text=%F0%9F%8E%A8%20Banco%20de%20Maquetas%20%28cat%C3%A1logo%29%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/%0A%0A%F0%9F%9B%92%20Storefront%20%28tienda%29%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/storefront.html%0A%0A%F0%9F%96%A5%EF%B8%8F%20Panel%20Admin%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/admin.html%0A%0A%F0%9F%A4%9D%20Panel%20Socios%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/panel-socios.html%0A%0A%F0%9F%8E%96%EF%B8%8F%20Embajadores%20%C2%B7%20KANKI%20Crew%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/embajadores/" target="_blank">💬 Abrir en WhatsApp</a>
+        <a class="btn-wa green" href="https://wa.me/?text=%F0%9F%8E%A8%20Banco%20de%20Maquetas%20%28cat%C3%A1logo%29%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/%0A%0A%F0%9F%9B%8D%EF%B8%8F%20Storefront%20V%20Final%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/shopify-preview.html%0A%0A%F0%9F%96%A5%EF%B8%8F%20Panel%20Admin%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/admin.html%0A%0A%F0%9F%A4%9D%20Panel%20Socios%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/panel-socios.html%0A%0A%F0%9F%8E%96%EF%B8%8F%20Embajadores%20%C2%B7%20KANKI%20Crew%0Ahttps%3A//smartconnection-codehub.github.io/kanki-maquetas/embajadores/" target="_blank">💬 Abrir en WhatsApp</a>
       </div>
-      <p class="wa-hint">Pegá esto en cualquier chat para mandar las 4 maquetas de un saque.</p>
+      <p class="wa-hint">Pegá esto en cualquier chat para mandar las 5 maquetas de un saque.</p>
     </div>
   </section>
   <script>

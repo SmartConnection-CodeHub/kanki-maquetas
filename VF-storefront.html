@@ -1095,8 +1095,32 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .brand-actions { flex-direction: column; }
   .brand-actions .btn { width: 100%; justify-content: center; }
 
-  /* Products */
-  .products-grid { grid-template-columns: repeat(2,1fr); gap: 12px; }
+  /* Products — carrusel horizontal */
+  .products-grid {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding: 4px 24px 20px;
+    margin: 0 -24px;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+  .products-grid:active { cursor: grabbing; }
+  .products-grid::-webkit-scrollbar { display: none; }
+  .products-grid .pcard {
+    flex: 0 0 68%;
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+  .products-grid .pcard__wrap img { aspect-ratio: 3/4 !important; }
+  .products-grid .pcard__add {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    font-size: 10px; padding: 12px 8px;
+  }
 
   /* Lookbook */
   .lookbook__grid { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px 200px; }
@@ -1211,10 +1235,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
   /* ─── PRODUCTS: limpio como Luked — sin botón overlay ─── */
   .products-section { padding: 40px 0; }
-  .products-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
-  .pcard__add { display: none; }   /* sin hover overlay en mobile */
+  .products-grid { gap: 10px; padding: 4px 20px 20px; margin: 0 -20px; }
+  .products-grid .pcard { flex: 0 0 74%; }
   .pcard { gap: 8px; }
-  .pcard__wrap img { aspect-ratio: 1/1; }  /* cuadrada en mobile, más compacta */
   .pcard__brand { font-size: 8px; letter-spacing: 0.12em; }
   .pcard__name { font-size: 11px; font-weight: 700; line-height: 1.2; }
   .pcard__price { font-size: 13px; font-weight: 700; }
@@ -1477,6 +1500,71 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .pcard:hover .pcard__wrap::after { opacity: 0; }
   .pcard__add               { opacity: 1 !important; }
   .pcard:active             { transform: scale(0.98); transition: transform 0.12s ease; }
+}
+
+/* ── Hero video background ── */
+.hero__bg      { z-index: 0; }
+.hero__overlay { z-index: 2; }
+.hero__content { z-index: 3; }
+.hero__scroll  { z-index: 4; }
+
+.hero__video-wrap {
+  position: absolute; inset: 0;
+  overflow: hidden; z-index: 1;
+  pointer-events: none;
+}
+.hero__video-wrap iframe {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 177.78vh;
+  height: 56.25vw;
+  min-width: 100%; min-height: 100%;
+  transform: translate(-50%, -50%);
+  border: none;
+}
+@media (max-width: 768px) {
+  .hero__video-wrap { display: none; }
+}
+
+/* ── Surf school videos ── */
+.surf-videos {
+  margin: 44px auto 0;
+  max-width: 920px;
+}
+.surf-videos__eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.28em;
+  text-transform: uppercase; color: rgba(255,255,255,0.35);
+  text-align: center; margin-bottom: 20px;
+}
+.surf-videos__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.surf-video-item__wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0; overflow: hidden;
+  border-radius: var(--r-md);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.surf-video-item__wrap:hover {
+  box-shadow: 0 20px 56px rgba(0,0,0,0.55);
+  transform: translateY(-3px);
+}
+.surf-video-item__wrap iframe {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%; border: none;
+}
+.surf-video-item__label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  text-align: center; margin-top: 10px;
+}
+@media (max-width: 600px) {
+  .surf-videos__grid { grid-template-columns: 1fr; }
+  .surf-videos { margin-top: 28px; }
 }
 </style>
 </head>
@@ -2210,7 +2298,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <img src="surf-school-5-web.jpeg" alt="Comunidad Kanki Surf">
     </div>
 
-    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:40px;">
       <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20info%20de%20la%20Escuela%20de%20Surf" class="btn btn-teal">Inscribirse por WhatsApp</a>
       <a href="#newsletter" class="btn btn-outline-white">Recibir Info</a>
     </div>
@@ -2909,6 +2997,27 @@ document.getElementById('nl-btn')?.addEventListener('click', () => {
 
 /* init */
 renderCart();
+
+/* ══ CARRUSEL DRAG-TO-SCROLL ══ */
+document.querySelectorAll('.products-grid').forEach(grid => {
+  let isDown = false, startX, scrollLeft;
+  grid.addEventListener('mousedown', e => {
+    isDown = true;
+    startX = e.pageX - grid.offsetLeft;
+    scrollLeft = grid.scrollLeft;
+  });
+  document.addEventListener('mouseup', () => { isDown = false; });
+  grid.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - grid.offsetLeft;
+    grid.scrollLeft = scrollLeft - (x - startX) * 1.4;
+  });
+  /* Evitar que el click-drag dispare el quick view */
+  grid.addEventListener('click', e => {
+    if (Math.abs(grid.scrollLeft - scrollLeft) > 5) e.stopPropagation();
+  }, true);
+});
 
 /* ══ RIPPLE EFFECT ══ */
 (function() {
