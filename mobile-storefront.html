@@ -580,6 +580,22 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .qv-label { font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gray); margin-bottom: 8px; display: flex; justify-content: space-between; }
 .qv-label span { color: var(--ocean); font-weight: 900; text-transform: none; letter-spacing: 0; }
 .qv-sizes { display: flex; gap: 8px; flex-wrap: wrap; }
+.qv-sizeguide-toggle {
+  margin-top: 10px; display: flex; align-items: center; gap: 5px;
+  background: none; border: none; padding: 0;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--teal); touch-action: manipulation;
+}
+.qv-sizeguide-toggle svg { transition: transform 0.2s ease; }
+.qv-sizeguide-toggle.open svg { transform: rotate(180deg); }
+.qv-sizeguide-body { display: none; margin-top: 10px; }
+.qv-sizeguide-body.open { display: block; }
+.size-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.size-table th { background: var(--ocean); color: #fff; padding: 6px 8px; font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; text-align: left; }
+.size-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.size-table tr:nth-child(even) td { background: var(--gray-light); }
+.size-note { font-size: 10px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
+.size-season { font-size: 11px; font-weight: 700; color: var(--ocean); margin-bottom: 6px; }
 .sz-btn {
   min-width: 44px; height: 44px; padding: 0 12px;
   border: 1.5px solid var(--border); border-radius: var(--r-sm);
@@ -1124,6 +1140,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <div>
         <div class="qv-label">Talla &nbsp;— <span id="qv-size-label">Elige una talla</span></div>
         <div class="qv-sizes" id="qv-sizes"></div>
+        <button type="button" class="qv-sizeguide-toggle" id="qv-sizeguide-toggle">
+          Ver guía de tallas
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="qv-sizeguide-body" id="qv-sizeguide-body"></div>
       </div>
       <div>
         <div class="qv-label" style="margin-bottom:8px;">Cantidad</div>
@@ -1307,6 +1328,32 @@ const STOCK = {
 
 let qvProduct = null, qvQty = 1, qvSize = null;
 
+function getSizeTable(brand, name) {
+  const n = name?.toLowerCase() || '';
+  const isFogFleece = brand?.includes('God') && (n.includes('hoodie') || n.includes('fleece'));
+  if (isFogFleece) {
+    const isFW22 = n.includes('oatmeal') || n.includes('stretch limo');
+    const rows = isFW22
+      ? [['S','66','72'],['M','68','74'],['L','71','76'],['XL','74','78'],['XXL','77','80']]
+      : [['S','67','69'],['M','69','71'],['L','73','74'],['XL','77','76'],['XXL','80','79']];
+    return `<div class="size-season">Essentials Hoodie ${isFW22 ? 'FW22' : 'FW24'}</div>
+    <table class="size-table">
+      <tr><th>Talla</th><th>Ancho (cm)</th><th>Largo (cm)</th></tr>
+      ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
+    </table>
+    <p class="size-note">Medidas tomadas en plano (prenda estirada, no en circunferencia). Pueden variar entre 1 y 2 cm.</p>`;
+  }
+  const isHoodie = n.includes('hoodie') || n.includes('fleece');
+  const rows = isHoodie
+    ? [['S','54','70'],['M','57','73'],['L','60','76'],['XL','63','79'],['XXL','66','82']]
+    : [['S','48','66'],['M','51','69'],['L','54','72'],['XL','57','75']];
+  return `<table class="size-table">
+    <tr><th>Talla</th><th>Pecho (cm)</th><th>Largo (cm)</th></tr>
+    ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
+  </table>
+  <p class="size-note">Las medidas pueden variar entre 1 y 2 cm.</p>`;
+}
+
 function openQV(product) {
   qvProduct = product; qvQty = 1; qvSize = null;
   $('qv-img').src = product.src;
@@ -1324,9 +1371,18 @@ function openQV(product) {
     return `<button class="sz-btn${ok?'':' agotado'}" data-size="${s}" ${ok?'':'disabled'}>${s}</button>`;
   }).join('');
 
+  $('qv-sizeguide-body').innerHTML = getSizeTable(product.brand, product.name);
+  $('qv-sizeguide-body').classList.remove('open');
+  $('qv-sizeguide-toggle').classList.remove('open');
+
   $('qv-sheet').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+
+$('qv-sizeguide-toggle')?.addEventListener('click', () => {
+  $('qv-sizeguide-body').classList.toggle('open');
+  $('qv-sizeguide-toggle').classList.toggle('open');
+});
 
 function closeQV() {
   $('qv-sheet').classList.remove('open');

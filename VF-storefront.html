@@ -2884,8 +2884,12 @@ function qvGetTable(brand, name) {
   const n = name?.toLowerCase() || '';
   const isFogHoodie = brand?.includes('God') && (n.includes('hoodie') || n.includes('fleece'));
   if (isFogHoodie) {
-    const rows = [['S','67','69'],['M','69','71'],['L','73','74'],['XL','77','76'],['XXL','80','79']];
-    return `<table class="size-table">
+    const isFW22 = n.includes('oatmeal') || n.includes('stretch limo');
+    const rows = isFW22
+      ? [['S','66','72'],['M','68','74'],['L','71','76'],['XL','74','78'],['XXL','77','80']]
+      : [['S','67','69'],['M','69','71'],['L','73','74'],['XL','77','76'],['XXL','80','79']];
+    return `<div class="size-season" style="font-size:11px;font-weight:700;color:var(--ocean);margin-bottom:6px;">Essentials Hoodie ${isFW22 ? 'FW22' : 'FW24'}</div>
+    <table class="size-table">
       <tr><th>Talla</th><th>Ancho (cm)</th><th>Largo (cm)</th></tr>
       ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
     </table>
