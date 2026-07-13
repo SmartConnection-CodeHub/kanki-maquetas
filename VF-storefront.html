@@ -899,9 +899,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* ── CART DRAWER ── */
 .cart-drawer {
-  display: none; position: fixed; inset: 0; z-index: 1200;
+  display: flex; position: fixed; inset: 0; z-index: 1200;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.32s cubic-bezier(.22,1,.36,1), visibility 0s linear 0.32s;
 }
-.cart-drawer.open { display: flex; }
+.cart-drawer.open {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transition: opacity 0.32s cubic-bezier(.22,1,.36,1);
+}
 .cart-drawer__bg {
   position: absolute; inset: 0;
   background: rgba(12,27,46,0.55); backdrop-filter: blur(4px);
@@ -910,7 +915,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: absolute; top: 0; right: 0; bottom: 0;
   width: 420px; max-width: 100vw;
   background: var(--foam); display: flex; flex-direction: column;
-  transform: translateX(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+  transform: translateX(100%); will-change: transform;
+  transition: transform 0.45s cubic-bezier(.16,1,.3,1);
   box-shadow: -8px 0 48px rgba(0,0,0,0.18);
 }
 .cart-drawer.open .cart-drawer__panel { transform: translateX(0); }
