@@ -535,12 +535,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding-bottom: env(safe-area-inset-bottom);
 }
 .qv-sheet.open .qv-sheet__panel { transform: translateY(0); }
+.qv-sheet__imgwrap {
+  width: 100%; aspect-ratio: 1/1; background:#fafaf8;
+  border-radius: 20px 20px 0 0; display:flex; align-items:center; justify-content:center;
+  padding: 28px; position: relative;
+}
 .qv-sheet__img {
-  width: 100%; aspect-ratio: 4/3; object-fit: cover;
-  border-radius: 20px 20px 0 0;
+  width: 100%; height: 100%; object-fit: contain; object-position:center;
+  filter: drop-shadow(0 14px 26px rgba(12,27,46,0.16));
 }
 .qv-sheet__content { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-.qv-sheet__handle { width: 40px; height: 4px; background: rgba(255,255,255,0.6); border-radius: 2px; margin: -20px auto 10px; }
+.qv-sheet__handle { width: 40px; height: 4px; background: rgba(12,27,46,0.18); border-radius: 2px; margin: 0 auto 4px; position:absolute; top:10px; left:50%; transform:translateX(-50%); }
 .qv-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); }
 .qv-name { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: var(--ocean); line-height: 1.1; }
 .qv-price { font-size: 20px; font-weight: 700; color: var(--ocean); }
@@ -738,6 +743,28 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
         <div class="mcard__price">$109.990</div>
       </article>
 
+      <article class="mcard" data-product='{"brand":"Fear of God","name":"Bright White T-Shirt","price":65000,"src":"fog-tee-white-sq.jpg"}'>
+        <div class="mcard__wrap">
+          <img src="fog-tee-white-sq.jpg" alt="Bright White T-Shirt" loading="lazy">
+          <span class="mcard__badge badge-new">Nuevo</span>
+          <button class="mcard__quick">Agregar al carrito</button>
+        </div>
+        <div class="mcard__brand">Fear of God</div>
+        <div class="mcard__name">Bright White T-Shirt</div>
+        <div class="mcard__price">$65.000</div>
+      </article>
+
+      <article class="mcard" data-product='{"brand":"Fear of God","name":"Essentials Fleece Black","price":65000,"src":"fog-tee-black.webp"}'>
+        <div class="mcard__wrap">
+          <img src="fog-tee-black.webp" alt="Essentials Fleece Black" loading="lazy">
+          <span class="mcard__badge badge-new">Nuevo</span>
+          <button class="mcard__quick">Agregar al carrito</button>
+        </div>
+        <div class="mcard__brand">Fear of God</div>
+        <div class="mcard__name">Essentials Fleece Black</div>
+        <div class="mcard__price">$65.000</div>
+      </article>
+
     </div>
   </div>
 </section>
@@ -824,25 +851,58 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     </div>
     <div class="pcarousel">
 
-      <article class="mcard mcard--dark" data-product='{"brand":"Stussy","name":"8-Ball Tee Black","price":65000,"src":"https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=800"}'>
+      <article class="mcard mcard--dark" data-product='{"brand":"Stussy","name":"Basic Stussy Tee Negra","price":65000,"src":"https://www.stussy.com/cdn/shop/files/1905000_BLAC_1.jpg?v=1760638172&width=1920"}'>
         <div class="mcard__wrap" style="background:#111827;">
-          <img src="https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=800" alt="8-Ball Tee Black" loading="lazy">
+          <img src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_1.jpg?v=1760638172&width=1920" alt="Basic Stussy Tee Negra" loading="lazy">
           <span class="mcard__badge badge-new">Nuevo</span>
           <button class="mcard__quick">Agregar al carrito</button>
         </div>
         <div class="mcard__brand">Stussy</div>
-        <div class="mcard__name">8-Ball Tee Black</div>
+        <div class="mcard__name">Basic Stussy Tee Negra</div>
         <div class="mcard__price" style="color:var(--sand);">$65.000</div>
       </article>
 
-      <article class="mcard mcard--dark" data-product='{"brand":"Stussy","name":"Basic Logo Tee Black","price":65000,"src":"https://www.stussy.com/cdn/shop/files/1905000_BLAC_2.jpg?v=1760638172&width=800"}'>
+      <article class="mcard mcard--dark" data-product='{"brand":"Stussy","name":"Basic Stussy Tee Blanca","price":65000,"src":"https://www.stussy.com/cdn/shop/files/1905000_WHIT_1.jpg?v=1760638129&width=1920"}'>
         <div class="mcard__wrap" style="background:#111827;">
-          <img src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_2.jpg?v=1760638172&width=800" alt="Basic Logo Tee Black" loading="lazy">
+          <img src="https://www.stussy.com/cdn/shop/files/1905000_WHIT_1.jpg?v=1760638129&width=1920" alt="Basic Stussy Tee Blanca" loading="lazy">
           <span class="mcard__badge badge-new">Nuevo</span>
           <button class="mcard__quick">Agregar al carrito</button>
         </div>
         <div class="mcard__brand">Stussy</div>
-        <div class="mcard__name">Basic Logo Tee Black</div>
+        <div class="mcard__name">Basic Stussy Tee Blanca</div>
+        <div class="mcard__price" style="color:var(--sand);">$65.000</div>
+      </article>
+
+      <article class="mcard mcard--dark" data-product='{"brand":"Stussy","name":"BXR 8 Ball Tee","price":70000,"src":"stussy-bxr-8ball-tee.jpg"}'>
+        <div class="mcard__wrap" style="background:#111827;">
+          <img src="stussy-bxr-8ball-tee.jpg" alt="BXR 8 Ball Tee" loading="lazy">
+          <span class="mcard__badge badge-new">Nuevo</span>
+          <button class="mcard__quick">Agregar al carrito</button>
+        </div>
+        <div class="mcard__brand">Stussy</div>
+        <div class="mcard__name">BXR 8 Ball Tee</div>
+        <div class="mcard__price" style="color:var(--sand);">$70.000</div>
+      </article>
+
+      <article class="mcard mcard--dark" data-product='{"brand":"Stussy","name":"8 Ball Tee Clasic Negra","price":65000,"src":"https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=800"}'>
+        <div class="mcard__wrap" style="background:#111827;">
+          <img src="https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=800" alt="8 Ball Tee Clasic Negra" loading="lazy">
+          <span class="mcard__badge badge-new">Nuevo</span>
+          <button class="mcard__quick">Agregar al carrito</button>
+        </div>
+        <div class="mcard__brand">Stussy</div>
+        <div class="mcard__name">8 Ball Tee Clasic Negra</div>
+        <div class="mcard__price" style="color:var(--sand);">$65.000</div>
+      </article>
+
+      <article class="mcard mcard--dark" data-product='{"brand":"Stussy","name":"8 Ball Tee Clasic Blanca","price":65000,"src":"stussy-8ball-clasic-blanca.jpg"}'>
+        <div class="mcard__wrap" style="background:#111827;">
+          <img src="stussy-8ball-clasic-blanca.jpg" alt="8 Ball Tee Clasic Blanca" loading="lazy">
+          <span class="mcard__badge badge-new">Nuevo</span>
+          <button class="mcard__quick">Agregar al carrito</button>
+        </div>
+        <div class="mcard__brand">Stussy</div>
+        <div class="mcard__name">8 Ball Tee Clasic Blanca</div>
         <div class="mcard__price" style="color:var(--sand);">$65.000</div>
       </article>
 
@@ -1021,9 +1081,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 <div class="qv-sheet" id="qv-sheet">
   <div class="qv-sheet__bg" id="qv-bg"></div>
   <div class="qv-sheet__panel" id="qv-panel">
-    <img class="qv-sheet__img" id="qv-img" src="" alt="">
-    <div class="qv-sheet__content">
+    <div class="qv-sheet__imgwrap">
       <div class="qv-sheet__handle"></div>
+      <img class="qv-sheet__img" id="qv-img" src="" alt="">
+    </div>
+    <div class="qv-sheet__content">
       <div class="qv-eyebrow" id="qv-brand"></div>
       <div class="qv-name" id="qv-name"></div>
       <div class="qv-price" id="qv-price"></div>
@@ -1169,11 +1231,16 @@ const STOCK = {
   'dark oatmeal hoodie':      { all:['S','M','L','XL','XXL'], avail:['L','XL'] },
   'light oatmeal hoodie':     { all:['S','M','L','XL','XXL'], avail:['L','XL'] },
   'stretch limo hoodie':      { all:['S','M','L','XL','XXL'], avail:['L','XL'] },
+  'bright white t-shirt':     { all:['S','M','L','XL','XXL'], avail:['M','L','XL'] },
+  'essentials fleece black':  { all:['S','M','L','XL','XXL'], avail:['L'] },
   'og bear basic hoodie negro':{ all:['S','M','L','XL'], avail:['M','L'] },
   'og bear basic tee negro':  { all:['S','M','L','XL'], avail:['S','M','L','XL'] },
   'og bear basic tee beige':  { all:['S','M','L','XL'], avail:['S','M','L','XL'] },
-  '8-ball tee black':         { all:['S','M','L','XL'], avail:['L','XL'] },
-  'basic logo tee black':     { all:['S','M','L','XL'], avail:['L','XL'] },
+  'basic stussy tee negra':   { all:['S','M','L','XL'], avail:['XL'] },
+  'basic stussy tee blanca':  { all:['S','M','L','XL'], avail:['XL'] },
+  'bxr 8 ball tee':           { all:['S','M','L','XL'], avail:['M'] },
+  '8 ball tee clasic negra':  { all:['S','M','L','XL'], avail:['L','XL'] },
+  '8 ball tee clasic blanca': { all:['S','M','L','XL'], avail:['L','XL'] },
 };
 
 let qvProduct = null, qvQty = 1, qvSize = null;

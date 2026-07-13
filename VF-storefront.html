@@ -800,32 +800,31 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .qv-modal.open { display:flex; }
 .qv-backdrop { position:absolute; inset:0; background:rgba(12,27,46,0.72); backdrop-filter:blur(6px); }
 .qv-panel {
-  position:relative; z-index:1; background:var(--foam);
-  border-radius:var(--r-lg); width:100%; max-width:860px;
-  display:grid; grid-template-columns:1fr 1fr;
+  position:relative; z-index:1; background:#fff;
+  border-radius:6px; width:100%; max-width:960px;
+  display:grid; grid-template-columns:1.05fr 1fr;
   overflow:hidden; max-height:92vh;
   box-shadow:0 24px 80px rgba(0,0,0,0.3);
   animation:qvIn 0.28s cubic-bezier(.4,0,.2,1);
 }
 @keyframes qvIn { from{opacity:0;transform:scale(0.95) translateY(20px)} to{opacity:1;transform:none} }
 .qv-close {
-  position:absolute; top:14px; right:14px; z-index:20;
-  width:36px; height:36px; border-radius:50%;
-  background:rgba(255,255,255,0.9); border:none; cursor:pointer;
+  position:absolute; top:18px; right:18px; z-index:20;
+  width:38px; height:38px; border-radius:50%;
+  background:#fff; border:1.5px solid var(--border); cursor:pointer;
   display:flex; align-items:center; justify-content:center;
-  font-size:20px; color:var(--ocean); transition:background var(--t);
-  box-shadow:0 2px 8px rgba(0,0,0,0.12);
+  font-size:18px; font-weight:300; color:var(--ocean); transition:all var(--t);
 }
-.qv-close:hover { background:var(--sunset); color:#fff; }
+.qv-close:hover { background:var(--ocean); border-color:var(--ocean); color:#fff; }
 
 /* Image col */
-.qv-img-col { position:relative; background:#e8e1d5; }
-.qv-img-col img { width:100%; height:100%; object-fit:cover; display:block; min-height:420px; }
+.qv-img-col { position:relative; background:#fafaf8; display:flex; align-items:center; justify-content:center; padding:44px; min-height:480px; }
+.qv-img-col img { width:100%; height:100%; object-fit:contain; object-position:center; display:block; filter:drop-shadow(0 18px 34px rgba(12,27,46,0.14)); }
 
 /* Info col */
-.qv-info-col { padding:36px 30px 28px; overflow-y:auto; display:flex; flex-direction:column; gap:16px; }
+.qv-info-col { padding:44px 40px 32px; overflow-y:auto; display:flex; flex-direction:column; gap:18px; }
 .qv-eyebrow { font-size:9px; font-weight:700; letter-spacing:0.25em; text-transform:uppercase; color:var(--teal); }
-.qv-title { font-size:clamp(18px,2.8vw,26px); font-weight:900; text-transform:uppercase; letter-spacing:-0.02em; color:var(--ocean); line-height:1.1; }
+.qv-title { font-size:clamp(20px,2.8vw,28px); font-weight:900; text-transform:uppercase; letter-spacing:-0.03em; color:var(--ocean); line-height:1.08; }
 .qv-price-wrap { display:flex; align-items:center; gap:10px; }
 .qv-price { font-size:22px; font-weight:700; color:var(--ocean); }
 .qv-compare { font-size:15px; color:var(--gray); text-decoration:line-through; }
@@ -1884,28 +1883,28 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
         <article class="pcard reveal delay-2">
           <div class="pcard__wrap" style="background:#f0ede8;">
-            <img src="fog-tee-white-sq.jpg" alt="FOG Essentials Tee White" loading="lazy"
+            <img src="fog-tee-white-sq.jpg" alt="Bright White T-Shirt" loading="lazy"
                  style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
             <span class="pcard__badge badge-new">Nuevo</span>
             <button class="pcard__add">Comprar Ahora</button>
           </div>
           <div>
             <div class="pcard__brand">Fear of God</div>
-            <h3 class="pcard__name">Essentials Tee White</h3>
+            <h3 class="pcard__name">Bright White T-Shirt</h3>
             <div class="pcard__price-row"><span class="pcard__price">$65.000</span></div>
           </div>
         </article>
 
         <article class="pcard reveal delay-3">
           <div class="pcard__wrap" style="background:#f0ede8;">
-            <img src="fog-tee-black.webp" alt="FOG Essentials Tee Black" loading="lazy"
+            <img src="fog-tee-black.webp" alt="Essentials Fleece Black" loading="lazy"
                  style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
             <span class="pcard__badge badge-new">Nuevo</span>
             <button class="pcard__add">Comprar Ahora</button>
           </div>
           <div>
             <div class="pcard__brand">Fear of God</div>
-            <h3 class="pcard__name">Essentials Tee Black</h3>
+            <h3 class="pcard__name">Essentials Fleece Black</h3>
             <div class="pcard__price-row"><span class="pcard__price">$65.000</span></div>
           </div>
         </article>
@@ -2036,42 +2035,67 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
         <article class="pcard reveal delay-1">
           <div class="pcard__wrap" style="background:#111827;">
-            <img src="https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=800" alt="8-Ball Tee Black" loading="lazy">
+            <img src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_1.jpg?v=1760638172&width=1920" alt="Basic Stussy Tee Negra" loading="lazy">
             <span class="pcard__badge badge-new">Nuevo</span>
             <button class="pcard__add">Comprar Ahora</button>
           </div>
           <div>
             <div class="pcard__brand" style="color:var(--teal-light);">Stussy</div>
-            <h3 class="pcard__name" style="color:var(--white);">8-Ball Tee Black</h3>
+            <h3 class="pcard__name" style="color:var(--white);">Basic Stussy Tee Negra</h3>
             <div class="pcard__price-row"><span class="pcard__price" style="color:var(--sand);">$65.000</span></div>
           </div>
         </article>
 
         <article class="pcard reveal delay-2">
           <div class="pcard__wrap" style="background:#f8f8f8;">
-            <img src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_2.jpg?v=1760638172&width=800"
-                 alt="Stussy Basic Logo Tee Black" loading="lazy"
+            <img src="https://www.stussy.com/cdn/shop/files/1905000_WHIT_1.jpg?v=1760638129&width=1920"
+                 alt="Basic Stussy Tee Blanca" loading="lazy"
                  style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
             <span class="pcard__badge badge-new">Nuevo</span>
             <button class="pcard__add">Comprar Ahora</button>
           </div>
           <div>
             <div class="pcard__brand" style="color:var(--teal-light);">Stussy</div>
-            <h3 class="pcard__name" style="color:var(--white);">Basic Logo Tee Black</h3>
+            <h3 class="pcard__name" style="color:var(--white);">Basic Stussy Tee Blanca</h3>
             <div class="pcard__price-row"><span class="pcard__price" style="color:var(--sand);">$65.000</span></div>
           </div>
         </article>
 
-        <article class="pcard reveal delay-2">
-          <div class="pcard__wrap" style="background:#fff;">
-            <img src="producto-download.jpg" alt="Stussy Basic Logo Tee White" loading="lazy"
-                 style="width:100%;height:100%;object-fit:contain;aspect-ratio:3/4;background:#fff;display:block;">
+        <article class="pcard reveal delay-3">
+          <div class="pcard__wrap" style="background:#111827;">
+            <img src="stussy-bxr-8ball-tee.jpg" alt="BXR 8 Ball Tee" loading="lazy">
             <span class="pcard__badge badge-new">Nuevo</span>
             <button class="pcard__add">Comprar Ahora</button>
           </div>
           <div>
             <div class="pcard__brand" style="color:var(--teal-light);">Stussy</div>
-            <h3 class="pcard__name" style="color:var(--white);">Basic Logo Tee White</h3>
+            <h3 class="pcard__name" style="color:var(--white);">BXR 8 Ball Tee</h3>
+            <div class="pcard__price-row"><span class="pcard__price" style="color:var(--sand);">$70.000</span></div>
+          </div>
+        </article>
+
+        <article class="pcard reveal delay-1">
+          <div class="pcard__wrap" style="background:#111827;">
+            <img src="https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=800" alt="8 Ball Tee Clasic Negra" loading="lazy">
+            <span class="pcard__badge badge-new">Nuevo</span>
+            <button class="pcard__add">Comprar Ahora</button>
+          </div>
+          <div>
+            <div class="pcard__brand" style="color:var(--teal-light);">Stussy</div>
+            <h3 class="pcard__name" style="color:var(--white);">8 Ball Tee Clasic Negra</h3>
+            <div class="pcard__price-row"><span class="pcard__price" style="color:var(--sand);">$65.000</span></div>
+          </div>
+        </article>
+
+        <article class="pcard reveal delay-2">
+          <div class="pcard__wrap" style="background:#111827;">
+            <img src="stussy-8ball-clasic-blanca.jpg" alt="8 Ball Tee Clasic Blanca" loading="lazy">
+            <span class="pcard__badge badge-new">Nuevo</span>
+            <button class="pcard__add">Comprar Ahora</button>
+          </div>
+          <div>
+            <div class="pcard__brand" style="color:var(--teal-light);">Stussy</div>
+            <h3 class="pcard__name" style="color:var(--white);">8 Ball Tee Clasic Blanca</h3>
             <div class="pcard__price-row"><span class="pcard__price" style="color:var(--sand);">$65.000</span></div>
           </div>
         </article>
@@ -2148,9 +2172,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
           <img class="col-tile__photo col-tile__photo--thumb"
                src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96087-image.jpg"
                alt="Grizzly OG Bear Tee Beige" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://grizzlygriptape.cl/wp-content/uploads/2025/09/product_template_93367.jpg"
-               alt="Grizzly Lowercase Fadeaway" loading="lazy">
         </div>
         <div class="col-tile__content">
           <h3 class="col-tile__name">GRIZZLY</h3>
@@ -2167,18 +2188,18 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
                src="https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=800"
                alt="Stussy 8 Ball Tee" loading="lazy">
           <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://www.stussy.com/cdn/shop/files/1905197_BLAC_1.jpg?v=1778693324&width=480"
-               alt="Stussy Stock Logo Tee" loading="lazy">
+               src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_1.jpg?v=1760638172&width=1920"
+               alt="Basic Stussy Tee Negra" loading="lazy">
           <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://www.stussy.com/cdn/shop/files/1905181_BLAC_1.jpg?v=1777315066&width=480"
-               alt="Stussy Wave Oval Tee" loading="lazy">
+               src="https://www.stussy.com/cdn/shop/files/1905000_WHIT_1.jpg?v=1760638129&width=1920"
+               alt="Basic Stussy Tee Blanca" loading="lazy">
           <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://www.stussy.com/cdn/shop/files/1905188_BLAC_1.jpg?v=1778693176&width=480"
-               alt="Stussy Sport Tee" loading="lazy">
+               src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_2.jpg?v=1760638172&width=800"
+               alt="8 Ball Tee Clasic Blanca" loading="lazy">
         </div>
         <div class="col-tile__content">
           <h3 class="col-tile__name">STUSSY</h3>
-          <p class="col-tile__count">3 productos · Clásicos</p>
+          <p class="col-tile__count">5 productos · Clásicos</p>
           <span class="col-tile__btn">Ver Colección</span>
         </div>
       </a>
@@ -2754,13 +2775,14 @@ const STOCK = {
   'light oatmeal hoodie':        { all:['S','M','L','XL','XXL'], avail:['L','XL']      },
   'stretch limo hoodie':         { all:['S','M','L','XL','XXL'], avail:['L','XL']      },
   /* FOG Essentials — Tees */
-  'essentials tee black':        { all:['S','M','L','XL'],       avail:['M','L','XL']  },
-  'essentials tee white':        { all:['S','M','L','XL'],       avail:['M','L','XL']  },
+  'bright white t-shirt':        { all:['S','M','L','XL'],       avail:['M','L','XL']  },
+  'essentials fleece black':     { all:['S','M','L','XL'],       avail:['L']           },
   /* Stussy */
-  'stock logo tee black':        { all:['S','M','L','XL'],       avail:['L','XL']      },
-  'stock logo tee white':        { all:['S','M','L','XL'],       avail:['L','XL']      },
-  '8-ball tee black':            { all:['S','M','L','XL'],       avail:['L','XL']      },
-  '8-ball tee white':            { all:['S','M','L','XL'],       avail:['L','XL']      },
+  'basic stussy tee negra':      { all:['S','M','L','XL'],       avail:['XL']          },
+  'basic stussy tee blanca':     { all:['S','M','L','XL'],       avail:['XL']          },
+  'bxr 8 ball tee':              { all:['S','M','L','XL'],       avail:['M']           },
+  '8 ball tee clasic negra':     { all:['S','M','L','XL'],       avail:['L','XL']      },
+  '8 ball tee clasic blanca':    { all:['S','M','L','XL'],       avail:['L','XL']      },
 };
 
 function qvStockKey(name) {
