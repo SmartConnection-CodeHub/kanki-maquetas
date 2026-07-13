@@ -2881,7 +2881,17 @@ function qvGetDesc(brand, name) {
 }
 
 function qvGetTable(brand, name) {
-  const isHoodie = name?.toLowerCase().includes('hoodie') || name?.toLowerCase().includes('fleece');
+  const n = name?.toLowerCase() || '';
+  const isFogHoodie = brand?.includes('God') && (n.includes('hoodie') || n.includes('fleece'));
+  if (isFogHoodie) {
+    const rows = [['S','67','69'],['M','69','71'],['L','73','74'],['XL','77','76'],['XXL','80','79']];
+    return `<table class="size-table">
+      <tr><th>Talla</th><th>Ancho (cm)</th><th>Largo (cm)</th></tr>
+      ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
+    </table>
+    <p class="size-note">Medidas tomadas en plano (prenda estirada, no en circunferencia). Pueden variar entre 1 y 2 cm.</p>`;
+  }
+  const isHoodie = n.includes('hoodie') || n.includes('fleece');
   const rows = isHoodie
     ? [['S','54','70'],['M','57','73'],['L','60','76'],['XL','63','79'],['XXL','66','82']]
     : [['S','48','66'],['M','51','69'],['L','54','72'],['XL','57','75']];
