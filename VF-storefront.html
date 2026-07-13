@@ -2751,7 +2751,7 @@ function renderCart() {
         </div>
       </div>
       <button class="cart-item__remove" data-id="${item.id}" title="Eliminar">×</button>`;
-    itemsEl.appendChild(row);
+    itemsEl.insertBefore(row, document.getElementById('cart-suggest'));
   });
 }
 

@@ -1235,7 +1235,7 @@ function updateCartUI() {
         </div>
       </div>
       <button class="cart-item__remove" data-id="${item.id}">×</button>`;
-    itemsEl.appendChild(row);
+    itemsEl.insertBefore(row, $('cart-suggest'));
   });
 }
 
