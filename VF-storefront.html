@@ -977,7 +977,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 @keyframes slideIn { from { opacity:0; transform:translateX(16px); } to { opacity:1; transform:none; } }
 .cart-item__img {
   width: 80px; height: 80px; border-radius: var(--r-sm);
-  object-fit: cover; background: var(--sand);
+  object-fit: contain; background: #fafaf8; padding: 6px;
 }
 .cart-item__brand { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 3px; }
 .cart-item__name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ocean); line-height: 1.3; margin-bottom: 8px; }
@@ -985,6 +985,29 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .cart-item__qty {
   display: flex; align-items: center; gap: 8px; margin-top: 8px;
 }
+
+/* Sugerencias en carrito */
+.cart-suggest { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 18px; }
+.cart-suggest__title { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); margin-bottom: 12px; }
+.cart-suggest__title span { color: var(--sunset); }
+.cart-suggest__row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.cart-suggest__card {
+  flex: 0 0 118px; background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 9px; text-align: left; cursor: pointer;
+  transition: all var(--t);
+}
+.cart-suggest__card:hover { border-color: var(--ocean); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(12,27,46,0.1); }
+.cart-suggest__imgwrap { width: 100%; aspect-ratio: 1/1; background:#fafaf8; border-radius: var(--r-sm); display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:7px; }
+.cart-suggest__imgwrap img { width: 100%; height: 100%; object-fit: contain; }
+.cart-suggest__name { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--ocean); line-height: 1.3; margin-bottom: 5px; min-height: 26px; }
+.cart-suggest__foot { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.cart-suggest__price { font-size: 11px; font-weight: 800; color: var(--ocean); }
+.cart-suggest__add {
+  width: 24px; height: 24px; border-radius: 50%; background: var(--ocean); color: #fff;
+  font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; border: none; cursor: pointer; transition: background var(--t);
+}
+.cart-suggest__add:hover { background: var(--sunset); }
 .qty-btn {
   width: 24px; height: 24px; border-radius: 50%;
   background: var(--gray-light); border: 1px solid var(--border);
@@ -2568,6 +2591,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
         <p class="cart-empty__msg">Tu carrito está vacío.<br>Agrega productos para comenzar.</p>
         <button class="btn btn-ocean" onclick="closeCart()" style="font-size:10px; padding:12px 24px;">Ver Productos</button>
       </div>
+      <div class="cart-suggest" id="cart-suggest">
+        <div class="cart-suggest__title">Colección destacada · <span>completa tu look</span></div>
+        <div class="cart-suggest__row" id="cart-suggest-row"></div>
+      </div>
     </div>
 
     <div class="cart-drawer__foot" id="cart-foot" style="display:none;">
@@ -2619,6 +2646,35 @@ function fmt(n) {
   return '$' + n.toLocaleString('es-CL');
 }
 
+/* ── SUGERENCIAS (colección destacada) ── */
+const FEATURED = [
+  { id:'fleece-hoodie-fw24-black', brand:'Fear of God', name:'Fleece Hoodie FW24 Black', price:109990, src:'https://luked.cl/cdn/shop/files/fwafawwfawfa.webp?v=1750114347' },
+  { id:'og-bear-basic-hoodie-negro', brand:'Grizzly', name:'OG Bear Basic Hoodie Negro', price:89990, src:'https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96098-image.jpg' },
+  { id:'og-bear-basic-tee-beige', brand:'Grizzly', name:'OG Bear Basic Tee Beige', price:48990, src:'https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96087-image.jpg' },
+  { id:'basic-stussy-tee-negra', brand:'Stussy', name:'Basic Stussy Tee Negra', price:65000, src:'https://www.stussy.com/cdn/shop/files/1905000_BLAC_1.jpg?v=1760638172&width=1920' },
+];
+
+function renderSuggestions() {
+  const row = document.getElementById('cart-suggest-row');
+  if (!row) return;
+  const items = FEATURED.filter(f => !cart.some(c => c.id === f.id));
+  row.innerHTML = items.map(p => `
+    <button class="cart-suggest__card" data-suggest-id="${p.id}">
+      <div class="cart-suggest__imgwrap"><img src="${p.src}" alt="${p.name}" loading="lazy"></div>
+      <div class="cart-suggest__name">${p.name}</div>
+      <div class="cart-suggest__foot">
+        <span class="cart-suggest__price">${fmt(p.price)}</span>
+        <span class="cart-suggest__add">+</span>
+      </div>
+    </button>`).join('');
+}
+document.getElementById('cart-suggest-row')?.addEventListener('click', e => {
+  const card = e.target.closest('[data-suggest-id]');
+  if (!card) return;
+  const product = FEATURED.find(f => f.id === card.dataset.suggestId);
+  if (product) addToCart(product);
+});
+
 function getProductFromCard(card) {
   const wrap = card.closest('.pcard');
   const img   = wrap?.querySelector('img');
@@ -2667,6 +2723,7 @@ function renderCart() {
     footEl.style.display  = 'none';
     /* remove item rows */
     itemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
+    renderSuggestions();
     return;
   }
 
@@ -2676,6 +2733,7 @@ function renderCart() {
 
   /* rebuild item rows */
   itemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
+  renderSuggestions();
   cart.forEach(item => {
     const row = document.createElement('div');
     row.className = 'cart-item';
