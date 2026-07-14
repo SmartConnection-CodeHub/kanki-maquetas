@@ -405,17 +405,233 @@
       .table th, .table td { padding: 11px 14px; }
     }
   </style>
+
+  <!-- ══ KANKI SURF × STREET THEME ══ -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+  /* ── Variables → paleta Kanki ── */
+  :root {
+    --navy:        #0c1b2e;
+    --navy-light:  #0d3a5e;
+    --gold:        #1a8f82;
+    --gold-light:  #22b5a5;
+    --cream:       #f0e4cc;
+    --bg:          #f8f4ef;
+    --border:      #e0d8cc;
+    --text:        #0c1b2e;
+    --text-secondary: #6b7280;
+    --success:     #1a8f82;
+    --warning:     #e8651a;
+    --danger:      #dc2626;
+    --font: 'Inter','Helvetica Neue',Arial,sans-serif;
+    --sunset:      #e8651a;
+    --sunset-dark: #c04e0e;
+    --teal:        #1a8f82;
+    --teal-light:  #22b5a5;
+    --ocean:       #0c1b2e;
+  }
+
+  /* ── Thin brand bar ── */
+  body::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #0c1b2e 0%, #1a8f82 40%, #e8651a 70%, #0c1b2e 100%);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  }
+  :root { --topbar-h: 55px; }
+  .layout { padding-top: var(--topbar-h); }
+
+  /* ── Body ── */
+  body { background: #f8f4ef; color: #0c1b2e; font-family: var(--font); }
+
+  /* ── Topbar ── */
+  .topbar {
+    background: rgba(248,244,239,0.97);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid #e0d8cc;
+    top: 3px; /* bajo el brand bar */
+  }
+  .logo-icon { background: #0c1b2e; color: #22b5a5; border-radius: 8px; font-size: 11px; letter-spacing: 0.04em; }
+  .logo-text { font-size: 14px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #0c1b2e; }
+  .logo-badge { background: #e8651a; color: #fff; font-size: 9px; letter-spacing: 0.14em; border-radius: 4px; }
+  .topbar-btn { border-color: #e0d8cc; background: #fff; color: #0c1b2e; }
+  .topbar-btn:hover { background: #f0e4cc; border-color: #d0c8bc; }
+  .avatar { background: #0c1b2e; color: #22b5a5; font-size: 11px; font-weight: 900; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    background: #0c1b2e;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+  }
+  .nav-section { color: rgba(255,255,255,0.28); font-size: 9px; letter-spacing: 0.2em; }
+  .nav-item { color: rgba(255,255,255,0.5); font-size: 13px; border-radius: 8px; }
+  .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.88); }
+  .nav-item.active { background: #1a8f82; color: #fff; box-shadow: 0 2px 12px rgba(26,143,130,0.35); }
+  .nav-badge.red { background: #e8651a; color: #fff; }
+  .nav-badge.gold { background: #22b5a5; color: #0c1b2e; }
+  .sidebar-bottom { border-top: 1px solid rgba(255,255,255,0.07); }
+
+  /* ── KPIs ── */
+  .kpi { background: #fff; border-color: #e0d8cc; border-radius: 14px; }
+  .kpi.dark { background: #0c1b2e; border-color: #0c1b2e; }
+  .kpi.dark .kpi-label { color: rgba(255,255,255,0.4); }
+  .kpi.dark .kpi-value { color: #22b5a5; }
+  .kpi.dark .kpi-delta { color: rgba(255,255,255,0.5); }
+  .kpi-delta.up { color: #1a8f82; }
+
+  /* ── Cards ── */
+  .card { background: #fff; border-color: #e0d8cc; border-radius: 14px; }
+  .card-header { border-bottom-color: #e0d8cc; }
+  .card-link { color: #1a8f82; }
+
+  /* ── Buttons ── */
+  .btn-navy { background: #0c1b2e; color: #fff; border-radius: 8px; }
+  .btn-navy:hover { background: #0d3a5e; }
+  .btn-gold { background: #e8651a; color: #fff; border-radius: 8px; }
+  .btn-gold:hover { background: #c04e0e; }
+  .btn-ghost { border-color: #e0d8cc; color: #6b7280; border-radius: 8px; }
+  .btn-ghost:hover { background: #f0e4cc; color: #0c1b2e; border-color: #d0c8bc; }
+  .btn-sm { font-size: 11px; letter-spacing: 0.04em; }
+
+  /* ── Alert ── */
+  .alert.warn { background: rgba(232,101,26,0.08); border: 1px solid rgba(232,101,26,0.25); color: #7a3010; border-radius: 10px; }
+  .alert.info { background: rgba(26,143,130,0.08); border: 1px solid rgba(26,143,130,0.25); color: #0f5048; }
+
+  /* ── Table ── */
+  .table th { background: #f8f4ef; color: #6b7280; border-bottom-color: #e0d8cc; font-size: 10px; letter-spacing: 0.12em; }
+  .table td { border-bottom-color: #f0e9e0; font-size: 13px; }
+  .table tbody tr:hover td { background: #f8f4ef; }
+  .order-row:hover td { background: rgba(26,143,130,0.05) !important; }
+
+  /* ── Badges ── */
+  .badge-nuevo { background: rgba(26,143,130,0.1); color: #1a8f82; border-radius: 20px; }
+  .badge-nuevo::before { background: #1a8f82; }
+  .badge-comprobante { background: rgba(232,101,26,0.1); color: #c04e0e; }
+  .badge-comprobante::before { background: #e8651a; }
+  .badge-validado { background: rgba(26,143,130,0.12); color: #0f5048; }
+  .badge-validado::before { background: #1a8f82; }
+  .badge-despachado { background: rgba(26,143,130,0.08); color: #0f5048; }
+  .badge-despachado::before { background: #22b5a5; }
+
+  /* ── Products ── */
+  .product-card { border-color: #e0d8cc; border-radius: 12px; background: #fff; }
+  .product-card:hover { box-shadow: 0 8px 28px rgba(12,27,46,0.1); border-color: #1a8f82; }
+  .product-price { color: #0c1b2e; font-weight: 700; }
+  .product-stock { color: #6b7280; }
+  .product-stock.low { color: #e8651a; }
+  .product-name { font-weight: 600; color: #0c1b2e; }
+
+  /* ── Forms ── */
+  .form-section { background: #fff; border-color: #e0d8cc; border-radius: 14px; }
+  .form-section-title { border-bottom-color: #e0d8cc; font-weight: 700; letter-spacing: 0.01em; }
+  .form-input { border-color: #e0d8cc; border-radius: 8px; }
+  .form-input:focus { border-color: #1a8f82; box-shadow: 0 0 0 3px rgba(26,143,130,0.12); }
+  .form-select { border-color: #e0d8cc; border-radius: 8px; }
+  .form-select:focus { border-color: #1a8f82; }
+
+  /* ── Modal ── */
+  .modal { border-radius: 18px; }
+  .modal-tab.active { color: #0c1b2e; border-bottom-color: #e8651a; font-weight: 700; }
+  .modal-overlay { background: rgba(12,27,46,0.55); backdrop-filter: blur(6px); }
+  .size-chip.selected { background: #0c1b2e; border-color: #0c1b2e; }
+  .photo-slot:hover { border-color: #1a8f82; }
+  .photo-slot.has-photo { border-color: #1a8f82; }
+
+  /* ── Timeline ── */
+  .tl-dot.done { background: #1a8f82; }
+  .tl-dot.current { background: #e8651a; color: #fff; box-shadow: 0 0 0 4px rgba(232,101,26,0.2); }
+  .tl-label.done { color: #1a8f82; }
+  .tl-label.current { color: #e8651a; }
+  .tl-line.done { background: #1a8f82; }
+  .timeline { background: #f8f4ef; border-radius: 12px; }
+
+  /* ── Reports ── */
+  .chart-placeholder { background: #fff; border-color: #e0d8cc; border-radius: 14px; }
+  .chart-bar-track { background: #f0e4cc; }
+  .mini-bar { background: #0c1b2e; }
+  .mini-bar.today { background: #e8651a; }
+  .top-product-rank { background: #0c1b2e; color: #22b5a5; }
+  .top-product-sales { color: #0c1b2e; }
+  .top-product-row { border-bottom-color: #f0e9e0; }
+
+  /* ── Stock ── */
+  .stock-dot.green { background: #1a8f82; }
+  .stock-dot.yellow { background: #e8651a; }
+  .stock-badge.ok { background: rgba(26,143,130,0.12); color: #0f5048; }
+  .stock-badge.low { background: rgba(232,101,26,0.1); color: #7a3010; }
+
+  /* ── Notification panel ── */
+  .notif-panel { border-radius: 16px; border-color: #e0d8cc; }
+  .notif-item.unread { background: rgba(26,143,130,0.05); }
+  .notif-item:hover { background: #f8f4ef; }
+  .notif-header { border-bottom-color: #e0d8cc; }
+
+  /* ── CmdK ── */
+  .cmdk-box { border-radius: 16px; }
+  .cmdk-item:hover { background: #f8f4ef; }
+  .cmdk-input-wrap { border-bottom-color: #e0d8cc; }
+
+  /* ── Bulk bar ── */
+  .bulk-bar { background: #0c1b2e; border-radius: 14px; }
+  .bulk-bar .bulk-count { background: #e8651a; color: #fff; }
+
+  /* ── Bottom nav ── */
+  .bottom-nav { background: rgba(248,244,239,0.97); border-top-color: #e0d8cc; }
+  .bn-item.active .bn-label { color: #0c1b2e; font-weight: 700; }
+
+  /* ── Page title ── */
+  .page-title { font-weight: 900; letter-spacing: -0.02em; color: #0c1b2e; }
+  .page-subtitle { color: #6b7280; }
+
+  /* ── Filter tabs active ── */
+  .filter-tabs .btn-navy { background: #0c1b2e; }
+
+  /* ── Order detail ── */
+  .order-detail td { background: #f8f4ef; }
+  .detail-label { color: #6b7280; }
+
+  /* ── Score card ── */
+  .score-card { background: #fff; border-color: #e0d8cc; border-radius: 14px; }
+
+  /* ── Ship copy btn ── */
+  .ship-copy-btn:hover { background: #f8f4ef; border-color: #1a8f82; }
+
+  /* ── Stat bar ── */
+  .stat-fill { background: #1a8f82; }
+  .stat-row { border-bottom-color: #f0e9e0; }
+  .stat-bar { background: #f0e4cc; }
+
+  /* ── Ver Tienda btn ── */
+  a[href="shopify-preview.html"] {
+    background: #0c1b2e !important;
+    color: #22b5a5 !important;
+    border-color: #0c1b2e !important;
+    font-size: 10px !important;
+    letter-spacing: 0.14em !important;
+    border-radius: 6px !important;
+  }
+  a[href="shopify-preview.html"]:hover {
+    background: #1a8f82 !important;
+    color: #fff !important;
+    border-color: #1a8f82 !important;
+  }
+  </style>
 </head>
 <body>
 
 <!-- ── TOPBAR ── -->
 <header class="topbar">
   <div class="logo">
-    <div class="logo-icon">KS</div>
-    <span class="logo-text">Kanki Street</span>
+    <div class="logo-icon">K&amp;C</div>
+    <span class="logo-text">KANKI &amp; CO</span>
     <span class="logo-badge">ADMIN</span>
   </div>
   <div class="topbar-sep"></div>
+  <a href="shopify-preview.html" target="_blank" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--navy);color:var(--gold);border-radius:8px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border:1px solid var(--navy);transition:all 150ms;" onmouseover="this.style.background='#2A4A6E'" onmouseout="this.style.background='var(--navy)'">
+    🛍️ Ver Tienda
+  </a>
   <button class="topbar-btn" title="Buscar (⌘K)" onclick="openCmdK()">🔍</button>
   <button class="topbar-btn" title="Notificaciones" onclick="toggleNotifPanel()">
     🔔
@@ -462,7 +678,7 @@
     <div class="notif-item" onclick="navigate('productos');closeNotifPanel()">
       <div class="notif-icon" style="background:#fee2e2">❌</div>
       <div class="notif-body">
-        <div class="notif-text"><strong>Agotado:</strong> Lowercase Fadeaway Hoodie — 0 unid.</div>
+        <div class="notif-text"><strong>Stock crítico:</strong> Stretch Limo Hoodie — 2 unid.</div>
         <div class="notif-time">hace 5h</div>
       </div>
     </div>
@@ -561,7 +777,7 @@
     </div>
 
     <div class="alert warn">
-      ⚠️ <strong>Stock crítico:</strong> OG Bear Hoodie Negro talla L — quedan 2 unid. · Lowercase Fadeaway — AGOTADO
+      ⚠️ <strong>Stock crítico:</strong> OG Bear Hoodie Negro talla L — 2 unid. · Dark Oatmeal Hoodie — 2 unid. · Stretch Limo Hoodie — 2 unid.
       <a class="alert-link" onclick="navigate('productos')">Ver →</a>
     </div>
 
@@ -947,7 +1163,7 @@
       <div class="page-header-row">
         <div>
           <div class="page-title">Productos</div>
-          <div class="page-subtitle">9 productos · 1 agotado · 1 stock crítico</div>
+          <div class="page-subtitle">13 productos · 3 marcas · stock actualizado Jun 2026</div>
         </div>
         <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
           <button class="btn btn-ghost btn-sm" onclick="toggleAllBulk()">☑️ Seleccionar</button>
@@ -957,16 +1173,87 @@
     </div>
 
     <div class="alert warn">
-      📦 <strong>Lowercase Fadeaway Hoodie</strong> está AGOTADO · <strong>OG Bear Hoodie Negro</strong> talla L: 2 unid.
+      ⚠️ <strong>OG Bear Hoodie Negro</strong> talla L: 2 unid. · <strong>Stretch Limo Hoodie</strong>: 2 unid. · <strong>Dark Oatmeal</strong>: 2 unid.
     </div>
 
     <div class="filter-tabs" style="margin-bottom:14px">
-      <button class="btn btn-navy btn-sm" onclick="filterProducts('all',this)">Todos (9)</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterProducts('grizzly',this)">Grizzly (4)</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterProducts('fog',this)">FOG Essentials (5)</button>
+      <button class="btn btn-navy btn-sm" onclick="filterProducts('all',this)">Todos (13)</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterProducts('fog',this)">FOG Essentials (7)</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterProducts('grizzly',this)">Grizzly (3)</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterProducts('stussy',this)">Stussy (3)</button>
     </div>
 
     <div class="product-grid" id="product-grid">
+
+      <!-- FOG ESSENTIALS — HOODIES -->
+      <div class="product-card" data-brand="fog">
+        <div class="product-thumb" style="background:#1a1a1a"><img src="https://luked.cl/cdn/shop/files/fwafawwfawfa.webp?v=1750114347" alt="Fleece Hoodie FW24 Black" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="product-info">
+          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
+          <div class="product-name">Fleece Hoodie FW24 — Black</div>
+          <div class="product-stock">Stock: 3 unid. · M, L, XL</div>
+          <div class="product-price">$109.990</div>
+        </div>
+      </div>
+      <div class="product-card" data-brand="fog">
+        <div class="product-thumb" style="background:#c8c8c8"><img src="https://luked.cl/cdn/shop/files/IMG-8874.webp?v=1756595907" alt="Fleece Hoodie FW24 Grey" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="product-info">
+          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
+          <div class="product-name">Fleece Hoodie FW24 — Grey</div>
+          <div class="product-stock">Stock: 3 unid. · 2L, XL</div>
+          <div class="product-price">$99.990</div>
+        </div>
+      </div>
+      <div class="product-card" data-brand="fog">
+        <div class="product-thumb" style="background:#b5a080"><img src="https://luked.cl/cdn/shop/files/IMG-4248.jpg?v=1750117064" alt="Dark Oatmeal Hoodie" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="product-info">
+          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
+          <div class="product-name">Dark Oatmeal Hoodie</div>
+          <div class="product-stock">Stock: 2 unid. · L, XL</div>
+          <div class="product-price">$109.990</div>
+        </div>
+      </div>
+      <div class="product-card" data-brand="fog">
+        <div class="product-thumb" style="background:#e8dcc8"><img src="https://luked.cl/cdn/shop/files/IMG-4252.jpg?v=1750117099" alt="Light Oatmeal Hoodie" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="product-info">
+          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
+          <div class="product-name">Light Oatmeal Hoodie</div>
+          <div class="product-stock">Stock: 2 unid. · L, XL</div>
+          <div class="product-price">$109.990</div>
+        </div>
+      </div>
+      <div class="product-card" data-brand="fog">
+        <div class="product-thumb" style="background:#2a2a2a"><img src="https://luked.cl/cdn/shop/files/IMG-4244.jpg?v=1750117132" alt="Stretch Limo Hoodie" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="product-info">
+          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
+          <div class="product-name">Stretch Limo Hoodie</div>
+          <div class="product-stock">Stock: 2 unid. · L, XL</div>
+          <div class="product-price">$109.990</div>
+        </div>
+      </div>
+
+      <!-- FOG ESSENTIALS — TEES -->
+      <div class="product-card" data-brand="fog">
+        <div class="product-thumb" style="background:#f0ede8"><img src="fog-tee-white-sq.jpg" alt="Essentials Tee White" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="product-info">
+          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
+          <div class="product-name">Essentials Tee — White</div>
+          <div class="product-stock">Stock: 3 unid. · M, L, XL</div>
+          <div class="product-price">$65.000</div>
+          <span style="font-size:10px;background:var(--navy);color:white;padding:2px 6px;border-radius:4px;font-weight:700">NUEVO</span>
+        </div>
+      </div>
+      <div class="product-card" data-brand="fog">
+        <div class="product-thumb" style="background:#f0ede8"><img src="fog-tee-black.webp" alt="Essentials Tee Black" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="product-info">
+          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
+          <div class="product-name">Essentials Tee — Black</div>
+          <div class="product-stock">Stock: 3 unid. · M, L, XL</div>
+          <div class="product-price">$65.000</div>
+          <span style="font-size:10px;background:var(--navy);color:white;padding:2px 6px;border-radius:4px;font-weight:700">NUEVO</span>
+        </div>
+      </div>
+
       <!-- GRIZZLY -->
       <div class="product-card" data-brand="grizzly">
         <div class="product-thumb" style="background:var(--cream)"><img src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96098-image.jpg" alt="OG Bear Hoodie Negro" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
@@ -974,17 +1261,8 @@
           <div style="font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.08em;margin-bottom:2px">GRIZZLY</div>
           <div class="product-name">OG Bear Basic Hoodie — Negro</div>
           <div class="product-stock low">⚠️ Talla L: 2 unid.</div>
-          <div class="product-price">$48.990</div>
+          <div class="product-price">$89.990</div>
           <span style="font-size:10px;background:var(--gold);color:var(--navy);padding:2px 6px;border-radius:4px;font-weight:700">HOT</span>
-        </div>
-      </div>
-      <div class="product-card" data-brand="grizzly" style="opacity:0.55">
-        <div class="product-thumb" style="background:var(--cream)"><img src="https://grizzlygriptape.cl/wp-content/uploads/2025/09/product_template_93367.jpg" alt="Lowercase Fadeaway" style="width:100%;height:100%;object-fit:cover;filter:grayscale(30%)" loading="lazy"></div>
-        <div class="product-info">
-          <div style="font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.08em;margin-bottom:2px">GRIZZLY</div>
-          <div class="product-name">Lowercase Fadeaway Hoodie</div>
-          <div class="product-stock low">❌ AGOTADO</div>
-          <div class="product-price" style="text-decoration:line-through;color:var(--text-secondary)">$44.990</div>
         </div>
       </div>
       <div class="product-card" data-brand="grizzly">
@@ -993,7 +1271,7 @@
           <div style="font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.08em;margin-bottom:2px">GRIZZLY</div>
           <div class="product-name">OG Bear Basic Tee — Negro</div>
           <div class="product-stock">Stock: 12 unid.</div>
-          <div class="product-price">$24.990</div>
+          <div class="product-price">$48.990</div>
           <span style="font-size:10px;background:var(--gold);color:var(--navy);padding:2px 6px;border-radius:4px;font-weight:700">HOT</span>
         </div>
       </div>
@@ -1003,61 +1281,43 @@
           <div style="font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.08em;margin-bottom:2px">GRIZZLY</div>
           <div class="product-name">OG Bear Basic Tee — Beige</div>
           <div class="product-stock">Stock: 10 unid.</div>
-          <div class="product-price">$24.990</div>
+          <div class="product-price">$48.990</div>
           <span style="font-size:10px;background:var(--gold);color:var(--navy);padding:2px 6px;border-radius:4px;font-weight:700">HOT</span>
         </div>
       </div>
-      <!-- FOG ESSENTIALS -->
-      <div class="product-card" data-brand="fog">
-        <div class="product-thumb" style="background:#1a1a1a"><img src="https://luked.cl/cdn/shop/files/fwafawwfawfa.webp?v=1750114347" alt="Fleece Hoodie FW24 Black" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+
+      <!-- STUSSY -->
+      <div class="product-card" data-brand="stussy">
+        <div class="product-thumb" style="background:#111827"><img src="https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=480" alt="8-Ball Tee Black" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
         <div class="product-info">
-          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
-          <div class="product-name">Fleece Hoodie FW24 — Black</div>
-          <div class="product-stock">Stock: 6 unid.</div>
-          <div class="product-price">$109.990</div>
+          <div style="font-size:9px;font-weight:700;color:#6366f1;letter-spacing:0.08em;margin-bottom:2px">STUSSY</div>
+          <div class="product-name">8-Ball Tee — Black</div>
+          <div class="product-stock">Stock: 2 unid. · L, XL</div>
+          <div class="product-price">$65.000</div>
           <span style="font-size:10px;background:var(--navy);color:white;padding:2px 6px;border-radius:4px;font-weight:700">NUEVO</span>
         </div>
       </div>
-      <div class="product-card" data-brand="fog">
-        <div class="product-thumb" style="background:#c8c8c8"><img src="https://luked.cl/cdn/shop/files/IMG-8874.webp?v=1756595907" alt="Fleece Hoodie FW24 Grey" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+      <div class="product-card" data-brand="stussy">
+        <div class="product-thumb" style="background:#f8f8f8"><img src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_2.jpg?v=1760638172&width=800" alt="Basic Logo Tee Black" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
         <div class="product-info">
-          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
-          <div class="product-name">Fleece Hoodie FW24 — Grey</div>
-          <div class="product-stock">Stock: 4 unid.</div>
-          <div class="product-price">$109.990</div>
+          <div style="font-size:9px;font-weight:700;color:#6366f1;letter-spacing:0.08em;margin-bottom:2px">STUSSY</div>
+          <div class="product-name">Basic Logo Tee — Black</div>
+          <div class="product-stock">Stock: disponible</div>
+          <div class="product-price">$65.000</div>
           <span style="font-size:10px;background:var(--navy);color:white;padding:2px 6px;border-radius:4px;font-weight:700">NUEVO</span>
         </div>
       </div>
-      <div class="product-card" data-brand="fog">
-        <div class="product-thumb" style="background:#b5a080"><img src="https://luked.cl/cdn/shop/files/IMG-4248.jpg?v=1750117064" alt="Dark Oatmeal Hoodie" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+      <div class="product-card" data-brand="stussy">
+        <div class="product-thumb" style="background:#fff"><img src="producto-download.jpg" alt="Basic Logo Tee White" style="width:100%;height:100%;object-fit:contain" loading="lazy"></div>
         <div class="product-info">
-          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
-          <div class="product-name">Dark Oatmeal Hoodie</div>
-          <div class="product-stock">Stock: 5 unid.</div>
-          <div class="product-price">$99.990</div>
+          <div style="font-size:9px;font-weight:700;color:#6366f1;letter-spacing:0.08em;margin-bottom:2px">STUSSY</div>
+          <div class="product-name">Basic Logo Tee — White</div>
+          <div class="product-stock">Stock: disponible</div>
+          <div class="product-price">$65.000</div>
           <span style="font-size:10px;background:var(--navy);color:white;padding:2px 6px;border-radius:4px;font-weight:700">NUEVO</span>
         </div>
       </div>
-      <div class="product-card" data-brand="fog">
-        <div class="product-thumb" style="background:#e8dcc8"><img src="https://luked.cl/cdn/shop/files/IMG-4252.jpg?v=1750117099" alt="Light Oatmeal Hoodie" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
-        <div class="product-info">
-          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
-          <div class="product-name">Light Oatmeal Hoodie</div>
-          <div class="product-stock">Stock: 5 unid.</div>
-          <div class="product-price">$99.990</div>
-          <span style="font-size:10px;background:var(--navy);color:white;padding:2px 6px;border-radius:4px;font-weight:700">NUEVO</span>
-        </div>
-      </div>
-      <div class="product-card" data-brand="fog">
-        <div class="product-thumb" style="background:#2a2a2a"><img src="https://luked.cl/cdn/shop/files/IMG-4244.jpg?v=1750117132" alt="Stretch Limo Hoodie" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
-        <div class="product-info">
-          <div style="font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.08em;margin-bottom:2px;opacity:0.6">FEAR OF GOD ESSENTIALS</div>
-          <div class="product-name">Stretch Limo Hoodie</div>
-          <div class="product-stock">Stock: 3 unid.</div>
-          <div class="product-price">$99.990</div>
-          <span style="font-size:10px;background:var(--navy);color:white;padding:2px 6px;border-radius:4px;font-weight:700">NUEVO</span>
-        </div>
-      </div>
+
     </div>
   </div>
 

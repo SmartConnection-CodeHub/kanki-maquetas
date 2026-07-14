@@ -983,6 +983,155 @@ body::before{
   .screen{border-radius:34px}
 }
 </style>
+
+<!-- ══ KANKI SURF × STREET THEME ══ -->
+<style>
+:root {
+  --navy:        #0c1b2e;
+  --navy-deep:   #080e18;
+  --navy-light:  #0d3a5e;
+  --gold:        #1a8f82;
+  --gold-glow:   rgba(26,143,130,.35);
+  --gold-light:  #22b5a5;
+  --cream:       #f0e4cc;
+  --cream-soft:  #f8f4ef;
+  --sand:        #e0ceae;
+  --ocean:       #0c1b2e;
+  --foam:        #f8f4ef;
+  --ink:         #0c1b2e;
+  --muted:       #6b7280;
+  --danger:      #dc2626;
+  --success:     #1a8f82;
+  --sunset:      #e8651a;
+}
+
+/* Body — deep ocean */
+html, body { font-family: 'Inter', system-ui, sans-serif; }
+body {
+  background:
+    radial-gradient(ellipse at top, rgba(26,143,130,.25) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(232,101,26,.12) 0%, transparent 50%),
+    linear-gradient(180deg, #080e18 0%, #0c1b2e 100%);
+}
+body::before {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' opacity='.05'%3E%3Cpath d='M0,100 Q300,30 600,100 T1200,100 V200 H0 Z' fill='%231a8f82'/%3E%3Cpath d='M0,130 Q300,60 600,130 T1200,130 V200 H0 Z' fill='%23e8651a'/%3E%3C/svg%3E") repeat-x bottom;
+  background-size: 1200px 200px;
+}
+
+/* Header */
+.header .kicker { color: #22b5a5; }
+.header h1 em {
+  background: linear-gradient(135deg, #22b5a5 0%, #e8651a 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* iPhone frame */
+.iphone {
+  box-shadow:
+    0 0 0 1px rgba(26,143,130,.2),
+    0 30px 80px rgba(0,0,0,.6),
+    0 10px 30px rgba(26,143,130,.15);
+}
+.iphone:hover {
+  box-shadow:
+    0 0 0 1px rgba(26,143,130,.5),
+    0 50px 100px rgba(0,0,0,.7),
+    0 20px 50px rgba(26,143,130,.3);
+}
+.gallery::-webkit-scrollbar-thumb { background: #1a8f82; }
+
+/* Phone label */
+.phone-label { color: #22b5a5; }
+.phone-label .num { border-color: #22b5a5; color: #22b5a5; }
+
+/* Buttons */
+.btn-primary { background: #0c1b2e; color: #f0e4cc; box-shadow: 0 8px 20px rgba(12,27,46,.35); }
+.btn-gold { background: linear-gradient(135deg, #e8651a 0%, #c04e0e 100%); color: #fff; box-shadow: 0 8px 24px rgba(232,101,26,.35); }
+.btn-line { border-color: #1a8f82; color: #1a8f82; }
+.btn-mini { background: #0c1b2e; color: #f0e4cc; }
+.btn-mini.gold { background: #e8651a; color: #fff; }
+
+/* Screen 1 */
+.s1 { background: radial-gradient(ellipse at top, rgba(26,143,130,.08) 0%, transparent 60%), #f8f4ef; }
+.s1-hero .icon-wrap { background: linear-gradient(135deg, #1a8f82 0%, #22b5a5 100%); box-shadow: 0 10px 30px rgba(26,143,130,.35); }
+.s1-hero h2 { color: #0c1b2e; }
+.s1-hero h2 em { color: #1a8f82; }
+.benefit-list li::before { color: #1a8f82; }
+
+/* Screen 2 */
+.s2 { background: linear-gradient(180deg, #f8f4ef 0%, #f0e4cc 100%); }
+.check-circle { background: linear-gradient(135deg, #1a8f82 0%, #22b5a5 100%); box-shadow: 0 14px 40px rgba(26,143,130,.35); }
+.s2 h3 { color: #0c1b2e; }
+.coupon-card { border-color: #1a8f82; }
+.coupon-card .code { color: #0c1b2e; }
+.coupon-card .valid { color: #1a8f82; }
+.share-prompt { background: rgba(26,143,130,.08); color: #0c1b2e; }
+
+/* Screen 3 */
+.s3 { background: radial-gradient(ellipse at top, rgba(26,143,130,.2) 0%, transparent 50%), linear-gradient(180deg, #0c1b2e 0%, #0d3a5e 100%); }
+.crew-badge { background: rgba(26,143,130,.2); border-color: #1a8f82; color: #22b5a5; }
+.s3 h2 em { color: #22b5a5; }
+.feature-row { border-left-color: #e8651a; background: rgba(248,244,239,.06); }
+.feature-row .txt strong { color: #22b5a5; }
+
+/* Screen 4 */
+.s4 { background: #f8f4ef; }
+.s4 h3 { color: #0c1b2e; }
+.code-builder { border-color: #e0ceae; }
+.code-builder .prefix { color: #0c1b2e; }
+.code-builder input { color: #0c1b2e; }
+.code-builder .pen { color: #1a8f82; }
+.preview-final { background: linear-gradient(135deg, #0c1b2e 0%, #0d3a5e 100%); }
+.preview-final .lbl { color: #22b5a5; }
+.status-row .ok { color: #1a8f82; }
+
+/* Screen 5 */
+.s5 { background: linear-gradient(180deg, #f8f4ef 0%, #f0e4cc 100%); }
+.s5 h3 { color: #0c1b2e; }
+.flow-diagram { border-color: rgba(26,143,130,.15); }
+.flow-step { color: #0c1b2e; }
+.flow-arrow { color: #e8651a; }
+.flow-result { color: #1a8f82; }
+.lvl.gold { border-color: #1a8f82; }
+.lvl.crew { border-color: #0c1b2e; background: linear-gradient(135deg, #0c1b2e 0%, #0d3a5e 100%); }
+.lvl-here { color: #1a8f82; background: rgba(26,143,130,.12); }
+
+/* Screen 6 — email */
+.s6 { background: #f0e4cc; }
+.email-head { background: #0c1b2e; }
+.email-head .from { color: #22b5a5; }
+.email-body .code-box { border-left-color: #1a8f82; background: #f8f4ef; }
+.email-body .code-box strong { color: #1a8f82; }
+.email-tier.here { background: linear-gradient(90deg, rgba(26,143,130,.3) 0%, transparent 100%); }
+.email-body h4 { color: #0c1b2e; }
+.email-tier .desc strong { color: #1a8f82; }
+
+/* Screen 7 — dashboard */
+.s7 { background: #f8f4ef; }
+.dash-head { background: linear-gradient(135deg, #0c1b2e 0%, #0d3a5e 100%); border-bottom-color: #1a8f82; }
+.dash-head .crew-tag { color: #22b5a5; }
+.code-display { border-color: #1a8f82; }
+.code-display .val { color: #0c1b2e; }
+.metric-card { border-top-color: #1a8f82; }
+.metric-card .val { color: #0c1b2e; }
+.metric-card .bar .fill { background: linear-gradient(90deg, #1a8f82 0%, #22b5a5 100%); }
+.progress-strip .row strong { color: #1a8f82; }
+.progress-strip .fill { background: linear-gradient(90deg, #1a8f82 0%, #22b5a5 100%); }
+.event-row .text strong { color: #1a8f82; }
+.event-row:hover { background: #f0e4cc; }
+.event-row .delta { color: #1a8f82; }
+
+/* Screens 8-13 — notif/dark */
+.notif-screen { background: linear-gradient(180deg, #080e18 0%, #0c1b2e 100%); }
+
+/* Brand mark */
+.brand-mark.gold { color: #22b5a5; }
+
+/* CTA / accent badges */
+[style*="color:var(--gold)"] { color: #22b5a5 !important; }
+[style*="background:var(--gold)"] { background: #1a8f82 !important; }
+[style*="border-color:var(--gold)"] { border-color: #1a8f82 !important; }
+</style>
 </head>
 <body>
 
