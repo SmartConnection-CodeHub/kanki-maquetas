@@ -897,6 +897,60 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .pcard__qv { display:none; } /* en mobile click directo en wrap */
 }
 
+/* ── SEARCH OVERLAY ── */
+.search-overlay { display:none; position:fixed; inset:0; z-index:1400; align-items:flex-start; justify-content:center; padding:80px 20px 20px; }
+.search-overlay.open { display:flex; }
+.search-overlay__bg { position:absolute; inset:0; background:rgba(12,27,46,0.72); backdrop-filter:blur(6px); }
+.search-overlay__panel {
+  position:relative; z-index:1; background:#fff; width:100%; max-width:640px;
+  border-radius:var(--r-lg); overflow:hidden; max-height:80vh;
+  display:flex; flex-direction:column;
+  box-shadow:0 24px 80px rgba(0,0,0,0.3);
+  animation:qvIn 0.28s cubic-bezier(.4,0,.2,1);
+}
+.search-overlay__head { display:flex; align-items:center; gap:12px; padding:18px 22px; border-bottom:1px solid var(--border); }
+.search-overlay__head svg { flex-shrink:0; color:var(--gray); }
+.search-overlay__head input {
+  flex:1; border:none; outline:none; font-size:17px; color:var(--ocean); font-family:inherit;
+}
+.search-overlay__head input::placeholder { color:var(--gray); }
+.search-clear {
+  display:none; align-items:center; justify-content:center; width:22px; height:22px;
+  border-radius:50%; background:var(--gray-light,#f1eee7); border:none; cursor:pointer;
+  color:var(--ocean); font-size:14px; flex-shrink:0;
+}
+.search-esc {
+  font-size:10px; font-weight:700; letter-spacing:0.08em; color:var(--gray);
+  border:1px solid var(--border); border-radius:5px; padding:3px 7px; flex-shrink:0;
+}
+.search-quick { padding:18px 22px; }
+.search-quick__label { font-size:10px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray); margin-bottom:12px; }
+.search-quick__pills { display:flex; gap:8px; flex-wrap:wrap; }
+.search-pill {
+  padding:9px 16px; border-radius:var(--r-full); background:#fff;
+  border:1.5px solid var(--border); font-size:12px; font-weight:700;
+  color:var(--ocean); cursor:pointer; transition:all var(--t);
+}
+.search-pill:hover { background:var(--ocean); color:#fff; border-color:var(--ocean); }
+.search-results { flex:1; overflow-y:auto; display:none; padding:6px 0; }
+.search-result {
+  width:100%; display:flex; align-items:center; gap:14px; padding:12px 22px;
+  border:none; background:none; text-align:left; cursor:pointer; transition:background var(--t);
+}
+.search-result:hover { background:var(--foam); }
+.search-result__img { width:56px; height:56px; border-radius:var(--r-sm); object-fit:contain; background:#fafaf8; padding:5px; flex-shrink:0; }
+.search-result__brand { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); }
+.search-result__name { font-size:13px; font-weight:700; text-transform:uppercase; color:var(--ocean); margin:2px 0 3px; line-height:1.25; }
+.search-result__price { font-size:12.5px; font-weight:800; color:var(--ocean); }
+.search-empty { display:none; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:48px 24px; text-align:center; color:var(--gray); }
+.search-empty__icon { font-size:38px; opacity:0.4; }
+.search-empty p { font-size:14px; line-height:1.6; }
+.search-empty__hint { font-size:12px; opacity:0.7; }
+@media (max-width:600px) {
+  .search-overlay { padding:0; align-items:flex-end; }
+  .search-overlay__panel { max-width:100%; max-height:92vh; border-radius:20px 20px 0 0; }
+}
+
 /* ── CART DRAWER ── */
 .cart-drawer {
   display: flex; position: fixed; inset: 0; z-index: 1200;
@@ -2577,6 +2631,35 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   </div>
 </div>
 
+<!-- ══ SEARCH OVERLAY ══ -->
+<div class="search-overlay" id="search-overlay">
+  <div class="search-overlay__bg" id="search-bg"></div>
+  <div class="search-overlay__panel">
+    <div class="search-overlay__head">
+      <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar hoodies, poleras, marcas..." autocomplete="off">
+      <button class="search-clear" id="search-clear" aria-label="Limpiar">×</button>
+      <span class="search-esc">ESC</span>
+    </div>
+    <div class="search-quick" id="search-quick">
+      <div class="search-quick__label">Búsquedas rápidas</div>
+      <div class="search-quick__pills">
+        <button class="search-pill" data-q="fear of god">FOG Essentials</button>
+        <button class="search-pill" data-q="grizzly">Grizzly</button>
+        <button class="search-pill" data-q="stussy">Stussy</button>
+        <button class="search-pill" data-q="hoodie">Hoodies</button>
+        <button class="search-pill" data-q="tee">Poleras</button>
+      </div>
+    </div>
+    <div class="search-results" id="search-results"></div>
+    <div class="search-empty" id="search-empty">
+      <div class="search-empty__icon">🔍</div>
+      <p>No encontramos nada con "<span id="search-empty-term"></span>"</p>
+      <p class="search-empty__hint">Prueba con "hoodie", "grizzly" o "stussy"</p>
+    </div>
+  </div>
+</div>
+
 <!-- ══ CART DRAWER ══ -->
 <div class="cart-drawer" id="cart-drawer">
   <div class="cart-drawer__bg" id="cart-bg"></div>
@@ -3059,21 +3142,101 @@ mobClose?.addEventListener('click', window.closeMob);
 mobBg?.addEventListener('click', window.closeMob);
 
 /* ── Búsqueda ── */
-document.getElementById('search-btn')?.addEventListener('click', () => {
-  const q = prompt('¿Qué estás buscando?');
-  if (!q) return;
-  const ql = q.toLowerCase();
-  if (ql.includes('fog') || ql.includes('fear') || ql.includes('essentials') || ql.includes('hoodie')) {
-    document.getElementById('fog').scrollIntoView({ behavior: 'smooth' });
-  } else if (ql.includes('grizzly') || ql.includes('skate') || ql.includes('griptape')) {
-    document.getElementById('grizzly').scrollIntoView({ behavior: 'smooth' });
-  } else if (ql.includes('stussy') || ql.includes('street')) {
-    document.getElementById('stussy').scrollIntoView({ behavior: 'smooth' });
-  } else if (ql.includes('surf') || ql.includes('escuela')) {
-    document.getElementById('surf-school').scrollIntoView({ behavior: 'smooth' });
-  } else {
-    document.getElementById('marcas').scrollIntoView({ behavior: 'smooth' });
+let searchIndex = null;
+function getSearchIndex() {
+  if (searchIndex) return searchIndex;
+  const seen = new Set();
+  searchIndex = [];
+  document.querySelectorAll('.pcard').forEach(card => {
+    const data = getProductFromCard(card);
+    if (seen.has(data.name)) return;
+    seen.add(data.name);
+    searchIndex.push({ ...data, card });
+  });
+  return searchIndex;
+}
+
+function renderSearchResults(query) {
+  const q = query.trim().toLowerCase();
+  const resultsEl = document.getElementById('search-results');
+  const emptyEl   = document.getElementById('search-empty');
+  const quickEl   = document.getElementById('search-quick');
+  const clearBtn  = document.getElementById('search-clear');
+
+  clearBtn.style.display = q ? 'flex' : 'none';
+
+  if (!q) {
+    resultsEl.style.display = 'none';
+    resultsEl.innerHTML = '';
+    emptyEl.style.display = 'none';
+    quickEl.style.display = 'block';
+    return;
   }
+  quickEl.style.display = 'none';
+
+  const matches = getSearchIndex().filter(p =>
+    p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q)
+  );
+
+  if (!matches.length) {
+    resultsEl.style.display = 'none';
+    emptyEl.style.display = 'flex';
+    document.getElementById('search-empty-term').textContent = query.trim();
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  resultsEl.style.display = 'block';
+  resultsEl.innerHTML = matches.map((p, i) => `
+    <button class="search-result" data-idx="${i}">
+      <img class="search-result__img" src="${p.src}" alt="${p.name}" loading="lazy">
+      <div>
+        <div class="search-result__brand">${p.brand}</div>
+        <div class="search-result__name">${p.name}</div>
+        <div class="search-result__price">${fmt(p.price)}</div>
+      </div>
+    </button>`).join('');
+  resultsEl._matches = matches;
+}
+
+function openSearch() {
+  getSearchIndex();
+  document.getElementById('search-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('search-input').value = '';
+  renderSearchResults('');
+  setTimeout(() => document.getElementById('search-input')?.focus(), 100);
+}
+function closeSearch() {
+  document.getElementById('search-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('search-btn')?.addEventListener('click', openSearch);
+document.getElementById('search-bg')?.addEventListener('click', closeSearch);
+document.getElementById('search-input')?.addEventListener('input', e => renderSearchResults(e.target.value));
+document.getElementById('search-clear')?.addEventListener('click', () => {
+  const input = document.getElementById('search-input');
+  input.value = '';
+  renderSearchResults('');
+  input.focus();
+});
+document.getElementById('search-results')?.addEventListener('click', e => {
+  const btn = e.target.closest('.search-result');
+  if (!btn) return;
+  const product = document.getElementById('search-results')._matches?.[+btn.dataset.idx];
+  if (product) { closeSearch(); openQV(product.card); }
+});
+document.querySelectorAll('.search-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const input = document.getElementById('search-input');
+    input.value = pill.dataset.q;
+    renderSearchResults(pill.dataset.q);
+    input.focus();
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('search-overlay').classList.contains('open')) closeSearch();
 });
 
 /* ── Sticky header ── */
