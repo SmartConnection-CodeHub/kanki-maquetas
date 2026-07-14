@@ -521,6 +521,31 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .brand-sec--stussy .pcard__brand { color: var(--teal-light); }
 .brand-sec--stussy .pcard__wrap { background: rgba(255,255,255,0.05); }
 
+/* Encargos — bajo pedido, cálido/arena */
+.brand-sec--encargos { background: var(--sand); padding: 90px 0; }
+.encargos-head { max-width: 620px; margin: 0 auto 44px; text-align: center; }
+.encargos-head .brand-badge { background: rgba(12,27,46,0.07); color: var(--ocean); border: 1px solid rgba(12,27,46,0.12); margin-left: auto; margin-right: auto; }
+.encargos-head .brand-name-big { color: var(--ocean); }
+.encargos-head .brand-tagline { color: var(--gray); max-width: 100%; margin-left: auto; margin-right: auto; }
+.encargos-form {
+  max-width: 620px; margin: 0 auto; background: var(--white);
+  border-radius: var(--r-md); padding: 40px; box-shadow: 0 20px 60px rgba(12,27,46,0.1);
+}
+.encargos-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.encargos-input {
+  width: 100%; padding: 14px 16px; font-size: 14px; font-family: inherit;
+  border: 1.5px solid var(--border); border-radius: var(--r-sm); outline: none;
+  transition: border-color var(--t);
+}
+.encargos-input:focus { border-color: var(--teal); }
+.encargos-textarea { margin-bottom: 20px; resize: vertical; min-height: 90px; }
+.encargos-submit { width: 100%; justify-content: center; }
+.encargos-note { text-align: center; font-size: 12px; color: var(--gray); margin-top: 18px; }
+@media (max-width: 640px) {
+  .encargos-form { padding: 28px 22px; }
+  .encargos-form__row { grid-template-columns: 1fr; gap: 0; }
+}
+
 /* ── SURF SCHOOL FOTO GRID ── */
 .surf-school__photos {
   display: grid;
@@ -1678,6 +1703,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
           </div>
         </div>
         <a href="#best-sellers">Best Sellers</a>
+        <a href="#encargos">Encargos</a>
         <a href="#cultura">¿Quiénes somos?</a>
       </nav>
 
@@ -2189,6 +2215,35 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 </section>
 
+<div class="brand-divider"></div>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN: ENCARGOS
+     ══════════════════════════════════════ -->
+<section class="brand-sec brand-sec--encargos" id="encargos">
+  <div class="container">
+    <div class="encargos-head reveal">
+      <span class="brand-badge">Bajo Pedido</span>
+      <h2 class="brand-name-big">ENCARGOS</h2>
+      <p class="brand-tagline">¿No está tu talla o el modelo que buscas? Tenemos acceso directo a todo el catálogo de FOG Essentials, Grizzly y Stussy. Cuéntanos qué necesitas y te lo conseguimos.</p>
+    </div>
+
+    <form class="encargos-form reveal delay-1" id="encargos-form">
+      <div class="encargos-form__row">
+        <input class="encargos-input" type="text" id="enc-nombre" placeholder="Tu nombre" required>
+        <input class="encargos-input" type="tel" id="enc-telefono" placeholder="WhatsApp de contacto" required>
+      </div>
+      <div class="encargos-form__row">
+        <input class="encargos-input" type="text" id="enc-producto" placeholder="Marca / producto que buscas" required>
+        <input class="encargos-input" type="text" id="enc-talla" placeholder="Talla (opcional)">
+      </div>
+      <textarea class="encargos-input encargos-textarea" id="enc-comentario" placeholder="Comentario o link de referencia (opcional)" rows="3"></textarea>
+      <button type="submit" class="btn btn-teal encargos-submit" id="encargos-submit">Enviar Encargo por WhatsApp</button>
+    </form>
+    <p class="encargos-note">Te respondemos por WhatsApp en menos de 24h hábiles · Sin costo por cotizar</p>
+  </div>
+</section>
+
 <!-- ══ MARQUEE 2 ══ -->
 <div class="ticker ticker--sand">
   <div class="ticker__track">
@@ -2505,6 +2560,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
           <li><a href="#grizzly">Grizzly</a></li>
           <li><a href="#stussy">Stussy</a></li>
           <li><a href="#best-sellers">Best Sellers</a></li>
+          <li><a href="#encargos">Encargos</a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -2718,6 +2774,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
       <a href="#grizzly" onclick="closeMob()">Grizzly <span>›</span></a>
       <a href="#stussy" onclick="closeMob()">Stussy <span>›</span></a>
       <a href="#best-sellers" onclick="closeMob()">Best Sellers <span>›</span></a>
+      <a href="#encargos" onclick="closeMob()">Encargos <span>›</span></a>
       <a href="#cultura" onclick="closeMob()">¿Quiénes somos? <span>›</span></a>
       <a href="#surf-school" onclick="closeMob()" style="color:var(--teal-light);">Escuela de Surf 🌊 <span>›</span></a>
     </div>
@@ -3264,6 +3321,30 @@ document.getElementById('nl-btn')?.addEventListener('click', () => {
     btn.style.background = 'var(--teal)';
     setTimeout(() => { btn.textContent = 'Suscribirse'; btn.style.background = ''; }, 3000);
   }
+});
+
+/* ── Encargos ── */
+document.getElementById('encargos-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const nombre = document.getElementById('enc-nombre').value.trim();
+  const telefono = document.getElementById('enc-telefono').value.trim();
+  const producto = document.getElementById('enc-producto').value.trim();
+  const talla = document.getElementById('enc-talla').value.trim();
+  const comentario = document.getElementById('enc-comentario').value.trim();
+  if (!nombre || !telefono || !producto) return;
+
+  let msg = `Hola Kanki! Quiero hacer un Encargo.\nNombre: ${nombre}\nWhatsApp: ${telefono}\nBusco: ${producto}`;
+  if (talla) msg += `\nTalla: ${talla}`;
+  if (comentario) msg += `\nComentario: ${comentario}`;
+
+  window.open('https://wa.me/56957807766?text=' + encodeURIComponent(msg), '_blank');
+
+  const btn = document.getElementById('encargos-submit');
+  const original = btn.textContent;
+  btn.textContent = '¡Encargo enviado! 🌊';
+  btn.style.background = 'var(--teal)';
+  setTimeout(() => { btn.textContent = original; btn.style.background = ''; }, 3000);
+  e.target.reset();
 });
 
 /* init */

@@ -356,6 +356,31 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .nl-btn:active { background: #0a1624; }
 
+/* ── ENCARGOS ── */
+.encargos-head { padding: 0 20px; margin-bottom: 16px; text-align: center; }
+.encargos-head .sec-head__eyebrow { justify-content: center; }
+.encargos-head .sec-head__eyebrow::before { display: none; }
+.encargos-head p { font-size: 13px; color: var(--gray); line-height: 1.6; margin-top: 8px; }
+.encargos-card {
+  margin: 0 20px; background: var(--white); border-radius: var(--r-lg);
+  padding: 22px 18px; box-shadow: 0 10px 30px rgba(12,27,46,0.08);
+}
+.encargos-form { display: flex; flex-direction: column; gap: 10px; }
+.encargos-input {
+  padding: 13px 14px; font-size: 14px; font-family: var(--font);
+  border: 1.5px solid var(--border); border-radius: var(--r-sm); outline: none;
+  width: 100%;
+}
+.encargos-input:focus { border-color: var(--teal); }
+.encargos-textarea { resize: vertical; min-height: 80px; }
+.encargos-submit {
+  padding: 14px; background: var(--teal); color: #fff; text-align: center;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  border-radius: var(--r-md); border: none; touch-action: manipulation; transition: background var(--t);
+}
+.encargos-submit:active { background: #157569; }
+.encargos-note { text-align: center; font-size: 11px; color: var(--gray); margin: 12px 20px 0; }
+
 /* ── SOCIAL CTA ── */
 .social-cta {
   padding: 32px 20px; background: var(--ocean); text-align: center; color: #fff;
@@ -1024,6 +1049,26 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   </div>
 </section>
 
+<!-- ══ ENCARGOS ══ -->
+<section class="section section--cream" id="encargos">
+  <div class="encargos-head">
+    <div class="sec-head__eyebrow">Bajo Pedido</div>
+    <h2 class="sec-head__title">ENCARGOS</h2>
+    <p>¿No está tu talla o el modelo que buscas? Tenemos acceso directo a FOG Essentials, Grizzly y Stussy. Cuéntanos qué necesitas y te lo conseguimos.</p>
+  </div>
+  <div class="encargos-card">
+    <form class="encargos-form" id="encargos-form">
+      <input class="encargos-input" type="text" id="enc-nombre" placeholder="Tu nombre" required>
+      <input class="encargos-input" type="tel" id="enc-telefono" placeholder="WhatsApp de contacto" required>
+      <input class="encargos-input" type="text" id="enc-producto" placeholder="Marca / producto que buscas" required>
+      <input class="encargos-input" type="text" id="enc-talla" placeholder="Talla (opcional)">
+      <textarea class="encargos-input encargos-textarea" id="enc-comentario" placeholder="Comentario o link de referencia (opcional)" rows="3"></textarea>
+      <button type="submit" class="encargos-submit" id="encargos-submit">Enviar Encargo por WhatsApp</button>
+    </form>
+  </div>
+  <p class="encargos-note">Te respondemos por WhatsApp en menos de 24h hábiles · Sin costo por cotizar</p>
+</section>
+
 <!-- ══ LA CULTURA KANKI ══ -->
 <section class="section section--dark" id="cultura">
   <div class="sec-head">
@@ -1157,6 +1202,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     <a href="#fog">FOG Essentials</a>
     <a href="#grizzly">Grizzly</a>
     <a href="#stussy">Stussy</a>
+    <a href="#encargos">Encargos</a>
     <a href="#surf-school">Escuela de Surf</a>
     <a href="terminos/index.html">Términos</a>
     <a href="https://wa.me/56957807766" target="_blank">Devoluciones</a>
@@ -1709,9 +1755,33 @@ $('nl-btn')?.addEventListener('click', () => {
   }
 });
 
+/* ── ENCARGOS ── */
+$('encargos-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const nombre = $('enc-nombre').value.trim();
+  const telefono = $('enc-telefono').value.trim();
+  const producto = $('enc-producto').value.trim();
+  const talla = $('enc-talla').value.trim();
+  const comentario = $('enc-comentario').value.trim();
+  if (!nombre || !telefono || !producto) return;
+
+  let msg = `Hola Kanki! Quiero hacer un Encargo.\nNombre: ${nombre}\nWhatsApp: ${telefono}\nBusco: ${producto}`;
+  if (talla) msg += `\nTalla: ${talla}`;
+  if (comentario) msg += `\nComentario: ${comentario}`;
+
+  window.open('https://wa.me/56957807766?text=' + encodeURIComponent(msg), '_blank');
+
+  const btn = $('encargos-submit');
+  const original = btn.textContent;
+  btn.textContent = '¡Encargo enviado! 🌊';
+  btn.style.background = 'var(--teal)';
+  setTimeout(() => { btn.textContent = original; btn.style.background = ''; }, 3000);
+  e.target.reset();
+});
+
 /* ── RIPPLE ── */
 document.addEventListener('pointerdown', e => {
-  const target = e.target.closest('.pill,.mcard__quick,.cat-btn,.qv-add,.qv-wa,.cart-checkout,.nl-btn,.brand-band__btn');
+  const target = e.target.closest('.pill,.mcard__quick,.cat-btn,.qv-add,.qv-wa,.cart-checkout,.nl-btn,.brand-band__btn,.encargos-submit');
   if (!target) return;
   const rect = target.getBoundingClientRect();
   const size = Math.sqrt(rect.width**2 + rect.height**2) * 2;
