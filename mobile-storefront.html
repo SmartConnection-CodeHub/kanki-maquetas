@@ -356,8 +356,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .nl-btn:active { background: #0a1624; }
 
-/* ── ENCARGOS ── */
-.encargos-head { padding: 0 20px; margin-bottom: 16px; text-align: center; }
+/* ── ENCARGOS (drawer, ver #encargos-drawer) ── */
+.encargos-scroll { flex: 1; overflow-y: auto; padding-bottom: 20px; }
+.encargos-head { padding: 0 20px; margin: 18px 0 16px; text-align: center; }
 .encargos-head .sec-head__eyebrow { justify-content: center; }
 .encargos-head .sec-head__eyebrow::before { display: none; }
 .encargos-head p { font-size: 13px; color: var(--gray); line-height: 1.6; margin-top: 8px; }
@@ -791,6 +792,36 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   </div>
 </section>
 
+<!-- ══ ENCARGOS (ahora es un drawer, se abre por click, no es visible de entrada) ══ -->
+<div class="cart-drawer" id="encargos-drawer">
+  <div class="cart-drawer__bg" id="encargos-bg"></div>
+  <div class="cart-drawer__panel">
+    <div class="cart-handle"></div>
+    <div class="cart-drawer__head">
+      <div class="cart-drawer__title">Encargos</div>
+      <button class="cart-close" id="encargos-close">×</button>
+    </div>
+    <div class="encargos-scroll">
+      <div class="encargos-head">
+        <div class="sec-head__eyebrow">Bajo Pedido</div>
+        <h2 class="sec-head__title">ENCARGOS</h2>
+        <p>¿No está tu talla o el modelo que buscas? Tenemos acceso directo a FOG Essentials, Grizzly y Stussy. Cuéntanos qué necesitas y te lo conseguimos.</p>
+      </div>
+      <div class="encargos-card">
+        <form class="encargos-form" id="encargos-form">
+          <input class="encargos-input" type="text" id="enc-nombre" placeholder="Tu nombre" required>
+          <input class="encargos-input" type="tel" id="enc-telefono" placeholder="WhatsApp de contacto" required>
+          <input class="encargos-input" type="text" id="enc-producto" placeholder="Marca / producto que buscas" required>
+          <input class="encargos-input" type="text" id="enc-talla" placeholder="Talla (opcional)">
+          <textarea class="encargos-input encargos-textarea" id="enc-comentario" placeholder="Comentario o link de referencia (opcional)" rows="3"></textarea>
+          <button type="submit" class="encargos-submit" id="encargos-submit">Enviar Encargo por WhatsApp</button>
+        </form>
+      </div>
+      <p class="encargos-note">Te respondemos por WhatsApp en menos de 24h hábiles · Sin costo por cotizar</p>
+    </div>
+  </div>
+</div>
+
 <!-- ══ CATEGORY PILLS ══ -->
 <div class="cats" id="tienda">
   <button class="cat-btn active" data-cat="all">Todo</button>
@@ -1049,26 +1080,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   </div>
 </section>
 
-<!-- ══ ENCARGOS ══ -->
-<section class="section section--cream" id="encargos">
-  <div class="encargos-head">
-    <div class="sec-head__eyebrow">Bajo Pedido</div>
-    <h2 class="sec-head__title">ENCARGOS</h2>
-    <p>¿No está tu talla o el modelo que buscas? Tenemos acceso directo a FOG Essentials, Grizzly y Stussy. Cuéntanos qué necesitas y te lo conseguimos.</p>
-  </div>
-  <div class="encargos-card">
-    <form class="encargos-form" id="encargos-form">
-      <input class="encargos-input" type="text" id="enc-nombre" placeholder="Tu nombre" required>
-      <input class="encargos-input" type="tel" id="enc-telefono" placeholder="WhatsApp de contacto" required>
-      <input class="encargos-input" type="text" id="enc-producto" placeholder="Marca / producto que buscas" required>
-      <input class="encargos-input" type="text" id="enc-talla" placeholder="Talla (opcional)">
-      <textarea class="encargos-input encargos-textarea" id="enc-comentario" placeholder="Comentario o link de referencia (opcional)" rows="3"></textarea>
-      <button type="submit" class="encargos-submit" id="encargos-submit">Enviar Encargo por WhatsApp</button>
-    </form>
-  </div>
-  <p class="encargos-note">Te respondemos por WhatsApp en menos de 24h hábiles · Sin costo por cotizar</p>
-</section>
-
 <!-- ══ LA CULTURA KANKI ══ -->
 <section class="section section--dark" id="cultura">
   <div class="sec-head">
@@ -1202,7 +1213,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     <a href="#fog">FOG Essentials</a>
     <a href="#grizzly">Grizzly</a>
     <a href="#stussy">Stussy</a>
-    <a href="#encargos">Encargos</a>
+    <a href="#" onclick="openEncargos();return false;">Encargos</a>
     <a href="#surf-school">Escuela de Surf</a>
     <a href="terminos/index.html">Términos</a>
     <a href="https://wa.me/56957807766" target="_blank">Devoluciones</a>
@@ -1469,6 +1480,17 @@ $('cart-close')?.addEventListener('click', closeCart);
 $('cart-btn')?.addEventListener('click', e => { e.preventDefault(); openCart(); });
 $('nav-carrito')?.addEventListener('click', openCart);
 
+function openEncargos() {
+  $('encargos-drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeEncargos() {
+  $('encargos-drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+$('encargos-bg')?.addEventListener('click', closeEncargos);
+$('encargos-close')?.addEventListener('click', closeEncargos);
+
 $('cart-items')?.addEventListener('click', e => {
   const btn = e.target.closest('[data-action],[data-id]');
   if (!btn) return;
@@ -1525,6 +1547,14 @@ function getSizeTable(brand, name) {
       ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
     </table>
     <p class="size-note">Medidas tomadas en plano (prenda estirada, no en circunferencia). Pueden variar entre 1 y 2 cm.</p>`;
+  }
+  if (brand?.includes('Stussy')) {
+    const rows = [['S','48','72'],['M','53','75'],['L','58','77'],['XL','64','80']];
+    return `<table class="size-table">
+      <tr><th>Talla</th><th>Pecho (cm)</th><th>Largo (cm)</th></tr>
+      ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
+    </table>
+    <p class="size-note">Medidas oficiales de Stüssy (camiseta manga corta), tomadas en plano. Pueden variar entre 1 y 2 cm según el modelo. Stüssy indica que la medida puede variar de un estilo a otro — ante cualquier duda, consulta con nosotros la ficha exacta de la prenda antes de comprar.</p>`;
   }
   const isHoodie = n.includes('hoodie') || n.includes('fleece');
   const rows = isHoodie
@@ -1741,6 +1771,7 @@ document.querySelectorAll('.search-pill').forEach(pill => {
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && $('search-overlay').classList.contains('open')) closeSearch();
+  if (e.key === 'Escape' && $('encargos-drawer').classList.contains('open')) closeEncargos();
 });
 
 /* ── NEWSLETTER ── */
