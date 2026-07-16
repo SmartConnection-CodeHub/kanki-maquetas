@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanki Surf — Tienda & Escuela</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #F5EDD9;
+    --ocean: #1A4B5F;
+    --wave: #2E8B8B;
+    --foam: #E8F4F4;
+    --sunset: #F4875A;
+    --coral: #E8553E;
+    --deep: #0D2B38;
+    --gold: #D4A853;
+    --white: #FAFAF8;
+    --text: #1C1C1C;
+    --muted: #8A8A7A;
+    --border: #DDD9CC;
+    --success: #2E8B5F;
+    --warning: #D4A853;
+    --danger: #E8553E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAVIGATION ─────────────────────────────── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--deep);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+    border-bottom: 2px solid var(--wave);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--sand);
+    letter-spacing: 3px;
+    cursor: pointer;
+  }
+
+  .nav-logo span { color: var(--sunset); }
+
+  .nav-tabs {
+    display: flex; gap: 4px;
+  }
+
+  .nav-tab {
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+    color: #AAA;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .nav-tab:hover { background: rgba(255,255,255,0.08); color: var(--sand); }
+  .nav-tab.active { background: var(--wave); color: white; }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 1rem;
+  }
+
+  .cart-btn {
+    position: relative;
+    background: var(--sunset);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+    transition: background 0.2s;
+  }
+
+  .cart-btn:hover { background: var(--coral); }
+
+  .cart-badge {
+    position: absolute;
+    top: -6px; right: -6px;
+    background: var(--gold);
+    color: var(--deep);
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ─── PANELS ─────────────────────────────────── */
+  .panel {
+    display: none;
+    padding-top: 64px;
+    min-height: 100vh;
+  }
+  .panel.active { display: block; }
+
+  /* ─── STORE PANEL ────────────────────────────── */
+  .store-hero {
+    background: linear-gradient(135deg, var(--deep) 0%, var(--ocean) 60%, var(--wave) 100%);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .store-hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 60px;
+    background: var(--white);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+
+  .store-hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    color: var(--sand);
+    letter-spacing: 6px;
+    line-height: 1;
+  }
+
+  .store-hero h1 span { color: var(--sunset); }
+
+  .store-hero p {
+    color: rgba(245,237,217,0.7);
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+  }
+
+  .store-filters {
+    display: flex; gap: 8px;
+    justify-content: center;
+    padding: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 8px 20px;
+    border: 2px solid var(--border);
+    background: transparent;
+    border-radius: 99px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--ocean);
+    background: var(--ocean);
+    color: white;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    padding: 0 2rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(26,75,95,0.15);
+  }
+
+  .product-img {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    position: relative;
+  }
+
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--coral);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+  }
+
+  .stock-badge {
+    position: absolute; top: 12px; right: 12px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .stock-ok { background: #D4EDDA; color: #155724; }
+  .stock-low { background: #FFF3CD; color: #856404; }
+  .stock-out { background: #F8D7DA; color: #721C24; }
+
+  .product-info { padding: 1.25rem; }
+
+  .product-name {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+
+  .product-cat {
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .product-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .product-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--ocean);
+    letter-spacing: 1px;
+  }
+
+  .add-btn {
+    background: var(--ocean);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+
+  .add-btn:hover { background: var(--wave); }
+  .add-btn:disabled { background: #CCC; cursor: not-allowed; }
+
+  /* ─── CART SIDEBAR ───────────────────────────── */
+  .cart-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+    backdrop-filter: blur(4px);
+  }
+
+  .cart-overlay.open { display: block; }
+
+  .cart-sidebar {
+    position: fixed; top: 0; right: -480px;
+    width: 480px; height: 100vh;
+    background: var(--white);
+    z-index: 2001;
+    transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+    box-shadow: -8px 0 40px rgba(0,0,0,0.2);
+  }
+
+  .cart-sidebar.open { right: 0; }
+
+  .cart-header {
+    padding: 1.5rem;
+    border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--deep);
+    color: var(--sand);
+  }
+
+  .cart-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+  }
+
+  .close-btn {
+    background: none; border: none;
+    color: var(--sand); font-size: 1.5rem;
+    cursor: pointer; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+  }
+
+  .close-btn:hover { background: rgba(255,255,255,0.1); }
+
+  .cart-items {
+    flex: 1; overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .cart-item {
+    display: flex; gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+
+  .cart-item-emoji { font-size: 2rem; }
+
+  .cart-item-info { flex: 1; }
+
+  .cart-item-name { font-weight: 600; font-size: 0.9rem; }
+
+  .cart-item-price {
+    color: var(--ocean);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+  }
+
+  .cart-item-qty {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .qty-btn {
+    width: 28px; height: 28px;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .qty-btn:hover { background: var(--ocean); color: white; border-color: var(--ocean); }
+
+  .cart-footer {
+    padding: 1.5rem;
+    border-top: 2px solid var(--border);
+    background: var(--foam);
+  }
+
+  .cart-total {
+    display: flex; justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .cart-total span:last-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--ocean);
+  }
+
+  .checkout-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--ocean), var(--wave));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: opacity 0.2s;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .checkout-btn:hover { opacity: 0.9; }
+
+  /* ─── CHECKOUT MODAL ─────────────────────────── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border-radius: 20px;
+    width: 90%; max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  }
+
+  .modal-header {
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, var(--deep), var(--ocean));
+    color: var(--sand);
+    border-radius: 20px 20px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .modal-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+  }
+
+  .modal-body { padding: 2rem; }
+
+  .form-group { margin-bottom: 1.2rem; }
+
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    background: white;
+  }
+
+  .form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--wave);
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--sunset), var(--coral));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 1px;
+    margin-top: 1rem;
+    transition: opacity 0.2s;
+  }
+
+  .submit-btn:hover { opacity: 0.9; }
+
+  /* ─── SCHOOL PANEL ───────────────────────────── */
+  .school-hero {
+    background: linear-gradient(160deg, #0D1B2A 0%, #1A3A4F 50%, #2E6B5E 100%);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .school-hero::after {
+    content: '🌊';
+    position: absolute;
+    font-size: 20rem;
+    opacity: 0.05;
+    top: -3rem;
+    right: -3rem;
+    pointer-events: none;
+  }
+
+  .school-hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: var(--sand);
+    letter-spacing: 5px;
+  }
+
+  .school-hero p {
+    color: rgba(245,237,217,0.7);
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .classes-section {
+    padding: 3rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+    color: var(--deep);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .class-card {
+    background: white;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .class-card:hover {
+    border-color: var(--wave);
+    box-shadow: 0 8px 30px rgba(46,139,139,0.15);
+  }
+
+  .class-card-header {
+    padding: 1.5rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+
+  .class-emoji { font-size: 2.5rem; }
+
+  .class-level {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .level-beginner { background: #D4EDDA; color: #155724; }
+  .level-intermediate { background: #FFF3CD; color: #856404; }
+  .level-advanced { background: #F8D7DA; color: #721C24; }
+
+  .class-name { font-weight: 700; font-size: 1.1rem; }
+  .class-desc { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  .class-details {
+    padding: 0 1.5rem 1rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .class-detail {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .class-footer {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--foam);
+  }
+
+  .class-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--ocean);
+  }
+
+  .book-btn {
+    background: var(--wave);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+  }
+
+  .book-btn:hover { background: var(--ocean); }
+
+  /* Calendar for booking */
+  .booking-calendar {
+    background: white;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .cal-nav {
+    background: none; border: none;
+    font-size: 1.2rem; cursor: pointer;
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+
+  .cal-nav:hover { background: var(--foam); }
+
+  .cal-month {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    color: var(--deep);
+  }
+
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .cal-day-name {
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    padding: 4px 0 8px;
+    text-transform: uppercase;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.15s;
+    border: 2px solid transparent;
+  }
+
+  .cal-day:hover { background: var(--foam); border-color: var(--wave); }
+  .cal-day.available { color: var(--ocean); font-weight: 700; }
+  .cal-day.selected { background: var(--ocean); color: white !important; }
+  .cal-day.today { border-color: var(--sunset); color: var(--sunset); }
+  .cal-day.past { color: #CCC; cursor: default; }
+  .cal-day.past:hover { background: none; border-color: transparent; }
+  .cal-day.empty { cursor: default; }
+
+  .time-slots {
+    margin-top: 1.5rem;
+    display: none;
+  }
+
+  .time-slots.visible { display: block; }
+
+  .time-slots h4 {
+    font-weight: 700; margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .slots-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .slot-btn {
+    padding: 10px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+    transition: all 0.15s;
+    color: var(--text);
+  }
+
+  .slot-btn:hover { border-color: var(--wave); background: var(--foam); }
+  .slot-btn.selected { background: var(--wave); color: white; border-color: var(--wave); }
+  .slot-btn.full { background: #f5f5f5; color: #CCC; cursor: not-allowed; text-decoration: line-through; }
+
+  /* ─── TRACKING PANEL ─────────────────────────── */
+  .tracking-panel {
+    padding-top: 64px;
+    min-height: 100vh;
+    background: var(--foam);
+    display: none;
+  }
+
+  .tracking-panel.active { display: block; }
+
+  .tracking-hero {
+    background: linear-gradient(135deg, var(--deep), var(--ocean));
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--sand);
+  }
+
+  .tracking-hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 4px;
+  }
+
+  .search-order-box {
+    max-width: 500px;
+    margin: 2rem auto 0;
+    display: flex; gap: 8px;
+  }
+
+  .search-order-box input {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .search-order-box button {
+    padding: 12px 20px;
+    background: var(--sunset);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    transition: background 0.2s;
+  }
+
+  .search-order-box button:hover { background: var(--coral); }
+
+  .tracking-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .order-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+  }
+
+  .order-card-header {
+    padding: 1.5rem;
+    background: var(--deep);
+    color: var(--sand);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .order-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+
+  .order-status-badge {
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+  }
+
+  .status-pending { background: var(--gold); color: var(--deep); }
+  .status-processing { background: #CCE5FF; color: #004085; }
+  .status-shipped { background: #D4EDDA; color: #155724; }
+  .status-delivered { background: var(--wave); color: white; }
+
+  .tracking-steps {
+    padding: 2rem 1.5rem;
+    position: relative;
+  }
+
+  .step {
+    display: flex; gap: 1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px; top: 36px;
+    width: 2px; bottom: -24px;
+    background: var(--border);
+  }
+
+  .step.done:not(:last-child)::after { background: var(--wave); }
+
+  .step-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .step.done .step-dot { background: var(--wave); color: white; }
+  .step.current .step-dot { background: var(--sunset); color: white; animation: pulse 2s infinite; }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(244,135,90,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(244,135,90,0); }
+  }
+
+  .step-info h4 {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+  }
+
+  .step-info p {
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  /* ─── ADMIN PANEL ────────────────────────────── */
+  .admin-panel {
+    padding-top: 64px;
+    min-height: 100vh;
+    background: #F0F2F5;
+    display: none;
+  }
+
+  .admin-panel.active { display: block; }
+
+  .admin-toolbar {
+    background: var(--deep);
+    padding: 0.75rem 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .admin-toolbar span {
+    color: var(--sand);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  .admin-tab-btn {
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    transition: all 0.15s;
+  }
+
+  .admin-tab-btn.active {
+    background: var(--wave);
+    color: white;
+    border-color: var(--wave);
+  }
+
+  .admin-content {
+    padding: 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--wave);
+  }
+
+  .stat-card.danger { border-left-color: var(--coral); }
+  .stat-card.warning { border-left-color: var(--gold); }
+  .stat-card.success { border-left-color: var(--success); }
+
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--deep);
+    letter-spacing: 1px;
+  }
+
+  .stat-label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Space Mono', monospace;
+    margin-top: 4px;
+  }
+
+  .admin-table-box {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-table-header {
+    padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .admin-table-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: var(--deep);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  th {
+    background: var(--foam);
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td { background: var(--foam); }
+
+  .stock-bar-wrap {
+    background: var(--border);
+    border-radius: 99px;
+    height: 6px;
+    width: 80px;
+    overflow: hidden;
+  }
+
+  .stock-bar {
+    height: 100%;
+    border-radius: 99px;
+    background: var(--wave);
+    transition: width 0.3s;
+  }
+
+  .stock-bar.low { background: var(--gold); }
+  .stock-bar.critical { background: var(--coral); }
+
+  .action-btn {
+    padding: 5px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 4px;
+    transition: opacity 0.15s;
+  }
+
+  .action-btn:hover { opacity: 0.8; }
+  .btn-blue { background: #CCE5FF; color: #004085; }
+  .btn-green { background: #D4EDDA; color: #155724; }
+  .btn-yellow { background: #FFF3CD; color: #856404; }
+  .btn-red { background: #F8D7DA; color: #721C24; }
+
+  /* ─── DISPATCH MODULE ────────────────────────── */
+  .dispatch-header {
+    background: var(--deep);
+    padding: 1.5rem 2rem;
+    color: var(--sand);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .dispatch-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 4px;
+  }
+
+  .dispatch-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .dispatch-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-top: 3px solid var(--wave);
+  }
+
+  .dispatch-card.urgent { border-top-color: var(--coral); }
+  .dispatch-card.ready { border-top-color: var(--success); }
+  .dispatch-card.transit { border-top-color: var(--gold); }
+
+  .dispatch-card h4 {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .dispatch-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--deep);
+    line-height: 1;
+  }
+
+  /* ─── NOTIFICATIONS ───────────────────────────── */
+  .toast-container {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    z-index: 9999;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+
+  .toast {
+    background: var(--deep);
+    color: var(--sand);
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    display: flex; align-items: center; gap: 10px;
+    animation: slideIn 0.3s ease;
+    max-width: 340px;
+    border-left: 4px solid var(--wave);
+  }
+
+  .toast.success { border-left-color: var(--success); }
+  .toast.warning { border-left-color: var(--gold); }
+  .toast.error { border-left-color: var(--coral); }
+
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* ─── EMPTY STATE ────────────────────────────── */
+  .empty-cart {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+  }
+
+  .empty-cart .big-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .empty-cart h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+  .empty-cart p { font-size: 0.85rem; }
+
+  /* ─── RESPONSIVE ─────────────────────────────── */
+  @media (max-width: 600px) {
+    .nav-tabs { display: none; }
+    .cart-sidebar { width: 100%; right: -100%; }
+    .products-grid { grid-template-columns: 1fr 1fr; gap: 1rem; padding: 0 1rem 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .dispatch-grid { grid-template-columns: 1fr; }
+    .slots-grid { grid-template-columns: repeat(3, 1fr); }
+    .admin-content { padding: 1rem; }
+  }
+
+  .admin-sub { display: none; }
+  .admin-sub.active { display: block; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .bg-wave { background: var(--wave); color: white; }
+  .bg-sand { background: var(--sand); color: var(--deep); }
+  .bg-coral { background: var(--coral); color: white; }
+
+  .email-preview {
+    background: #F8F9FA;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 1rem;
+  }
+
+  .email-preview-bar {
+    background: white;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .email-preview-body { padding: 1.25rem; font-size: 0.88rem; line-height: 1.6; }
+
+  .email-preview-body .email-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    color: var(--ocean);
+    margin-bottom: 1rem;
+  }
+
+  .email-preview-body .email-cta {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--ocean);
+    color: white;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-top: 1rem;
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+
+  /* mobile menu btn */
+  .mobile-menu-btn {
+    display: none;
+    background: none; border: none;
+    color: var(--sand); font-size: 1.3rem; cursor: pointer;
+  }
+
+  @media (max-width: 600px) {
+    .mobile-menu-btn { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-logo" onclick="showPanel('store')">KANKI<span>SURF</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPanel('store')">🛍 Tienda</button>
+    <button class="nav-tab" onclick="showPanel('school')">🏄 Escuela</button>
+    <button class="nav-tab" onclick="showPanel('tracking')">📦 Mis Pedidos</button>
+    <button class="nav-tab" onclick="showPanel('admin')">⚙️ Admin</button>
+  </div>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Carrito
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── CART SIDEBAR ───────────────────────────── -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>Tu Carrito</h2>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="empty-cart">
+      <div class="big-icon">🛒</div>
+      <h3>Tu carrito está vacío</h3>
+      <p>Agrega productos de la tienda para comenzar</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">$0</span>
+    </div>
+    <button class="checkout-btn" onclick="openCheckout()">Proceder al pago →</button>
+  </div>
+</div>
+
+<!-- ─── CHECKOUT MODAL ─────────────────────────── -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Finalizar Compra</h2>
+      <button class="close-btn" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" placeholder="Juan" id="checkName">
+        </div>
+        <div class="form-group">
+          <label>Apellido</label>
+          <input type="text" placeholder="Pérez" id="checkLast">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="juan@email.com" id="checkEmail">
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" placeholder="+56 9 1234 5678" id="checkPhone">
+      </div>
+      <div class="form-group">
+        <label>Dirección de entrega</label>
+        <input type="text" placeholder="Av. Del Mar 123" id="checkAddr">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Ciudad</label>
+          <input type="text" placeholder="Viña del Mar" id="checkCity">
+        </div>
+        <div class="form-group">
+          <label>Región</label>
+          <select id="checkRegion">
+            <option>Valparaíso</option>
+            <option>Metropolitana</option>
+            <option>Biobío</option>
+            <option>Araucanía</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Método de pago</label>
+        <select id="checkPay">
+          <option>Tarjeta de crédito/débito</option>
+          <option>Transferencia bancaria</option>
+          <option>WebPay</option>
+          <option>MercadoPago</option>
+        </select>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0">
+      <div style="font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem">Resumen del pedido</div>
+      <div id="checkSummary" style="font-size:0.88rem;margin-bottom:1rem"></div>
+      <button class="submit-btn" onclick="placeOrder()">✅ Confirmar Pedido</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── BOOKING MODAL ─────────────────────────── -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Reservar Clase</h2>
+      <button class="close-btn" onclick="closeBooking()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="bookingClassName" style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:var(--ocean);margin-bottom:1.5rem"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" placeholder="Tu nombre" id="bookName">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="tu@email.com" id="bookEmail">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" placeholder="+56 9 1234 5678" id="bookPhone">
+      </div>
+      <div class="form-group">
+        <label>Número de participantes</label>
+        <select id="bookPax">
+          <option>1 persona</option>
+          <option>2 personas</option>
+          <option>3 personas</option>
+          <option>4 personas</option>
+          <option>Grupo (5+)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Fecha seleccionada</label>
+        <div id="bookDate" style="padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--muted)">Selecciona una fecha en el calendario</div>
+      </div>
+      <div class="form-group">
+        <label>Horario seleccionado</label>
+        <div id="bookTime" style="padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--muted)">Selecciona un horario</div>
+      </div>
+      <div class="form-group">
+        <label>Notas adicionales (opcional)</label>
+        <textarea rows="2" placeholder="Nivel, experiencia previa..." id="bookNotes" style="width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;resize:none;"></textarea>
+      </div>
+      <button class="submit-btn" onclick="confirmBooking()" style="background:linear-gradient(135deg,var(--wave),var(--ocean))">🏄 Confirmar Reserva</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STORE PANEL -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="panel active" id="panel-store">
+  <div class="store-hero">
+    <h1>KANKI<span>SURF</span></h1>
+    <p>Equipo de surf premium · Enviamos a todo Chile 🇨🇱</p>
+  </div>
+
+  <div class="store-filters">
+    <button class="filter-btn active" onclick="filterProducts('all', this)">Todo</button>
+    <button class="filter-btn" onclick="filterProducts('tablas', this)">🏄 Tablas</button>
+    <button class="filter-btn" onclick="filterProducts('trajes', this)">🤿 Trajes</button>
+    <button class="filter-btn" onclick="filterProducts('accesorios', this)">⚙️ Accesorios</button>
+    <button class="filter-btn" onclick="filterProducts('ropa', this)">👕 Ropa</button>
+  </div>
+
+  <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SCHOOL PANEL -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-school">
+  <div class="school-hero">
+    <h1>ESCUELA KANKI SURF</h1>
+    <p>Aprende a surfear en las mejores olas de Chile 🌊 Clases personalizadas para todos los niveles</p>
+  </div>
+
+  <div class="classes-section">
+    <h2 class="section-title">NUESTRAS CLASES</h2>
+    <p class="section-sub">Selecciona una clase y reserva tu cupo en el calendario</p>
+    <div class="classes-grid" id="classesGrid"></div>
+
+    <h2 class="section-title">AGENDA TU CLASE</h2>
+    <p class="section-sub">Selecciona una fecha disponible y el horario que más te acomode</p>
+    <div class="booking-calendar">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+        <div class="cal-month" id="calMonth"></div>
+        <button class="cal-nav" onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="time-slots" id="timeSlots">
+        <h4>Horarios disponibles</h4>
+        <div class="slots-grid" id="slotsGrid"></div>
+        <button class="book-btn" style="margin-top:1.5rem;width:100%;padding:12px;font-size:1rem" onclick="openBookingModal(null)">Reservar horario seleccionado →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TRACKING PANEL -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-tracking">
+  <div class="tracking-hero">
+    <h1>SEGUIMIENTO DE PEDIDOS</h1>
+    <p>Consulta el estado de tu orden en tiempo real</p>
+    <div class="search-order-box">
+      <input type="text" id="orderSearch" placeholder="Ej: KS-2024-001" />
+      <button onclick="searchOrder()">Buscar</button>
+    </div>
+  </div>
+  <div class="tracking-content" id="trackingContent">
+    <div style="text-align:center;padding:3rem;color:var(--muted)">
+      <div style="font-size:4rem;margin-bottom:1rem">🔍</div>
+      <p>Ingresa tu número de orden para ver el estado</p>
+      <p style="margin-top:0.5rem;font-size:0.8rem;font-family:'Space Mono',monospace">También puedes ver tus pedidos de ejemplo ingresando: KS-001</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- ADMIN PANEL -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="admin-panel" id="panel-admin">
+  <div class="admin-toolbar">
+    <span>PANEL DE ADMINISTRACIÓN — KANKI SURF</span>
+    <button class="admin-tab-btn active" onclick="switchAdmin('dashboard', this)">Dashboard</button>
+    <button class="admin-tab-btn" onclick="switchAdmin('stock', this)">Inventario</button>
+    <button class="admin-tab-btn" onclick="switchAdmin('orders', this)">Pedidos</button>
+    <button class="admin-tab-btn" onclick="switchAdmin('dispatch', this)">Despacho</button>
+    <button class="admin-tab-btn" onclick="switchAdmin('classes', this)">Clases</button>
+    <button class="admin-tab-btn" onclick="switchAdmin('emails', this)">Emails</button>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- DASHBOARD -->
+    <div class="admin-sub active" id="admin-dashboard">
+      <div class="stats-row">
+        <div class="stat-card success">
+          <div class="stat-val">$842.500</div>
+          <div class="stat-label">Ventas del mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">34</div>
+          <div class="stat-label">Pedidos activos</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-val">8</div>
+          <div class="stat-label">Stock bajo</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">12</div>
+          <div class="stat-label">Clases agendadas</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-val">3</div>
+          <div class="stat-label">Pedidos urgentes</div>
+        </div>
+      </div>
+      <div class="admin-table-box">
+        <div class="admin-table-header">
+          <h3>ÚLTIMAS ACTIVIDADES</h3>
+          <span style="font-size:0.78rem;color:var(--muted);font-family:'Space Mono',monospace">HOY — ACTUALIZADO AHORA</span>
+        </div>
+        <table>
+          <thead><tr><th>Hora</th><th>Evento</th><th>Detalle</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:0.8rem">14:32</td><td>Nueva venta</td><td>KS-034 — Tabla longboard + traje 3/2</td><td><span class="badge bg-wave">Pagado</span></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:0.8rem">13:58</td><td>Reserva clase</td><td>Clase beginner — María González</td><td><span class="badge bg-wave">Confirmado</span></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:0.8rem">12:15</td><td>Despacho</td><td>KS-028 — Enviado por Starken</td><td><span class="badge" style="background:#D4EDDA;color:#155724">En camino</span></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:0.8rem">11:00</td><td>Stock bajo</td><td>Tabla shortboard 6'2 — solo 2 unidades</td><td><span class="badge bg-coral">⚠️ Alerta</span></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:0.8rem">09:30</td><td>Nuevo usuario</td><td>carlos.surf@gmail.com</td><td><span class="badge bg-sand">Registrado</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STOCK / INVENTARIO -->
+    <div class="admin-sub" id="admin-stock">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-val">48</div>
+          <div class="stat-label">Productos activos</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-val">8</div>
+          <div class="stat-label">Stock bajo (&lt;5)</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-val">2</div>
+          <div class="stat-label">Sin stock</div>
+        </div>
+      </div>
+      <div class="admin-table-box">
+        <div class="admin-table-header">
+          <h3>INVENTARIO</h3>
+          <button class="action-btn btn-blue" onclick="showToast('📦 Importando inventario...','info')">+ Importar CSV</button>
+        </div>
+        <table>
+          <thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody id="stockTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PEDIDOS -->
+    <div class="admin-sub" id="admin-orders">
+      <div class="stats-row">
+        <div class="stat-card warning"><div class="stat-val">5</div><div class="stat-label">Pendientes</div></div>
+        <div class="stat-card"><div class="stat-val">12</div><div class="stat-label">Procesando</div></div>
+        <div class="stat-card"><div class="stat-val">9</div><div class="stat-label">Despachados</div></div>
+        <div class="stat-card success"><div class="stat-val">8</div><div class="stat-label">Entregados</div></div>
+      </div>
+      <div class="admin-table-box">
+        <div class="admin-table-header">
+          <h3>GESTIÓN DE PEDIDOS</h3>
+          <select style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem" onchange="filterOrders(this.value)">
+            <option value="all">Todos</option>
+            <option value="pending">Pendientes</option>
+            <option value="processing">Procesando</option>
+            <option value="shipped">Despachados</option>
+            <option value="delivered">Entregados</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Orden</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead>
+          <tbody id="ordersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DESPACHO -->
+    <div class="admin-sub" id="admin-dispatch">
+      <div class="dispatch-header">
+        <h2>MÓDULO DE DESPACHO</h2>
+        <span style="font-family:'Space Mono',monospace;font-size:0.8rem;opacity:0.7">Actualizado: ahora</span>
+      </div>
+      <div style="padding:1.5rem">
+        <div class="dispatch-grid">
+          <div class="dispatch-card urgent">
+            <h4>⚡ Urgentes (hoy)</h4>
+            <div class="dispatch-count">3</div>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">Deben salir antes de las 17:00h</p>
+          </div>
+          <div class="dispatch-card ready">
+            <h4>✅ Listos para enviar</h4>
+            <div class="dispatch-count">7</div>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">Empaquetados y listos</p>
+          </div>
+          <div class="dispatch-card transit">
+            <h4>🚚 En tránsito</h4>
+            <div class="dispatch-count">9</div>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">Con Starken y Chilexpress</p>
+          </div>
+          <div class="dispatch-card">
+            <h4>📍 Entregados hoy</h4>
+            <div class="dispatch-count">4</div>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">Confirmados por el cliente</p>
+          </div>
+        </div>
+        <div class="admin-table-box">
+          <div class="admin-table-header">
+            <h3>COLA DE DESPACHO</h3>
+            <button class="action-btn btn-green" onclick="showToast('📋 Etiquetas generadas para impresión','success')">🖨️ Imprimir etiquetas</button>
+          </div>
+          <table>
+            <thead><tr><th>Orden</th><th>Cliente</th><th>Ciudad</th><th>Courier</th><th>Tracking</th><th>Estado</th><th>Acción</th></tr></thead>
+            <tbody id="dispatchTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLASES -->
+    <div class="admin-sub" id="admin-classes">
+      <div class="stats-row">
+        <div class="stat-card success"><div class="stat-val">12</div><div class="stat-label">Reservas semana</div></div>
+        <div class="stat-card"><div class="stat-val">3</div><div class="stat-label">Instructores</div></div>
+        <div class="stat-card warning"><div class="stat-val">2</div><div class="stat-label">Cupos restantes hoy</div></div>
+      </div>
+      <div class="admin-table-box">
+        <div class="admin-table-header">
+          <h3>RESERVAS DE CLASES</h3>
+          <button class="action-btn btn-blue" onclick="showToast('📧 Recordatorios enviados a 12 alumnos','success')">📧 Enviar recordatorios</button>
+        </div>
+        <table>
+          <thead><tr><th>Alumno</th><th>Clase</th><th>Fecha</th><th>Hora</th><th>Instructor</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody id="classesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EMAILS -->
+    <div class="admin-sub" id="admin-emails">
+      <div class="stats-row">
+        <div class="stat-card success"><div class="stat-val">98%</div><div class="stat-label">Tasa de entrega</div></div>
+        <div class="stat-card"><div class="stat-val">42%</div><div class="stat-label">Tasa apertura</div></div>
+        <div class="stat-card"><div class="stat-val">156</div><div class="stat-label">Enviados este mes</div></div>
+      </div>
+      <div class="admin-table-box">
+        <div class="admin-table-header"><h3>PLANTILLAS DE EMAIL</h3></div>
+        <div style="padding:1.5rem;display:grid;gap:1rem">
+          <div style="border:2px solid var(--border);border-radius:10px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;margin-bottom:4px">📦 Confirmación de pedido</div>
+              <div style="font-size:0.8rem;color:var(--muted)">Se envía automáticamente al confirmar la compra</div>
+            </div>
+            <button class="action-btn btn-blue" onclick="previewEmail('order')">Vista previa</button>
+          </div>
+          <div style="border:2px solid var(--border);border-radius:10px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;margin-bottom:4px">🚚 Pedido despachado</div>
+              <div style="font-size:0.8rem;color:var(--muted)">Incluye número de tracking del courier</div>
+            </div>
+            <button class="action-btn btn-blue" onclick="previewEmail('shipped')">Vista previa</button>
+          </div>
+          <div style="border:2px solid var(--border);border-radius:10px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;margin-bottom:4px">🏄 Confirmación de clase</div>
+              <div style="font-size:0.8rem;color:var(--muted)">Detalles de la clase + recordatorio</div>
+            </div>
+            <button class="action-btn btn-blue" onclick="previewEmail('class')">Vista previa</button>
+          </div>
+          <div style="border:2px solid var(--border);border-radius:10px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;margin-bottom:4px">⭐ Solicitud de reseña</div>
+              <div style="font-size:0.8rem;color:var(--muted)">Se envía 3 días después de la entrega</div>
+            </div>
+            <button class="action-btn btn-blue" onclick="previewEmail('review')">Vista previa</button>
+          </div>
+          <div style="border:2px solid var(--border);border-radius:10px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;margin-bottom:4px">🛒 Carrito abandonado</div>
+              <div style="font-size:0.8rem;color:var(--muted)">Recordatorio automático a las 2 horas</div>
+            </div>
+            <button class="action-btn btn-blue" onclick="previewEmail('cart')">Vista previa</button>
+          </div>
+          <div style="border:2px solid var(--border);border-radius:10px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;margin-bottom:4px">🌊 Newsletter mensual</div>
+              <div style="font-size:0.8rem;color:var(--muted)">Novedades, ofertas y condiciones del mar</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="action-btn btn-blue" onclick="previewEmail('newsletter')">Vista previa</button>
+              <button class="action-btn btn-green" onclick="showToast('📤 Newsletter enviado a 432 suscriptores','success')">Enviar ahora</button>
+            </div>
+          </div>
+        </div>
+        <div id="emailPreviewArea" style="padding:0 1.5rem 1.5rem;display:none"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── TOAST CONTAINER ───────────────────────── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const PRODUCTS = [
+  { id:1, name:'Tabla Longboard 9\'2', cat:'tablas', emoji:'🏄', price:385000, stock:6, badge:'Más vendido' },
+  { id:2, name:'Tabla Shortboard 6\'2', cat:'tablas', emoji:'🏄', price:295000, stock:2 },
+  { id:3, name:'Tabla Fish 6\'8', cat:'tablas', emoji:'🏄', price:249000, stock:0 },
+  { id:4, name:'Tabla Funboard 7\'6', cat:'tablas', emoji:'🏄', price:319000, stock:4 },
+  { id:5, name:'Traje 3/2mm Full', cat:'trajes', emoji:'🤿', price:145000, stock:12 },
+  { id:6, name:'Traje 4/3mm Invierno', cat:'trajes', emoji:'🤿', price:185000, stock:7 },
+  { id:7, name:'Shortie 2mm Verano', cat:'trajes', emoji:'🤿', price:89000, stock:15, badge:'Oferta' },
+  { id:8, name:'Leash Pro 9\'', cat:'accesorios', emoji:'🪢', price:18500, stock:25 },
+  { id:9, name:'Quillas Futures Tri', cat:'accesorios', emoji:'⚙️', price:45000, stock:10 },
+  { id:10, name:'Wax Cold Water', cat:'accesorios', emoji:'🧴', price:3500, stock:50 },
+  { id:11, name:'Funda Surfboard 6-7\'', cat:'accesorios', emoji:'🛍', price:29000, stock:8 },
+  { id:12, name:'Polera Kanki Logo', cat:'ropa', emoji:'👕', price:22000, stock:30 },
+  { id:13, name:'Hoodie Kanki Wave', cat:'ropa', emoji:'🧥', price:45000, stock:18 },
+  { id:14, name:'Gorra Trucker Surf', cat:'ropa', emoji:'🧢', price:15000, stock:22, badge:'Nuevo' },
+];
+
+const CLASSES = [
+  { id:1, name:'Clase Iniciación', emoji:'🌱', level:'beginner', desc:'Aprende los fundamentos del surf desde cero. Ideal para quienes nunca han surfeado.', duration:'2h', students:'max 4', instructor:'Felipe Reyes', price:45000 },
+  { id:2, name:'Clase Intermedio', emoji:'🌊', level:'intermediate', desc:'Mejora tu técnica de paddling, take-off y maniobras básicas en ola.', duration:'2h', students:'max 4', instructor:'Valentina Cruz', price:55000 },
+  { id:3, name:'Clase Avanzada', emoji:'🔥', level:'advanced', desc:'Perfecciona maniobras, tubo y surfeo de alto rendimiento con video análisis.', duration:'2h', students:'max 2', instructor:'Diego Kanki', price:80000 },
+  { id:4, name:'Clase Privada 1:1', emoji:'⭐', level:'beginner', desc:'Clase completamente personalizada para cualquier nivel. Máximo progreso.', duration:'1.5h', students:'individual', instructor:'A elección', price:95000 },
+  { id:5, name:'Pack Familiar', emoji:'👨‍👩‍👧', level:'beginner', desc:'Aprende toda la familia junta. Hasta 5 integrantes. ¡La mejor experiencia!', duration:'3h', students:'max 5', instructor:'Felipe Reyes', price:120000 },
+  { id:6, name:'Semana Intensiva', emoji:'🏆', level:'intermediate', desc:'5 días de clases, de lunes a viernes. Incluye video análisis y material.', duration:'5 días', students:'max 3', instructor:'Diego Kanki', price:220000 },
+];
+
+const SAMPLE_ORDERS = [
+  { id:'KS-034', client:'Ana Martínez', items:'Tabla Longboard + Traje 3/2', total:530000, status:'processing', date:'26 Mar 2026', city:'Viña del Mar', courier:'Starken', tracking:'SK8823451' },
+  { id:'KS-033', client:'Carlos Rodríguez', items:'Pack Wax x5 + Leash', total:36000, status:'shipped', date:'25 Mar 2026', city:'Valparaíso', courier:'Chilexpress', tracking:'CX9912873' },
+  { id:'KS-032', client:'María López', items:'Traje 4/3mm Invierno', total:185000, status:'delivered', date:'24 Mar 2026', city:'Concón', courier:'Starken', tracking:'SK7741209' },
+  { id:'KS-031', client:'Diego Fuentes', items:'Quillas Futures + Gorra', total:60000, status:'pending', date:'26 Mar 2026', city:'Santiago', courier:'—', tracking:'—' },
+  { id:'KS-030', client:'Sofía Reyes', items:'Polera + Hoodie Kanki', total:67000, status:'shipped', date:'23 Mar 2026', city:'Olmué', courier:'Chilexpress', tracking:'CX8834512' },
+];
+
+const CLASSES_BOOKINGS = [
+  { student:'Pedro Alvarado', class:'Clase Iniciación', date:'27 Mar', time:'09:00', instructor:'Felipe Reyes', status:'confirmed' },
+  { student:'Laura Soto', class:'Clase Avanzada', date:'27 Mar', time:'11:00', instructor:'Diego Kanki', status:'confirmed' },
+  { student:'Roberto Mena', class:'Pack Familiar', date:'28 Mar', time:'10:00', instructor:'Felipe Reyes', status:'pending' },
+  { student:'Camila Torres', class:'Clase Privada 1:1', date:'29 Mar', time:'14:00', instructor:'Valentina Cruz', status:'confirmed' },
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let cart = [];
+let calDate = new Date();
+let selectedDate = null;
+let selectedSlot = null;
+let selectedClass = null;
+let currentFilter = 'all';
+let currentOrderFilter = 'all';
+
+// ═══════════════════════════════════════════════
+// PANEL NAVIGATION
+// ═══════════════════════════════════════════════
+function showPanel(name) {
+  document.querySelectorAll('.panel, .admin-panel, .tracking-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+  if (name === 'admin') {
+    document.getElementById('panel-admin').classList.add('active');
+    renderAdminTables();
+  } else if (name === 'tracking') {
+    document.getElementById('panel-tracking').classList.add('active');
+  } else {
+    document.getElementById(`panel-${name}`).classList.add('active');
+  }
+
+  const tabs = document.querySelectorAll('.nav-tab');
+  const idx = ['store','school','tracking','admin'].indexOf(name);
+  if (tabs[idx]) tabs[idx].classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+// PRODUCTS
+// ═══════════════════════════════════════════════
+function renderProducts(filter) {
+  const grid = document.getElementById('productsGrid');
+  const items = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.cat === filter);
+
+  grid.innerHTML = items.map(p => {
+    const stockClass = p.stock === 0 ? 'stock-out' : p.stock <= 3 ? 'stock-low' : 'stock-ok';
+    const stockText = p.stock === 0 ? 'Sin stock' : p.stock <= 3 ? `¡Solo ${p.stock}!` : `${p.stock} disp.`;
+    const bg = {tablas:'#EBF8FF',trajes:'#E8F8F5',accesorios:'#FEF9E7',ropa:'#FDF2F8'}[p.cat] || '#F5F5F5';
+    return `
+      <div class="product-card" data-cat="${p.cat}">
+        <div class="product-img" style="background:${bg}">
+          ${p.emoji}
+          ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+          <div class="stock-badge ${stockClass}">${stockText}</div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-cat">${p.cat}</div>
+          <div class="product-bottom">
+            <div class="product-price">$${p.price.toLocaleString('es-CL')}</div>
+            <button class="add-btn" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''}>${p.stock === 0 ? 'Agotado' : '+ Agregar'}</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function filterProducts(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+}
+
+// ═══════════════════════════════════════════════
+// CART
+// ═══════════════════════════════════════════════
+function addToCart(id) {
+  const product = PRODUCTS.find(p => p.id === id);
+  const existing = cart.find(i => i.id === id);
+  if (existing) {
+    if (existing.qty < product.stock) existing.qty++;
+    else { showToast('Stock máximo alcanzado', 'warning'); return; }
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  updateCart();
+  showToast(`✅ ${product.name} agregado al carrito`);
+}
+
+function updateCart() {
+  const badge = document.getElementById('cartBadge');
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  badge.textContent = count;
+
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+  const totalEl = document.getElementById('cartTotal');
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = `<div class="empty-cart"><div class="big-icon">🛒</div><h3>Tu carrito está vacío</h3><p>Agrega productos de la tienda</p></div>`;
+    footerEl.style.display = 'none';
+    return;
+  }
+
+  footerEl.style.display = 'block';
+  totalEl.textContent = `$${total.toLocaleString('es-CL')}`;
+
+  itemsEl.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-emoji">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">$${item.price.toLocaleString('es-CL')}</div>
+      </div>
+      <div class="cart-item-qty">
+        <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+        <span style="font-family:'Space Mono',monospace;font-size:0.9rem;font-weight:700;min-width:24px;text-align:center">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+        <button class="qty-btn" onclick="removeFromCart(${item.id})" style="color:var(--coral)">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  const product = PRODUCTS.find(p => p.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) removeFromCart(id);
+  else if (item.qty > product.stock) { item.qty = product.stock; showToast('Stock máximo alcanzado','warning'); }
+  else updateCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  updateCart();
+}
+
+function toggleCart() {
+  document.getElementById('cartSidebar').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════
+// CHECKOUT
+// ═══════════════════════════════════════════════
+function openCheckout() {
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('checkSummary').innerHTML =
+    cart.map(i => `<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>${i.name} x${i.qty}</span><span>$${(i.price*i.qty).toLocaleString('es-CL')}</span></div>`).join('') +
+    `<div style="display:flex;justify-content:space-between;margin-top:8px;font-weight:700;font-size:1rem;border-top:1px solid var(--border);padding-top:8px"><span>Total</span><span style="color:var(--ocean)">$${total.toLocaleString('es-CL')}</span></div>`;
+  document.getElementById('checkoutModal').classList.add('open');
+  toggleCart();
+}
+
+function closeCheckout() {
+  document.getElementById('checkoutModal').classList.remove('open');
+}
+
+function placeOrder() {
+  const name = document.getElementById('checkName').value;
+  const email = document.getElementById('checkEmail').value;
+  if (!name || !email) { showToast('Completa los campos requeridos', 'warning'); return; }
+  const orderId = `KS-0${Math.floor(Math.random()*900+100)}`;
+  closeCheckout();
+  cart = [];
+  updateCart();
+  showToast(`🎉 Pedido ${orderId} confirmado. Revisa tu email.`, 'success');
+  setTimeout(() => showToast(`📧 Email de confirmación enviado a ${email}`), 1500);
+}
+
+// ═══════════════════════════════════════════════
+// SCHOOL / CLASSES
+// ═══════════════════════════════════════════════
+function renderClasses() {
+  const grid = document.getElementById('classesGrid');
+  grid.innerHTML = CLASSES.map(c => `
+    <div class="class-card">
+      <div class="class-card-header">
+        <div class="class-emoji">${c.emoji}</div>
+        <div>
+          <div class="class-level level-${c.level}">${c.level === 'beginner' ? 'Principiante' : c.level === 'intermediate' ? 'Intermedio' : 'Avanzado'}</div>
+          <div class="class-name">${c.name}</div>
+          <div class="class-desc">${c.desc}</div>
+        </div>
+      </div>
+      <div class="class-details">
+        <div class="class-detail">⏱ ${c.duration}</div>
+        <div class="class-detail">👥 ${c.students}</div>
+        <div class="class-detail">🏄 ${c.instructor}</div>
+        <div class="class-detail">📍 Playa Reñaca</div>
+      </div>
+      <div class="class-footer">
+        <div class="class-price">$${c.price.toLocaleString('es-CL')}</div>
+        <button class="book-btn" onclick="openBookingModal(${c.id})">Reservar</button>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════════════
+const AVAILABLE_DAYS = [0,1,2,3,4,5,6]; // all days
+const SLOTS = ['08:00','09:30','11:00','12:30','14:00','15:30','17:00'];
+const FULL_SLOTS = ['09:30','12:30'];
+
+function renderCalendar() {
+  const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  document.getElementById('calMonth').textContent = `${months[calDate.getMonth()]} ${calDate.getFullYear()}`;
+
+  const grid = document.getElementById('calGrid');
+  const firstDay = new Date(calDate.getFullYear(), calDate.getMonth(), 1).getDay();
+  const daysInMonth = new Date(calDate.getFullYear(), calDate.getMonth()+1, 0).getDate();
+  const today = new Date();
+
+  let html = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].map(d => `<div class="cal-day-name">${d}</div>`).join('');
+
+  for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(calDate.getFullYear(), calDate.getMonth(), d);
+    const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const isToday = d === today.getDate() && calDate.getMonth() === today.getMonth() && calDate.getFullYear() === today.getFullYear();
+    const isSelected = selectedDate && selectedDate.getDate() === d && selectedDate.getMonth() === calDate.getMonth();
+    const classes = ['cal-day', isPast ? 'past' : 'available', isToday ? 'today' : '', isSelected ? 'selected' : ''].filter(Boolean).join(' ');
+    html += `<div class="${classes}" onclick="${isPast ? '' : `selectDate(${d})`}">${d}</div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function selectDate(day) {
+  selectedDate = new Date(calDate.getFullYear(), calDate.getMonth(), day);
+  selectedSlot = null;
+  renderCalendar();
+  renderSlots();
+  const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  document.getElementById('bookDate').textContent = `${day} de ${months[calDate.getMonth()]} ${calDate.getFullYear()}`;
+  document.getElementById('bookTime').textContent = 'Selecciona un horario';
+}
+
+function renderSlots() {
+  const slotsEl = document.getElementById('timeSlots');
+  const grid = document.getElementById('slotsGrid');
+  slotsEl.classList.add('visible');
+  grid.innerHTML = SLOTS.map(s => {
+    const isFull = FULL_SLOTS.includes(s);
+    const isSelected = selectedSlot === s;
+    return `<button class="slot-btn ${isFull ? 'full' : ''} ${isSelected ? 'selected' : ''}" onclick="${isFull ? '' : `selectSlot('${s}')`}">${s}${isFull ? '<br><span style="font-size:0.65rem">Lleno</span>' : ''}</button>`;
+  }).join('');
+}
+
+function selectSlot(slot) {
+  selectedSlot = slot;
+  document.getElementById('bookTime').textContent = slot + 'h';
+  renderSlots();
+  showToast(`✅ Horario ${slot} seleccionado`);
+}
+
+function changeMonth(delta) {
+  calDate = new Date(calDate.getFullYear(), calDate.getMonth() + delta, 1);
+  selectedDate = null;
+  selectedSlot = null;
+  document.getElementById('timeSlots').classList.remove('visible');
+  renderCalendar();
+}
+
+// ═══════════════════════════════════════════════
+// BOOKING MODAL
+// ═══════════════════════════════════════════════
+function openBookingModal(classId) {
+  selectedClass = classId ? CLASSES.find(c => c.id === classId) : null;
+  document.getElementById('bookingClassName').textContent = selectedClass ? selectedClass.name : 'Clase de Surf';
+  document.getElementById('bookingModal').classList.add('open');
+}
+
+function closeBooking() {
+  document.getElementById('bookingModal').classList.remove('open');
+}
+
+function confirmBooking() {
+  const name = document.getElementById('bookName').value;
+  const email = document.getElementById('bookEmail').value;
+  if (!name || !email) { showToast('Completa los campos requeridos', 'warning'); return; }
+  if (!selectedDate || !selectedSlot) { showToast('Selecciona fecha y horario en el calendario', 'warning'); return; }
+  closeBooking();
+  showToast(`🏄 Clase reservada para ${name}! Revisa tu email.`, 'success');
+  setTimeout(() => showToast(`📧 Confirmación enviada a ${email}`), 1500);
+}
+
+// ═══════════════════════════════════════════════
+// TRACKING
+// ═══════════════════════════════════════════════
+function searchOrder() {
+  const val = document.getElementById('orderSearch').value.trim().toUpperCase();
+  const content = document.getElementById('trackingContent');
+  const order = SAMPLE_ORDERS.find(o => o.id === val || val === 'KS-001');
+
+  if (!order) {
+    content.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--muted)"><div style="font-size:3rem;margin-bottom:1rem">❌</div><p>No encontramos el pedido <strong>${val}</strong></p><p style="font-size:0.8rem;margin-top:0.5rem">Prueba con: KS-034, KS-033, KS-032, KS-031</p></div>`;
+    return;
+  }
+
+  const statusMap = { pending:'Pendiente', processing:'Procesando', shipped:'Despachado', delivered:'Entregado' };
+  const statusClass = { pending:'status-pending', processing:'status-processing', shipped:'status-shipped', delivered:'status-delivered' };
+
+  const steps = [
+    { label:'Pedido recibido', desc:`Orden ${order.id} confirmada. Pago verificado.`, done: true, current: false },
+    { label:'En preparación', desc:'Tu pedido está siendo empaquetado con cuidado.', done: ['processing','shipped','delivered'].includes(order.status), current: order.status === 'processing' },
+    { label:'Despachado', desc: order.status === 'shipped' || order.status === 'delivered' ? `En camino con ${order.courier} · Tracking: ${order.tracking}` : 'Pendiente de despacho', done: ['shipped','delivered'].includes(order.status), current: order.status === 'shipped' },
+    { label:'Entregado', desc: order.status === 'delivered' ? '¡Tu pedido llegó! 🎉' : 'Estimado en 2-3 días hábiles', done: order.status === 'delivered', current: false },
+  ];
+
+  content.innerHTML = `
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-num">ORDEN #${order.id}</div>
+          <div style="font-weight:700;font-size:1.1rem">${order.items}</div>
+          <div style="opacity:0.7;font-size:0.85rem;margin-top:4px">${order.client} · $${order.total.toLocaleString('es-CL')}</div>
+        </div>
+        <div class="order-status-badge ${statusClass[order.status]}">${statusMap[order.status]}</div>
+      </div>
+      <div class="tracking-steps">
+        ${steps.map(s => `
+          <div class="step ${s.done ? 'done' : ''} ${s.current ? 'current' : ''}">
+            <div class="step-dot">${s.done ? '✓' : s.current ? '●' : '○'}</div>
+            <div class="step-info">
+              <h4>${s.label}</h4>
+              <p>${s.desc}</p>
+            </div>
+          </div>`).join('')}
+      </div>
+      ${order.tracking !== '—' ? `
+        <div style="padding:1rem 1.5rem;background:var(--foam);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:0.75rem;font-family:'Space Mono',monospace;color:var(--muted);text-transform:uppercase;margin-bottom:4px">Número de tracking</div>
+            <div style="font-family:'Space Mono',monospace;font-weight:700;color:var(--ocean)">${order.tracking}</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--muted)">${order.courier}</div>
+          <button class="action-btn btn-blue" onclick="showToast('🔍 Abriendo seguimiento en ${order.courier}...','info')">Rastrear envío →</button>
+        </div>` : ''}
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════════════
+function switchAdmin(tab, btn) {
+  document.querySelectorAll('.admin-sub').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`admin-${tab}`).classList.add('active');
+  btn.classList.add('active');
+}
+
+function renderAdminTables() {
+  renderStockTable();
+  renderOrdersTable('all');
+  renderDispatchTable();
+  renderClassesTable();
+}
+
+function renderStockTable() {
+  const el = document.getElementById('stockTable');
+  el.innerHTML = PRODUCTS.map(p => {
+    const pct = Math.round(p.stock / 30 * 100);
+    const barClass = p.stock === 0 ? 'critical' : p.stock <= 3 ? 'low' : '';
+    const stockClass = p.stock === 0 ? 'stock-out' : p.stock <= 3 ? 'stock-low' : 'stock-ok';
+    return `<tr>
+      <td><strong>${p.emoji} ${p.name}</strong></td>
+      <td><span class="badge bg-sand">${p.cat}</span></td>
+      <td style="font-family:'Space Mono',monospace;font-weight:600">$${p.price.toLocaleString('es-CL')}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="stock-bar-wrap"><div class="stock-bar ${barClass}" style="width:${Math.min(pct,100)}%"></div></div>
+          <span class="stock-badge ${stockClass}" style="position:static">${p.stock}</span>
+        </div>
+      </td>
+      <td>${p.stock === 0 ? '<span class="badge bg-coral">Agotado</span>' : p.stock <= 3 ? '<span class="badge" style="background:#FFF3CD;color:#856404">Stock bajo</span>' : '<span class="badge" style="background:#D4EDDA;color:#155724">OK</span>'}</td>
+      <td>
+        <button class="action-btn btn-blue" onclick="showToast('✏️ Editando ${p.name}','info')">Editar</button>
+        <button class="action-btn btn-green" onclick="showToast('📦 +10 unidades a ${p.name}','success')">+Stock</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filterOrders(val) {
+  currentOrderFilter = val;
+  renderOrdersTable(val);
+}
+
+function renderOrdersTable(filter) {
+  const el = document.getElementById('ordersTable');
+  const statusMap = { pending:'Pendiente', processing:'Procesando', shipped:'Despachado', delivered:'Entregado' };
+  const statusClass = { pending:'status-pending', processing:'status-processing', shipped:'status-shipped', delivered:'status-delivered' };
+  const orders = filter === 'all' ? SAMPLE_ORDERS : SAMPLE_ORDERS.filter(o => o.status === filter);
+  el.innerHTML = orders.map(o => `<tr>
+    <td style="font-family:'Space Mono',monospace;font-weight:700">${o.id}</td>
+    <td>${o.client}</td>
+    <td style="max-width:180px;font-size:0.82rem">${o.items}</td>
+    <td style="font-family:'Space Mono',monospace;font-weight:600">$${o.total.toLocaleString('es-CL')}</td>
+    <td><span class="order-status-badge ${statusClass[o.status]}">${statusMap[o.status]}</span></td>
+    <td style="font-size:0.82rem;color:var(--muted)">${o.date}</td>
+    <td>
+      <button class="action-btn btn-blue" onclick="showToast('📋 Viendo detalles de ${o.id}','info')">Ver</button>
+      <button class="action-btn btn-green" onclick="showToast('📦 Estado de ${o.id} actualizado','success')">Actualizar</button>
+    </td>
+  </tr>`).join('');
+}
+
+function renderDispatchTable() {
+  const el = document.getElementById('dispatchTable');
+  el.innerHTML = SAMPLE_ORDERS.map(o => `<tr>
+    <td style="font-family:'Space Mono',monospace;font-weight:700">${o.id}</td>
+    <td>${o.client}</td>
+    <td>${o.city}</td>
+    <td>${o.courier === '—' ? '<span style="color:#CCC">Sin asignar</span>' : o.courier}</td>
+    <td style="font-family:'Space Mono',monospace;font-size:0.8rem">${o.tracking}</td>
+    <td><span class="order-status-badge ${o.status === 'shipped' ? 'status-shipped' : o.status === 'delivered' ? 'status-delivered' : o.status === 'pending' ? 'status-pending' : 'status-processing'}">${o.status === 'shipped' ? 'En camino' : o.status === 'delivered' ? 'Entregado' : o.status === 'pending' ? 'Preparar' : 'Listo'}</span></td>
+    <td>
+      <button class="action-btn btn-green" onclick="showToast('🚚 ${o.id} marcado como despachado','success')">Despachar</button>
+      <button class="action-btn btn-yellow" onclick="showToast('📧 Email de tracking enviado','success')">📧 Notify</button>
+    </td>
+  </tr>`).join('');
+}
+
+function renderClassesTable() {
+  const el = document.getElementById('classesTable');
+  el.innerHTML = CLASSES_BOOKINGS.map(b => `<tr>
+    <td><strong>${b.student}</strong></td>
+    <td>${b.class}</td>
+    <td style="font-family:'Space Mono',monospace;font-size:0.82rem">${b.date}</td>
+    <td style="font-family:'Space Mono',monospace;font-weight:700">${b.time}</td>
+    <td>${b.instructor}</td>
+    <td><span class="badge ${b.status === 'confirmed' ? 'bg-wave' : ''}" style="${b.status === 'pending' ? 'background:#FFF3CD;color:#856404' : ''}">${b.status === 'confirmed' ? 'Confirmado' : 'Pendiente'}</span></td>
+    <td>
+      <button class="action-btn btn-blue" onclick="showToast('📧 Recordatorio enviado a ${b.student}','success')">📧</button>
+      <button class="action-btn btn-red" onclick="showToast('❌ Clase cancelada','error')">Cancelar</button>
+    </td>
+  </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════════
+// EMAIL PREVIEWS
+// ═══════════════════════════════════════════════
+const EMAIL_TEMPLATES = {
+  order: { subject:'✅ Tu pedido KS-034 está confirmado — Kanki Surf', body: `<div class="email-logo">🏄 KANKI SURF</div><p>¡Hola Ana! Tu pedido ha sido confirmado.</p><table style="width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.85rem"><tr style="background:#f5f5f5"><th style="padding:8px;text-align:left">Producto</th><th style="padding:8px;text-align:right">Precio</th></tr><tr><td style="padding:8px;border-bottom:1px solid #eee">Tabla Longboard 9'2</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right">$385.000</td></tr><tr><td style="padding:8px;border-bottom:1px solid #eee">Traje 3/2mm Full</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right">$145.000</td></tr><tr><td style="padding:8px;font-weight:700">Total</td><td style="padding:8px;font-weight:700;text-align:right">$530.000</td></tr></table><p>Pronto comenzaremos a preparar tu pedido. Te avisaremos cuando sea despachado.</p><a href="#" class="email-cta">Ver estado de mi pedido</a>` },
+  shipped: { subject:'🚚 Tu pedido KS-034 está en camino — Kanki Surf', body: `<div class="email-logo">🏄 KANKI SURF</div><p>¡Buenas noticias Ana! Tu pedido fue despachado hoy con Starken.</p><div style="background:#f0f8ff;border-left:4px solid #1A4B5F;padding:1rem;margin:1rem 0;border-radius:0 8px 8px 0"><div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:#666;margin-bottom:4px">Número de seguimiento</div><div style="font-family:monospace;font-size:1.2rem;font-weight:700;color:#1A4B5F">SK8823451</div></div><p>Estimado de entrega: <strong>1-3 días hábiles</strong></p><a href="#" class="email-cta">Rastrear mi envío</a>` },
+  class: { subject:'🏄 Clase confirmada — Kanki Surf School', body: `<div class="email-logo">🏄 KANKI SURF SCHOOL</div><p>¡Tu clase de surf está confirmada!</p><div style="background:#e8f4f4;border-radius:10px;padding:1rem;margin:1rem 0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.85rem"><div><strong>Clase</strong><br>Iniciación</div><div><strong>Instructor</strong><br>Felipe Reyes</div><div><strong>Fecha</strong><br>27 de Marzo 2026</div><div><strong>Hora</strong><br>09:00h</div><div><strong>Lugar</strong><br>Playa Reñaca</div><div><strong>Precio</strong><br>$45.000</div></div></div><p>Recuerda llevar: protector solar, ropa de baño y toalla. ¡Nosotros ponemos el equipo!</p><a href="#" class="email-cta">Ver detalles de mi clase</a>` },
+  review: { subject:'⭐ ¿Cómo estuvo tu compra? — Kanki Surf', body: `<div class="email-logo">🏄 KANKI SURF</div><p>¡Hola Ana! Esperamos que estés disfrutando tu equipo de surf 🤙</p><p>¿Podrías tomarte 2 minutos para contarnos tu experiencia?</p><div style="display:flex;gap:8px;margin:1.5rem 0;justify-content:center;font-size:2rem">⭐⭐⭐⭐⭐</div><a href="#" class="email-cta">Dejar mi reseña</a>` },
+  cart: { subject:'👀 Olvidaste algo en tu carrito — Kanki Surf', body: `<div class="email-logo">🏄 KANKI SURF</div><p>¡Hola! Vimos que dejaste algunos productos en tu carrito 🛒</p><div style="background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0"><div style="font-size:2.5rem;text-align:center;margin-bottom:8px">🏄</div><div style="font-weight:700;text-align:center">Tabla Longboard 9'2</div><div style="text-align:center;color:#666;font-size:0.85rem">$385.000</div></div><a href="#" class="email-cta">Completar mi compra</a><p style="font-size:0.78rem;color:#999;margin-top:1rem">Stock limitado — no pierdas tu tabla 🌊</p>` },
+  newsletter: { subject:'🌊 Kanki Surf — Novedades de Marzo 2026', body: `<div class="email-logo">🏄 KANKI SURF</div><div style="background:linear-gradient(135deg,#1A4B5F,#2E8B8B);color:white;padding:1.5rem;border-radius:10px;margin-bottom:1rem;text-align:center"><div style="font-size:1.5rem;margin-bottom:0.5rem">☀️ ¡Ya llega el invierno!</div><div style="font-size:0.9rem;opacity:0.8">Las mejores olas de la temporada en camino</div></div><p><strong>🛍 Nuevos productos:</strong> Llegaron las tablas de invierno 4/3mm y los trajes de la temporada.</p><p style="margin-top:0.75rem"><strong>🏫 Nuevas clases:</strong> Abrimos cupos para el pack intensivo de invierno.</p><p style="margin-top:0.75rem"><strong>🌊 Condición del mar:</strong> Swell de 1.5m para el finde con viento offshore. ¡Perfectas condiciones!</p><a href="#" class="email-cta">Ver todas las novedades</a>` },
+};
+
+function previewEmail(type) {
+  const area = document.getElementById('emailPreviewArea');
+  const tmpl = EMAIL_TEMPLATES[type];
+  area.style.display = 'block';
+  area.innerHTML = `<div style="font-size:0.85rem;font-weight:600;margin-bottom:8px">Vista previa del email:</div>
+    <div class="email-preview">
+      <div class="email-preview-bar">📧 Para: cliente@email.com &nbsp;·&nbsp; Asunto: ${tmpl.subject}</div>
+      <div class="email-preview-body">${tmpl.body}<div style="margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:0.75rem;color:#999">Kanki Surf · Playa Reñaca, Viña del Mar, Chile<br>Para darte de baja de estos emails, <a href="#" style="color:#999">haz clic aquí</a></div></div>
+    </div>`;
+  area.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+function showToast(msg, type='info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = msg;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(100%)'; toast.style.transition='all 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+renderProducts('all');
+renderClasses();
+renderCalendar();
+
+// Enter key for order search
+document.getElementById('orderSearch').addEventListener('keypress', e => { if (e.key === 'Enter') searchOrder(); });
+
+// Close modals on overlay click
+document.getElementById('checkoutModal').addEventListener('click', function(e){ if(e.target===this) closeCheckout(); });
+document.getElementById('bookingModal').addEventListener('click', function(e){ if(e.target===this) closeBooking(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kanki · v8 BRANDS — 24 cortinas estilo marca real (reserved.cl scrape)</title>
+<style>
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --kanki-navy: #1B2F4E;
+    --kanki-gold: #C49A3A;
+    --kanki-cream: #F5EDD8;
+    --bg: #fafaf8;
+    --bg-alt: #f5f5f7;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --t: 7s;
+    --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+    --ease-whip: cubic-bezier(.85, 0, .15, 1);
+    --ease-snap: cubic-bezier(.16, 1, .3, 1);
+    --ease-cinema: cubic-bezier(.65, .05, .36, 1);
+    --ease-elastic: cubic-bezier(.68, -.55, .27, 1.55);
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, var(--kanki-cream) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+    padding: 32px 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header { text-align: center; margin-bottom: 28px; max-width: 880px; margin-inline: auto; }
+  header h1 { font-weight: 900; font-size: clamp(1.6rem,4vw,2.4rem); letter-spacing: -.04em; margin-bottom: 8px; color: var(--kanki-navy); }
+  header p { color: var(--muted); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
+  header .lineage { display: inline-flex; gap: 6px; margin-bottom: 14px; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; flex-wrap: wrap; justify-content: center; }
+  header .lineage span { background: var(--kanki-cream); border: 1px solid var(--kanki-gold); padding: 3px 10px; border-radius: 999px; color: var(--kanki-navy); font-weight: 800; }
+  .replay { background: var(--kanki-navy); color: var(--kanki-cream); border: 1.5px solid var(--kanki-navy); padding: 12px 28px; font-weight: 800; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; border-radius: 999px; cursor: pointer; transition: transform .25s var(--ease-spring); }
+  .replay:hover { transform: scale(1.06); }
+
+  .section {
+    max-width: 1480px; margin: 32px auto 16px;
+    display: flex; align-items: center; gap: 14px;
+    color: var(--kanki-navy); font-weight: 900; font-size: 13px; letter-spacing: .22em; text-transform: uppercase;
+  }
+  .section::before { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--kanki-gold)); }
+  .section::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--kanki-gold), transparent); }
+  .section .meta { font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: .15em; }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr; gap: 28px 22px;
+    max-width: 1480px; margin: 0 auto; justify-items: center;
+  }
+  @media (min-width: 580px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 920px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1240px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+
+  .card { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .caption { text-align: center; font-size: 11px; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+  .caption b { display: inline-block; background: var(--kanki-cream); border: 1px solid var(--kanki-gold); color: var(--kanki-navy); padding: 2px 8px; border-radius: 6px; margin-right: 6px; font-weight: 800; }
+  .caption .tag { display: inline-block; margin-left: 6px; font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 900; letter-spacing: .14em; }
+  .tag.intl { background: #000; color: #fff; }
+  .tag.cl   { background: var(--kanki-gold); color: var(--kanki-navy); }
+  .tag.bonus{ background: #2dff88; color: #000; }
+
+  .phone { position: relative; width: 240px; height: 520px; background: linear-gradient(145deg, #3a4a64, #243d63 40%, #0d1a2e 100%); border-radius: 36px; padding: 10px; box-shadow: 0 0 0 1.5px #1B2F4E, 0 24px 50px rgba(13,26,46,.4); }
+  .screen { width: 100%; height: 100%; border-radius: 26px; overflow: hidden; background: #fff; position: relative; perspective: 1200px; isolation: isolate; }
+  .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 20px; background: #000; border-bottom-left-radius: 14px; border-bottom-right-radius: 14px; z-index: 100; }
+
+  .hero {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(27,47,78,.94), rgba(13,26,46,.98)), repeating-linear-gradient(45deg, transparent 0 12px, rgba(196,154,58,.06) 12px 13px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--kanki-cream); padding: 24px; text-align: center;
+  }
+  .hero-eyebrow { font-size: 8px; letter-spacing: .35em; color: var(--kanki-gold); margin-bottom: 14px; }
+  .hero-title { font-size: 32px; font-weight: 900; letter-spacing: -.045em; line-height: .92; margin-bottom: 12px; color: var(--kanki-cream); }
+  .hero-sub { font-size: 9px; letter-spacing: .22em; color: rgba(245,237,216,.7); text-transform: uppercase; }
+  .hero-cta { margin-top: 22px; background: var(--kanki-gold); color: var(--kanki-navy); font-size: 10px; font-weight: 800; letter-spacing: .18em; padding: 9px 20px; border-radius: 999px; }
+
+  .curtain { position: absolute; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; isolation: isolate; display: flex; align-items: center; justify-content: center; }
+
+  /* Common entry/exit shell */
+  @keyframes shellFade { 0%,14%{opacity:1} 28%,71%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes shellSpring {
+    0%{transform:scale(0)} 10%{transform:scale(1.15)} 14%{transform:scale(.95)} 18%,28%{transform:scale(1)}
+    36%,71%{transform:scale(6);opacity:0} 85%{transform:scale(0);opacity:0} 92%,100%{transform:scale(1);opacity:1}
+  }
+
+  /* ═══ 01 BALENCIAGA · stretched Helvetica B&W luxe ═══ */
+  .c1 { background: #fff; }
+  .c1 .word {
+    color: #000; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 900; font-size: 14px;
+    letter-spacing: .04em;
+    transform: scaleX(.2);
+    animation: c1-stretch var(--t) var(--ease-cinema) infinite, shellFade var(--t) var(--ease-cinema) infinite;
+    white-space: nowrap;
+  }
+  @keyframes c1-stretch {
+    0%       { transform: scaleX(.2); }
+    14%      { transform: scaleX(4); letter-spacing: .35em; }
+    22%, 28% { transform: scaleX(4.2); letter-spacing: .4em; }
+    36%, 71% { transform: scaleX(8); opacity: 0; }
+    85%, 100%{ transform: scaleX(.2); opacity: 1; }
+  }
+
+  /* ═══ 02 CARHARTT WIP · square label orange stitch ═══ */
+  .c2 { background: #f0ebe0; }
+  .c2 .label {
+    width: 160px; height: 100px;
+    background: #c8541f;
+    color: #f0ebe0;
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    padding: 0 14px;
+    border: 2px dashed #f0ebe0;
+    transform: translateY(-150%);
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+    animation: c2-stitch var(--t) var(--ease-spring) infinite;
+  }
+  .c2 .label .main { font-weight: 900; font-size: 22px; letter-spacing: -.03em; }
+  .c2 .label .wip { font-size: 11px; letter-spacing: .25em; opacity: .8; margin-top: 4px; }
+  @keyframes c2-stitch {
+    0%       { transform: translateY(-150%) rotate(-4deg); }
+    14%      { transform: translateY(0) rotate(2deg); }
+    18%      { transform: translateY(-2%) rotate(-1deg); }
+    22%,28%  { transform: translateY(0) rotate(0); }
+    36%,71%  { transform: translateY(150%) rotate(8deg); opacity: 0; }
+    85%,100% { transform: translateY(-150%) rotate(-4deg); opacity: 1; }
+  }
+
+  /* ═══ 03 COLD CULTURE · ice blue gradient minimal ═══ */
+  .c3 {
+    background: linear-gradient(180deg, #d8e4ef 0%, #6e96b8 50%, #2a4a6a 100%);
+    overflow: hidden;
+  }
+  .c3 .word {
+    color: #fff; font-weight: 900; font-size: 16px; letter-spacing: .35em;
+    text-shadow: 0 2px 8px rgba(0,0,0,.3);
+    opacity: 0;
+    animation: c3-cold var(--t) var(--ease-cinema) infinite;
+  }
+  .c3::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.4), transparent 50%);
+    opacity: 0;
+    animation: c3-frost var(--t) ease-in-out infinite;
+  }
+  @keyframes c3-cold {
+    0%       { opacity: 0; transform: scale(.5) translateY(20px); filter: blur(8px); }
+    14%      { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    22%,28%  { opacity: 1; }
+    36%,71%  { opacity: 0; filter: blur(8px); }
+    85%,100% { opacity: 0; }
+  }
+  @keyframes c3-frost { 0%,12%{opacity:0} 18%,24%{opacity:1} 32%,100%{opacity:0} }
+
+  /* ═══ 04 CORTEIZ · Alcatraz + RTW red ═══ */
+  .c4 { background: #0a0a0a; }
+  .c4 .island {
+    width: 80px; height: 60px;
+    background: #cc0000;
+    clip-path: polygon(10% 100%, 25% 30%, 40% 20%, 50% 5%, 60% 20%, 75% 30%, 90% 100%);
+    transform: scale(0);
+    animation: shellSpring var(--t) var(--ease-spring) infinite, c4-shadow var(--t) var(--ease-spring) infinite;
+    box-shadow: 0 0 20px #cc0000;
+  }
+  .c4 .rtw {
+    position: absolute; bottom: 28%;
+    color: #cc0000; font-weight: 900; font-size: 22px; letter-spacing: .15em;
+    text-shadow: 0 0 12px #cc0000;
+    opacity: 0;
+    animation: c4-rtw var(--t) linear infinite;
+  }
+  .c4 .crtz {
+    position: absolute; top: 22%;
+    color: #fff; font-weight: 900; font-size: 11px; letter-spacing: .4em;
+    opacity: 0;
+    animation: c4-crtz var(--t) infinite;
+  }
+  @keyframes c4-shadow { 0%,14%{filter:drop-shadow(0 0 20px #cc0000)} 28%,71%{filter:none} 85%,100%{filter:drop-shadow(0 0 20px #cc0000)} }
+  @keyframes c4-rtw { 0%,14%{opacity:0;transform:rotate(-180deg)} 18%{opacity:1;transform:rotate(0)} 22%,26%{opacity:1} 32%,100%{opacity:0} }
+  @keyframes c4-crtz { 0%,16%{opacity:0} 20%,28%{opacity:1} 32%,100%{opacity:0} }
+
+  /* ═══ 05 EME STUDIOS · brush stroke gestual ═══ */
+  .c5 { background: #ede5d3; }
+  .c5 svg { width: 100%; height: 100%; position: absolute; }
+  .c5 .stroke { stroke-dasharray: 600; stroke-dashoffset: 600; animation: c5-draw var(--t) var(--ease-cinema) infinite; }
+  .c5 .word { position: relative; color: #1a1a1a; font-weight: 900; font-size: 16px; letter-spacing: .25em; font-style: italic; opacity: 0; animation: c5-fade var(--t) infinite; }
+  @keyframes c5-draw {
+    0%,12%   { stroke-dashoffset: 600; }
+    20%      { stroke-dashoffset: 0; }
+    28%,71%  { stroke-dashoffset: -600; opacity: 0; }
+    85%,100% { stroke-dashoffset: 600; opacity: 1; }
+  }
+  @keyframes c5-fade { 0%,18%{opacity:0} 24%,28%{opacity:1} 32%,100%{opacity:0} }
+
+  /* ═══ 06 ESSENTIALS Fear of God · tonal bone ═══ */
+  .c6 { background: linear-gradient(180deg, #c8b89a 0%, #a89878 100%); }
+  .c6 .word {
+    color: #2d2620;
+    font-family: 'Times New Roman', serif;
+    font-weight: 400;
+    font-size: 28px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: scale(.9);
+    animation: c6-essentials var(--t) var(--ease-cinema) infinite;
+  }
+  .c6 .sub {
+    position: absolute; bottom: 28%;
+    color: #2d2620;
+    font-size: 9px; letter-spacing: .5em;
+    opacity: 0;
+    animation: c6-essentials var(--t) var(--ease-cinema) infinite .1s;
+  }
+  @keyframes c6-essentials {
+    0%       { opacity: 0; transform: scale(.92); letter-spacing: .35em; }
+    18%      { opacity: 1; transform: scale(1); letter-spacing: .2em; }
+    22%,28%  { opacity: 1; }
+    36%,71%  { opacity: 0; }
+    85%,100% { opacity: 0; }
+  }
+
+  /* ═══ 07 FAKE GODS · halo gold + cross ═══ */
+  .c7 { background: radial-gradient(circle at 50% 40%, #1a0e2a 0%, #050208 80%); overflow: hidden; }
+  .c7 .halo {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    border: 3px solid #d4a843;
+    box-shadow: 0 0 30px #d4a843, inset 0 0 30px #d4a843;
+    transform: scale(0);
+    animation: shellSpring var(--t) var(--ease-elastic) infinite;
+  }
+  .c7 .cross {
+    position: absolute;
+    width: 4px; height: 60px;
+    background: #d4a843;
+    box-shadow: 0 0 12px #d4a843;
+    transform: scale(0);
+    animation: c7-cross var(--t) var(--ease-elastic) infinite .1s;
+  }
+  .c7 .cross::after {
+    content: ''; position: absolute; top: 16px; left: 50%;
+    width: 30px; height: 4px; margin-left: -15px;
+    background: #d4a843;
+    box-shadow: 0 0 12px #d4a843;
+  }
+  .c7 .word { position: absolute; bottom: 22%; color: #d4a843; font-weight: 900; font-size: 14px; letter-spacing: .3em; opacity: 0; animation: c7-fade var(--t) infinite; }
+  @keyframes c7-cross { 0%{transform:scale(0)} 14%{transform:scale(1.2)} 22%,28%{transform:scale(1)} 36%,71%{transform:scale(0);opacity:0} 85%,100%{transform:scale(0)} }
+  @keyframes c7-fade { 0%,18%{opacity:0} 24%,28%{opacity:1} 32%,100%{opacity:0} }
+
+  /* ═══ 08 MILFSHAKES · milkshake drip pink ═══ */
+  .c8 { background: linear-gradient(180deg, #ffd4e0 0%, #ff9ec1 100%); overflow: hidden; }
+  .c8 .cup {
+    width: 80px; height: 110px;
+    background: linear-gradient(180deg, #fff5fa 0%, #ffd4e0 100%);
+    border-radius: 0 0 35% 35%;
+    border: 3px solid #c8366e;
+    border-top: none;
+    transform: translateY(-150%);
+    position: relative;
+    animation: c8-cup var(--t) var(--ease-spring) infinite;
+  }
+  .c8 .cup::before {
+    content: ''; position: absolute; top: -10px; left: -10px; right: -10px; height: 16px;
+    background: #fff;
+    border: 3px solid #c8366e;
+    border-radius: 4px;
+  }
+  .c8 .cherry {
+    position: absolute; top: -22px; left: 50%; width: 12px; height: 12px;
+    margin-left: -6px;
+    background: #c8366e; border-radius: 50%;
+    box-shadow: 0 0 8px #c8366e;
+  }
+  .c8 .drip {
+    position: absolute; width: 3px; background: #fff5fa;
+    box-shadow: 0 0 4px #c8366e;
+    border-radius: 0 0 50% 50%;
+    opacity: 0;
+    animation: c8-drip var(--t) ease-in infinite;
+  }
+  .c8 .d1 { left: 30%; height: 14px; animation-delay: 1.0s; top: 60%; }
+  .c8 .d2 { left: 50%; height: 22px; animation-delay: 1.1s; top: 60%; }
+  .c8 .d3 { left: 70%; height: 16px; animation-delay: 1.05s; top: 60%; }
+  @keyframes c8-cup {
+    0%       { transform: translateY(-150%) rotate(-8deg); }
+    14%      { transform: translateY(0) rotate(0); }
+    20%,28%  { transform: translateY(0) rotate(0); }
+    36%,71%  { transform: translateY(120%) rotate(15deg); opacity: 0; }
+    85%,100% { transform: translateY(-150%) rotate(-8deg); opacity: 1; }
+  }
+  @keyframes c8-drip {
+    0%,16% { opacity: 0; transform: translateY(0); }
+    20%    { opacity: 1; }
+    28%    { opacity: 0; transform: translateY(40px); }
+    100%   { opacity: 0; }
+  }
+
+  /* ═══ 09 NUDE PROJECT · nude tone bold ═══ */
+  .c9 { background: linear-gradient(180deg, #e8cfb8 0%, #c89a7e 100%); }
+  .c9 .word {
+    color: #2a1a14; font-weight: 900; font-size: 28px; letter-spacing: -.04em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: c9-nude var(--t) var(--ease-spring) infinite;
+  }
+  .c9 .sub { position: absolute; top: 28%; color: #6a3a24; font-size: 9px; letter-spacing: .5em; opacity: 0; animation: c9-nude var(--t) var(--ease-spring) infinite .1s; }
+  @keyframes c9-nude {
+    0%       { opacity: 0; transform: translateY(40px); }
+    14%      { opacity: 1; transform: translateY(0); }
+    22%,28%  { opacity: 1; }
+    36%,71%  { opacity: 0; transform: translateY(-40px); }
+    85%,100% { opacity: 0; transform: translateY(40px); }
+  }
+
+  /* ═══ 10 OFF-WHITE · quotation marks + diagonal stripes ═══ */
+  .c10 { background: #fff; overflow: hidden; }
+  .c10::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, #000 0 10px, #fff 10px 20px);
+    opacity: 0;
+    animation: c10-stripes var(--t) var(--ease-snap) infinite;
+  }
+  .c10 .quoted {
+    position: relative; z-index: 2;
+    color: #000;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 900; font-size: 22px; letter-spacing: -.02em;
+    transform: scale(0);
+    animation: c10-quote var(--t) var(--ease-spring) infinite;
+    background: #fff; padding: 4px 12px;
+  }
+  .c10 .tag-line { position: absolute; bottom: 26%; color: #ff7a00; font-family: monospace; font-size: 10px; letter-spacing: .25em; opacity: 0; animation: c10-tagline var(--t) infinite; }
+  @keyframes c10-stripes {
+    0%,14% { opacity: 0; transform: translateX(-100%); }
+    20%    { opacity: 1; transform: translateX(0); }
+    24%,28%{ opacity: 1; }
+    36%,71%{ opacity: 0; transform: translateX(100%); }
+    85%,100%{ opacity: 0; }
+  }
+  @keyframes c10-quote {
+    0%       { transform: scale(0) rotate(-8deg); }
+    14%      { transform: scale(1.15) rotate(2deg); }
+    20%,28%  { transform: scale(1) rotate(0); }
+    36%,71%  { transform: scale(6); opacity: 0; }
+    85%,100% { transform: scale(0); opacity: 1; }
+  }
+  @keyframes c10-tagline { 0%,18%{opacity:0} 24%,28%{opacity:1} 32%,100%{opacity:0} }
+
+  /* ═══ 11 PALM ANGELS · palm tree extends + collegiate ═══ */
+  .c11 { background: #0a0a0a; overflow: hidden; }
+  .c11 .palm {
+    width: 100px; height: 240px;
+    transform-origin: bottom center;
+    transform: scaleY(0);
+    animation: c11-grow var(--t) var(--ease-spring) infinite;
+  }
+  .c11 .palm svg { width: 100%; height: 100%; }
+  .c11 .word {
+    position: absolute; bottom: 18%;
+    color: #fff; font-family: 'Georgia', serif;
+    font-weight: 900; font-size: 13px; letter-spacing: .25em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: c11-college var(--t) var(--ease-cinema) infinite .1s;
+  }
+  @keyframes c11-grow {
+    0%       { transform: scaleY(0); }
+    14%      { transform: scaleY(1.05); }
+    18%, 28% { transform: scaleY(1); }
+    36%, 71% { transform: scaleY(0) translateY(50%); opacity: 0; }
+    85%, 100%{ transform: scaleY(0); opacity: 1; }
+  }
+  @keyframes c11-college { 0%,16%{opacity:0;transform:translateY(20px)} 22%,28%{opacity:1;transform:translateY(0)} 36%,100%{opacity:0} }
+
+  /* ═══ 12 REPRESENT · wordmark stretch tonal premium ═══ */
+  .c12 { background: linear-gradient(180deg, #d6cfc4 0%, #8a8278 100%); }
+  .c12 .word {
+    color: #2a2820; font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 200; font-size: 14px; letter-spacing: .5em;
+    text-transform: uppercase;
+    transform: scaleX(0);
+    opacity: 0;
+    animation: c12-stretch var(--t) var(--ease-cinema) infinite;
+  }
+  @keyframes c12-stretch {
+    0%       { transform: scaleX(0); opacity: 0; }
+    14%      { transform: scaleX(1.5); opacity: 1; }
+    22%, 28% { transform: scaleX(1.5); opacity: 1; }
+    36%, 71% { transform: scaleX(3); opacity: 0; }
+    85%, 100%{ transform: scaleX(0); opacity: 0; }
+  }
+
+  /* ═══ 13 SALOMON · mountain + S logo red tech ═══ */
+  .c13 { background: linear-gradient(180deg, #0a0a0a 0%, #2a2a2a 100%); }
+  .c13 .mountain {
+    width: 0; height: 0;
+    border-left: 70px solid transparent;
+    border-right: 70px solid transparent;
+    border-bottom: 110px solid #d62828;
+    transform: scale(0);
+    animation: c13-peak var(--t) var(--ease-spring) infinite;
+  }
+  .c13 .s-logo {
+    position: absolute;
+    color: #d62828; font-family: 'Arial Black', sans-serif;
+    font-weight: 900; font-size: 60px; font-style: italic;
+    transform: scale(0) rotate(-15deg);
+    text-shadow: 0 4px 12px rgba(214,40,40,.5);
+    animation: c13-s var(--t) var(--ease-elastic) infinite .1s;
+  }
+  .c13 .word { position: absolute; bottom: 22%; color: #fff; font-size: 10px; letter-spacing: .4em; opacity: 0; animation: c13-tag var(--t) infinite; }
+  @keyframes c13-peak {
+    0%       { transform: scale(0) translateY(50%); }
+    14%      { transform: scale(1.1) translateY(0); }
+    22%,28%  { transform: scale(1) translateY(0); }
+    36%,71%  { transform: scale(0); opacity: 0; }
+    85%,100% { transform: scale(0); }
+  }
+  @keyframes c13-s {
+    0%       { transform: scale(0) rotate(-180deg); opacity: 0; }
+    16%      { transform: scale(1.2) rotate(0); opacity: 1; }
+    22%,28%  { transform: scale(1) rotate(0); opacity: 1; }
+    36%,71%  { transform: scale(0); opacity: 0; }
+    85%,100% { transform: scale(0); }
+  }
+  @keyframes c13-tag { 0%,18%{opacity:0} 24%,28%{opacity:1} 32%,100%{opacity:0} }
+
+  /* ═══ 14 SCUFFERS · marker scuff stroke ═══ */
+  .c14 { background: #f4ede0; overflow: hidden; }
+  .c14 .scuff {
+    position: absolute; top: 50%; left: -10%; width: 120%; height: 36px;
+    margin-top: -18px;
+    background: linear-gradient(90deg, transparent 0%, #1a1a1a 5%, #1a1a1a 95%, transparent 100%);
+    transform: skewY(-3deg) scaleX(0);
+    transform-origin: left center;
+    filter: url(#scuff-rough);
+    animation: c14-paint var(--t) var(--ease-whip) infinite;
+  }
+  .c14 .word { color: #f4ede0; font-weight: 900; font-size: 18px; letter-spacing: .25em; font-style: italic; opacity: 0; position: relative; z-index: 2; animation: c14-fade var(--t) infinite; }
+  @keyframes c14-paint {
+    0%       { transform: skewY(-3deg) scaleX(0); }
+    14%      { transform: skewY(-3deg) scaleX(1); }
+    22%,28%  { transform: skewY(-3deg) scaleX(1); }
+    36%,71%  { transform: skewY(-3deg) scaleX(0); opacity: 0; transform-origin: right center; }
+    85%,100% { transform: skewY(-3deg) scaleX(0); }
+  }
+  @keyframes c14-fade { 0%,16%{opacity:0} 22%,28%{opacity:1} 36%,100%{opacity:0} }
+
+  /* ═══ 15 STUSSY · chain stitch script writes itself ═══ */
+  .c15 { background: #f5efe2; overflow: hidden; }
+  .c15 .signature {
+    color: #1a1a1a;
+    font-family: 'Brush Script MT', cursive;
+    font-weight: 700; font-size: 60px; font-style: italic;
+    letter-spacing: -.03em;
+    clip-path: inset(0 100% 0 0);
+    animation: c15-write var(--t) var(--ease-cinema) infinite;
+    text-shadow: 0 2px 0 #c2b896;
+  }
+  .c15 .ss {
+    position: absolute; top: 28%;
+    color: #1a1a1a;
+    font-family: 'Arial Black', sans-serif;
+    font-weight: 900; font-size: 24px; font-style: italic;
+    letter-spacing: -.06em;
+    transform: scale(0);
+    animation: c15-ss var(--t) var(--ease-elastic) infinite .15s;
+  }
+  @keyframes c15-write {
+    0%       { clip-path: inset(0 100% 0 0); }
+    18%      { clip-path: inset(0 0 0 0); }
+    22%,28%  { clip-path: inset(0 0 0 0); }
+    36%,71%  { clip-path: inset(0 0 0 100%); opacity: 0; }
+    85%,100% { clip-path: inset(0 100% 0 0); opacity: 1; }
+  }
+  @keyframes c15-ss {
+    0%       { transform: scale(0) rotate(-90deg); opacity: 0; }
+    16%      { transform: scale(1.2) rotate(0); opacity: 1; }
+    22%,28%  { transform: scale(1) rotate(0); }
+    36%,71%  { transform: scale(0); opacity: 0; }
+    85%,100% { transform: scale(0); }
+  }
+
+  /* ═══ 16 SUPREME · box logo red + chromatic ═══ */
+  .c16 { background: #fff; }
+  .c16 .box {
+    background: #d62828;
+    color: #fff;
+    padding: 14px 28px;
+    font-family: 'Arial Black', sans-serif;
+    font-weight: 900; font-size: 32px; font-style: italic;
+    letter-spacing: -.02em;
+    transform: scale(0) rotate(-12deg);
+    box-shadow: 0 16px 40px rgba(214,40,40,.4);
+    animation: c16-box var(--t) var(--ease-elastic) infinite;
+  }
+  .c16 .chrom-r, .c16 .chrom-b {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; mix-blend-mode: screen; opacity: 0;
+    animation: c16-chrom var(--t) infinite;
+  }
+  .c16 .chrom-r { color: transparent; }
+  .c16 .flash { position: absolute; inset: 0; background: #fff; opacity: 0; animation: c16-flash var(--t) infinite; }
+  @keyframes c16-box {
+    0%       { transform: scale(0) rotate(-20deg); }
+    10%      { transform: scale(1.3) rotate(4deg); }
+    14%      { transform: scale(.92) rotate(-2deg); }
+    18%,28%  { transform: scale(1) rotate(0); }
+    36%,71%  { transform: scale(8) rotate(20deg); opacity: 0; }
+    85%,100% { transform: scale(0); opacity: 1; }
+  }
+  @keyframes c16-flash { 0%,7%{opacity:0} 10%{opacity:1} 14%,100%{opacity:0} }
+  @keyframes c16-chrom { 0%,8%{opacity:0} 12%{opacity:.7} 16%,100%{opacity:0} }
+
+  /* ═══ 17 TWOJEYS · gold chain ring swing ═══ */
+  .c17 { background: linear-gradient(180deg, #0a0a0a 0%, #1f1410 100%); overflow: hidden; }
+  .c17 .ring {
+    width: 90px; height: 90px;
+    border: 8px solid #d4a843;
+    border-radius: 50%;
+    box-shadow: 0 0 30px #d4a843, inset 0 0 12px rgba(0,0,0,.4);
+    transform-origin: top center;
+    transform: translateY(-200%);
+    animation: c17-swing var(--t) var(--ease-spring) infinite;
+  }
+  .c17 .word { position: absolute; bottom: 26%; color: #d4a843; font-weight: 900; font-size: 13px; letter-spacing: .3em; opacity: 0; animation: c17-fade var(--t) infinite; }
+  @keyframes c17-swing {
+    0%       { transform: translateY(-200%) rotate(-25deg); }
+    14%      { transform: translateY(0) rotate(12deg); }
+    18%      { transform: translateY(-2%) rotate(-8deg); }
+    21%      { transform: translateY(0) rotate(5deg); }
+    24%,28%  { transform: translateY(0) rotate(0); }
+    36%,71%  { transform: translateY(150%) rotate(30deg); opacity: 0; }
+    85%,100% { transform: translateY(-200%) rotate(-25deg); opacity: 1; }
+  }
+  @keyframes c17-fade { 0%,16%{opacity:0} 22%,28%{opacity:1} 36%,100%{opacity:0} }
+
+  /* ═══ 18 RESERVED CREATIVE · minimal wordmark ═══ */
+  .c18 { background: #1a1a1a; }
+  .c18 .word {
+    color: #fff; font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 200; font-size: 18px; letter-spacing: .55em;
+    text-transform: uppercase;
+    border: 1.5px solid #fff;
+    padding: 12px 28px;
+    transform: scale(.9);
+    opacity: 0;
+    animation: c18-reserved var(--t) var(--ease-cinema) infinite;
+  }
+  @keyframes c18-reserved {
+    0%       { opacity: 0; transform: scale(.7); letter-spacing: .35em; }
+    18%      { opacity: 1; transform: scale(1); letter-spacing: .55em; }
+    22%,28%  { opacity: 1; }
+    36%,71%  { opacity: 0; transform: scale(1.4); }
+    85%,100% { opacity: 0; transform: scale(.7); }
+  }
+
+  /* ═══ 19 AMOUR APPAREL · heart + cursive ═══ */
+  .c19 { background: linear-gradient(180deg, #fff0f0 0%, #ffd0d8 100%); overflow: hidden; }
+  .c19 .heart {
+    width: 70px; height: 70px;
+    background: #e84a6a;
+    transform: rotate(-45deg) scale(0);
+    position: relative;
+    animation: shellSpring var(--t) var(--ease-elastic) infinite;
+    box-shadow: 0 8px 20px rgba(232,74,106,.4);
+  }
+  .c19 .heart::before, .c19 .heart::after {
+    content: ''; position: absolute;
+    width: 70px; height: 70px;
+    background: #e84a6a;
+    border-radius: 50%;
+  }
+  .c19 .heart::before { top: -35px; left: 0; }
+  .c19 .heart::after { top: 0; right: -35px; }
+  .c19 .word { position: absolute; bottom: 24%; color: #c83a4a; font-family: 'Brush Script MT', cursive; font-weight: 700; font-size: 28px; font-style: italic; opacity: 0; animation: c19-fade var(--t) infinite; }
+  @keyframes c19-fade { 0%,18%{opacity:0} 24%,28%{opacity:1} 36%,100%{opacity:0} }
+
+  /* ═══ 20 MORE AMOR · type repeat ═══ */
+  .c20 { background: #c81f3a; overflow: hidden; }
+  .c20 .repeat {
+    position: absolute; left: -50%; right: -50%; top: 50%;
+    color: #fff; font-weight: 900; font-size: 32px; letter-spacing: -.02em;
+    text-align: center;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    animation: c20-scroll var(--t) linear infinite, shellFade var(--t) var(--ease-cinema) infinite;
+  }
+  .c20 .repeat span { padding: 0 12px; }
+  @keyframes c20-scroll {
+    0%       { transform: translate(0, -50%); }
+    28%, 71% { transform: translate(-30%, -50%); }
+    85%,100% { transform: translate(0, -50%); }
+  }
+
+  /* ═══ 21 NOAK · block reveal minimal ═══ */
+  .c21 { background: #f0ece4; }
+  .c21 .block-stack { display: flex; flex-direction: column; gap: 2px; }
+  .c21 .blk {
+    width: 140px; height: 8px;
+    background: #1a1a1a;
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: c21-blk var(--t) var(--ease-cinema) infinite;
+  }
+  .c21 .blk:nth-child(1) { animation-delay: 0s; }
+  .c21 .blk:nth-child(2) { animation-delay: .06s; }
+  .c21 .blk:nth-child(3) { animation-delay: .12s; }
+  .c21 .blk:nth-child(4) { animation-delay: .18s; width: 80px; }
+  .c21 .word { position: absolute; bottom: 28%; color: #1a1a1a; font-weight: 900; font-size: 22px; letter-spacing: .35em; opacity: 0; animation: c21-fade var(--t) infinite; }
+  @keyframes c21-blk {
+    0%       { transform: scaleX(0); }
+    14%      { transform: scaleX(1); }
+    22%,28%  { transform: scaleX(1); }
+    36%,71%  { transform: scaleX(0); transform-origin: right center; opacity: 0; }
+    85%,100% { transform: scaleX(0); }
+  }
+  @keyframes c21-fade { 0%,18%{opacity:0} 24%,28%{opacity:1} 36%,100%{opacity:0} }
+
+  /* ═══ 22 OVERSAINTS · saint halo religious ═══ */
+  .c22 { background: radial-gradient(circle at 50% 30%, #2a1a40 0%, #0d0820 80%); overflow: hidden; }
+  .c22 .halo-ring {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    border: 3px solid #d4a843;
+    box-shadow: 0 0 40px #d4a843;
+    transform: scale(0);
+    animation: shellSpring var(--t) var(--ease-elastic) infinite;
+    margin-top: -120px;
+  }
+  .c22 .rays {
+    position: absolute;
+    width: 200px; height: 200px;
+    background:
+      conic-gradient(from 0deg,
+        transparent 0deg 8deg, rgba(212,168,67,.4) 8deg 12deg, transparent 12deg 38deg,
+        rgba(212,168,67,.4) 38deg 42deg, transparent 42deg 68deg,
+        rgba(212,168,67,.4) 68deg 72deg, transparent 72deg 98deg,
+        rgba(212,168,67,.4) 98deg 102deg, transparent 102deg 128deg,
+        rgba(212,168,67,.4) 128deg 132deg, transparent 132deg 158deg,
+        rgba(212,168,67,.4) 158deg 162deg, transparent 162deg 360deg);
+    border-radius: 50%;
+    opacity: 0;
+    animation: c22-rays var(--t) linear infinite;
+    margin-top: -100px;
+  }
+  .c22 .word { position: absolute; bottom: 22%; color: #d4a843; font-family: 'Times New Roman', serif; font-weight: 700; font-size: 16px; letter-spacing: .25em; font-style: italic; opacity: 0; animation: c22-fade var(--t) infinite; }
+  @keyframes c22-rays { 0%,18%{opacity:0;transform:rotate(0)} 24%,28%{opacity:1;transform:rotate(45deg)} 36%,100%{opacity:0;transform:rotate(90deg)} }
+  @keyframes c22-fade { 0%,18%{opacity:0} 24%,28%{opacity:1} 36%,100%{opacity:0} }
+
+  /* ═══ 23 VSA WORLDWIDE · globe spin + VSA ═══ */
+  .c23 { background: linear-gradient(180deg, #0a1a3a 0%, #050a20 100%); overflow: hidden; }
+  .c23 .globe {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,.15) 0%, transparent 50%),
+      conic-gradient(from 0deg at 50% 50%, #1a4a7a 0%, #2a6a9a 25%, #1a4a7a 50%, #0a2a5a 75%, #1a4a7a 100%);
+    box-shadow:
+      inset -10px -10px 24px rgba(0,0,0,.5),
+      0 0 24px rgba(74,138,196,.5);
+    transform: rotate(0) scale(0);
+    animation: c23-spin var(--t) var(--ease-cinema) infinite;
+  }
+  .c23 .globe::before, .c23 .globe::after {
+    content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1.5px;
+    background: rgba(255,255,255,.2);
+    transform: translateX(-50%);
+  }
+  .c23 .globe::after { transform: translateX(-50%) rotate(60deg); transform-origin: center; }
+  .c23 .vsa { position: absolute; bottom: 22%; color: #fff; font-weight: 900; font-size: 22px; letter-spacing: .3em; opacity: 0; animation: c23-fade var(--t) infinite; }
+  @keyframes c23-spin {
+    0%       { transform: rotate(-180deg) scale(0); }
+    14%      { transform: rotate(0) scale(1.05); }
+    22%      { transform: rotate(60deg) scale(1); }
+    28%      { transform: rotate(120deg) scale(1); }
+    36%,71%  { transform: rotate(540deg) scale(0); opacity: 0; }
+    85%,100% { transform: rotate(-180deg) scale(0); }
+  }
+  @keyframes c23-fade { 0%,18%{opacity:0} 24%,28%{opacity:1} 36%,100%{opacity:0} }
+
+  /* ═══ 24 GRIZZLY GRIPTAPE · bear paw + varsity ═══ */
+  .c24 { background: #0a0a0a; }
+  .c24 .paw {
+    width: 110px; height: 110px;
+    position: relative;
+    transform: scale(0);
+    animation: shellSpring var(--t) var(--ease-spring) infinite;
+  }
+  .c24 .paw .pad {
+    position: absolute; width: 45px; height: 38px;
+    background: #fff;
+    border-radius: 50% 50% 45% 45%;
+    bottom: 0; left: 50%; margin-left: -22.5px;
+  }
+  .c24 .paw .toe {
+    position: absolute; width: 22px; height: 26px;
+    background: #fff;
+    border-radius: 50%;
+  }
+  .c24 .paw .t1 { top: 10px; left: 8px; }
+  .c24 .paw .t2 { top: 0; left: 32px; }
+  .c24 .paw .t3 { top: 0; right: 32px; }
+  .c24 .paw .t4 { top: 10px; right: 8px; }
+  .c24 .word { position: absolute; bottom: 18%; color: #fff; font-family: 'Georgia', serif; font-weight: 900; font-size: 14px; letter-spacing: .22em; text-transform: uppercase; opacity: 0; animation: c24-fade var(--t) infinite; }
+  @keyframes c24-fade { 0%,18%{opacity:0} 24%,28%{opacity:1} 36%,100%{opacity:0} }
+
+  footer { text-align: center; margin-top: 40px; color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  footer code { background: #ede3c9; padding: 2px 8px; border-radius: 4px; font-size: 10px; color: var(--kanki-gold); border: 1px solid var(--kanki-gold); }
+  footer .specs { margin-top: 8px; font-size: 9px; color: var(--muted); opacity: .7; letter-spacing: .15em; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>v8 BRANDS — 24 cortinas × estilo marca real</h1>
+  <p>RADAR scrape reserved.cl · una cortina por marca con SU DNA visual real</p>
+  <div class="lineage">
+    <span>17 INTERNACIONALES</span>
+    <span>6 NACIONALES CHILE</span>
+    <span>+1 GRIZZLY BONUS</span>
+  </div>
+  <br>
+  <button class="replay" id="replay">↻ Repetir todas</button>
+</header>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="scuff-rough">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ════════════════ INTERNACIONALES ════════════════ -->
+<div class="section">Internacionales <span class="meta">17 marcas · reserved.cl</span></div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c1"><span class="word">BALENCIAGA</span></div>
+  </div></div><div class="caption"><b>01</b> Balenciaga <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c2"><div class="label"><span class="main">Carhartt</span><span class="wip">WORK IN PROGRESS</span></div></div>
+  </div></div><div class="caption"><b>02</b> Carhartt WIP <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c3"><span class="word">COLD CULTURE</span></div>
+  </div></div><div class="caption"><b>03</b> Cold Culture <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c4">
+      <span class="crtz">CRTZ</span>
+      <div class="island"></div>
+      <span class="rtw">RTW</span>
+    </div>
+  </div></div><div class="caption"><b>04</b> Corteiz <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c5">
+      <svg viewBox="0 0 240 520" preserveAspectRatio="none">
+        <path class="stroke" d="M 30 260 Q 120 80, 210 260 T 30 260" stroke="#1a1a1a" stroke-width="14" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="word">EME STUDIOS</span>
+    </div>
+  </div></div><div class="caption"><b>05</b> Eme Studios <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c6"><span class="word">Essentials</span><span class="sub">FEAR OF GOD</span></div>
+  </div></div><div class="caption"><b>06</b> Essentials FOG <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c7">
+      <div class="halo"></div>
+      <div class="cross"></div>
+      <span class="word">FAKE GODS</span>
+    </div>
+  </div></div><div class="caption"><b>07</b> Fake Gods <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c8">
+      <div class="cup"><div class="cherry"></div></div>
+      <div class="drip d1"></div><div class="drip d2"></div><div class="drip d3"></div>
+    </div>
+  </div></div><div class="caption"><b>08</b> M***SHAKES <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c9"><span class="sub">BARCELONA</span><span class="word">NUDE<br>PROJECT</span></div>
+  </div></div><div class="caption"><b>09</b> Nude Project <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c10"><span class="quoted">"KANKI"</span><span class="tag-line">c/o OFF—WHITE™ SS26</span></div>
+  </div></div><div class="caption"><b>10</b> Off-White <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c11">
+      <div class="palm">
+        <svg viewBox="0 0 100 240" preserveAspectRatio="none">
+          <path d="M50,240 L48,140 Q44,100 50,40 Q56,100 52,140 L52,240 Z" fill="#fff"/>
+          <path d="M50,40 Q20,20 5,-5 Q25,10 50,40 Q40,0 30,-25 Q40,-10 50,40 Q70,0 85,-20 Q70,0 50,40 Q85,15 100,0 Q85,15 50,40 Z" fill="#fff"/>
+        </svg>
+      </div>
+      <span class="word">Palm Angels</span>
+    </div>
+  </div></div><div class="caption"><b>11</b> Palm Angels <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c12"><span class="word">REPRESENT</span></div>
+  </div></div><div class="caption"><b>12</b> Represent <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c13">
+      <div class="mountain"></div>
+      <span class="s-logo">S</span>
+      <span class="word">SALOMON ACS</span>
+    </div>
+  </div></div><div class="caption"><b>13</b> Salomon <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c14"><div class="scuff"><span class="word">SCUFFERS</span></div></div>
+  </div></div><div class="caption"><b>14</b> Scuffers <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c15"><span class="ss">SS</span><span class="signature">Stüssy</span></div>
+  </div></div><div class="caption"><b>15</b> Stüssy <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c16">
+      <div class="flash"></div>
+      <div class="box">Supreme</div>
+    </div>
+  </div></div><div class="caption"><b>16</b> Supreme <span class="tag intl">INTL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c17">
+      <div class="ring"></div>
+      <span class="word">TwoJeys · BCN</span>
+    </div>
+  </div></div><div class="caption"><b>17</b> TwoJeys <span class="tag intl">INTL</span></div></div>
+
+</main>
+
+<!-- ════════════════ NACIONALES ════════════════ -->
+<div class="section">Nacionales <span class="meta">6 marcas chilenas</span></div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c18"><span class="word">RESERVED</span></div>
+  </div></div><div class="caption"><b>18</b> Reserved Creative <span class="tag cl">CL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c19"><div class="heart"></div><span class="word">Amour Apparel</span></div>
+  </div></div><div class="caption"><b>19</b> Amour Apparel <span class="tag cl">CL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c20"><div class="repeat"><span>MORE</span><span>AMOR</span><span>MORE</span><span>AMOR</span><span>MORE</span><span>AMOR</span></div></div>
+  </div></div><div class="caption"><b>20</b> More Amor <span class="tag cl">CL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c21">
+      <div class="block-stack">
+        <div class="blk"></div><div class="blk"></div><div class="blk"></div><div class="blk"></div>
+      </div>
+      <span class="word">NOAK</span>
+    </div>
+  </div></div><div class="caption"><b>21</b> Noak <span class="tag cl">CL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c22">
+      <div class="rays"></div>
+      <div class="halo-ring"></div>
+      <span class="word">OverSaints</span>
+    </div>
+  </div></div><div class="caption"><b>22</b> OverSaints <span class="tag cl">CL</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c23"><div class="globe"></div><span class="vsa">VSA</span></div>
+  </div></div><div class="caption"><b>23</b> VSA Worldwide <span class="tag cl">CL</span></div></div>
+
+</main>
+
+<!-- ════════════════ BONUS ════════════════ -->
+<div class="section">Bonus skate <span class="meta">marca que pediste · no estaba en reserved</span></div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen"><div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c24">
+      <div class="paw">
+        <div class="pad"></div>
+        <div class="toe t1"></div><div class="toe t2"></div><div class="toe t3"></div><div class="toe t4"></div>
+      </div>
+      <span class="word">Grizzly Griptape</span>
+    </div>
+  </div></div><div class="caption"><b>24</b> Grizzly <span class="tag bonus">BONUS</span></div></div>
+
+</main>
+
+<footer>
+  v8 BRANDS · 24 marcas auditadas · cada cortina con DNA real · Loop 7 s
+  <div class="specs">Data fuente: reserved.cl scrape via Firecrawl · 2026-05-25</div>
+</footer>
+
+<script>
+  document.getElementById('replay').addEventListener('click', () => {
+    document.querySelectorAll('.curtain, .curtain *, .hero').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
+  });
+</script>
+
+</body>
+</html>

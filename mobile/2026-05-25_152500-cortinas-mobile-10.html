@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kanki · 10 Cortinas Mobile — comparativa</title>
+<style>
+  /* ─── @property: permite animar custom properties (Iris radial mask) ─── */
+  @property --r { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* ─── Paleta canónica Kanki Storefront ─── */
+    --navy: #1B2F4E;
+    --navy-mid: #243d63;
+    --navy-deep: #0d1a2e;
+    --gold: #C49A3A;
+    --gold-dim: #d4aa4a;
+    --gold-light: #e6c068;
+    --gold-dark: #b8883a;
+    --sage: #6B9B7A;
+    --cream: #F5EDD8;
+    --cream-mid: #EDE3C9;
+    --bg: #fafaf8;
+    --bg-alt: #f5f5f7;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --subtle: #86868b;
+    --border: #d2d2d7;
+    /* ─── Compatibilidad reglas previas ─── */
+    --accent: var(--gold);
+    --ink: var(--text);
+    --mute: var(--muted);
+    --panel: var(--cream-mid);
+    --t: 7s; /* duración del loop compartido */
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, var(--cream) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+    padding: 32px 20px 80px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+  header h1 {
+    font-weight: 900;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+    color: var(--navy);
+  }
+  header p {
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .replay {
+    background: var(--navy);
+    color: var(--cream);
+    border: 1.5px solid var(--navy);
+    padding: 10px 24px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .replay:hover { transform: scale(1.04); background: var(--navy-mid); box-shadow: 0 8px 24px rgba(27,47,78,0.25); }
+  .replay:active { transform: scale(0.98); }
+
+  /* ─── Grid de teléfonos ─── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px 22px;
+    max-width: 1480px;
+    margin: 0 auto;
+    justify-items: center;
+  }
+  @media (min-width: 580px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 920px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1240px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .caption {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .caption b {
+    display: inline-block;
+    background: var(--cream);
+    border: 1px solid var(--gold-dim);
+    color: var(--navy);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-right: 6px;
+    font-weight: 800;
+  }
+
+  /* ─── Phone frame mobile (240×520, escala 0.64 de 375×812) ─── */
+  .phone {
+    position: relative;
+    width: 240px;
+    height: 520px;
+    background: linear-gradient(145deg, var(--navy-mid), var(--navy-deep));
+    border-radius: 36px;
+    padding: 10px;
+    box-shadow:
+      0 0 0 1.5px var(--navy),
+      0 18px 40px rgba(13,26,46,0.35),
+      inset 0 0 0 1px rgba(245,237,216,0.08);
+  }
+  .screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 26px;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+  }
+  .notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 18px;
+    background: #000;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    z-index: 100;
+  }
+
+  /* ─── Hero placeholder (lo que se ve detrás de la cortina · fiel al storefront) ─── */
+  .hero {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(27,47,78,0.92), rgba(13,26,46,0.96)),
+      repeating-linear-gradient(45deg, transparent 0 12px, rgba(196,154,58,0.08) 12px 13px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--cream);
+    padding: 24px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 12px;
+    color: var(--cream);
+  }
+  .hero-sub {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(245,237,216,0.65);
+    text-transform: uppercase;
+  }
+  .hero-cta {
+    margin-top: 22px;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    padding: 8px 18px;
+    border-radius: 999px;
+  }
+
+  /* ─── Cortina base ─── */
+  .curtain {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* Reinicio: cuando .grid pierde y recupera la clase .playing,
+     las animations se reinician. */
+  .grid.paused .curtain,
+  .grid.paused .curtain * {
+    animation-play-state: paused !important;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 01 — TOP-DOWN SHEET
+     ═════════════════════════════════════════════════════════════════ */
+  .c1 { background: #1B2F4E; animation: c1-anim var(--t) ease-in-out infinite; }
+  .c1::after {
+    content: 'KANKI';
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+    font-weight: 900; font-size: 26px; letter-spacing: -0.03em;
+  }
+  @keyframes c1-anim {
+    0%, 14%   { transform: translateY(0); }
+    28%, 71%  { transform: translateY(-100%); }
+    85%, 100% { transform: translateY(0); }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 02 — SPLIT STRIPES (3 barras alternadas)
+     ═════════════════════════════════════════════════════════════════ */
+  .c2 { background: transparent; }
+  .c2 .stripe {
+    position: absolute; left: 0; right: 0; height: 33.4%;
+    background: #1B2F4E;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-weight: 800; font-size: 11px;
+    letter-spacing: 0.3em;
+  }
+  .c2 .s1 { top: 0;       animation: c2-left  var(--t) ease-in-out infinite; }
+  .c2 .s2 { top: 33.3%;   animation: c2-right var(--t) ease-in-out infinite 0.12s; }
+  .c2 .s3 { top: 66.6%;   animation: c2-left  var(--t) ease-in-out infinite 0.24s; }
+  @keyframes c2-left  { 0%,14%{transform:translateX(0)} 28%,71%{transform:translateX(-105%)} 85%,100%{transform:translateX(0)} }
+  @keyframes c2-right { 0%,14%{transform:translateX(0)} 28%,71%{transform:translateX(105%)}  85%,100%{transform:translateX(0)} }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 03 — IRIS REVEAL (radial mask growing)
+     ═════════════════════════════════════════════════════════════════ */
+  .c3 {
+    background: #1B2F4E;
+    -webkit-mask: radial-gradient(circle at center, transparent var(--r), #000 calc(var(--r) + 1px));
+            mask: radial-gradient(circle at center, transparent var(--r), #000 calc(var(--r) + 1px));
+    animation: c3-anim var(--t) ease-in-out infinite;
+  }
+  .c3::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at center, transparent 60%, rgba(196,154,58,0.18) 100%);
+  }
+  @keyframes c3-anim {
+    0%, 14%   { --r: 0%; }
+    28%, 71%  { --r: 110%; }
+    85%, 100% { --r: 0%; }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 04 — TAPE PULL (cinta griptape diagonal)
+     ═════════════════════════════════════════════════════════════════ */
+  .c4 .panel {
+    position: absolute; inset: 0; background: #1B2F4E;
+    animation: c4-panel var(--t) ease-in-out infinite;
+  }
+  .c4 .tape {
+    position: absolute;
+    width: 250%; height: 56px;
+    top: 50%; left: -75%;
+    background:
+      repeating-linear-gradient(45deg, var(--accent) 0 6px, #b8883a 6px 12px);
+    color: #1B2F4E;
+    font-weight: 900; font-size: 11px; letter-spacing: 0.3em;
+    display: flex; align-items: center; justify-content: center;
+    transform: translateY(-50%) rotate(-22deg);
+    animation: c4-tape var(--t) ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes c4-panel {
+    0%, 14%   { opacity: 1; }
+    24%, 75%  { opacity: 0; }
+    85%, 100% { opacity: 1; }
+  }
+  @keyframes c4-tape {
+    0%, 14%   { transform: translate(0%, -50%) rotate(-22deg); }
+    28%, 71%  { transform: translate(180%, 80%) rotate(35deg); }
+    85%, 100% { transform: translate(0%, -50%) rotate(-22deg); }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 05 — WIPE DIAGONAL
+     ═════════════════════════════════════════════════════════════════ */
+  .c5 {
+    background: #1B2F4E;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    animation: c5-anim var(--t) ease-in-out infinite;
+  }
+  .c5::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 49%, var(--accent) 50%, transparent 51%);
+    opacity: 0.4;
+  }
+  @keyframes c5-anim {
+    0%, 14%   { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    28%, 71%  { clip-path: polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%); }
+    85%, 100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 06 — SWIPE UP HINT
+     ═════════════════════════════════════════════════════════════════ */
+  .c6 {
+    background: #1B2F4E;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px;
+    animation: c6-anim var(--t) ease-in-out infinite;
+  }
+  .c6 .arrow {
+    color: var(--accent); font-size: 28px; line-height: 1;
+    animation: c6-arrow 1.1s ease infinite;
+  }
+  .c6 .lbl {
+    color: #fff; font-size: 10px; letter-spacing: 0.3em; font-weight: 700;
+  }
+  @keyframes c6-anim {
+    0%, 14%   { transform: translateY(0); }
+    28%, 71%  { transform: translateY(-100%); }
+    85%, 100% { transform: translateY(0); }
+  }
+  @keyframes c6-arrow {
+    0%, 100% { transform: translateY(6px); opacity: 0.4; }
+    50%      { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 07 — SPRAY DRIP (SVG path con bordes irregulares)
+     ═════════════════════════════════════════════════════════════════ */
+  .c7 { animation: c7-anim var(--t) ease-in-out infinite; }
+  .c7 svg { width: 100%; height: 100%; display: block; }
+  @keyframes c7-anim {
+    0%, 14%   { transform: translateY(0); }
+    28%, 71%  { transform: translateY(-105%); }
+    85%, 100% { transform: translateY(0); }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 08 — LOGO STAMP
+     ═════════════════════════════════════════════════════════════════ */
+  .c8 {
+    background: #1B2F4E;
+    display: flex; align-items: center; justify-content: center;
+    animation: c8-fade var(--t) ease-in-out infinite;
+  }
+  .c8 .stamp {
+    font-weight: 900; font-size: 38px; letter-spacing: -0.04em;
+    color: var(--accent);
+    animation: c8-stamp var(--t) cubic-bezier(.7,-0.3,.3,1.4) infinite;
+  }
+  @keyframes c8-fade {
+    0%, 14%   { opacity: 1; }
+    28%, 71%  { opacity: 0; }
+    85%, 100% { opacity: 1; }
+  }
+  @keyframes c8-stamp {
+    0%       { transform: scale(0.2); }
+    14%      { transform: scale(1); }
+    22%      { transform: scale(1.08); }
+    28%, 71% { transform: scale(8); opacity: 0; }
+    85%      { transform: scale(0.2); opacity: 0; }
+    92%      { transform: scale(1); opacity: 1; }
+    100%     { transform: scale(1); opacity: 1; }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 09 — WAVE SWEEP (SVG ola)
+     ═════════════════════════════════════════════════════════════════ */
+  .c9 { animation: c9-anim var(--t) ease-in-out infinite; }
+  .c9 svg { width: 100%; height: 100%; display: block; }
+  @keyframes c9-anim {
+    0%, 14%   { transform: translateY(0); }
+    28%, 71%  { transform: translateY(-100%); }
+    85%, 100% { transform: translateY(0); }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════
+     EFECTO 10 — MOSAIC TILES (4×8 grid con stagger random)
+     ═════════════════════════════════════════════════════════════════ */
+  .c10 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 1px;
+    background: transparent;
+  }
+  .c10 .tile {
+    background: #1B2F4E;
+    animation: c10-anim var(--t) ease-in-out infinite;
+  }
+  @keyframes c10-anim {
+    0%, 14%   { transform: scale(1);   opacity: 1; }
+    28%, 71%  { transform: scale(0.1); opacity: 0; }
+    85%, 100% { transform: scale(1);   opacity: 1; }
+  }
+
+  /* ─── Footer info ─── */
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--mute);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  footer code {
+    background: var(--panel);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>10 Cortinas Mobile — Kanki Street</h1>
+  <p>Viewport 375 · loop 7 s · todas disparan en sincronía</p>
+  <button class="replay" id="replay">↻ Repetir todas</button>
+</header>
+
+<main class="grid" id="grid">
+
+  <!-- 01 TOP-DOWN SHEET -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c1"></div>
+    </div></div>
+    <div class="caption"><b>01</b> Top-Down Sheet</div>
+  </div>
+
+  <!-- 02 SPLIT STRIPES -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c2">
+        <div class="stripe s1">KANKI</div>
+        <div class="stripe s2">STREET</div>
+        <div class="stripe s3">SS26</div>
+      </div>
+    </div></div>
+    <div class="caption"><b>02</b> Split Stripes</div>
+  </div>
+
+  <!-- 03 IRIS REVEAL -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c3"></div>
+    </div></div>
+    <div class="caption"><b>03</b> Iris Reveal</div>
+  </div>
+
+  <!-- 04 TAPE PULL -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c4">
+        <div class="panel"></div>
+        <div class="tape">KANKI · GRIP · KANKI · GRIP · KANKI</div>
+      </div>
+    </div></div>
+    <div class="caption"><b>04</b> Tape Pull</div>
+  </div>
+
+  <!-- 05 WIPE DIAGONAL -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c5"></div>
+    </div></div>
+    <div class="caption"><b>05</b> Wipe Diagonal</div>
+  </div>
+
+  <!-- 06 SWIPE UP HINT -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c6">
+        <span class="arrow">↑</span>
+        <span class="lbl">SWIPE UP</span>
+      </div>
+    </div></div>
+    <div class="caption"><b>06</b> Swipe-Up Hint</div>
+  </div>
+
+  <!-- 07 SPRAY DRIP -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c7">
+        <svg viewBox="0 0 100 110" preserveAspectRatio="none">
+          <path d="M0,0 L100,0 L100,82
+                   Q92,95 86,82
+                   Q80,108 73,84
+                   Q66,98 58,82
+                   Q50,110 42,84
+                   Q34,96 26,82
+                   Q18,108 10,84
+                   Q5,94 0,82 Z" fill="#1B2F4E"/>
+        </svg>
+      </div>
+    </div></div>
+    <div class="caption"><b>07</b> Spray Drip</div>
+  </div>
+
+  <!-- 08 LOGO STAMP -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c8">
+        <span class="stamp">KANKI</span>
+      </div>
+    </div></div>
+    <div class="caption"><b>08</b> Logo Stamp</div>
+  </div>
+
+  <!-- 09 WAVE SWEEP -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c9">
+        <svg viewBox="0 0 100 110" preserveAspectRatio="none">
+          <path d="M0,110 L100,110 L100,18
+                   Q88,30 75,18
+                   Q62,8 50,20
+                   Q38,32 25,18
+                   Q12,8 0,20 Z" fill="#1B2F4E"/>
+        </svg>
+      </div>
+    </div></div>
+    <div class="caption"><b>09</b> Wave Sweep</div>
+  </div>
+
+  <!-- 10 MOSAIC TILES -->
+  <div class="card">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="hero">
+        <div class="hero-eyebrow">SS26</div>
+        <div class="hero-title">KANKI<br>STREET</div>
+        <div class="hero-sub">RAW SURF · REAL STREET</div>
+        <div class="hero-cta">SHOP NOW</div>
+      </div>
+      <div class="curtain c10" id="mosaic"></div>
+    </div></div>
+    <div class="caption"><b>10</b> Mosaic Tiles</div>
+  </div>
+
+</main>
+
+<footer>
+  Viewport mobile 375×812 (escala visual 0.64) · Loop 7 s · <code>animation-iteration-count: infinite</code>
+</footer>
+
+<script>
+  /* ── Generar tiles del mosaico (32 tiles con delay random) ── */
+  (function buildMosaic(){
+    const m = document.getElementById('mosaic');
+    if (!m) return;
+    const N = 32;
+    for (let i = 0; i < N; i++) {
+      const t = document.createElement('div');
+      t.className = 'tile';
+      t.style.animationDelay = (Math.random() * 0.4) + 's';
+      m.appendChild(t);
+    }
+  })();
+
+  /* ── Replay: reinicia todas las animaciones simultáneo ── */
+  document.getElementById('replay').addEventListener('click', () => {
+    const grid = document.getElementById('grid');
+    grid.classList.add('reset');
+    /* Forzar reflow para reiniciar @keyframes */
+    void grid.offsetWidth;
+    grid.classList.remove('reset');
+    /* trick: clonar nodos no, mejor reaplicar animations */
+    grid.querySelectorAll('.curtain, .curtain *').forEach(el => {
+      const a = el.style.animation;
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kanki · 20 Cortinas Mobile v4 — Keepers + Surf + Streetwear + Skate</title>
+<style>
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1B2F4E;
+    --navy-mid: #243d63;
+    --navy-deep: #0d1a2e;
+    --gold: #C49A3A;
+    --gold-dim: #d4aa4a;
+    --gold-light: #e6c068;
+    --gold-dark: #b8883a;
+    --sage: #6B9B7A;
+    --ocean: #2a5a8a;
+    --ocean-deep: #14365c;
+    --foam: #f5f5f0;
+    --ember: #ff7a3a;
+    --spark: #ffd84a;
+    --cream: #F5EDD8;
+    --cream-mid: #EDE3C9;
+    --rubber: #1a1a1a;
+    --concrete: #8a8a90;
+    --bg: #fafaf8;
+    --bg-alt: #f5f5f7;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --accent: var(--gold);
+    --panel: var(--cream-mid);
+    --t: 7s;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, var(--cream) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+    padding: 32px 20px 80px;
+  }
+
+  header { text-align: center; margin-bottom: 28px; max-width: 880px; margin-inline: auto; }
+  header h1 { font-weight: 900; font-size: clamp(1.6rem,4vw,2.2rem); letter-spacing: -.03em; margin-bottom: 8px; color: var(--navy); }
+  header p { color: var(--muted); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
+  header .lineage {
+    display: inline-flex; gap: 6px; margin-bottom: 14px;
+    font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+    flex-wrap: wrap; justify-content: center;
+  }
+  header .lineage span {
+    background: var(--cream); border: 1px solid var(--gold-dim);
+    padding: 3px 9px; border-radius: 999px; color: var(--navy); font-weight: 800;
+  }
+  .replay {
+    background: var(--navy); color: var(--cream); border: 1.5px solid var(--navy);
+    padding: 10px 24px; font-weight: 800; font-size: 12px; letter-spacing: .16em;
+    text-transform: uppercase; border-radius: 999px; cursor: pointer;
+    transition: transform .2s, box-shadow .2s, background .2s;
+  }
+  .replay:hover { transform: scale(1.04); background: var(--navy-mid); }
+  .replay:active { transform: scale(.98); }
+
+  /* ─── Section divider ─── */
+  .section {
+    max-width: 1480px; margin: 28px auto 14px;
+    display: flex; align-items: center; gap: 14px;
+    color: var(--navy); font-weight: 900; font-size: 13px; letter-spacing: .2em; text-transform: uppercase;
+  }
+  .section::before { content: ''; flex: 1; height: 1px; background: var(--gold-dim); }
+  .section::after  { content: ''; flex: 1; height: 1px; background: var(--gold-dim); }
+  .section .ico { font-size: 22px; line-height: 1; }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr; gap: 28px 22px;
+    max-width: 1480px; margin: 0 auto; justify-items: center;
+  }
+  @media (min-width: 580px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 920px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1240px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+
+  .card { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .caption { text-align: center; font-size: 11px; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+  .caption b {
+    display: inline-block; background: var(--cream); border: 1px solid var(--gold-dim);
+    color: var(--navy); padding: 2px 8px; border-radius: 6px; margin-right: 6px; font-weight: 800;
+  }
+  .caption .tag {
+    display: inline-block; margin-left: 6px; font-size: 9px;
+    padding: 1px 6px; border-radius: 4px; font-weight: 900; letter-spacing: .12em;
+  }
+  .tag.keeper { background: var(--gold); color: var(--navy); }
+  .tag.surf   { background: var(--ocean); color: #fff; }
+  .tag.street { background: var(--rubber); color: var(--spark); }
+  .tag.skate  { background: var(--ember); color: var(--navy-deep); }
+
+  .phone {
+    position: relative; width: 240px; height: 520px;
+    background: linear-gradient(145deg, var(--navy-mid), var(--navy-deep));
+    border-radius: 36px; padding: 10px;
+    box-shadow:
+      0 0 0 1.5px var(--navy),
+      0 18px 40px rgba(13,26,46,.35),
+      inset 0 0 0 1px rgba(245,237,216,.08);
+  }
+  .screen {
+    width: 100%; height: 100%; border-radius: 26px; overflow: hidden;
+    background: #fff; position: relative; perspective: 1200px;
+  }
+  .notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 100px; height: 18px; background: #000;
+    border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; z-index: 100;
+  }
+
+  .hero {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(135deg, rgba(27,47,78,.92), rgba(13,26,46,.96)),
+      repeating-linear-gradient(45deg, transparent 0 12px, rgba(196,154,58,.08) 12px 13px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--cream); padding: 24px; text-align: center;
+  }
+  .hero-eyebrow { font-size: 8px; letter-spacing: .3em; color: var(--gold); margin-bottom: 14px; }
+  .hero-title { font-size: 32px; font-weight: 900; letter-spacing: -.04em; line-height: .95; margin-bottom: 12px; color: var(--cream); }
+  .hero-sub { font-size: 9px; letter-spacing: .2em; color: rgba(245,237,216,.65); text-transform: uppercase; }
+  .hero-cta { margin-top: 22px; background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 800; letter-spacing: .16em; padding: 8px 18px; border-radius: 999px; }
+
+  .curtain { position: absolute; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
+
+  /* ═══════════════════════════════════════════════
+     KEEPERS (01–05)
+     ═══════════════════════════════════════════════ */
+
+  /* 01 LOGO STAMP */
+  .c1 { background: var(--navy); display: flex; align-items: center; justify-content: center; animation: c1-fade var(--t) ease-in-out infinite; }
+  .c1 .stamp { font-weight: 900; font-size: 38px; letter-spacing: -.04em; color: var(--accent); animation: c1-stamp var(--t) cubic-bezier(.7,-.3,.3,1.4) infinite; }
+  @keyframes c1-fade { 0%,14%{opacity:1} 28%,71%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes c1-stamp {
+    0%{transform:scale(.2)} 14%{transform:scale(1)} 22%{transform:scale(1.08)}
+    28%,71%{transform:scale(8);opacity:0} 85%{transform:scale(.2);opacity:0}
+    92%{transform:scale(1);opacity:1} 100%{transform:scale(1);opacity:1}
+  }
+
+  /* 02 TAPE CROSS X */
+  .c2 .panel { position: absolute; inset: 0; background: var(--navy); animation: c2-panel var(--t) ease-in-out infinite; }
+  .c2 .tape {
+    position: absolute; width: 250%; height: 46px; top: 50%; left: -75%;
+    color: var(--navy); font-weight: 900; font-size: 10px; letter-spacing: .32em;
+    display: flex; align-items: center; justify-content: center; transform-origin: center;
+  }
+  .c2 .tape.a { background: repeating-linear-gradient(45deg, var(--gold) 0 6px, var(--gold-dark) 6px 12px); transform: translateY(-50%) rotate(-25deg); animation: c2-a var(--t) cubic-bezier(.5,.05,.5,.95) infinite; }
+  .c2 .tape.b { background: repeating-linear-gradient(-45deg, var(--gold-light) 0 6px, var(--gold) 6px 12px); transform: translateY(-50%) rotate(25deg); animation: c2-b var(--t) cubic-bezier(.5,.05,.5,.95) infinite .08s; }
+  @keyframes c2-panel { 0%,14%{opacity:1} 26%,75%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes c2-a { 0%,14%{transform:translate(0%,-50%) rotate(-25deg)} 28%,71%{transform:translate(-180%,-180%) rotate(-55deg)} 85%,100%{transform:translate(0%,-50%) rotate(-25deg)} }
+  @keyframes c2-b { 0%,14%{transform:translate(0%,-50%) rotate(25deg)} 28%,71%{transform:translate(180%,180%) rotate(55deg)} 85%,100%{transform:translate(0%,-50%) rotate(25deg)} }
+
+  /* 03 LETTER DROP */
+  .c3 { background: transparent; display: flex; align-items: stretch; }
+  .c3 .col {
+    flex: 1; background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-weight: 900; font-size: 28px; letter-spacing: -.04em;
+    transform: translateY(-100%);
+    animation: c3-letter var(--t) cubic-bezier(.34,1.56,.64,1) infinite;
+  }
+  .c3 .col:nth-child(1) { animation-delay: 0s; }
+  .c3 .col:nth-child(2) { animation-delay: .06s; }
+  .c3 .col:nth-child(3) { animation-delay: .12s; }
+  .c3 .col:nth-child(4) { animation-delay: .18s; }
+  .c3 .col:nth-child(5) { animation-delay: .24s; }
+  @keyframes c3-letter {
+    0%{transform:translateY(-100%)} 14%{transform:translateY(0)} 18%{transform:translateY(-6%)}
+    22%,28%{transform:translateY(0)} 50%,71%{transform:translateY(-105%)} 85%,100%{transform:translateY(0)}
+  }
+
+  /* 04 TAPE SLINGSHOT (era 07 en v3) */
+  .c4 .panel { position: absolute; inset: 0; background: var(--navy); animation: c4-panel var(--t) ease-in-out infinite; }
+  .c4 .strap {
+    position: absolute; top: 50%; left: 50%; width: 240px; height: 42px;
+    margin-left: -120px; margin-top: -21px;
+    background: repeating-linear-gradient(45deg, var(--gold) 0 6px, var(--gold-dark) 6px 12px);
+    color: var(--navy); font-weight: 900; font-size: 11px; letter-spacing: .3em;
+    display: flex; align-items: center; justify-content: center;
+    transform-origin: left center;
+    animation: c4-strap var(--t) cubic-bezier(.7,.0,.3,1) infinite;
+  }
+  @keyframes c4-panel { 0%,14%{opacity:1} 30%,75%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes c4-strap {
+    0%,12%{transform:scaleX(1) rotate(0)} 18%{transform:scaleX(1.6) rotate(-5deg)}
+    24%{transform:scaleX(.6) rotate(-3deg)} 30%,71%{transform:scaleX(8) translateX(40%) rotate(-15deg);opacity:0}
+    85%{transform:scaleX(0);opacity:0} 92%,100%{transform:scaleX(1) rotate(0);opacity:1}
+  }
+
+  /* 05 LETTER WAVE (era 08 en v3) */
+  .c5 { background: transparent; display: flex; align-items: stretch; }
+  .c5 .col {
+    flex: 1; background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-weight: 900; font-size: 28px; letter-spacing: -.04em;
+    transform: translateY(-100%);
+    animation: c3-letter var(--t) cubic-bezier(.34,1.56,.64,1) infinite;
+  }
+  .c5 .col:nth-child(1) { animation-delay: .16s; }
+  .c5 .col:nth-child(2) { animation-delay: .08s; }
+  .c5 .col:nth-child(3) { animation-delay: 0s; }
+  .c5 .col:nth-child(4) { animation-delay: .08s; }
+  .c5 .col:nth-child(5) { animation-delay: .16s; }
+
+  /* ═══════════════════════════════════════════════
+     SURF MOTION (06–10) · ocean palette
+     ═══════════════════════════════════════════════ */
+
+  /* 06 SURF · WAVE ROLL — ola que rola y se voltea */
+  .c6 { background: transparent; }
+  .c6 svg { width: 100%; height: 100%; display: block; }
+  .c6 .wave {
+    transform-origin: 50% 100%;
+    animation: c6-roll var(--t) cubic-bezier(.6,.0,.4,1) infinite;
+  }
+  @keyframes c6-roll {
+    0%,14%   { transform: translateY(0)    rotate(0); }
+    24%      { transform: translateY(-12%) rotate(-3deg); }
+    28%,71%  { transform: translateY(-120%) rotate(-8deg); }
+    85%,100% { transform: translateY(0)    rotate(0); }
+  }
+
+  /* 07 SURF · TUBE BARREL — tubo de ola se abre */
+  .c7 { background: transparent; }
+  .c7 .lip-top {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--ocean-deep) 0%, var(--ocean) 100%);
+    clip-path: ellipse(120% 60% at 50% -10%);
+    animation: c7-top var(--t) cubic-bezier(.6,.0,.4,1) infinite;
+  }
+  .c7 .lip-bot {
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, var(--ocean-deep) 0%, var(--ocean) 100%);
+    clip-path: ellipse(120% 60% at 50% 110%);
+    animation: c7-bot var(--t) cubic-bezier(.6,.0,.4,1) infinite;
+  }
+  .c7 .glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, var(--gold-light) 0%, transparent 35%);
+    opacity: 0;
+    animation: c7-glow var(--t) ease-in-out infinite;
+  }
+  @keyframes c7-top { 0%,14%{transform:translateY(0)} 28%,71%{transform:translateY(-90%)} 85%,100%{transform:translateY(0)} }
+  @keyframes c7-bot { 0%,14%{transform:translateY(0)} 28%,71%{transform:translateY(90%)}  85%,100%{transform:translateY(0)} }
+  @keyframes c7-glow { 0%,12%{opacity:0} 18%,24%{opacity:.8} 32%,100%{opacity:0} }
+
+  /* 08 SURF · FOAM WASH — espuma blanca cubre y se retira */
+  .c8 {
+    background: linear-gradient(180deg, var(--ocean) 0%, var(--ocean-deep) 100%);
+    animation: c8-wash var(--t) cubic-bezier(.55,.0,.45,1) infinite;
+  }
+  .c8::before {
+    content: ''; position: absolute; left: 0; right: 0; top: -20px; height: 50px;
+    background:
+      radial-gradient(circle at 20% 80%, var(--foam) 6px, transparent 8px),
+      radial-gradient(circle at 50% 70%, var(--foam) 5px, transparent 7px),
+      radial-gradient(circle at 80% 80%, var(--foam) 6px, transparent 8px),
+      radial-gradient(circle at 35% 90%, var(--foam) 4px, transparent 6px),
+      radial-gradient(circle at 65% 90%, var(--foam) 4px, transparent 6px),
+      linear-gradient(180deg, var(--foam) 0%, transparent 100%);
+    filter: blur(1px);
+    animation: c8-foam var(--t) cubic-bezier(.55,.0,.45,1) infinite;
+  }
+  .c8::after {
+    content: 'KANKI · SURF';
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--foam); font-weight: 900; font-size: 18px; letter-spacing: .25em;
+  }
+  @keyframes c8-wash {
+    0%,14%   { transform: translateY(0); }
+    28%,71%  { transform: translateY(-105%); }
+    85%,100% { transform: translateY(0); }
+  }
+  @keyframes c8-foam {
+    0%,14%   { transform: translateY(0)   scaleY(1); opacity: 1; }
+    20%      { transform: translateY(-8%) scaleY(1.3); opacity: 1; }
+    28%,71%  { transform: translateY(-100%) scaleY(.5); opacity: 0; }
+    85%,100% { transform: translateY(0)   scaleY(1); opacity: 1; }
+  }
+
+  /* 09 SURF · TIDE PULL — marea retrocede en 4 capas paralelas */
+  .c9 { background: transparent; }
+  .c9 .layer {
+    position: absolute; left: 0; right: 0; height: 25%;
+    transform-origin: right center;
+  }
+  .c9 .l1 { top: 0;    background: linear-gradient(90deg, var(--ocean-deep) 0%, var(--ocean) 100%); animation: c9-pull var(--t) cubic-bezier(.6,.0,.4,1) infinite; }
+  .c9 .l2 { top: 25%;  background: linear-gradient(90deg, var(--ocean) 0%, var(--ocean-deep) 100%); animation: c9-pull var(--t) cubic-bezier(.6,.0,.4,1) infinite .06s; }
+  .c9 .l3 { top: 50%;  background: linear-gradient(90deg, var(--ocean-deep) 0%, var(--ocean) 100%); animation: c9-pull var(--t) cubic-bezier(.6,.0,.4,1) infinite .12s; }
+  .c9 .l4 { top: 75%;  background: linear-gradient(90deg, var(--ocean) 0%, var(--ocean-deep) 100%); animation: c9-pull var(--t) cubic-bezier(.6,.0,.4,1) infinite .18s; }
+  .c9 .l1::after, .c9 .l2::after, .c9 .l3::after, .c9 .l4::after {
+    content: ''; position: absolute; left: 0; top: 50%; height: 1.5px; width: 100%;
+    background: linear-gradient(90deg, transparent, var(--foam) 70%, var(--foam) 100%);
+    opacity: .6;
+  }
+  @keyframes c9-pull {
+    0%,14%   { transform: translateX(0)    scaleX(1); }
+    28%,71%  { transform: translateX(-105%) scaleX(.3); }
+    85%,100% { transform: translateX(0)    scaleX(1); }
+  }
+
+  /* 10 SURF · CREST CURL — cresta se enrolla a la izquierda */
+  .c10 { background: transparent; }
+  .c10 .body {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--ocean) 0%, var(--ocean-deep) 100%);
+    transform-origin: 0% 50%;
+    animation: c10-curl var(--t) cubic-bezier(.55,.0,.35,1) infinite;
+  }
+  .c10 .crest {
+    position: absolute; top: -2px; left: 0; right: 0; height: 24px;
+    background: linear-gradient(180deg, var(--foam) 0%, transparent 100%);
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    transform-origin: 0% 50%;
+    animation: c10-curl var(--t) cubic-bezier(.55,.0,.35,1) infinite;
+  }
+  .c10::after {
+    content: 'KANKI'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 900; font-size: 30px; letter-spacing: -.04em;
+  }
+  @keyframes c10-curl {
+    0%,14%   { transform: rotate(0)    scaleX(1)  translateX(0); border-radius: 0; }
+    20%      { transform: rotate(-8deg) scaleX(.9) translateX(-4%); }
+    28%,71%  { transform: rotate(-40deg) scaleX(.1) translateX(-100%); border-radius: 50%; }
+    85%,100% { transform: rotate(0)     scaleX(1)  translateX(0); border-radius: 0; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     STREETWEAR (11–15) · drop / hangtag / stitch
+     ═══════════════════════════════════════════════ */
+
+  /* 11 STREET · HANGTAG DROP — etiqueta colgante balancea y cae */
+  .c11 { background: rgba(0,0,0,.85); display: flex; align-items: center; justify-content: center; animation: c11-bg var(--t) ease-in-out infinite; }
+  .c11 .string {
+    position: absolute; top: 0; left: 50%; width: 1.5px; height: 60px;
+    background: var(--cream); transform-origin: top center;
+    animation: c11-sway var(--t) ease-in-out infinite;
+  }
+  .c11 .tag {
+    position: absolute; top: 60px; left: 50%; transform-origin: top center;
+    width: 130px; height: 170px; margin-left: -65px;
+    background: var(--cream); color: var(--navy);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 16px 12px; gap: 4px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.4);
+    border-radius: 4px;
+    animation: c11-sway var(--t) ease-in-out infinite;
+  }
+  .c11 .tag::before {
+    content: ''; position: absolute; top: 12px; left: 50%; width: 14px; height: 14px;
+    margin-left: -7px; background: #000; border-radius: 50%;
+    border: 3px solid var(--cream); box-shadow: 0 0 0 1px #000 inset;
+  }
+  .c11 .tag .brand { margin-top: 16px; font-weight: 900; font-size: 18px; letter-spacing: -.04em; }
+  .c11 .tag .style { font-size: 9px; letter-spacing: .25em; color: var(--muted); }
+  .c11 .tag .price { font-weight: 900; font-size: 12px; margin-top: 8px; }
+  @keyframes c11-bg { 0%,14%{opacity:1} 28%,71%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes c11-sway {
+    0%       { transform: translateX(-50%) translateY(-110%) rotate(-8deg); }
+    14%      { transform: translateX(-50%) translateY(0)     rotate(4deg); }
+    18%      { transform: translateX(-50%) translateY(-3%)   rotate(-3deg); }
+    22%      { transform: translateX(-50%) translateY(0)     rotate(2deg); }
+    28%,71%  { transform: translateX(-50%) translateY(120%)  rotate(-15deg); opacity: 0; }
+    85%,100% { transform: translateX(-50%) translateY(0)     rotate(0); opacity: 1; }
+  }
+
+  /* 12 STREET · STITCH UNSEW — costuras se sueltan, panel cae */
+  .c12 {
+    background: var(--navy);
+    border: 3px dashed var(--gold);
+    border-radius: 8px;
+    animation: c12-fall var(--t) cubic-bezier(.6,.0,.4,1) infinite;
+  }
+  .c12::before {
+    content: ''; position: absolute; inset: 8px;
+    border: 1.5px dashed var(--gold-light);
+    border-radius: 4px;
+    animation: c12-stitch var(--t) linear infinite;
+  }
+  .c12::after {
+    content: 'KANKI · DROP 02'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 900; font-size: 14px; letter-spacing: .25em;
+  }
+  @keyframes c12-fall {
+    0%,14%   { transform: translateY(0)    rotate(0); }
+    18%      { transform: translateY(2%)   rotate(2deg); }
+    22%      { transform: translateY(-1%)  rotate(-1deg); }
+    28%,71%  { transform: translateY(110%) rotate(8deg); opacity: 0; }
+    85%,100% { transform: translateY(0)    rotate(0); opacity: 1; }
+  }
+  @keyframes c12-stitch {
+    0%,100% { opacity: 1; }
+    50%     { opacity: .3; }
+  }
+
+  /* 13 STREET · DROP BOX — caja release tipo Supreme con flash */
+  .c13 { background: var(--rubber); display: flex; align-items: center; justify-content: center; animation: c1-fade var(--t) ease-in-out infinite; }
+  .c13 .box {
+    width: 80%; padding: 24px 16px; text-align: center;
+    background: #c41f1f; color: #fff;
+    transform: scale(0) rotate(-5deg);
+    animation: c13-box var(--t) cubic-bezier(.34,1.56,.64,1) infinite;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  }
+  .c13 .box .lbl { font-size: 9px; letter-spacing: .3em; opacity: .9; margin-bottom: 6px; }
+  .c13 .box .drop { font-weight: 900; font-size: 30px; letter-spacing: -.04em; line-height: 1; }
+  .c13 .box .nbr { font-weight: 900; font-size: 18px; letter-spacing: .1em; margin-top: 4px; }
+  .c13 .flash {
+    position: absolute; inset: 0; background: #fff; opacity: 0;
+    animation: c13-flash var(--t) ease-out infinite;
+  }
+  @keyframes c13-box {
+    0%       { transform: scale(0) rotate(-15deg); }
+    10%      { transform: scale(1.15) rotate(2deg); }
+    14%      { transform: scale(.95) rotate(-1deg); }
+    18%, 26% { transform: scale(1) rotate(0); }
+    28%,71%  { transform: scale(8) rotate(15deg); opacity: 0; }
+    85%      { transform: scale(0); opacity: 0; }
+    92%,100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes c13-flash {
+    0%,7% { opacity: 0; } 10% { opacity: .9; } 14%,100% { opacity: 0; }
+  }
+
+  /* 14 STREET · ZIPPER — cierre baja revelando hero */
+  .c14 { background: transparent; }
+  .c14 .side {
+    position: absolute; top: 0; bottom: 0; width: 50%;
+    background: var(--navy);
+  }
+  .c14 .L { left: 0;  animation: c14-l var(--t) cubic-bezier(.7,.0,.3,1) infinite; }
+  .c14 .R { right: 0; animation: c14-r var(--t) cubic-bezier(.7,.0,.3,1) infinite; }
+  .c14 .teeth {
+    position: absolute; top: 0; bottom: 0; left: 50%; width: 8px; margin-left: -4px;
+    background: repeating-linear-gradient(0deg, var(--gold) 0 4px, var(--gold-dark) 4px 8px);
+  }
+  .c14 .slider {
+    position: absolute; left: 50%; top: 0; width: 22px; height: 30px;
+    margin-left: -11px; margin-top: -2px;
+    background: var(--gold);
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,.4), inset 0 -3px 0 var(--gold-dark);
+    animation: c14-slide var(--t) cubic-bezier(.7,.0,.3,1) infinite;
+  }
+  .c14 .slider::after {
+    content: ''; position: absolute; bottom: -10px; left: 50%; width: 2px; height: 8px;
+    background: var(--gold); margin-left: -1px;
+  }
+  @keyframes c14-slide {
+    0%,14%   { top: 0; }
+    28%,71%  { top: 100%; }
+    85%,100% { top: 0; }
+  }
+  @keyframes c14-l {
+    0%,14%   { transform: translateX(0); }
+    28%,71%  { transform: translateX(-105%); }
+    85%,100% { transform: translateX(0); }
+  }
+  @keyframes c14-r {
+    0%,14%   { transform: translateX(0); }
+    28%,71%  { transform: translateX(105%); }
+    85%,100% { transform: translateX(0); }
+  }
+
+  /* 15 STREET · HEAT PRESS — vinilo se calienta y se desprende */
+  .c15 {
+    background: var(--navy);
+    animation: c15-press var(--t) cubic-bezier(.7,.0,.3,1) infinite;
+    transform-origin: top center;
+  }
+  .c15::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(255,122,58,.5) 0%, transparent 50%);
+    opacity: 0;
+    animation: c15-heat var(--t) ease-in-out infinite;
+  }
+  .c15::after {
+    content: 'KANKI'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 900; font-size: 36px; letter-spacing: -.04em;
+    text-shadow: 0 0 0 transparent;
+    animation: c15-vinyl var(--t) ease-in-out infinite;
+  }
+  @keyframes c15-press {
+    0%,14%   { transform: rotateX(0)    translateY(0); }
+    20%      { transform: rotateX(-10deg) translateY(2%); }
+    28%,71%  { transform: rotateX(-90deg) translateY(-30%); opacity: 0; }
+    85%,100% { transform: rotateX(0)    translateY(0); opacity: 1; }
+  }
+  @keyframes c15-heat {
+    0%,12% { opacity: 0; } 16%,22% { opacity: 1; } 30%,100% { opacity: 0; }
+  }
+  @keyframes c15-vinyl {
+    0%,14%  { text-shadow: 0 0 0 transparent; }
+    20%     { text-shadow: 0 0 12px var(--ember); }
+    28%,100%{ text-shadow: 0 0 0 transparent; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     SKATE MOTION (16–20) · pop / flip / grind / bowl
+     ═══════════════════════════════════════════════ */
+
+  /* 16 SKATE · OLLIE POP — panel hace ollie (sube+rotación) */
+  .c16 {
+    background: var(--navy);
+    animation: c16-ollie var(--t) cubic-bezier(.5,-.4,.4,1.4) infinite;
+    transform-origin: 15% 100%;
+  }
+  .c16::after {
+    content: 'KANKI'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 900; font-size: 32px; letter-spacing: -.04em;
+  }
+  .c16::before {
+    content: ''; position: absolute; bottom: -6px; left: 0; right: 0; height: 4px;
+    background: var(--concrete);
+    opacity: .4;
+  }
+  @keyframes c16-ollie {
+    0%,14%   { transform: translateY(0)    rotate(0); }
+    20%      { transform: translateY(-8%)  rotate(-12deg); }
+    24%      { transform: translateY(-20%) rotate(-22deg); }
+    28%,71%  { transform: translateY(-130%) rotate(-30deg); opacity: 0; }
+    85%,100% { transform: translateY(0)    rotate(0); opacity: 1; }
+  }
+
+  /* 17 SKATE · KICKFLIP — panel flipea en X (rotateX 360) */
+  .c17 {
+    background: var(--navy);
+    animation: c17-kick var(--t) cubic-bezier(.6,.0,.4,1) infinite;
+    transform-style: preserve-3d;
+  }
+  .c17::after {
+    content: 'KANKI'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 900; font-size: 32px; letter-spacing: -.04em;
+  }
+  .c17::before {
+    content: ''; position: absolute; inset: 8px;
+    background: linear-gradient(135deg, var(--gold) 0 6px, transparent 6px) repeat;
+    background-size: 12px 12px;
+    opacity: .12;
+  }
+  @keyframes c17-kick {
+    0%,14%   { transform: rotateX(0)    scale(1); }
+    20%      { transform: rotateX(-30deg) scale(.95); }
+    28%,71%  { transform: rotateX(-360deg) scale(0); opacity: 0; }
+    85%,100% { transform: rotateX(0)    scale(1); opacity: 1; }
+  }
+
+  /* 18 SKATE · GRIND RAIL — barra metálica cruza con sparks */
+  .c18 .panel-up { position: absolute; left: 0; right: 0; top: 0; height: 50%; background: var(--navy); animation: c18-up var(--t) cubic-bezier(.6,.0,.4,1) infinite; }
+  .c18 .panel-dn { position: absolute; left: 0; right: 0; bottom: 0; height: 50%; background: var(--navy); animation: c18-dn var(--t) cubic-bezier(.6,.0,.4,1) infinite; }
+  .c18 .rail {
+    position: absolute; top: 50%; left: -100%; right: -100%; height: 8px;
+    margin-top: -4px;
+    background: linear-gradient(180deg, var(--concrete) 0%, #4a4a52 50%, #2a2a30 100%);
+    box-shadow: 0 4px 10px rgba(0,0,0,.5);
+    animation: c18-rail var(--t) cubic-bezier(.55,.0,.45,1) infinite;
+  }
+  .c18 .spark {
+    position: absolute; top: 50%; width: 8px; height: 8px; margin-top: -4px;
+    background: radial-gradient(circle, var(--spark) 0%, var(--ember) 50%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    animation: c18-spark .25s ease-out infinite;
+  }
+  .c18 .spark.s1 { left: 30%; animation-delay: 1.0s; }
+  .c18 .spark.s2 { left: 50%; animation-delay: 1.2s; }
+  .c18 .spark.s3 { left: 70%; animation-delay: 1.4s; }
+  @keyframes c18-up { 0%,14%{transform:translateY(0)} 28%,71%{transform:translateY(-105%)} 85%,100%{transform:translateY(0)} }
+  @keyframes c18-dn { 0%,14%{transform:translateY(0)} 28%,71%{transform:translateY(105%)}  85%,100%{transform:translateY(0)} }
+  @keyframes c18-rail {
+    0%,14%   { transform: translateX(0); }
+    28%,71%  { transform: translateX(50%); }
+    85%,100% { transform: translateX(0); }
+  }
+  @keyframes c18-spark {
+    0%   { transform: translateY(0) scale(0); opacity: 1; }
+    100% { transform: translateY(-30px) scale(1.5); opacity: 0; }
+  }
+
+  /* 19 SKATE · BOWL DROP — panel cae con curva de bowl/rampa */
+  .c19 {
+    background: var(--navy);
+    animation: c19-bowl var(--t) cubic-bezier(.7,.05,.95,.55) infinite;
+    transform-origin: 0% 0%;
+  }
+  .c19::after {
+    content: 'DROP IN'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 900; font-size: 26px; letter-spacing: .15em;
+  }
+  .c19 .ramp {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 30%;
+    background: radial-gradient(ellipse at 50% 100%, var(--concrete) 0%, var(--navy-deep) 60%);
+    opacity: .4;
+  }
+  @keyframes c19-bowl {
+    0%,14%   { transform: translate(0,0)        rotate(0); }
+    20%      { transform: translate(2%,8%)      rotate(-3deg); }
+    24%      { transform: translate(10%,30%)    rotate(-12deg); }
+    28%,71%  { transform: translate(120%,110%)  rotate(-35deg); opacity: 0; }
+    85%,100% { transform: translate(0,0)        rotate(0); opacity: 1; }
+  }
+
+  /* 20 SKATE · TRUCK CUT — 2 trapecios separan (deck con trucks visibles) */
+  .c20 { background: transparent; }
+  .c20 .deck {
+    position: absolute; left: 0; right: 0; height: 50%;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+  }
+  .c20 .deck.top {
+    top: 0;
+    clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
+    animation: c20-top var(--t) cubic-bezier(.6,.0,.4,1) infinite;
+  }
+  .c20 .deck.bot {
+    bottom: 0;
+    clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%);
+    animation: c20-bot var(--t) cubic-bezier(.6,.0,.4,1) infinite;
+  }
+  .c20 .truck {
+    position: absolute; left: 0; right: 0; height: 12px;
+    background: linear-gradient(180deg, var(--concrete) 0%, #4a4a52 100%);
+  }
+  .c20 .truck.tt { top: 50%; margin-top: -12px; clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%); }
+  .c20 .truck.tb { top: 50%; clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%); }
+  .c20::after {
+    content: 'KANKI'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 900; font-size: 26px; letter-spacing: -.04em;
+    z-index: 2;
+  }
+  @keyframes c20-top {
+    0%,14%   { transform: translateY(0); }
+    28%,71%  { transform: translateY(-105%); }
+    85%,100% { transform: translateY(0); }
+  }
+  @keyframes c20-bot {
+    0%,14%   { transform: translateY(0); }
+    28%,71%  { transform: translateY(105%); }
+    85%,100% { transform: translateY(0); }
+  }
+
+  footer {
+    text-align: center; margin-top: 40px;
+    color: var(--muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  }
+  footer code {
+    background: var(--panel); padding: 2px 8px; border-radius: 4px;
+    font-size: 10px; color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>20 Cortinas Mobile v4 — Kanki Street</h1>
+  <p>5 keepers + 5 surf + 5 streetwear + 5 skate · loop 7 s · sync</p>
+  <div class="lineage">
+    <span>01–05 KEEPERS</span>
+    <span>06–10 SURF</span>
+    <span>11–15 STREETWEAR</span>
+    <span>16–20 SKATE</span>
+  </div>
+  <br>
+  <button class="replay" id="replay">↻ Repetir todas</button>
+</header>
+
+<!-- ════════════════ KEEPERS ════════════════ -->
+<div class="section"><span class="ico">★</span> Keepers v3</div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c1"><span class="stamp">KANKI</span></div>
+  </div></div><div class="caption"><b>01</b> Logo Stamp <span class="tag keeper">KEEPER</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c2"><div class="panel"></div><div class="tape a">KANKI · GRIP · KANKI</div><div class="tape b">STREET · SS26 · STREET</div></div>
+  </div></div><div class="caption"><b>02</b> Tape Cross X <span class="tag keeper">KEEPER</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c3"><div class="col">K</div><div class="col">A</div><div class="col">N</div><div class="col">K</div><div class="col">I</div></div>
+  </div></div><div class="caption"><b>03</b> Letter Drop <span class="tag keeper">KEEPER</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c4"><div class="panel"></div><div class="strap">KANKI · STREET · SS26</div></div>
+  </div></div><div class="caption"><b>04</b> Tape Slingshot <span class="tag keeper">KEEPER</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c5"><div class="col">K</div><div class="col">A</div><div class="col">N</div><div class="col">K</div><div class="col">I</div></div>
+  </div></div><div class="caption"><b>05</b> Letter Wave <span class="tag keeper">KEEPER</span></div></div>
+
+</main>
+
+<!-- ════════════════ SURF ════════════════ -->
+<div class="section"><span class="ico">🌊</span> Surf Motion</div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c6">
+      <svg viewBox="0 0 100 110" preserveAspectRatio="none">
+        <g class="wave">
+          <path d="M0,0 L100,0 L100,90
+                   Q88,98 75,90 Q62,82 50,90 Q38,98 25,90 Q12,82 0,90 Z" fill="#2a5a8a"/>
+          <path d="M0,86 Q15,96 30,86 Q45,76 60,86 Q75,96 90,86 Q97,82 100,86 L100,90 Q90,82 75,92 Q60,82 45,92 Q30,82 15,92 Q5,86 0,90 Z" fill="#f5f5f0" opacity=".85"/>
+        </g>
+      </svg>
+    </div>
+  </div></div><div class="caption"><b>06</b> Wave Roll <span class="tag surf">SURF</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c7">
+      <div class="lip-top"></div>
+      <div class="lip-bot"></div>
+      <div class="glow"></div>
+    </div>
+  </div></div><div class="caption"><b>07</b> Tube Barrel <span class="tag surf">SURF</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c8"></div>
+  </div></div><div class="caption"><b>08</b> Foam Wash <span class="tag surf">SURF</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c9">
+      <div class="layer l1"></div><div class="layer l2"></div>
+      <div class="layer l3"></div><div class="layer l4"></div>
+    </div>
+  </div></div><div class="caption"><b>09</b> Tide Pull <span class="tag surf">SURF</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c10"><div class="body"></div><div class="crest"></div></div>
+  </div></div><div class="caption"><b>10</b> Crest Curl <span class="tag surf">SURF</span></div></div>
+
+</main>
+
+<!-- ════════════════ STREETWEAR ════════════════ -->
+<div class="section"><span class="ico">▣</span> Streetwear</div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c11">
+      <div class="string"></div>
+      <div class="tag">
+        <span class="brand">KANKI</span>
+        <span class="style">SS26 · 02</span>
+        <span class="price">$ 39.990</span>
+      </div>
+    </div>
+  </div></div><div class="caption"><b>11</b> Hangtag Drop <span class="tag street">STREET</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c12"></div>
+  </div></div><div class="caption"><b>12</b> Stitch Unsew <span class="tag street">STREET</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c13">
+      <div class="flash"></div>
+      <div class="box">
+        <div class="lbl">KANKI · DROP</div>
+        <div class="drop">SS26</div>
+        <div class="nbr">N° 02</div>
+      </div>
+    </div>
+  </div></div><div class="caption"><b>13</b> Drop Box <span class="tag street">STREET</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c14">
+      <div class="side L"></div>
+      <div class="side R"></div>
+      <div class="teeth"></div>
+      <div class="slider"></div>
+    </div>
+  </div></div><div class="caption"><b>14</b> Zipper <span class="tag street">STREET</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c15"></div>
+  </div></div><div class="caption"><b>15</b> Heat Press <span class="tag street">STREET</span></div></div>
+
+</main>
+
+<!-- ════════════════ SKATE ════════════════ -->
+<div class="section"><span class="ico">◢</span> Skate Motion</div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c16"></div>
+  </div></div><div class="caption"><b>16</b> Ollie Pop <span class="tag skate">SKATE</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c17"></div>
+  </div></div><div class="caption"><b>17</b> Kickflip <span class="tag skate">SKATE</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c18">
+      <div class="panel-up"></div>
+      <div class="panel-dn"></div>
+      <div class="rail"></div>
+      <div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div>
+    </div>
+  </div></div><div class="caption"><b>18</b> Grind Rail <span class="tag skate">SKATE</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c19"><div class="ramp"></div></div>
+  </div></div><div class="caption"><b>19</b> Bowl Drop <span class="tag skate">SKATE</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c20">
+      <div class="deck top"></div>
+      <div class="truck tt"></div>
+      <div class="truck tb"></div>
+      <div class="deck bot"></div>
+    </div>
+  </div></div><div class="caption"><b>20</b> Truck Cut <span class="tag skate">SKATE</span></div></div>
+
+</main>
+
+<footer>
+  v4 · 20 cortinas · 4 secciones · Loop 7 s · <code>animation-iteration-count: infinite</code>
+</footer>
+
+<script>
+  document.getElementById('replay').addEventListener('click', () => {
+    document.querySelectorAll('.curtain, .curtain *').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
+  });
+</script>
+
+</body>
+</html>
