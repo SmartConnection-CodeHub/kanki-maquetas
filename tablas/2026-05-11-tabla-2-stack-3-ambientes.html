@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><title>Kanki · Tabla #2 · Stack 3 ambientes</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'SF Pro',Inter,system-ui,sans-serif}
+body{background:#0a0d14;color:#f1f5f9;padding:40px 20px;line-height:1.5;position:relative}body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 800px 600px at 10% 0%,rgba(0,229,176,.08),transparent 50%),radial-gradient(ellipse 800px 600px at 90% 100%,rgba(0,180,216,.06),transparent 50%);pointer-events:none;z-index:0}.container{position:relative;z-index:1;max-width:1400px;margin:0 auto}
+.crumb{font-size:12px;color:#7dd3fc;margin-bottom:20px}.crumb a{color:#7dd3fc;text-decoration:none}
+h1{font-size:30px;font-weight:800;color:#00e5b0;margin-bottom:8px}
+h2{font-size:20px;font-weight:700;color:#f1f5f9;margin:40px 0 16px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px}
+p{color:#94a3b8;margin-bottom:12px;font-size:14px}
+.meta{display:flex;gap:18px;font-size:12px;color:#6b7b8e;margin-bottom:32px;flex-wrap:wrap}
+.meta span{padding:4px 12px;background:rgba(0,229,176,.08);border:1px solid rgba(0,229,176,.2);border-radius:30px;color:#00e5b0}
+table{width:100%;border-collapse:collapse;margin:16px 0;background:rgba(15,22,35,.6);border-radius:8px;overflow:hidden;font-size:13px}
+th{background:rgba(0,229,176,.1);color:#00e5b0;font-weight:600;padding:10px 12px;text-align:left;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:#cbd5e1;vertical-align:top}
+.radar{background:linear-gradient(135deg,rgba(0,229,176,.05),rgba(0,180,216,.05));border:1px solid rgba(0,229,176,.2);border-radius:12px;padding:24px;margin-top:24px}
+.radar-section{margin-bottom:20px}.radar-label{font-size:11px;font-weight:700;color:#00e5b0;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.radar-content{font-size:13px;color:#cbd5e1}.radar-content b{color:#f1f5f9}
+code{font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;background:rgba(15,22,35,.8);border-radius:3px;color:#7dd3fc}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);color:#6b7b8e;font-size:12px;text-align:center}
+</style></head><body><div class="container">
+<div class="crumb"><a href="../index.html">← Kanki Street</a> / Tablas / #2 Stack 3 ambientes</div>
+<h1>☁️ Kanki · Tabla #2 · Stack 3 Ambientes · $0.50/mes</h1>
+<p>DEV local · QAS GitHub Pages ($0) · PROD S3+CloudFront (otra cuenta AWS)</p>
+<div class="meta"><span>v1 · 2026-05-11</span><span>3 ambientes</span><span>$0.50/mes prod</span></div>
+
+<h2>📊 Ambientes detalle</h2>
+<table>
+<thead><tr><th>Ambiente</th><th>Stack</th><th>Hosting</th><th>Deploy</th><th>Costo USD</th><th>Datos</th></tr></thead>
+<tbody>
+<tr><td><b>DEV local</b></td><td>HTML/JS · Supabase prod</td><td><code>python3 -m http.server 8080</code></td><td>edición directa</td><td>$0</td><td>Supabase prod (RLS)</td></tr>
+<tr><td><b>QAS</b></td><td>HTML/JS · Supabase prod</td><td>GitHub Pages · CNAME</td><td>git push main</td><td>$0</td><td>Supabase prod (RLS)</td></tr>
+<tr><td><b>PROD</b></td><td>HTML/JS · Supabase prod</td><td>S3 + CloudFront (otra cuenta AWS)</td><td>script S3 sync manual</td><td>~$0.50</td><td>Supabase prod (RLS)</td></tr>
+</tbody>
+</table>
+
+<h2>🔌 Componentes infra</h2>
+<table>
+<thead><tr><th>Recurso</th><th>Identificador</th><th>Función</th></tr></thead>
+<tbody>
+<tr><td>S3 PROD bucket</td><td><code>kanki.smconnection.cl</code></td><td>Hosting estático · versionado activo</td></tr>
+<tr><td>CloudFront PROD</td><td>otra cuenta AWS · SSL ACM</td><td>CDN global · cache TTL 24h</td></tr>
+<tr><td>GitHub Pages QAS</td><td><code>SmartConnection-CodeHub/kanki-qas</code></td><td>Hosting QAS gratis · branch main auto-deploy</td></tr>
+<tr><td>Route 53 DNS</td><td><code>Z3DOBGB40V1Y3P</code></td><td>kanki A → CF · qas.kanki CNAME → github.io</td></tr>
+<tr><td>Supabase</td><td>region sa-east-1</td><td>Auth + DB + Realtime stock · RLS estricto</td></tr>
+</tbody>
+</table>
+
+<div class="radar">
+<div class="radar-section"><div class="radar-label">🌐 PRÁCTICA DE MERCADO</div>
+<div class="radar-content"><b>Shopify:</b> $29-$299/mes · todo incluido pero amarrado al ecosistema. <b>Webflow:</b> $14-$39/mes ecommerce · diseño libre. <b>VTEX (Chile):</b> $300+/mes enterprise. <b>Kanki:</b> $0.50/mes · stack custom · cero vendor lock-in · trade-off: requiere developer (SMC).</div></div>
+<div class="radar-section"><div class="radar-label">🎯 ANALOGÍA</div>
+<div class="radar-content"><b>Rápida:</b> Shopify es alquilar un local en mall. Kanki es construir tu local en terreno propio · más trabajo inicial · cero arriendo después.<br><b>Profunda:</b> Es el patrón "self-hosted minimalista" · sirve hasta ~$50K USD/mes de ventas. Después el costo dev compensa migrar a Shopify Plus.</div></div>
+<div class="radar-section"><div class="radar-label">📊 ASSESSMENT</div>
+<div class="radar-content">✅ 3 ambientes completos · $0.50/mes total · versionado · DNS custom<br>🟡 Falta: monitoreo uptime (UptimeRobot free) · CI/CD básico GitHub Actions<br>🔴 Riesgo: deploy manual a PROD · sin smoke test post-deploy automático</div></div>
+<div class="radar-section"><div class="radar-label">📈 KPI</div>
+<div class="radar-content"><b>Outcome:</b> Uptime PROD >99.9% · costo $&lt;1/mes<br><b>Activity:</b> Deploys QAS &gt;PROD por semana · time-to-deploy &lt;5 min</div></div>
+<div class="radar-section"><div class="radar-label">🧪 OWNER AUTOMÁTICO</div>
+<div class="radar-content">Pipeline (DevOps) ejecuta deploys · Infra-Ops monitorea uptime · Architect aprueba cambios stack · Backend gestiona Supabase</div></div>
+<div class="radar-section"><div class="radar-label">📡 STREAMING</div>
+<div class="radar-content">Deploy a PROD genera stream bar: status build · subida S3 · invalidación CF · smoke test · live</div></div>
+<div class="radar-section"><div class="radar-label">🛣️ ROADMAP</div>
+<div class="radar-content"><b>Hoy:</b> 3 ambientes manual<br><b>Próxima:</b> GitHub Actions CI/CD QAS → PROD<br><b>Mes:</b> UptimeRobot + alertas Slack<br><b>Trimestre:</b> evaluar si ventas justifican migrar a Shopify Plus o mantener self-hosted</div></div>
+</div>
+<footer>📚 Kanki Street · Tabla #2 · stack · 2026-05-11 · banco SMC</footer>
+</div></body></html>

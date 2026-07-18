@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanki Surf — Concón, Chile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────────── */
+:root {
+  --white:   #FFFFFF;
+  --snow:    #F8F6F2;
+  --paper:   #F2EFE8;
+  --sand:    #E8E4DA;
+  --stone:   #D2CDC3;
+  --pebble:  #B0AAA0;
+  --smoke:   #787370;
+  --charcoal:#3A3733;
+  --ink:     #1C1A17;
+  --ocean:   #006B63;
+  --ocean-d: #004F49;
+  --ocean-l: #D6EFED;
+  --wave:    #00A89D;
+  --foam:    #E8F7F5;
+  --gold:    #C47F00;
+  --gold-l:  #FFF4DC;
+  --danger:  #C42222;
+  --danger-l:#FDEAEA;
+  --success: #1A7A45;
+  --success-l:#E3F5EC;
+  --r: 0px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--snow);
+  color: var(--ink);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+button { cursor: pointer; font-family: inherit; }
+a { text-decoration: none; color: inherit; }
+
+/* ─── UTILITY ─────────────────────────────────── */
+.f-display { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; line-height: 0.92; }
+.f-mono    { font-family: 'Space Mono', monospace; }
+.c-ocean   { color: var(--ocean); }
+.c-gold    { color: var(--gold); }
+.uppercase { text-transform: uppercase; }
+
+/* ─── TICKER ─────────────────────────────────── */
+.ticker {
+  background: var(--ink);
+  height: 34px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1000;
+}
+.ticker-inner {
+  display: flex;
+  animation: tickMove 28s linear infinite;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.t-item {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(248,246,242,0.55);
+  padding: 0 24px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  height: 34px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.t-item.hi { color: var(--wave); }
+@keyframes tickMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── NAVBAR ─────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 998;
+  height: 60px;
+  background: var(--white);
+  border-bottom: 1.5px solid var(--ink);
+  display: flex;
+  align-items: stretch;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 22px;
+  border-right: 1.5px solid var(--ink);
+  cursor: pointer;
+  transition: background .15s;
+  min-width: 200px;
+}
+.nav-brand:hover { background: var(--snow); }
+.brand-fish {
+  width: 38px; height: 38px;
+  background: var(--ocean);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.brand-text { line-height: 1; }
+.brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  display: block;
+}
+.brand-name span { color: var(--ocean); }
+.brand-loc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: var(--pebble);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 1px;
+}
+.nav-menu { display: flex; align-items: stretch; flex: 1; }
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  border: none;
+  background: none;
+  border-right: 1px solid var(--sand);
+  position: relative;
+  transition: all .15s;
+}
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -1.5px; left: 0; right: 0;
+  height: 3px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transition: transform .2s;
+}
+.nav-item:hover { color: var(--ink); background: var(--snow); }
+.nav-item:hover::after { transform: scaleX(1); }
+.nav-item.on { color: var(--ink); font-weight: 700; }
+.nav-item.on::after { transform: scaleX(1); }
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px;
+}
+.btn-outline {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  border: 1.5px solid var(--stone);
+  background: none;
+  padding: 8px 14px;
+  transition: all .15s;
+}
+.btn-outline:hover { border-color: var(--ink); color: var(--ink); }
+.btn-solid {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--ink);
+  border: none;
+  padding: 9px 18px;
+  transition: all .15s;
+}
+.btn-solid:hover { background: var(--ocean); }
+.btn-ocean {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--ocean);
+  border: none;
+  padding: 9px 18px;
+  transition: all .15s;
+}
+.btn-ocean:hover { background: var(--ocean-d); }
+.cart-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--charcoal);
+  border: 1.5px solid var(--stone);
+  background: none;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: all .15s;
+}
+.cart-btn:hover { border-color: var(--ink); color: var(--ink); }
+.cart-badge {
+  width: 18px; height: 18px;
+  background: var(--ocean);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── PANEL SWITCH ───────────────────────────── */
+.panel { display: none; }
+.panel.on { display: block; }
+
+/* ══════════════════════════════════════════════
+   HERO — VIDEO BACKGROUND (Luked style)
+══════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  height: 92vh;
+  min-height: 520px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Video fallback — animated ocean gradient when no video */
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      #002B35 0%,
+      #004A55 30%,
+      #006B7A 55%,
+      #007A6B 75%,
+      #009080 100%
+    );
+  overflow: hidden;
+}
+
+/* Animated wave shapes */
+.hero-video-bg::before {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -5%;
+  width: 110%;
+  height: 220px;
+  background: rgba(0,180,160,0.18);
+  border-radius: 50% 50% 0 0 / 60px 60px 0 0;
+  animation: waveFloat 6s ease-in-out infinite;
+}
+.hero-video-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -8%;
+  width: 116%;
+  height: 200px;
+  background: rgba(0,160,140,0.12);
+  border-radius: 50% 50% 0 0 / 80px 80px 0 0;
+  animation: waveFloat 8s ease-in-out infinite reverse;
+}
+@keyframes waveFloat {
+  0%, 100% { transform: translateY(0) scaleX(1); }
+  50%       { transform: translateY(-18px) scaleX(1.04); }
+}
+
+/* Foam particles */
+.foam-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  animation: foamRise linear infinite;
+}
+@keyframes foamRise {
+  0%   { transform: translateY(0) scale(1); opacity: 0.08; }
+  100% { transform: translateY(-100vh) scale(0.3); opacity: 0; }
+}
+
+/* The actual <video> tag — will work when a real video is linked */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: none; /* hidden until video loads */
+}
+
+/* Dark overlay gradient — ProRider style: light top, darker bottom for text */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.08) 0%,
+    rgba(0,0,0,0.20) 40%,
+    rgba(0,0,0,0.62) 75%,
+    rgba(0,0,0,0.82) 100%
+  );
+}
+
+/* Diagonal texture strip — ProRider effect */
+.hero-texture {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255,255,255,0.018) 0px,
+    rgba(255,255,255,0.018) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+  pointer-events: none;
+}
+
+/* Hero content */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  padding: 0 48px 56px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-end;
+  gap: 40px;
+}
+.hero-left {}
+
+.hero-pretitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  padding: 5px 14px 5px 10px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(4px);
+}
+.hero-pretitle-dot {
+  width: 6px; height: 6px;
+  background: var(--wave);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,168,157,0.5); }
+  50%      { box-shadow: 0 0 0 6px rgba(0,168,157,0); }
+}
+.hero-pretitle-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.8);
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(64px, 8.5vw, 130px);
+  line-height: 0.88;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 18px;
+}
+.hero-title .t-outline {
+  -webkit-text-stroke: 2px rgba(255,255,255,0.6);
+  color: transparent;
+  display: block;
+}
+.hero-title .t-solid { display: block; }
+.hero-title .t-ocean { color: var(--wave); display: block; }
+
+.hero-desc {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  max-width: 340px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+  letter-spacing: 0.01em;
+}
+.hero-actions { display: flex; gap: 10px; }
+.hero-btn-main {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: #fff;
+  border: none;
+  padding: 13px 28px;
+  transition: all .2s;
+}
+.hero-btn-main:hover { background: var(--wave); color: #fff; }
+.hero-btn-sec {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.8);
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  padding: 13px 24px;
+  transition: all .2s;
+}
+.hero-btn-sec:hover { border-color: #fff; color: #fff; }
+
+/* Hero right stats */
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  min-width: 130px;
+}
+.hs-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+.hs-item:last-child { border-bottom: none; }
+.hs-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  color: var(--wave);
+  display: block;
+  line-height: 1;
+}
+.hs-l {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-top: 2px;
+  display: block;
+}
+
+/* Scroll cue */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.scroll-line {
+  width: 1px;
+  height: 44px;
+  background: rgba(255,255,255,0.25);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  animation: scrollDown 1.8s ease infinite;
+}
+@keyframes scrollDown {
+  from { top: -100%; }
+  to   { top: 100%; }
+}
+.scroll-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+/* ─── MARQUEE ─────────────────────────────────── */
+.marquee-band {
+  background: var(--ink);
+  height: 42px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-bottom: none;
+}
+.mq-inner {
+  display: flex;
+  gap: 0;
+  animation: mq 22s linear infinite;
+  white-space: nowrap;
+}
+.mq-item {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(248,246,242,0.22);
+  padding: 0 28px;
+  flex-shrink: 0;
+}
+.mq-item.hi { color: var(--wave); }
+.mq-sep { color: rgba(248,246,242,0.1); padding: 0 6px; font-size: 0.5rem; align-self: center; }
+@keyframes mq {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── SECTION SYSTEM ─────────────────────────── */
+.sec {
+  padding: 40px 40px;
+  border-bottom: 1px solid var(--sand);
+}
+.sec-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--sand);
+}
+.sec-left { }
+.sec-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ocean);
+  margin-bottom: 3px;
+}
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1;
+}
+.sec-link {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  border: 1px solid var(--stone);
+  background: none;
+  padding: 7px 14px;
+  transition: all .15s;
+}
+.sec-link:hover { border-color: var(--ocean); color: var(--ocean); }
+
+/* ─── CATEGORIES ─────────────────────────────── */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.cat-card {
+  background: var(--white);
+  border: 1px solid var(--sand);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+.cat-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--ocean);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s;
+}
+.cat-card:hover { border-color: var(--ocean); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,107,99,0.08); }
+.cat-card:hover::before { transform: scaleX(1); }
+.cat-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  color: var(--pebble);
+}
+.cat-icon { font-size: 1.8rem; line-height: 1; }
+.cat-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1;
+}
+.cat-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  color: var(--pebble);
+  letter-spacing: 0.08em;
+}
+
+/* ─── PRODUCTS ───────────────────────────────── */
+.filter-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.f-chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  border: 1px solid var(--stone);
+  background: none;
+  padding: 6px 13px;
+  transition: all .15s;
+}
+.f-chip:hover { border-color: var(--charcoal); color: var(--ink); }
+.f-chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.prod-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--sand);
+  border: 1px solid var(--sand);
+}
+.pc {
+  background: var(--white);
+  cursor: pointer;
+  transition: background .15s;
+  position: relative;
+  overflow: hidden;
+}
+.pc:hover { background: var(--snow); }
+.pc:hover .pc-quick { opacity: 1; transform: translateY(0); }
+
+.pc-img {
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.2rem;
+  position: relative;
+  border-bottom: 1px solid var(--sand);
+  background: var(--paper);
+}
+.pc-badge {
+  position: absolute;
+  top: 0; left: 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+}
+.b-hot  { background: var(--ocean); color: #fff; }
+.b-new  { background: var(--gold); color: #fff; }
+.b-sale { background: var(--danger); color: #fff; }
+.b-soon { background: var(--ink); color: #fff; }
+
+.stock-dot {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+}
+.s-ok   { background: var(--success); }
+.s-low  { background: var(--gold); }
+.s-none { background: var(--danger); }
+
+.pc-quick {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--ink);
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 9px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all .2s;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+.pc-body { padding: 14px 15px 14px; }
+.pc-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+.pc-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  color: var(--pebble);
+  text-transform: uppercase;
+  margin-bottom: 9px;
+}
+.pc-foot { display: flex; align-items: center; justify-content: space-between; }
+.pc-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.pc-add {
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--stone);
+  background: none;
+  color: var(--ocean);
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+.pc-add:hover { background: var(--ocean); color: #fff; border-color: var(--ocean); }
+
+/* ─── EDITORIAL BREAK ────────────────────────── */
+.editorial {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 320px;
+  border-bottom: 1px solid var(--sand);
+  background: var(--ink);
+}
+.ed-left {
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.ed-left::before {
+  content: 'ESCUELA';
+  position: absolute;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 130px;
+  color: rgba(255,255,255,0.03);
+  right: -20px; top: 10px;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.ed-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.ed-tag-line { width: 28px; height: 1.5px; background: var(--wave); }
+.ed-tag-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--wave);
+}
+.ed-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 4vw, 54px);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 0.95;
+  margin-bottom: 14px;
+}
+.ed-body {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+  max-width: 320px;
+  margin-bottom: 24px;
+}
+.ed-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255,255,255,0.04);
+}
+.level-card {
+  background: var(--ink);
+  padding: 22px 18px;
+  cursor: pointer;
+  transition: background .15s;
+  border-top: 3px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+.level-card:hover { background: #252320; }
+.lc-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem;
+  position: absolute;
+  right: 10px; top: 4px;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  pointer-events: none;
+}
+.lc-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.lc-level {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.lc-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.lc-desc {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.lc-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: var(--wave);
+  letter-spacing: 0.02em;
+  display: block;
+  margin-bottom: 8px;
+}
+.lc-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(255,255,255,0.9);
+  border: none;
+  padding: 7px 14px;
+  font-weight: 700;
+  transition: all .15s;
+  display: inline-block;
+}
+.lc-btn:hover { background: var(--wave); color: #fff; }
+
+/* ─── CALENDAR BOOKING ───────────────────────── */
+.booking-section {
+  background: var(--snow);
+  border-bottom: 1px solid var(--sand);
+  padding: 40px;
+}
+.booking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+.cal-box {
+  background: var(--white);
+  border: 1px solid var(--sand);
+  padding: 22px 20px;
+}
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cal-month-lbl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.cal-nav-row { display: flex; gap: 4px; }
+.cal-nav-btn {
+  width: 26px; height: 26px;
+  border: 1px solid var(--stone);
+  background: none;
+  color: var(--smoke);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .12s;
+}
+.cal-nav-btn:hover { border-color: var(--ocean); color: var(--ocean); }
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+.cal-dn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  text-align: center;
+  color: var(--pebble);
+  padding-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.56rem;
+  color: var(--pebble);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all .12s;
+}
+.cal-day.av   { color: var(--ink); font-weight: 700; }
+.cal-day.av:hover { border-color: var(--ocean); color: var(--ocean); background: var(--foam); }
+.cal-day.td   { border-color: var(--ocean); color: var(--ocean); }
+.cal-day.sel  { background: var(--ocean); color: #fff; font-weight: 700; border-color: var(--ocean); }
+.cal-day.past { color: var(--stone); cursor: default; }
+.cal-day.empty{ cursor: default; }
+
+.slots-box {
+  background: var(--white);
+  border: 1px solid var(--sand);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.slots-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+.slots-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.slot {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--charcoal);
+  border: 1.5px solid var(--stone);
+  background: none;
+  padding: 8px 12px;
+  transition: all .12s;
+}
+.slot:hover   { border-color: var(--ocean); color: var(--ocean); background: var(--foam); }
+.slot.on      { background: var(--ocean); color: #fff; border-color: var(--ocean); font-weight: 700; }
+.slot.full    { color: var(--stone); border-color: var(--sand); cursor: not-allowed; text-decoration: line-through; }
+.booking-cta  { width: 100%; padding: 12px; background: var(--ink); color: #fff; border: none; font-family: 'Space Mono', monospace; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; transition: background .15s; }
+.booking-cta:hover { background: var(--ocean); }
+
+/* ─── TRUST BAR ──────────────────────────────── */
+.trust-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--sand);
+  background: var(--white);
+}
+.tb-item {
+  padding: 16px 20px;
+  border-right: 1px solid var(--sand);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tb-item:last-child { border-right: none; }
+.tb-icon {
+  width: 36px; height: 36px;
+  background: var(--ocean-l);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.tb-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.tb-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  color: var(--pebble);
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* ─── INSTAGRAM BAND ─────────────────────────── */
+.ig-section {
+  padding: 36px 40px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--sand);
+}
+.ig-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.ig-handle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.ig-handle span { color: var(--ocean); }
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.ig-cell {
+  aspect-ratio: 1;
+  background: var(--white);
+  border: 1px solid var(--sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all .2s;
+}
+.ig-cell:hover { border-color: var(--ocean); transform: scale(0.98); }
+.ig-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,107,99,0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.ig-cell:hover .ig-overlay { opacity: 1; }
+.ig-ov-txt {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ─── FOOTER ─────────────────────────────────── */
+.footer {
+  background: var(--ink);
+  padding: 40px 40px 22px;
+  border-top: 3px solid var(--ocean);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.ft-brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+  margin-bottom: 3px;
+}
+.ft-brand-name span { color: var(--wave); }
+.ft-brand-loc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.ft-desc {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.6;
+  max-width: 210px;
+  margin-bottom: 18px;
+}
+.ft-socials { display: flex; gap: 5px; }
+.ft-soc {
+  width: 30px; height: 30px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: none;
+  color: rgba(255,255,255,0.4);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+  transition: all .12s;
+}
+.ft-soc:hover { border-color: var(--wave); color: var(--wave); }
+.ft-col-t {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--wave);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ft-link {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.38);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: color .12s;
+  letter-spacing: 0.01em;
+}
+.ft-link:hover { color: #fff; }
+.footer-bot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ft-copy {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.2);
+  text-transform: uppercase;
+}
+.ft-pays { display: flex; gap: 5px; }
+.ft-pay-chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 3px 8px;
+}
+
+/* ─── TRACKING PANEL ─────────────────────────── */
+.track-hero {
+  background: var(--ink);
+  padding: 56px 40px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.track-hero::before {
+  content: 'TRACK';
+  position: absolute;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 180px;
+  color: rgba(255,255,255,0.02);
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+.track-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 4.5vw, 60px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+}
+.track-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
+}
+.track-row {
+  display: flex;
+  max-width: 420px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.track-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-right: none;
+  color: #fff;
+  padding: 13px 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  outline: none;
+  transition: border-color .15s;
+}
+.track-input::placeholder { color: rgba(255,255,255,0.25); }
+.track-input:focus { border-color: var(--wave); }
+.track-btn {
+  background: var(--wave);
+  color: var(--ink);
+  border: none;
+  padding: 13px 22px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background .15s;
+}
+.track-btn:hover { background: #00D4C8; }
+.track-content {
+  padding: 32px 40px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.ord-card {
+  border: 1px solid var(--sand);
+  background: var(--white);
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.ord-head {
+  background: var(--ink);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ord-id {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: var(--wave);
+}
+.ord-info {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.4);
+  margin-top: 2px;
+}
+.s-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid;
+}
+.st-proc { color: var(--wave);    border-color: rgba(0,168,157,0.4); background: rgba(0,168,157,0.08); }
+.st-ship { color: var(--success); border-color: rgba(26,122,69,0.4);  background: rgba(26,122,69,0.08); }
+.st-done { color: #aaa;           border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); }
+.st-pend { color: var(--gold);    border-color: rgba(196,127,0,0.4);  background: rgba(196,127,0,0.08); }
+.tl { padding: 18px 18px 12px; }
+.tl-step {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.tl-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 8px; top: 22px;
+  width: 1px;
+  bottom: -10px;
+  background: var(--sand);
+}
+.tl-step.done:not(:last-child)::after { background: var(--ocean); }
+.tl-dot {
+  width: 17px; height: 17px;
+  border: 1.5px solid var(--stone);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--pebble);
+  position: relative;
+  z-index: 1;
+  margin-top: 2px;
+  background: var(--white);
+}
+.tl-step.done .tl-dot { background: var(--ocean); color: #fff; border-color: var(--ocean); }
+.tl-step.current .tl-dot { background: var(--gold); color: #fff; border-color: var(--gold); }
+.tl-txt h4 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 1px;
+}
+.tl-txt p {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.04em;
+  color: var(--smoke);
+}
+
+/* ─── ADMIN PANEL ─────────────────────────────── */
+.adm-top {
+  background: var(--white);
+  border-bottom: 1.5px solid var(--ink);
+  padding: 0 22px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.adm-lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ocean);
+  font-weight: 700;
+  margin-right: 12px;
+}
+.a-tab {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  border: 1px solid var(--stone);
+  background: none;
+  padding: 5px 13px;
+  transition: all .12s;
+}
+.a-tab:hover { color: var(--ink); border-color: var(--charcoal); }
+.a-tab.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.adm-body { padding: 22px 28px; background: var(--paper); min-height: 60vh; }
+.a-sub { display: none; }
+.a-sub.on { display: block; }
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.s-card {
+  background: var(--white);
+  border: 1px solid var(--sand);
+  padding: 14px 16px;
+  border-top: 3px solid var(--ocean);
+}
+.s-card.w { border-top-color: var(--gold); }
+.s-card.d { border-top-color: var(--danger); }
+.s-card.g { border-top-color: var(--success); }
+.s-card.n { border-top-color: var(--stone); }
+.sn {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.sl {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pebble);
+}
+
+.tbl-box {
+  background: var(--white);
+  border: 1px solid var(--sand);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.tbl-hd {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--sand);
+  background: var(--paper);
+}
+.tbl-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.tbl-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ocean);
+  border: 1px solid rgba(0,107,99,0.3);
+  background: none;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all .12s;
+}
+.tbl-btn:hover { background: var(--foam); }
+
+table { width: 100%; border-collapse: collapse; }
+th {
+  background: var(--snow);
+  padding: 7px 13px;
+  text-align: left;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pebble);
+  border-bottom: 1px solid var(--sand);
+  font-weight: 400;
+}
+td {
+  padding: 9px 13px;
+  border-bottom: 1px solid var(--sand);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.85rem;
+  color: var(--smoke);
+  letter-spacing: 0.01em;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--snow); }
+
+.chip {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid;
+}
+.c-ok   { color: var(--success); border-color: rgba(26,122,69,0.25); background: var(--success-l); }
+.c-low  { color: var(--gold);    border-color: rgba(196,127,0,0.25); background: var(--gold-l); }
+.c-out  { color: var(--danger);  border-color: rgba(196,34,34,0.25); background: var(--danger-l); }
+.c-proc { color: var(--ocean);   border-color: rgba(0,107,99,0.25);  background: var(--ocean-l); }
+.c-pend { color: var(--gold);    border-color: rgba(196,127,0,0.25); background: var(--gold-l); }
+.c-done { color: var(--charcoal);border-color: var(--stone);         background: var(--paper); }
+
+.bar-bg { width: 56px; height: 4px; background: var(--sand); display: inline-block; vertical-align: middle; margin-right: 6px; }
+.bar-fill { height: 100%; background: var(--ocean); display: block; }
+.bar-fill.lo { background: var(--gold); }
+.bar-fill.no { background: var(--danger); }
+
+.disp-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.dc {
+  background: var(--white);
+  border: 1px solid var(--sand);
+  border-top: 3px solid var(--ocean);
+  padding: 14px 16px;
+}
+.dc.ur { border-top-color: var(--danger); }
+.dc.re { border-top-color: var(--success); }
+.dc.tr { border-top-color: var(--gold); }
+.dc-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.dc-l {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pebble);
+}
+
+.email-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.em-card {
+  background: var(--white);
+  border: 1px solid var(--sand);
+  padding: 16px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.em-card:hover { border-color: var(--ocean); box-shadow: 0 4px 16px rgba(0,107,99,0.07); }
+.em-ic { font-size: 1.4rem; margin-bottom: 8px; display: block; }
+.em-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.em-desc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.04em;
+  color: var(--pebble);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.em-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--sand);
+  padding-top: 8px;
+}
+.em-status {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.06em;
+  color: var(--success);
+}
+.em-prev {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ocean);
+  border: 1px solid rgba(0,107,99,0.25);
+  background: none;
+  padding: 3px 8px;
+  transition: all .12s;
+}
+.em-prev:hover { background: var(--foam); }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--pebble);
+}
+.es-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: .4; display: block; }
+.es-txt {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="t-item hi">Kanki Surf</span>
+    <span class="t-item">Despachos a todo Chile</span>
+    <span class="t-item hi">Escuela de Surf Concón</span>
+    <span class="t-item">Envío gratis +$80.000</span>
+    <span class="t-item hi">Playa La Boca · Concón</span>
+    <span class="t-item">WebPay + MercadoPago</span>
+    <span class="t-item hi">+10 años formando surfistas</span>
+    <span class="t-item">Arriendo de equipo</span>
+    <span class="t-item hi">Kanki Surf</span>
+    <span class="t-item">Despachos a todo Chile</span>
+    <span class="t-item hi">Escuela de Surf Concón</span>
+    <span class="t-item">Envío gratis +$80.000</span>
+    <span class="t-item hi">Playa La Boca · Concón</span>
+    <span class="t-item">WebPay + MercadoPago</span>
+    <span class="t-item hi">+10 años formando surfistas</span>
+    <span class="t-item">Arriendo de equipo</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand" onclick="gp('store')">
+    <div class="brand-fish">
+      <svg width="22" height="14" viewBox="0 0 22 14">
+        <ellipse cx="10" cy="7" rx="9" ry="6" fill="rgba(255,255,255,0.9)"/>
+        <ellipse cx="9" cy="7" rx="6.5" ry="4" fill="#006B63"/>
+        <polygon points="19,7 22,3.5 22,10.5" fill="#FFD600"/>
+        <circle cx="6.5" cy="5.5" r="1.2" fill="rgba(255,255,255,0.9)"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">KANKI<span>SURF</span></span>
+      <span class="brand-loc">Concón · Chile</span>
+    </div>
+  </div>
+  <div class="nav-menu">
+    <button class="nav-item on" onclick="sw(this,'store')">Tienda</button>
+    <button class="nav-item" onclick="sw(this,'school')">Escuela</button>
+    <button class="nav-item" onclick="sw(this,'track')">Pedidos</button>
+    <button class="nav-item" onclick="sw(this,'admin')">Admin</button>
+  </div>
+  <div class="nav-right">
+    <button class="cart-btn">
+      Carrito
+      <span class="cart-badge">2</span>
+    </button>
+    <button class="btn-ocean" onclick="sw(document.querySelectorAll('.nav-item')[1],'school')">Reservar clase</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════ STORE ══════════════════════ -->
+<div class="panel on" id="p-store">
+
+  <!-- VIDEO HERO -->
+  <section class="hero">
+    <div class="hero-video-bg" id="heroVideoBg">
+      <!-- Foam particles added by JS -->
+      <!-- Real video tag: replace src with actual video URL -->
+      <video class="hero-video" id="heroVideo" autoplay muted loop playsinline>
+        <source src="https://cdn.shopify.com/videos/c/o/v/placeholder.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-texture"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-scroll-cue">
+      <div class="scroll-line"></div>
+      <span class="scroll-text">Scroll</span>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-pretitle">
+          <div class="hero-pretitle-dot"></div>
+          <span class="hero-pretitle-text">Est. 2015 · Playa La Boca · Concón</span>
+        </div>
+        <div class="hero-title">
+          <span class="t-outline">KAN</span>
+          <span class="t-solid">KI</span>
+          <span class="t-ocean">SURF</span>
+        </div>
+        <p class="hero-desc">
+          Escuela, tienda y arriendo en Concón. Instructores certificados, equipo incluido, las mejores olas de la V Región.
+        </p>
+        <div class="hero-actions">
+          <button class="hero-btn-main">Ver tienda</button>
+          <button class="hero-btn-sec" onclick="sw(document.querySelectorAll('.nav-item')[1],'school')">Agendar clase →</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hs-item">
+          <span class="hs-n">+10</span>
+          <span class="hs-l">Años</span>
+        </div>
+        <div class="hs-item">
+          <span class="hs-n">600+</span>
+          <span class="hs-l">Alumnos</span>
+        </div>
+        <div class="hs-item">
+          <span class="hs-n">4.9</span>
+          <span class="hs-l">Rating</span>
+        </div>
+        <div class="hs-item">
+          <span class="hs-n">3</span>
+          <span class="hs-l">Servicios</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-band">
+    <div class="mq-inner">
+      <span class="mq-item hi">Tablas</span><span class="mq-sep">×</span>
+      <span class="mq-item">Trajes</span><span class="mq-sep">×</span>
+      <span class="mq-item hi">Escuela</span><span class="mq-sep">×</span>
+      <span class="mq-item">Accesorios</span><span class="mq-sep">×</span>
+      <span class="mq-item hi">Clases privadas</span><span class="mq-sep">×</span>
+      <span class="mq-item">Arriendo</span><span class="mq-sep">×</span>
+      <span class="mq-item hi">Concón</span><span class="mq-sep">×</span>
+      <span class="mq-item">Ropa</span><span class="mq-sep">×</span>
+      <span class="mq-item hi">Tablas</span><span class="mq-sep">×</span>
+      <span class="mq-item">Trajes</span><span class="mq-sep">×</span>
+      <span class="mq-item hi">Escuela</span><span class="mq-sep">×</span>
+      <span class="mq-item">Accesorios</span><span class="mq-sep">×</span>
+      <span class="mq-item hi">Clases privadas</span><span class="mq-sep">×</span>
+      <span class="mq-item">Arriendo</span><span class="mq-sep">×</span>
+      <span class="mq-item hi">Concón</span><span class="mq-sep">×</span>
+      <span class="mq-item">Ropa</span><span class="mq-sep">×</span>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="tb-item">
+      <div class="tb-icon">🚚</div>
+      <div>
+        <div class="tb-title">Despacho todo Chile</div>
+        <div class="tb-sub">Starken · Gratis sobre $80.000</div>
+      </div>
+    </div>
+    <div class="tb-item">
+      <div class="tb-icon">🔒</div>
+      <div>
+        <div class="tb-title">Pago 100% seguro</div>
+        <div class="tb-sub">WebPay + MercadoPago</div>
+      </div>
+    </div>
+    <div class="tb-item">
+      <div class="tb-icon">↩️</div>
+      <div>
+        <div class="tb-title">30 días devolución</div>
+        <div class="tb-sub">Sin preguntas</div>
+      </div>
+    </div>
+    <div class="tb-item">
+      <div class="tb-icon">💬</div>
+      <div>
+        <div class="tb-title">Soporte real</div>
+        <div class="tb-sub">WhatsApp · Lun–Sáb 9–19h</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section class="sec">
+    <div class="sec-top">
+      <div class="sec-left">
+        <div class="sec-eyebrow">01 — Categorías</div>
+        <div class="sec-title">Explora el equipo</div>
+      </div>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card"><span class="cat-num">01</span><span class="cat-icon">🏄</span><div class="cat-name">Tablas</div><span class="cat-count">14 productos</span></div>
+      <div class="cat-card"><span class="cat-num">02</span><span class="cat-icon">🤿</span><div class="cat-name">Trajes</div><span class="cat-count">8 productos</span></div>
+      <div class="cat-card"><span class="cat-num">03</span><span class="cat-icon">⚙️</span><div class="cat-name">Accesorios</div><span class="cat-count">22 productos</span></div>
+      <div class="cat-card"><span class="cat-num">04</span><span class="cat-icon">👕</span><div class="cat-name">Ropa</div><span class="cat-count">18 productos</span></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="sec" style="padding-top:0;border-top:none">
+    <div class="sec-top">
+      <div class="sec-left">
+        <div class="sec-eyebrow">02 — Destacados</div>
+        <div class="sec-title">Fast. Heavy. Exclusive.</div>
+      </div>
+      <button class="sec-link">Ver todo →</button>
+    </div>
+    <div class="filter-row">
+      <button class="f-chip on" onclick="flt(this)">Todo</button>
+      <button class="f-chip" onclick="flt(this)">Tablas</button>
+      <button class="f-chip" onclick="flt(this)">Trajes</button>
+      <button class="f-chip" onclick="flt(this)">Accesorios</button>
+      <button class="f-chip" onclick="flt(this)">Ropa</button>
+    </div>
+    <div class="prod-grid">
+      <div class="pc">
+        <div class="pc-img"><span class="pc-badge b-hot">Popular</span><span class="stock-dot s-ok"></span><span>🏄</span><button class="pc-quick">+ Agregar al carrito</button></div>
+        <div class="pc-body"><div class="pc-name">Tabla Longboard 9'2</div><div class="pc-sub">Tablas · Stock: 6</div><div class="pc-foot"><span class="pc-price">$385.000</span><button class="pc-add">+</button></div></div>
+      </div>
+      <div class="pc">
+        <div class="pc-img"><span class="pc-badge b-new">Nuevo</span><span class="stock-dot s-ok"></span><span>🤿</span><button class="pc-quick">+ Agregar al carrito</button></div>
+        <div class="pc-body"><div class="pc-name">Traje 4/3mm Invierno</div><div class="pc-sub">Trajes · Stock: 7</div><div class="pc-foot"><span class="pc-price">$185.000</span><button class="pc-add">+</button></div></div>
+      </div>
+      <div class="pc">
+        <div class="pc-img"><span class="stock-dot s-ok"></span><span>🪢</span><button class="pc-quick">+ Agregar al carrito</button></div>
+        <div class="pc-body"><div class="pc-name">Leash FCS 9'</div><div class="pc-sub">Accesorios · Stock: 25</div><div class="pc-foot"><span class="pc-price">$18.500</span><button class="pc-add">+</button></div></div>
+      </div>
+      <div class="pc">
+        <div class="pc-img"><span class="pc-badge b-sale">Oferta</span><span class="stock-dot s-low"></span><span>🏄</span><button class="pc-quick">+ Agregar al carrito</button></div>
+        <div class="pc-body"><div class="pc-name">Shortboard 6'2</div><div class="pc-sub">Tablas · Stock: 2 ⚠️</div><div class="pc-foot"><span class="pc-price">$295.000</span><button class="pc-add">+</button></div></div>
+      </div>
+      <div class="pc">
+        <div class="pc-img"><span class="stock-dot s-ok"></span><span>👕</span><button class="pc-quick">+ Agregar al carrito</button></div>
+        <div class="pc-body"><div class="pc-name">Hoodie Kanki Wave</div><div class="pc-sub">Ropa · Stock: 18</div><div class="pc-foot"><span class="pc-price">$45.000</span><button class="pc-add">+</button></div></div>
+      </div>
+      <div class="pc">
+        <div class="pc-img"><span class="pc-badge b-soon">Coming soon</span><span class="stock-dot s-none"></span><span>⚙️</span><button class="pc-quick">Notificarme</button></div>
+        <div class="pc-body"><div class="pc-name">Quillas Futures Tri</div><div class="pc-sub">Accesorios · Agotado</div><div class="pc-foot"><span class="pc-price">$45.000</span><button class="pc-add" style="opacity:.4">+</button></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITORIAL / SCHOOL -->
+  <div class="editorial">
+    <div class="ed-left">
+      <div>
+        <div class="ed-tag">
+          <div class="ed-tag-line"></div>
+          <span class="ed-tag-text">Escuela Kanki Surf · Concón</span>
+        </div>
+        <div class="ed-title">Somos los que<br>marcan tendencia</div>
+        <p class="ed-body">La escuela más sólida de la V Región. Instructores certificados, +10 años formando surfistas, equipo de primer nivel incluido. Playa La Boca, Concón.</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn-ocean" onclick="sw(document.querySelectorAll('.nav-item')[1],'school')">Ver clases y reservar</button>
+        <button class="btn-outline" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.16)">Ver horarios</button>
+      </div>
+    </div>
+    <div class="ed-right">
+      <div class="level-card" style="border-top-color:var(--success)">
+        <span class="lc-num">01</span>
+        <div class="lc-dot" style="background:var(--success)"></div>
+        <div class="lc-level" style="color:rgba(31,209,122,0.8)">Principiante</div>
+        <div class="lc-name">Iniciación</div>
+        <div class="lc-desc">Aprende desde cero. Equipo incluido. Máx. 4 alumnos.</div>
+        <span class="lc-price">$45.000</span>
+        <button class="lc-btn">Reservar</button>
+      </div>
+      <div class="level-card" style="border-top-color:#F5A623">
+        <span class="lc-num">02</span>
+        <div class="lc-dot" style="background:#F5A623"></div>
+        <div class="lc-level" style="color:rgba(245,166,35,0.8)">Intermedio</div>
+        <div class="lc-name">Técnica avanzada</div>
+        <div class="lc-desc">Take-off, maniobras y paddling. Sube de nivel rápido.</div>
+        <span class="lc-price">$55.000</span>
+        <button class="lc-btn">Reservar</button>
+      </div>
+      <div class="level-card" style="border-top-color:#E84040">
+        <span class="lc-num">03</span>
+        <div class="lc-dot" style="background:#E84040"></div>
+        <div class="lc-level" style="color:rgba(232,64,64,0.8)">Avanzado</div>
+        <div class="lc-name">Alto rendimiento</div>
+        <div class="lc-desc">Maniobras + video análisis de tu surf. Máx. 2 alumnos.</div>
+        <span class="lc-price">$80.000</span>
+        <button class="lc-btn">Reservar</button>
+      </div>
+      <div class="level-card" style="border-top-color:var(--wave)">
+        <span class="lc-num">04</span>
+        <div class="lc-dot" style="background:var(--wave)"></div>
+        <div class="lc-level" style="color:var(--wave)">Premium</div>
+        <div class="lc-name">Privada 1:1</div>
+        <div class="lc-desc">Máximo progreso. Cualquier nivel. Instructor exclusivo.</div>
+        <span class="lc-price">$95.000</span>
+        <button class="lc-btn">Reservar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTAGRAM -->
+  <section class="ig-section">
+    <div class="ig-head">
+      <div class="ig-handle">@kanki<span>surf.cl</span></div>
+      <button class="sec-link">Seguir en Instagram →</button>
+    </div>
+    <div class="ig-grid">
+      <div class="ig-cell" style="background:#EAF4F3">🌊<div class="ig-overlay"><span class="ig-ov-txt">Ver post</span></div></div>
+      <div class="ig-cell" style="background:#E8EFF5">🏄<div class="ig-overlay"><span class="ig-ov-txt">Ver post</span></div></div>
+      <div class="ig-cell" style="background:#F5F0E8">☀️<div class="ig-overlay"><span class="ig-ov-txt">Ver post</span></div></div>
+      <div class="ig-cell" style="background:#EAF0F5">🤿<div class="ig-overlay"><span class="ig-ov-txt">Ver post</span></div></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="ft-brand-name">KANKI<span>SURF</span></div>
+        <div class="ft-brand-loc">Concón · Playa La Boca · Chile</div>
+        <p class="ft-desc">Escuela y tienda de surf en Concón desde 2015. Las mejores olas de la V Región.</p>
+        <div class="ft-socials">
+          <button class="ft-soc">IG</button>
+          <button class="ft-soc">FB</button>
+          <button class="ft-soc">WA</button>
+          <button class="ft-soc">YT</button>
+          <button class="ft-soc">TK</button>
+        </div>
+      </div>
+      <div>
+        <div class="ft-col-t">Tienda</div>
+        <span class="ft-link">Tablas de surf</span>
+        <span class="ft-link">Trajes neopreno</span>
+        <span class="ft-link">Accesorios</span>
+        <span class="ft-link">Arriendo de equipo</span>
+        <span class="ft-link">Ropa lifestyle</span>
+      </div>
+      <div>
+        <div class="ft-col-t">Escuela</div>
+        <span class="ft-link">Clase iniciación</span>
+        <span class="ft-link">Clase intermedio</span>
+        <span class="ft-link">Clase avanzada</span>
+        <span class="ft-link">Clase privada 1:1</span>
+        <span class="ft-link">Pack intensivo</span>
+      </div>
+      <div>
+        <div class="ft-col-t">Info</div>
+        <span class="ft-link">Cómo llegar</span>
+        <span class="ft-link">Contacto</span>
+        <span class="ft-link">Política de envíos</span>
+        <span class="ft-link">Devoluciones</span>
+        <span class="ft-link">Seguimiento</span>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <span class="ft-copy">© 2026 Kanki Surf · contacto@kankisurf.cl</span>
+      <div class="ft-pays">
+        <span class="ft-pay-chip">WebPay</span>
+        <span class="ft-pay-chip">MercadoPago</span>
+        <span class="ft-pay-chip">Transferencia</span>
+        <span class="ft-pay-chip">Starken</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════ SCHOOL ══════════════════════ -->
+<div class="panel" id="p-school">
+  <section style="background:var(--ink);padding:48px 40px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06)">
+    <div style="font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.22em;color:var(--wave);text-transform:uppercase;margin-bottom:8px">Playa La Boca · Concón · +10 años</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,6vw,72px);letter-spacing:.04em;text-transform:uppercase;color:#fff;line-height:.9;margin-bottom:10px">Escuela Kanki<br><span style="color:var(--wave)">Surf</span></div>
+    <p style="font-size:.9rem;color:rgba(255,255,255,.4);max-width:380px;margin:0 auto;line-height:1.6">Instructores certificados · Equipo incluido · Las mejores olas de la costa</p>
+  </section>
+
+  <div class="booking-section">
+    <div class="sec-top" style="border-bottom:1px solid var(--sand)">
+      <div class="sec-left">
+        <div class="sec-eyebrow">Elige tu clase</div>
+        <div class="sec-title">Todos los niveles</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:20px 0 32px">
+      <div style="background:var(--white);border:1px solid var(--sand);border-left:4px solid var(--success);padding:18px 16px">
+        <div style="font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--success);margin-bottom:6px">Principiante</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.04em;color:var(--ink);text-transform:uppercase;margin-bottom:4px">Clase de Iniciación</div>
+        <div style="font-size:.82rem;color:var(--smoke);line-height:1.5;margin-bottom:12px">Aprende desde cero. Equipo incluido. Máx. 4 alumnos.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--ink)">$45.000</span>
+          <button class="btn-ocean" style="font-size:.56rem;padding:7px 14px">Reservar</button>
+        </div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--sand);border-left:4px solid var(--gold);padding:18px 16px">
+        <div style="font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Intermedio</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.04em;color:var(--ink);text-transform:uppercase;margin-bottom:4px">Mejora tu técnica</div>
+        <div style="font-size:.82rem;color:var(--smoke);line-height:1.5;margin-bottom:12px">Take-off, paddling y maniobras básicas en la ola.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--ink)">$55.000</span>
+          <button class="btn-ocean" style="font-size:.56rem;padding:7px 14px">Reservar</button>
+        </div>
+      </div>
+      <div style="background:var(--white);border:2px solid var(--ocean);border-left:4px solid var(--danger);padding:18px 16px">
+        <div style="font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--danger);margin-bottom:6px">Avanzado</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.04em;color:var(--ink);text-transform:uppercase;margin-bottom:4px">Alto rendimiento</div>
+        <div style="font-size:.82rem;color:var(--smoke);line-height:1.5;margin-bottom:12px">Maniobras + video análisis de tu surf. Máx. 2 alumnos.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--ink)">$80.000</span>
+          <button class="btn-ocean" style="font-size:.56rem;padding:7px 14px">Reservar</button>
+        </div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--sand);border-left:4px solid var(--ocean);padding:18px 16px">
+        <div style="font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ocean);margin-bottom:6px">Premium</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.04em;color:var(--ink);text-transform:uppercase;margin-bottom:4px">Clase privada 1:1</div>
+        <div style="font-size:.82rem;color:var(--smoke);line-height:1.5;margin-bottom:12px">Máximo progreso. Cualquier nivel. Instructor a elección.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--ink)">$95.000</span>
+          <button class="btn-ocean" style="font-size:.56rem;padding:7px 14px">Reservar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-top" style="border-bottom:1px solid var(--sand);margin-bottom:20px">
+      <div class="sec-left">
+        <div class="sec-eyebrow">Calendario</div>
+        <div class="sec-title">Elige tu fecha</div>
+      </div>
+    </div>
+    <div class="booking-grid">
+      <div class="cal-box">
+        <div class="cal-head">
+          <span class="cal-month-lbl">Abril 2026</span>
+          <div class="cal-nav-row">
+            <button class="cal-nav-btn">‹</button>
+            <button class="cal-nav-btn">›</button>
+          </div>
+        </div>
+        <div class="cal-grid">
+          <div class="cal-dn">D</div><div class="cal-dn">L</div><div class="cal-dn">M</div><div class="cal-dn">Mi</div><div class="cal-dn">J</div><div class="cal-dn">V</div><div class="cal-dn">S</div>
+          <div class="cal-day empty"></div><div class="cal-day empty"></div>
+          <div class="cal-day av" onclick="pd(this)">1</div><div class="cal-day av" onclick="pd(this)">2</div><div class="cal-day av" onclick="pd(this)">3</div><div class="cal-day av" onclick="pd(this)">4</div><div class="cal-day av" onclick="pd(this)">5</div>
+          <div class="cal-day av" onclick="pd(this)">6</div><div class="cal-day av" onclick="pd(this)">7</div><div class="cal-day av" onclick="pd(this)">8</div><div class="cal-day" onclick="pd(this)">9</div><div class="cal-day av" onclick="pd(this)">10</div><div class="cal-day av" onclick="pd(this)">11</div><div class="cal-day av" onclick="pd(this)">12</div>
+          <div class="cal-day av" onclick="pd(this)">13</div><div class="cal-day av" onclick="pd(this)">14</div><div class="cal-day av" onclick="pd(this)">15</div><div class="cal-day av" onclick="pd(this)">16</div><div class="cal-day td av" onclick="pd(this)">17</div><div class="cal-day av" onclick="pd(this)">18</div><div class="cal-day av" onclick="pd(this)">19</div>
+          <div class="cal-day av" onclick="pd(this)">20</div><div class="cal-day" onclick="pd(this)">21</div><div class="cal-day av" onclick="pd(this)">22</div><div class="cal-day av" onclick="pd(this)">23</div><div class="cal-day av" onclick="pd(this)">24</div><div class="cal-day av" onclick="pd(this)">25</div><div class="cal-day av" onclick="pd(this)">26</div>
+          <div class="cal-day av" onclick="pd(this)">27</div><div class="cal-day av" onclick="pd(this)">28</div><div class="cal-day av" onclick="pd(this)">29</div><div class="cal-day av" onclick="pd(this)">30</div>
+        </div>
+      </div>
+      <div class="slots-box">
+        <span class="slots-label">Horarios disponibles</span>
+        <div class="slots-row">
+          <button class="slot on" onclick="ps(this)">08:00</button>
+          <button class="slot" onclick="ps(this)">09:30</button>
+          <button class="slot full">11:00</button>
+          <button class="slot" onclick="ps(this)">12:30</button>
+          <button class="slot" onclick="ps(this)">14:00</button>
+          <button class="slot" onclick="ps(this)">15:30</button>
+          <button class="slot full">17:00</button>
+        </div>
+        <div style="border-top:1px solid var(--sand);padding-top:14px;margin-top:4px">
+          <div style="font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.1em;color:var(--pebble);margin-bottom:10px;text-transform:uppercase">Tus datos</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <input placeholder="Nombre" style="background:var(--snow);border:1px solid var(--stone);padding:9px 12px;font-family:inherit;font-size:.82rem;color:var(--ink);outline:none">
+            <input placeholder="Email" style="background:var(--snow);border:1px solid var(--stone);padding:9px 12px;font-family:inherit;font-size:.82rem;color:var(--ink);outline:none">
+          </div>
+          <select style="width:100%;background:var(--snow);border:1px solid var(--stone);padding:9px 12px;font-family:inherit;font-size:.82rem;color:var(--smoke);outline:none;margin-bottom:12px">
+            <option>Selecciona tipo de clase</option>
+            <option>Iniciación — $45.000</option>
+            <option>Intermedio — $55.000</option>
+            <option>Avanzado — $80.000</option>
+            <option>Privada 1:1 — $95.000</option>
+          </select>
+        </div>
+        <button class="booking-cta">Confirmar reserva →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ TRACKING ══════════════════════ -->
+<div class="panel" id="p-track">
+  <div class="track-hero">
+    <div class="track-title">Sigue tu pedido</div>
+    <p class="track-sub">Concón · Chile · Starken + Chilexpress</p>
+    <div class="track-row">
+      <input class="track-input" id="tIn" placeholder="Ej: KS-034" />
+      <button class="track-btn" onclick="trk()">Buscar</button>
+    </div>
+  </div>
+  <div class="track-content" id="tContent">
+    <div class="empty-state">
+      <span class="es-icon">📦</span>
+      <span class="es-txt">Ingresa tu número de orden<br>Prueba con KS-034 · KS-033 · KS-032</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ ADMIN ══════════════════════ -->
+<div class="panel" id="p-admin">
+  <div class="adm-top">
+    <span class="adm-lbl">Admin · Kanki Surf</span>
+    <button class="a-tab on" onclick="at(this,'dash')">Dashboard</button>
+    <button class="a-tab" onclick="at(this,'stock')">Inventario</button>
+    <button class="a-tab" onclick="at(this,'orders')">Pedidos</button>
+    <button class="a-tab" onclick="at(this,'dispatch')">Despacho</button>
+    <button class="a-tab" onclick="at(this,'classes')">Clases</button>
+    <button class="a-tab" onclick="at(this,'emails')">Emails</button>
+  </div>
+  <div class="adm-body">
+
+    <!-- DASH -->
+    <div class="a-sub on" id="a-dash">
+      <div class="stat-row">
+        <div class="s-card g"><div class="sn">$842K</div><div class="sl">Ventas mes</div></div>
+        <div class="s-card"><div class="sn">34</div><div class="sl">Pedidos activos</div></div>
+        <div class="s-card w"><div class="sn">8</div><div class="sl">Stock bajo</div></div>
+        <div class="s-card n"><div class="sn">12</div><div class="sl">Clases hoy</div></div>
+        <div class="s-card d"><div class="sn">3</div><div class="sl">Urgentes despacho</div></div>
+      </div>
+      <div class="tbl-box">
+        <div class="tbl-hd"><span class="tbl-title">Actividad reciente</span><button class="tbl-btn">Exportar CSV</button></div>
+        <table>
+          <thead><tr><th>Hora</th><th>Evento</th><th>Detalle</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ocean);font-weight:700">14:32</td><td style="color:var(--ink);font-weight:600">Nueva venta</td><td>KS-034 — Tabla Longboard + Traje 3/2</td><td><span class="chip c-ok">Pagado</span></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ocean);font-weight:700">13:58</td><td style="color:var(--ink);font-weight:600">Reserva clase</td><td>Iniciación — María González</td><td><span class="chip c-ok">Confirmado</span></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ocean);font-weight:700">12:15</td><td style="color:var(--ink);font-weight:600">Despacho</td><td>KS-028 enviado via Starken</td><td><span class="chip c-proc">En camino</span></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ocean);font-weight:700">11:00</td><td style="color:var(--ink);font-weight:600">Alerta stock</td><td>Shortboard 6'2 — solo 2 unidades</td><td><span class="chip c-low">Stock bajo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STOCK -->
+    <div class="a-sub" id="a-stock">
+      <div class="tbl-box">
+        <div class="tbl-hd"><span class="tbl-title">Inventario</span><button class="tbl-btn">+ Nuevo producto</button></div>
+        <table>
+          <thead><tr><th>Producto</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--ink);font-weight:600">Tabla Longboard 9'2</td><td style="font-family:'Space Mono',monospace;font-size:.75rem">$385.000</td><td><span class="bar-bg"><span class="bar-fill" style="width:60%"></span></span>6</td><td><span class="chip c-ok">OK</span></td><td><button class="tbl-btn" style="margin-right:4px">Editar</button><button class="tbl-btn">+Stock</button></td></tr>
+            <tr><td style="color:var(--ink);font-weight:600">Tabla Shortboard 6'2</td><td style="font-family:'Space Mono',monospace;font-size:.75rem">$295.000</td><td><span class="bar-bg"><span class="bar-fill lo" style="width:13%"></span></span>2</td><td><span class="chip c-low">Bajo</span></td><td><button class="tbl-btn" style="margin-right:4px">Editar</button><button class="tbl-btn">+Stock</button></td></tr>
+            <tr><td style="color:var(--ink);font-weight:600">Tabla Fish 6'8</td><td style="font-family:'Space Mono',monospace;font-size:.75rem">$249.000</td><td><span class="bar-bg"><span class="bar-fill no" style="width:0%"></span></span>0</td><td><span class="chip c-out">Agotado</span></td><td><button class="tbl-btn" style="margin-right:4px">Editar</button><button class="tbl-btn">Reponer</button></td></tr>
+            <tr><td style="color:var(--ink);font-weight:600">Traje 4/3mm Invierno</td><td style="font-family:'Space Mono',monospace;font-size:.75rem">$185.000</td><td><span class="bar-bg"><span class="bar-fill" style="width:46%"></span></span>7</td><td><span class="chip c-ok">OK</span></td><td><button class="tbl-btn">Editar</button></td></tr>
+            <tr><td style="color:var(--ink);font-weight:600">Leash FCS 9'</td><td style="font-family:'Space Mono',monospace;font-size:.75rem">$18.500</td><td><span class="bar-bg"><span class="bar-fill" style="width:83%"></span></span>25</td><td><span class="chip c-ok">OK</span></td><td><button class="tbl-btn">Editar</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="a-sub" id="a-orders">
+      <div class="stat-row">
+        <div class="s-card w"><div class="sn">5</div><div class="sl">Pendientes</div></div>
+        <div class="s-card"><div class="sn">12</div><div class="sl">Procesando</div></div>
+        <div class="s-card"><div class="sn">9</div><div class="sl">Despachados</div></div>
+        <div class="s-card g"><div class="sn">8</div><div class="sl">Entregados</div></div>
+        <div class="s-card n"><div class="sn">$842K</div><div class="sl">Total periodo</div></div>
+      </div>
+      <div class="tbl-box">
+        <div class="tbl-hd"><span class="tbl-title">Gestión de pedidos</span><button class="tbl-btn">Exportar</button></div>
+        <table>
+          <thead><tr><th>Orden</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ocean);font-weight:700">KS-034</td><td style="color:var(--ink);font-weight:600">Ana Martínez</td><td>Tabla Longboard + Traje 3/2</td><td style="font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700">$530.000</td><td><span class="chip c-proc">Procesando</span></td><td style="font-size:.75rem">26 Mar 2026</td><td><button class="tbl-btn" style="margin-right:4px">Ver</button><button class="tbl-btn">Actualizar</button></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ocean);font-weight:700">KS-033</td><td style="color:var(--ink);font-weight:600">Carlos Rodríguez</td><td>Pack Wax x5 + Leash FCS</td><td style="font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700">$36.000</td><td><span class="chip c-ok">Despachado</span></td><td style="font-size:.75rem">25 Mar 2026</td><td><button class="tbl-btn">Ver</button></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ocean);font-weight:700">KS-032</td><td style="color:var(--ink);font-weight:600">María López</td><td>Traje 4/3mm Invierno</td><td style="font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700">$185.000</td><td><span class="chip c-done">Entregado</span></td><td style="font-size:.75rem">24 Mar 2026</td><td><button class="tbl-btn">Ver</button></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ocean);font-weight:700">KS-031</td><td style="color:var(--ink);font-weight:600">Diego Fuentes</td><td>Quillas Futures + Gorra</td><td style="font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700">$60.000</td><td><span class="chip c-pend">Pendiente</span></td><td style="font-size:.75rem">26 Mar 2026</td><td><button class="tbl-btn" style="margin-right:4px">Ver</button><button class="tbl-btn">Procesar</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DISPATCH -->
+    <div class="a-sub" id="a-dispatch">
+      <div class="disp-cards">
+        <div class="dc ur"><div class="dc-n">3</div><div class="dc-l">Urgentes (antes 17h)</div></div>
+        <div class="dc re"><div class="dc-n">7</div><div class="dc-l">Listos para enviar</div></div>
+        <div class="dc tr"><div class="dc-n">9</div><div class="dc-l">En tránsito</div></div>
+        <div class="dc"><div class="dc-n">4</div><div class="dc-l">Entregados hoy</div></div>
+      </div>
+      <div class="tbl-box">
+        <div class="tbl-hd"><span class="tbl-title">Cola de despacho</span><button class="tbl-btn">Imprimir etiquetas</button></div>
+        <table>
+          <thead><tr><th>Orden</th><th>Cliente</th><th>Ciudad</th><th>Courier</th><th>Tracking</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ocean);font-weight:700">KS-034</td><td style="color:var(--ink);font-weight:600">Ana Martínez</td><td>Viña del Mar</td><td>Starken</td><td style="font-family:'Space Mono',monospace;font-size:.68rem">SK8823451</td><td><span class="chip c-proc">En camino</span></td><td><button class="tbl-btn" style="margin-right:4px">Despachar</button><button class="tbl-btn">Notificar</button></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ocean);font-weight:700">KS-033</td><td style="color:var(--ink);font-weight:600">Carlos Rodríguez</td><td>Valparaíso</td><td>Chilexpress</td><td style="font-family:'Space Mono',monospace;font-size:.68rem">CX9912873</td><td><span class="chip c-proc">En camino</span></td><td><button class="tbl-btn">Notificar</button></td></tr>
+            <tr><td style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ocean);font-weight:700">KS-031</td><td style="color:var(--ink);font-weight:600">Diego Fuentes</td><td>Santiago</td><td style="color:var(--pebble)">Sin asignar</td><td style="color:var(--pebble)">—</td><td><span class="chip c-pend">Preparar</span></td><td><button class="tbl-btn">Asignar courier</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CLASSES -->
+    <div class="a-sub" id="a-classes">
+      <div class="stat-row">
+        <div class="s-card g"><div class="sn">12</div><div class="sl">Reservas semana</div></div>
+        <div class="s-card"><div class="sn">3</div><div class="sl">Instructores</div></div>
+        <div class="s-card w"><div class="sn">2</div><div class="sl">Cupos restantes hoy</div></div>
+        <div class="s-card n"><div class="sn">$540K</div><div class="sl">Ingresos clases</div></div>
+        <div class="s-card"><div class="sn">4.8</div><div class="sl">Rating promedio</div></div>
+      </div>
+      <div class="tbl-box">
+        <div class="tbl-hd"><span class="tbl-title">Reservas de clases</span><button class="tbl-btn">Enviar recordatorios</button></div>
+        <table>
+          <thead><tr><th>Alumno</th><th>Clase</th><th>Fecha</th><th>Hora</th><th>Instructor</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--ink);font-weight:600">Pedro Alvarado</td><td>Iniciación</td><td style="font-family:'Space Mono',monospace;font-size:.7rem">27 Mar</td><td style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ocean);font-weight:700">09:00</td><td>Felipe Reyes</td><td><span class="chip c-ok">Confirmado</span></td><td><button class="tbl-btn">Recordatorio</button></td></tr>
+            <tr><td style="color:var(--ink);font-weight:600">Laura Soto</td><td>Avanzada</td><td style="font-family:'Space Mono',monospace;font-size:.7rem">27 Mar</td><td style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ocean);font-weight:700">11:00</td><td>Diego Kanki</td><td><span class="chip c-ok">Confirmado</span></td><td><button class="tbl-btn">Recordatorio</button></td></tr>
+            <tr><td style="color:var(--ink);font-weight:600">Roberto Mena</td><td>Pack Familiar</td><td style="font-family:'Space Mono',monospace;font-size:.7rem">28 Mar</td><td style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--gold);font-weight:700">10:00</td><td>Felipe Reyes</td><td><span class="chip c-pend">Pendiente</span></td><td><button class="tbl-btn">Confirmar</button></td></tr>
+            <tr><td style="color:var(--ink);font-weight:600">Camila Torres</td><td>Privada 1:1</td><td style="font-family:'Space Mono',monospace;font-size:.7rem">29 Mar</td><td style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ocean);font-weight:700">14:00</td><td>Valentina Cruz</td><td><span class="chip c-ok">Confirmado</span></td><td><button class="tbl-btn">Recordatorio</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EMAILS -->
+    <div class="a-sub" id="a-emails">
+      <div class="stat-row">
+        <div class="s-card g"><div class="sn">98%</div><div class="sl">Entregados</div></div>
+        <div class="s-card"><div class="sn">42%</div><div class="sl">Tasa apertura</div></div>
+        <div class="s-card w"><div class="sn">156</div><div class="sl">Enviados este mes</div></div>
+        <div class="s-card n"><div class="sn">432</div><div class="sl">Suscriptores</div></div>
+        <div class="s-card"><div class="sn">6</div><div class="sl">Plantillas activas</div></div>
+      </div>
+      <div class="email-grid">
+        <div class="em-card"><span class="em-ic">📦</span><div class="em-name">Confirmación de pedido</div><div class="em-desc">Se envía al confirmar el pago. Incluye resumen y tracking.</div><div class="em-foot"><span class="em-status">● Activo</span><button class="em-prev">Preview</button></div></div>
+        <div class="em-card"><span class="em-ic">🚚</span><div class="em-name">Pedido despachado</div><div class="em-desc">Incluye número de tracking del courier automáticamente.</div><div class="em-foot"><span class="em-status">● Activo</span><button class="em-prev">Preview</button></div></div>
+        <div class="em-card"><span class="em-ic">🏄</span><div class="em-name">Confirmación de clase</div><div class="em-desc">Detalles de la clase + recordatorio 24 horas antes.</div><div class="em-foot"><span class="em-status">● Activo</span><button class="em-prev">Preview</button></div></div>
+        <div class="em-card"><span class="em-ic">⭐</span><div class="em-name">Solicitud de reseña</div><div class="em-desc">Se envía 3 días después de la entrega confirmada.</div><div class="em-foot"><span class="em-status">● Activo</span><button class="em-prev">Preview</button></div></div>
+        <div class="em-card"><span class="em-ic">🛒</span><div class="em-name">Carrito abandonado</div><div class="em-desc">Recordatorio automático a las 2 horas de abandono.</div><div class="em-foot"><span class="em-status">● Activo</span><button class="em-prev">Preview</button></div></div>
+        <div class="em-card"><span class="em-ic">🌊</span><div class="em-name">Newsletter mensual</div><div class="em-desc">Novedades, ofertas y condiciones del mar en Concón.</div><div class="em-foot"><span class="em-status">● Activo</span><button class="em-prev" onclick="alert('Enviando a 432 suscriptores...')">Enviar ahora</button></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ─── NAVIGATION ─────────────────────────────── */
+function gp(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('p-'+name).classList.add('on');
+}
+function sw(btn,name){
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  gp(name);
+}
+
+/* ─── ADMIN TABS ─────────────────────────────── */
+function at(btn,name){
+  document.querySelectorAll('.a-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.a-sub').forEach(s=>s.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('a-'+name).classList.add('on');
+}
+
+/* ─── FILTERS ────────────────────────────────── */
+function flt(btn){
+  document.querySelectorAll('.f-chip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+/* ─── CALENDAR ───────────────────────────────── */
+function pd(el){
+  document.querySelectorAll('.cal-day').forEach(d=>d.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function ps(btn){
+  document.querySelectorAll('.slot:not(.full)').forEach(s=>s.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+/* ─── TRACKING ───────────────────────────────── */
+document.getElementById('tIn').addEventListener('keypress',e=>{if(e.key==='Enter') trk();});
+function trk(){
+  const val = document.getElementById('tIn').value.trim().toUpperCase();
+  const tc  = document.getElementById('tContent');
+  const orders = {
+    'KS-034':{status:'processing',client:'Ana Martínez',items:"Tabla Longboard 9'2 + Traje 3/2",total:'$530.000',courier:'Starken',tracking:'SK8823451'},
+    'KS-033':{status:'shipped',client:'Carlos Rodríguez',items:"Pack Wax x5 + Leash FCS 9'",total:'$36.000',courier:'Chilexpress',tracking:'CX9912873'},
+    'KS-032':{status:'delivered',client:'María López',items:'Traje 4/3mm Invierno',total:'$185.000',courier:'Starken',tracking:'SK7741209'},
+    'KS-031':{status:'pending',client:'Diego Fuentes',items:'Quillas Futures + Gorra',total:'$60.000',courier:'—',tracking:'—'},
+  };
+  const o=orders[val];
+  if(!o){
+    tc.innerHTML=`<div class="empty-state"><span class="es-icon" style="opacity:.3">❌</span><span class="es-txt">Orden "${val}" no encontrada<br>Prueba: KS-034 · KS-033 · KS-032</span></div>`;
+    return;
+  }
+  const sLabel={processing:'Procesando',shipped:'Despachado',delivered:'Entregado',pending:'Pendiente'};
+  const sClass={processing:'st-proc',shipped:'st-ship',delivered:'st-done',pending:'st-pend'};
+  const steps=[
+    {l:'Pedido confirmado',d:`Orden ${val} confirmada · Pago verificado`,done:true,cur:false},
+    {l:'En preparación',d:'Empaquetando en tienda Concón',done:['processing','shipped','delivered'].includes(o.status),cur:o.status==='processing'},
+    {l:'Despachado',d:['shipped','delivered'].includes(o.status)?`${o.courier} · Tracking: ${o.tracking}`:'Pendiente de despacho',done:['shipped','delivered'].includes(o.status),cur:o.status==='shipped'},
+    {l:'Entregado',d:o.status==='delivered'?'¡Tu pedido llegó! 🎉':'Estimado: 1–3 días hábiles',done:o.status==='delivered',cur:false},
+  ];
+  tc.innerHTML=`<div class="ord-card"><div class="ord-head"><div><div class="ord-id">${val}</div><div class="ord-info">${o.items} · ${o.client} · ${o.total}</div></div><span class="s-tag ${sClass[o.status]}">${sLabel[o.status]}</span></div><div class="tl">${steps.map(s=>`<div class="tl-step ${s.done?'done':''} ${s.cur?'current':''}"><div class="tl-dot">${s.done?'✓':s.cur?'●':'○'}</div><div class="tl-txt"><h4>${s.l}</h4><p>${s.d}</p></div></div>`).join('')}</div>${o.tracking!=='—'?`<div style="padding:12px 18px;background:var(--paper);border-top:1px solid var(--sand);display:flex;align-items:center;justify-content:space-between"><div><div style="font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pebble);margin-bottom:3px">Tracking</div><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;color:var(--ocean)">${o.tracking}</div></div><span style="font-family:'Space Mono',monospace;font-size:.62rem;color:var(--smoke)">${o.courier}</span><button class="btn-ocean" style="font-size:.56rem;padding:7px 14px" onclick="alert('Abriendo rastreo en ${o.courier}...')">Rastrear →</button></div>`:''}
+  </div>`;
+}
+
+/* ─── HERO FOAM PARTICLES ─────────────────────── */
+(function spawnFoam(){
+  const bg=document.getElementById('heroVideoBg');
+  if(!bg) return;
+  for(let i=0;i<18;i++){
+    const d=document.createElement('div');
+    const sz=Math.random()*80+20;
+    d.className='foam-dot';
+    d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:${Math.random()*30}%;animation-duration:${Math.random()*12+8}s;animation-delay:-${Math.random()*12}s;`;
+    bg.appendChild(d);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,3028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanki Surf — Concón</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,900;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & TOKENS ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:   #000000;
+  --ink:     #0A0A0A;
+  --void:    #080808;
+  --surface: #111111;
+  --edge:    #1E1E1E;
+  --line:    #2A2A2A;
+  --muted:   #444444;
+  --mid:     #666666;
+  --light:   #AAAAAA;
+  --cream:   #F0EBE0;
+  --white:   #FAFAFA;
+  --cyan:    #00E5D4;
+  --yellow:  #FFD600;
+  --red:     #E83030;
+  --green:   #1FD17A;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  line-height: 1.4;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* ─── CUSTOM CURSOR ──────────────────────────── */
+a, button, [onclick], .clickable {
+  cursor: crosshair;
+}
+
+/* ─── TYPOGRAPHY SYSTEM ──────────────────────── */
+.f-display {
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+
+.f-mono {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.f-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.f-body {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* ─── TICKER ─────────────────────────────────── */
+.ticker {
+  background: var(--cyan);
+  color: var(--black);
+  height: 32px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.ticker-track {
+  display: flex;
+  gap: 0;
+  animation: ticker-scroll 22s linear infinite;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ticker-item {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0 28px;
+  border-right: 1px solid rgba(0,0,0,0.2);
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── NAVIGATION ─────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: var(--black);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: stretch;
+  height: 58px;
+}
+
+.nav-logo-block {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border-right: 1px solid var(--line);
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-width: 180px;
+}
+
+.nav-logo-block:hover { background: var(--surface); }
+
+/* SVG Logo Kanki Fish */
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.nav-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.nav-brand-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.05em;
+  color: var(--cream);
+}
+
+.nav-brand-name span { color: var(--cyan); }
+
+.nav-brand-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: none;
+  background: none;
+  border-right: 1px solid var(--line);
+  transition: all 0.15s;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.nav-link:hover { color: var(--cream); background: var(--surface); }
+.nav-link:hover::after { transform: scaleX(1); }
+.nav-link.active { color: var(--cyan); }
+.nav-link.active::after { transform: scaleX(1); }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.btn-ghost {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--light);
+  border: 1px solid var(--line);
+  background: none;
+  padding: 8px 14px;
+  cursor: crosshair;
+  transition: all 0.15s;
+}
+
+.btn-ghost:hover { border-color: var(--mid); color: var(--cream); }
+
+.btn-primary {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--cyan);
+  border: none;
+  padding: 8px 18px;
+  cursor: crosshair;
+  font-weight: 700;
+  transition: all 0.15s;
+}
+
+.btn-primary:hover { background: #00fff3; }
+
+.cart-icon {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--light);
+  border: 1px solid var(--line);
+  background: none;
+  padding: 8px 14px;
+  cursor: crosshair;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-icon:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.cart-dot {
+  width: 18px; height: 18px;
+  background: var(--cyan);
+  color: var(--black);
+  border-radius: 50%;
+  font-size: 0.55rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── PANELS ─────────────────────────────────── */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ─── STORE PANEL ────────────────────────────── */
+
+/* HERO */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 480px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-left {
+  padding: 52px 40px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-left::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: -60px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,212,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.eyebrow-line {
+  width: 40px;
+  height: 1px;
+  background: var(--cyan);
+}
+
+.eyebrow-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: var(--cyan);
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(56px, 7vw, 88px);
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--cream);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-title .accent { color: var(--cyan); }
+.hero-title .stroke {
+  -webkit-text-stroke: 1px var(--cream);
+  color: transparent;
+}
+
+.hero-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero-desc {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+
+.hero-stat {
+  flex: 1;
+  padding-right: 20px;
+  border-right: 1px solid var(--line);
+  margin-right: 20px;
+}
+
+.hero-stat:last-child {
+  border-right: none;
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.hs-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  color: var(--cyan);
+  line-height: 1;
+  display: block;
+}
+
+.hs-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 3px;
+  display: block;
+}
+
+/* Hero right visual */
+.hero-right {
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-visual-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-bg-word {
+  font-family: 'Anton', sans-serif;
+  font-size: 130px;
+  letter-spacing: -2px;
+  color: rgba(0,229,212,0.04);
+  text-transform: uppercase;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-surf-visual {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-drop-pills {
+  display: flex;
+  border-top: 1px solid var(--line);
+}
+
+.drop-pill {
+  flex: 1;
+  padding: 14px 16px;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.drop-pill:last-child { border-right: none; }
+
+.dp-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.dp-value {
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+}
+
+.dp-value.hi { color: var(--cyan); }
+.dp-value.warn { color: var(--yellow); }
+
+/* MARQUEE */
+.marquee-wrap {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  height: 38px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.marquee-inner {
+  display: flex;
+  gap: 0;
+  animation: marquee 20s linear infinite;
+  white-space: nowrap;
+}
+
+.mi {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0 24px;
+  color: var(--muted);
+}
+
+.mi.c { color: var(--cyan); }
+
+.mi-sep {
+  color: var(--line);
+  padding: 0 4px;
+  align-self: center;
+  font-size: 0.5rem;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* SECTION HEADER */
+.section {
+  padding: 36px 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sec-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sec-head-left {}
+
+.sec-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 4px;
+}
+
+.sec-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.9rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.sec-link {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--line);
+  padding: 7px 14px;
+  cursor: crosshair;
+  transition: all 0.15s;
+}
+
+.sec-link:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* CATEGORY RAIL */
+.cat-rail {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.cat-card {
+  background: var(--ink);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: crosshair;
+  transition: background 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s;
+}
+
+.cat-card:hover { background: var(--surface); }
+.cat-card:hover::after { transform: scaleX(1); }
+
+.cat-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+}
+
+.cat-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.cat-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.cat-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* PRODUCT GRID */
+.filters {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 18px;
+}
+
+.filter-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: none;
+  padding: 6px 14px;
+  cursor: crosshair;
+  transition: all 0.15s;
+}
+
+.filter-btn:hover { border-color: var(--mid); color: var(--cream); }
+.filter-btn.on { background: var(--cream); color: var(--black); border-color: var(--cream); }
+
+.prod-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.prod-card {
+  background: var(--ink);
+  cursor: crosshair;
+  transition: background 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.prod-card:hover { background: var(--surface); }
+.prod-card:hover .prod-hover-cta { opacity: 1; transform: translateY(0); }
+
+.prod-img {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.prod-badge {
+  position: absolute;
+  top: 0; left: 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+}
+
+.badge-hot { background: var(--cyan); color: var(--black); }
+.badge-new { background: var(--yellow); color: var(--black); }
+.badge-sale { background: var(--red); color: #fff; }
+.badge-soon { background: var(--cream); color: var(--black); }
+
+.prod-stock-indicator {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+.stock-ok   { background: var(--green); }
+.stock-low  { background: var(--yellow); }
+.stock-none { background: var(--red); }
+
+.prod-hover-cta {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--cyan);
+  color: var(--black);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 8px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.2s;
+  border: none;
+  cursor: crosshair;
+  width: 100%;
+}
+
+.prod-body {
+  padding: 14px 16px;
+}
+
+.prod-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 2px;
+  line-height: 1.1;
+}
+
+.prod-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.prod-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prod-price {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.3rem;
+  color: var(--cream);
+  letter-spacing: 0.02em;
+}
+
+.prod-add {
+  width: 28px; height: 28px;
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--cyan);
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: crosshair;
+  transition: all 0.15s;
+}
+
+.prod-add:hover { background: var(--cyan); color: var(--black); border-color: var(--cyan); }
+
+/* EDITORIAL BREAK */
+.editorial {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  min-height: 280px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ed-text {
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--line);
+}
+
+.ed-kicker {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 12px;
+}
+
+.ed-headline {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(28px, 3.5vw, 46px);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--cream);
+  line-height: 0.95;
+  margin-bottom: 14px;
+}
+
+.ed-body {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 360px;
+}
+
+.ed-visual {
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.ed-bg-text {
+  position: absolute;
+  font-family: 'Anton', sans-serif;
+  font-size: 88px;
+  color: rgba(0,229,212,0.04);
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* SCHOOL section */
+.school-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.class-card {
+  background: var(--ink);
+  padding: 22px 20px;
+  cursor: crosshair;
+  transition: background 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.class-card:hover { background: var(--surface); }
+
+.class-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 5rem;
+  position: absolute;
+  right: 14px; top: 8px;
+  color: rgba(0,229,212,0.05);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.class-level-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.class-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.class-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-bottom: 14px;
+  max-width: 240px;
+}
+
+.class-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.class-meta-item {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--mid);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.class-meta-item span {
+  color: var(--cream);
+  font-size: 0.68rem;
+}
+
+.class-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.class-price {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  color: var(--cyan);
+  letter-spacing: 0.02em;
+}
+
+.btn-book {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--cyan);
+  border: none;
+  padding: 8px 16px;
+  cursor: crosshair;
+  font-weight: 700;
+  transition: background 0.15s;
+}
+
+.btn-book:hover { background: #00fff3; }
+
+/* MINI CALENDAR */
+.calendar-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 20px 18px;
+  margin-top: 12px;
+}
+
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cal-month-label {
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.cal-nav-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.cal-nav-btn {
+  width: 24px; height: 24px;
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--muted);
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: crosshair;
+  transition: all 0.15s;
+}
+
+.cal-nav-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.cal-day-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  color: var(--muted);
+  text-align: center;
+  padding-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--muted);
+  cursor: crosshair;
+  transition: all 0.12s;
+}
+
+.cal-day.avail { color: var(--cream); }
+.cal-day.avail:hover { background: rgba(0,229,212,0.12); color: var(--cyan); }
+.cal-day.today { border: 1px solid var(--cyan); color: var(--cyan); }
+.cal-day.selected { background: var(--cyan); color: var(--black); font-weight: 700; }
+.cal-day.past { color: var(--line); cursor: default; }
+.cal-day.empty { cursor: default; }
+
+.time-slots {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.time-slot {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 5px 10px;
+  cursor: crosshair;
+  transition: all 0.12s;
+  background: none;
+}
+
+.time-slot:hover { border-color: var(--cyan); color: var(--cyan); }
+.time-slot.on { background: var(--cyan); color: var(--black); border-color: var(--cyan); font-weight: 700; }
+.time-slot.full { color: var(--line); border-color: var(--edge); cursor: not-allowed; text-decoration: line-through; }
+
+/* ANNOUNCE BAR */
+.announce-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+}
+
+.ab-item {
+  padding: 14px 20px;
+  border-right: 1px solid var(--line);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.ab-item:last-child { border-right: none; }
+
+.ab-line {
+  width: 2px;
+  height: 32px;
+  background: var(--cyan);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ab-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream);
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.ab-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* INSTAGRAM GRID */
+.ig-section {
+  padding: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ig-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ig-handle {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.ig-handle em { color: var(--cyan); font-style: normal; }
+
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.ig-cell {
+  aspect-ratio: 1;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: crosshair;
+  position: relative;
+  overflow: hidden;
+}
+
+.ig-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,229,212,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.ig-cell:hover .ig-overlay { opacity: 1; }
+
+.ig-overlay-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+/* FOOTER */
+.footer {
+  background: var(--ink);
+  border-top: 2px solid var(--cream);
+  padding: 32px 32px 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.footer-brand {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+
+.footer-brand span { color: var(--cyan); }
+
+.footer-tagline {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.footer-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  max-width: 220px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 4px;
+}
+
+.social-btn {
+  width: 30px; height: 30px;
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: crosshair;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.social-btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,212,0.06); }
+
+.footer-col-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.footer-link {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 7px;
+  cursor: crosshair;
+  transition: color 0.12s;
+  text-decoration: none;
+}
+
+.footer-link:hover { color: var(--cream); }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-copy {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.footer-payments {
+  display: flex;
+  gap: 4px;
+}
+
+.payment-chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 3px 8px;
+}
+
+/* ─── TRACKING PANEL ─────────────────────────── */
+.track-hero {
+  background: var(--ink);
+  padding: 48px 32px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.track-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(28px, 4vw, 52px);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 6px;
+}
+
+.track-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.track-search {
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+}
+
+.track-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-right: none;
+  color: var(--cream);
+  padding: 12px 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  transition: border-color 0.15s;
+  outline: none;
+}
+
+.track-input::placeholder { color: var(--muted); }
+.track-input:focus { border-color: var(--cyan); }
+
+.track-search-btn {
+  background: var(--cyan);
+  color: var(--black);
+  border: none;
+  padding: 12px 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: crosshair;
+  transition: background 0.15s;
+}
+
+.track-search-btn:hover { background: #00fff3; }
+
+.track-content {
+  padding: 32px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.order-card {
+  border: 1px solid var(--line);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.order-card-header {
+  background: var(--surface);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.order-id-display {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.order-desc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.status-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid;
+}
+
+.st-processing { color: var(--cyan); border-color: rgba(0,229,212,0.3); background: rgba(0,229,212,0.06); }
+.st-shipped    { color: var(--green); border-color: rgba(31,209,122,0.3); background: rgba(31,209,122,0.06); }
+.st-delivered  { color: var(--cream); border-color: var(--line); background: var(--surface); }
+.st-pending    { color: var(--yellow); border-color: rgba(255,214,0,0.3); background: rgba(255,214,0,0.06); }
+
+.timeline {
+  padding: 20px 20px 16px;
+}
+
+.tl-step {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.tl-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 9px; top: 22px;
+  width: 1px;
+  bottom: -12px;
+  background: var(--line);
+}
+
+.tl-step.done:not(:last-child)::after { background: var(--cyan); }
+
+.tl-dot {
+  width: 18px; height: 18px;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: var(--muted);
+  position: relative;
+  z-index: 1;
+  margin-top: 1px;
+  background: var(--ink);
+}
+
+.tl-step.done .tl-dot { background: var(--cyan); color: var(--black); border-color: var(--cyan); }
+.tl-step.current .tl-dot { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+
+.tl-content h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 1px;
+}
+
+.tl-content p {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* ─── ADMIN PANEL ─────────────────────────────── */
+.admin-wrap {
+  min-height: 100vh;
+  background: var(--black);
+}
+
+.admin-topbar {
+  background: var(--ink);
+  padding: 0 24px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-topbar-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-right: 12px;
+}
+
+.adm-tab {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: none;
+  padding: 5px 12px;
+  cursor: crosshair;
+  transition: all 0.12s;
+}
+
+.adm-tab:hover { color: var(--cream); border-color: var(--mid); }
+.adm-tab.on { background: var(--cyan); color: var(--black); border-color: var(--cyan); font-weight: 700; }
+
+.admin-content {
+  padding: 20px 24px;
+}
+
+.adm-sub { display: none; }
+.adm-sub.on { display: block; }
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+
+.stat-card {
+  background: var(--ink);
+  padding: 16px;
+  border-top: 2px solid var(--cyan);
+}
+
+.stat-card.warn { border-top-color: var(--yellow); }
+.stat-card.danger { border-top-color: var(--red); }
+.stat-card.success { border-top-color: var(--green); }
+.stat-card.neutral { border-top-color: var(--mid); }
+
+.stat-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.9rem;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Admin table */
+.adm-table-box {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.adm-table-header {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.adm-table-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.adm-table-action {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  border: 1px solid rgba(0,229,212,0.3);
+  background: none;
+  padding: 4px 10px;
+  cursor: crosshair;
+  transition: all 0.12s;
+}
+
+.adm-table-action:hover { background: rgba(0,229,212,0.1); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: var(--void);
+  padding: 7px 14px;
+  text-align: left;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  font-weight: 400;
+}
+
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--edge);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.88rem;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+tr:last-child td { border-bottom: none; }
+
+tr:hover td {
+  background: var(--surface);
+  color: var(--cream);
+}
+
+.chip {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid;
+}
+
+.chip-ok     { color: var(--green);  border-color: rgba(31,209,122,0.3); background: rgba(31,209,122,0.06); }
+.chip-low    { color: var(--yellow); border-color: rgba(255,214,0,0.3);  background: rgba(255,214,0,0.06); }
+.chip-out    { color: var(--red);    border-color: rgba(232,48,48,0.3);  background: rgba(232,48,48,0.06); }
+.chip-ship   { color: var(--green);  border-color: rgba(31,209,122,0.3); background: rgba(31,209,122,0.06); }
+.chip-proc   { color: var(--cyan);   border-color: rgba(0,229,212,0.3);  background: rgba(0,229,212,0.06); }
+.chip-pend   { color: var(--yellow); border-color: rgba(255,214,0,0.3);  background: rgba(255,214,0,0.06); }
+.chip-deliv  { color: var(--cream);  border-color: var(--line);          background: var(--surface); }
+
+.stock-bar-bg {
+  width: 60px;
+  height: 3px;
+  background: var(--line);
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.stock-bar-fill {
+  height: 100%;
+  background: var(--cyan);
+  display: block;
+}
+
+.stock-bar-fill.low    { background: var(--yellow); }
+.stock-bar-fill.empty  { background: var(--red); }
+
+/* Dispatch cards */
+.dispatch-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+
+.dispatch-card {
+  background: var(--ink);
+  padding: 16px;
+  border-top: 2px solid var(--line);
+}
+
+.dispatch-card.urgent  { border-top-color: var(--red); }
+.dispatch-card.ready   { border-top-color: var(--green); }
+.dispatch-card.transit { border-top-color: var(--yellow); }
+.dispatch-card.done    { border-top-color: var(--cyan); }
+
+.dc-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+
+.dc-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Email templates */
+.email-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.email-card {
+  background: var(--ink);
+  padding: 16px;
+  cursor: crosshair;
+  transition: background 0.15s;
+}
+
+.email-card:hover { background: var(--surface); }
+
+.email-card-icon {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.email-card-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 3px;
+}
+
+.email-card-desc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.email-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.email-status {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  color: var(--green);
+  text-transform: uppercase;
+}
+
+.email-preview-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  border: 1px solid rgba(0,229,212,0.3);
+  background: none;
+  padding: 3px 8px;
+  cursor: crosshair;
+  transition: all 0.12s;
+}
+
+.email-preview-btn:hover { background: rgba(0,229,212,0.1); }
+
+/* Placeholder empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--muted);
+}
+
+.empty-state-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 12px;
+  opacity: 0.3;
+}
+
+.empty-state-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ─── PAGE LOAD ANIMATION ─────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.panel.active .hero-left   { animation: fadeUp 0.4s ease both; }
+.panel.active .hero-right  { animation: fadeUp 0.5s 0.08s ease both; }
+.panel.active .marquee-wrap { animation: fadeUp 0.4s 0.15s ease both; }
+.panel.active .section     { animation: fadeUp 0.4s 0.2s ease both; }
+
+</style>
+</head>
+<body>
+
+<!-- ─── TICKER ─────────────────────────────────── -->
+<div class="ticker">
+  <div class="ticker-track" id="tickerTrack">
+    <div class="ticker-item">Despachos a todo Chile</div>
+    <div class="ticker-item">Envío gratis +$80.000</div>
+    <div class="ticker-item">Escuela de surf Concón</div>
+    <div class="ticker-item">WebPay + MercadoPago</div>
+    <div class="ticker-item">Playa La Boca · Concón</div>
+    <div class="ticker-item">+10 años formando surfistas</div>
+    <div class="ticker-item">Clases todo nivel</div>
+    <div class="ticker-item">Arriendo de equipo</div>
+    <div class="ticker-item">Despachos a todo Chile</div>
+    <div class="ticker-item">Envío gratis +$80.000</div>
+    <div class="ticker-item">Escuela de surf Concón</div>
+    <div class="ticker-item">WebPay + MercadoPago</div>
+    <div class="ticker-item">Playa La Boca · Concón</div>
+    <div class="ticker-item">+10 años formando surfistas</div>
+    <div class="ticker-item">Clases todo nivel</div>
+    <div class="ticker-item">Arriendo de equipo</div>
+  </div>
+</div>
+
+<!-- ─── NAV ───────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-logo-block" onclick="showPanel('store')">
+    <!-- Kanki Fish Logo SVG -->
+    <svg class="logo-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="19" fill="#00E5D4" opacity="0.15" stroke="#00E5D4" stroke-width="0.5"/>
+      <ellipse cx="18" cy="20" rx="12" ry="8" fill="#00E5D4" opacity="0.9"/>
+      <ellipse cx="17" cy="20" rx="9" ry="5.5" fill="#080808"/>
+      <polygon points="30,20 38,14 38,26" fill="#FFD600"/>
+      <circle cx="14" cy="18" r="1.5" fill="#080808"/>
+      <line x1="10" y1="17" x2="22" y2="17" stroke="#00E5D4" stroke-width="0.8" opacity="0.5"/>
+      <line x1="9" y1="21" x2="22" y2="21" stroke="#00E5D4" stroke-width="0.8" opacity="0.5"/>
+      <line x1="11" y1="19" x2="11" y2="25" stroke="#00E5D4" stroke-width="0.8" opacity="0.4"/>
+      <line x1="14" y1="24" x2="14" y2="28" stroke="#00E5D4" stroke-width="0.6" opacity="0.3"/>
+    </svg>
+    <div class="nav-brand">
+      <span class="nav-brand-name">KANKI<span>SURF</span></span>
+      <span class="nav-brand-sub">Concón · Chile</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="switchNav(this,'store')">Tienda</button>
+    <button class="nav-link" onclick="switchNav(this,'school')">Escuela</button>
+    <button class="nav-link" onclick="switchNav(this,'tracking')">Pedidos</button>
+    <button class="nav-link" onclick="switchNav(this,'admin')">Admin</button>
+  </div>
+  <div class="nav-actions">
+    <button class="cart-icon" onclick="alert('Carrito: 2 items — $403.500')">
+      <span>Carrito</span>
+      <span class="cart-dot">2</span>
+    </button>
+    <button class="btn-primary" onclick="switchNav(document.querySelectorAll('.nav-link')[1],'school')">
+      Reservar clase
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     STORE PANEL
+═══════════════════════════════════════════════ -->
+<div class="panel active" id="panel-store">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div>
+        <div class="hero-eyebrow">
+          <div class="eyebrow-line"></div>
+          <span class="eyebrow-text">Est. 2015 · Playa La Boca · Concón</span>
+        </div>
+        <div class="hero-title">
+          <span>KAN</span>
+          <span class="accent">KI</span>
+          <span class="stroke">SURF</span>
+        </div>
+      </div>
+      <div class="hero-bottom">
+        <p class="hero-desc">
+          Escuela, tienda y arriendo de equipo en Concón. Los mejores instructores, las mejores olas de la V Región.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary">Ver tienda</button>
+          <button class="btn-ghost" onclick="switchNav(document.querySelectorAll('.nav-link')[1],'school')">Agendar clase</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hs-num">+10</span>
+            <span class="hs-label">Años</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hs-num">600+</span>
+            <span class="hs-label">Alumnos</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hs-num">4.9</span>
+            <span class="hs-label">Rating</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hs-num">3</span>
+            <span class="hs-label">Servicios</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual-main">
+        <div class="hero-bg-word">SURF</div>
+        <!-- Surfer SVG illustration -->
+        <div class="hero-surf-visual">
+          <svg width="220" height="280" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Wave layers -->
+            <path d="M0 220 Q30 205 60 215 Q90 225 120 210 Q150 195 180 210 Q200 218 220 208 L220 280 L0 280Z" fill="#00E5D4" opacity="0.08"/>
+            <path d="M0 235 Q40 220 80 230 Q120 240 160 225 Q190 215 220 228 L220 280 L0 280Z" fill="#00E5D4" opacity="0.06"/>
+            <path d="M0 250 Q50 240 100 248 Q150 256 200 244 L220 242 L220 280 L0 280Z" fill="#00E5D4" opacity="0.12"/>
+            <!-- Surfboard -->
+            <rect x="100" y="80" width="9" height="110" rx="4.5" fill="#FFD600" opacity="0.85"/>
+            <ellipse cx="104.5" cy="190" rx="4.5" ry="12" fill="#FFD600" opacity="0.5"/>
+            <!-- Surfer body -->
+            <circle cx="104" cy="74" r="13" fill="#F0EBE0" opacity="0.9"/>
+            <rect x="92" y="88" width="24" height="30" rx="6" fill="#00E5D4" opacity="0.95"/>
+            <!-- Arms -->
+            <path d="M92 100 L72 118" stroke="#00E5D4" stroke-width="6" stroke-linecap="round"/>
+            <path d="M116 100 L137 116" stroke="#00E5D4" stroke-width="6" stroke-linecap="round"/>
+            <!-- Legs -->
+            <path d="M104 118 L94 148" stroke="#1A1A1A" stroke-width="7" stroke-linecap="round"/>
+            <path d="M104 118 L115 146" stroke="#1A1A1A" stroke-width="7" stroke-linecap="round"/>
+            <!-- Leash line -->
+            <path d="M115 148 Q130 165 125 185" stroke="#FFD600" stroke-width="1.5" fill="none" opacity="0.6" stroke-dasharray="4,3"/>
+            <!-- Kanki label -->
+            <text x="110" y="268" font-family="Anton, sans-serif" font-size="8" fill="#00E5D4" opacity="0.3" text-anchor="middle" letter-spacing="4">KANKI SURF · CONCÓN</text>
+          </svg>
+        </div>
+      </div>
+      <div class="hero-drop-pills">
+        <div class="drop-pill">
+          <span class="dp-label">Stock</span>
+          <span class="dp-value hi">Disponible</span>
+        </div>
+        <div class="drop-pill">
+          <span class="dp-label">Drop activo</span>
+          <span class="dp-value warn">Otoño 2026</span>
+        </div>
+        <div class="drop-pill">
+          <span class="dp-label">Envío</span>
+          <span class="dp-value">1–3 días</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-inner">
+      <span class="mi c">Tablas</span><span class="mi-sep">—</span>
+      <span class="mi">Trajes</span><span class="mi-sep">—</span>
+      <span class="mi c">Escuela</span><span class="mi-sep">—</span>
+      <span class="mi">Accesorios</span><span class="mi-sep">—</span>
+      <span class="mi c">Arriendo</span><span class="mi-sep">—</span>
+      <span class="mi">Ropa</span><span class="mi-sep">—</span>
+      <span class="mi c">Clases privadas</span><span class="mi-sep">—</span>
+      <span class="mi">Concón</span><span class="mi-sep">—</span>
+      <span class="mi c">Tablas</span><span class="mi-sep">—</span>
+      <span class="mi">Trajes</span><span class="mi-sep">—</span>
+      <span class="mi c">Escuela</span><span class="mi-sep">—</span>
+      <span class="mi">Accesorios</span><span class="mi-sep">—</span>
+      <span class="mi c">Arriendo</span><span class="mi-sep">—</span>
+      <span class="mi">Ropa</span><span class="mi-sep">—</span>
+      <span class="mi c">Clases privadas</span><span class="mi-sep">—</span>
+      <span class="mi">Concón</span><span class="mi-sep">—</span>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-head-left">
+        <div class="sec-eyebrow">01 — Categorías</div>
+        <div class="sec-title">Explora el equipo</div>
+      </div>
+    </div>
+    <div class="cat-rail">
+      <div class="cat-card">
+        <span class="cat-num">01</span>
+        <span class="cat-icon">🏄</span>
+        <div class="cat-name">Tablas</div>
+        <span class="cat-count">14 productos</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-num">02</span>
+        <span class="cat-icon">🤿</span>
+        <div class="cat-name">Trajes</div>
+        <span class="cat-count">8 productos</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-num">03</span>
+        <span class="cat-icon">⚙️</span>
+        <div class="cat-name">Accesorios</div>
+        <span class="cat-count">22 productos</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-num">04</span>
+        <span class="cat-icon">👕</span>
+        <div class="cat-name">Ropa</div>
+        <span class="cat-count">18 productos</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="section" style="border-top: none; padding-top: 0;">
+    <div class="sec-head">
+      <div class="sec-head-left">
+        <div class="sec-eyebrow">02 — Productos destacados</div>
+        <div class="sec-title">Fast. Heavy. Exclusive.</div>
+      </div>
+      <button class="sec-link">Ver todo →</button>
+    </div>
+    <div class="filters">
+      <button class="filter-btn on" onclick="toggleFilter(this)">Todo</button>
+      <button class="filter-btn" onclick="toggleFilter(this)">Tablas</button>
+      <button class="filter-btn" onclick="toggleFilter(this)">Trajes</button>
+      <button class="filter-btn" onclick="toggleFilter(this)">Accesorios</button>
+      <button class="filter-btn" onclick="toggleFilter(this)">Ropa</button>
+    </div>
+    <div class="prod-grid">
+      <!-- P1 -->
+      <div class="prod-card">
+        <div class="prod-img" style="background:#0C1218">
+          <span class="prod-badge badge-hot">Popular</span>
+          <span class="prod-stock-indicator stock-ok"></span>
+          <span style="font-size:2.8rem">🏄</span>
+          <button class="prod-hover-cta">+ Agregar al carrito</button>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Tabla Longboard 9'2</div>
+          <div class="prod-sub">Tablas · En stock: 6</div>
+          <div class="prod-foot">
+            <span class="prod-price">$385.000</span>
+            <button class="prod-add">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- P2 -->
+      <div class="prod-card">
+        <div class="prod-img" style="background:#0A1010">
+          <span class="prod-badge badge-new">Nuevo</span>
+          <span class="prod-stock-indicator stock-ok"></span>
+          <span style="font-size:2.8rem">🤿</span>
+          <button class="prod-hover-cta">+ Agregar al carrito</button>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Traje 4/3mm Invierno</div>
+          <div class="prod-sub">Trajes · En stock: 7</div>
+          <div class="prod-foot">
+            <span class="prod-price">$185.000</span>
+            <button class="prod-add">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- P3 -->
+      <div class="prod-card">
+        <div class="prod-img" style="background:#0D0E0C">
+          <span class="prod-stock-indicator stock-ok"></span>
+          <span style="font-size:2.8rem">🪢</span>
+          <button class="prod-hover-cta">+ Agregar al carrito</button>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Leash FCS 9'</div>
+          <div class="prod-sub">Accesorios · En stock: 25</div>
+          <div class="prod-foot">
+            <span class="prod-price">$18.500</span>
+            <button class="prod-add">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- P4 -->
+      <div class="prod-card">
+        <div class="prod-img" style="background:#0C1218">
+          <span class="prod-badge badge-sale">Oferta</span>
+          <span class="prod-stock-indicator stock-low"></span>
+          <span style="font-size:2.8rem">🏄</span>
+          <button class="prod-hover-cta">+ Agregar al carrito</button>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Shortboard 6'2</div>
+          <div class="prod-sub">Tablas · En stock: 2</div>
+          <div class="prod-foot">
+            <span class="prod-price">$295.000</span>
+            <button class="prod-add">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- P5 -->
+      <div class="prod-card">
+        <div class="prod-img" style="background:#0D0C0E">
+          <span class="prod-stock-indicator stock-ok"></span>
+          <span style="font-size:2.8rem">👕</span>
+          <button class="prod-hover-cta">+ Agregar al carrito</button>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Hoodie Kanki Wave</div>
+          <div class="prod-sub">Ropa · En stock: 18</div>
+          <div class="prod-foot">
+            <span class="prod-price">$45.000</span>
+            <button class="prod-add">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- P6 -->
+      <div class="prod-card">
+        <div class="prod-img" style="background:#0A0C10">
+          <span class="prod-badge badge-soon">Coming soon</span>
+          <span class="prod-stock-indicator stock-none"></span>
+          <span style="font-size:2.8rem">⚙️</span>
+          <button class="prod-hover-cta">Notificarme</button>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Quillas Futures Tri</div>
+          <div class="prod-sub">Accesorios · Agotado</div>
+          <div class="prod-foot">
+            <span class="prod-price">$45.000</span>
+            <button class="prod-add" style="color:var(--muted);border-color:var(--edge)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITORIAL — School break -->
+  <div class="editorial">
+    <div class="ed-text">
+      <div>
+        <div class="ed-kicker">Escuela Kanki Surf · Concón</div>
+        <div class="ed-headline">Somos los que<br>marcan tendencia</div>
+        <p class="ed-body">La escuela más sólida de la V Región. Instructores certificados con más de 10 años de experiencia. Equipo incluido en cada clase. Playa La Boca, Concón.</p>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button class="btn-primary" onclick="switchNav(document.querySelectorAll('.nav-link')[1],'school')">Ver clases y precios</button>
+        <button class="btn-ghost">Ver horarios</button>
+      </div>
+    </div>
+    <div class="ed-visual">
+      <div class="ed-bg-text">SURF SCHOOL</div>
+      <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" style="position:relative;z-index:1">
+        <circle cx="80" cy="80" r="72" fill="none" stroke="#00E5D4" stroke-width="0.5" opacity="0.2"/>
+        <circle cx="80" cy="80" r="55" fill="none" stroke="#00E5D4" stroke-width="0.5" opacity="0.15"/>
+        <circle cx="80" cy="80" r="38" fill="#00E5D4" opacity="0.04" stroke="#00E5D4" stroke-width="0.5" opacity="0.1"/>
+        <!-- Fish icon centered -->
+        <ellipse cx="75" cy="80" rx="28" ry="18" fill="#00E5D4" opacity="0.7"/>
+        <ellipse cx="73" cy="80" rx="20" ry="12" fill="#080808"/>
+        <polygon points="103,80 118,70 118,90" fill="#FFD600" opacity="0.9"/>
+        <circle cx="66" cy="76" r="3" fill="#080808"/>
+        <text x="80" y="128" font-family="Anton,sans-serif" font-size="9" fill="#00E5D4" text-anchor="middle" letter-spacing="3" opacity="0.5">KANKI SURF</text>
+        <text x="80" y="142" font-family="Space Mono,monospace" font-size="6" fill="#00E5D4" text-anchor="middle" letter-spacing="2" opacity="0.3">CONCÓN · CHILE</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ANNOUNCE BAR -->
+  <div class="announce-bar">
+    <div class="ab-item">
+      <div class="ab-line"></div>
+      <div>
+        <div class="ab-title">Despacho todo Chile</div>
+        <div class="ab-sub">Starken · Gratis sobre $80.000</div>
+      </div>
+    </div>
+    <div class="ab-item">
+      <div class="ab-line" style="background:var(--yellow)"></div>
+      <div>
+        <div class="ab-title">Pago 100% seguro</div>
+        <div class="ab-sub">WebPay + MercadoPago</div>
+      </div>
+    </div>
+    <div class="ab-item">
+      <div class="ab-line" style="background:var(--green)"></div>
+      <div>
+        <div class="ab-title">30 días devolución</div>
+        <div class="ab-sub">Sin preguntas</div>
+      </div>
+    </div>
+    <div class="ab-item">
+      <div class="ab-line" style="background:var(--mid)"></div>
+      <div>
+        <div class="ab-title">Soporte real</div>
+        <div class="ab-sub">WhatsApp · Lun–Sáb 9–19h</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTAGRAM -->
+  <section class="ig-section">
+    <div class="ig-header">
+      <div class="ig-handle"><em>@</em>kankisurf.cl</div>
+      <button class="sec-link">Seguir en Instagram →</button>
+    </div>
+    <div class="ig-grid">
+      <div class="ig-cell" style="background:#080E16;font-size:2rem">🌊
+        <div class="ig-overlay"><span class="ig-overlay-text">Ver post</span></div>
+      </div>
+      <div class="ig-cell" style="background:#060C14;font-size:2rem">🏄
+        <div class="ig-overlay"><span class="ig-overlay-text">Ver post</span></div>
+      </div>
+      <div class="ig-cell" style="background:#0A1016;font-size:2rem">☀️
+        <div class="ig-overlay"><span class="ig-overlay-text">Ver post</span></div>
+      </div>
+      <div class="ig-cell" style="background:#070C12;font-size:2rem">🤿
+        <div class="ig-overlay"><span class="ig-overlay-text">Ver post</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">KANKI<span>SURF</span></div>
+        <div class="footer-tagline">Concón · Playa La Boca · Chile</div>
+        <p class="footer-desc">
+          Escuela y tienda de surf en Concón desde 2015. Instructores certificados, equipo de primera calidad, las mejores olas de la V Región.
+        </p>
+        <div class="footer-socials">
+          <button class="social-btn">IG</button>
+          <button class="social-btn">FB</button>
+          <button class="social-btn">WA</button>
+          <button class="social-btn">YT</button>
+          <button class="social-btn">TK</button>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Tienda</div>
+        <a class="footer-link">Tablas de surf</a>
+        <a class="footer-link">Trajes neopreno</a>
+        <a class="footer-link">Accesorios</a>
+        <a class="footer-link">Arriendo de equipo</a>
+        <a class="footer-link">Ropa y lifestyle</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Escuela</div>
+        <a class="footer-link">Clase iniciación</a>
+        <a class="footer-link">Clase intermedio</a>
+        <a class="footer-link">Clase avanzada</a>
+        <a class="footer-link">Clase privada 1:1</a>
+        <a class="footer-link">Pack intensivo 5 días</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Info</div>
+        <a class="footer-link">Cómo llegar</a>
+        <a class="footer-link">Contacto</a>
+        <a class="footer-link">Política de envíos</a>
+        <a class="footer-link">Devoluciones</a>
+        <a class="footer-link">Seguimiento de pedido</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Kanki Surf · contacto@kankisurf.cl · +56 9 XXXX XXXX</span>
+      <div class="footer-payments">
+        <span class="payment-chip">WebPay</span>
+        <span class="payment-chip">MercadoPago</span>
+        <span class="payment-chip">Transferencia</span>
+        <span class="payment-chip">Starken</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCHOOL PANEL
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-school">
+
+  <!-- School hero -->
+  <section style="background:var(--ink);padding:44px 32px;border-bottom:1px solid var(--line);text-align:center">
+    <div class="sec-eyebrow" style="margin-bottom:8px">Playa La Boca · Concón · +10 años de experiencia</div>
+    <div style="font-family:'Anton',sans-serif;font-size:clamp(32px,5vw,64px);letter-spacing:0.02em;text-transform:uppercase;color:var(--cream);line-height:0.9;margin-bottom:10px">
+      ESCUELA KANKI<br><span style="color:var(--cyan)">SURF</span>
+    </div>
+    <p style="font-size:0.9rem;color:var(--muted);max-width:380px;margin:0 auto;line-height:1.5">
+      Instructores certificados. Equipo incluido. Las mejores olas de la costa. Clases para todos los niveles.
+    </p>
+  </section>
+
+  <!-- Classes -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-head-left">
+        <div class="sec-eyebrow">01 — Clases disponibles</div>
+        <div class="sec-title">Elige tu nivel</div>
+      </div>
+    </div>
+    <div class="school-grid">
+      <div class="class-card">
+        <span class="class-num">01</span>
+        <span class="class-level-dot" style="background:var(--green)"></span>
+        <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--green);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">Principiante</div>
+        <div class="class-name">Clase de Iniciación</div>
+        <p class="class-desc">Aprende los fundamentos del surf desde cero. Equipo incluido. Máx. 4 alumnos por instructor.</p>
+        <div class="class-meta">
+          <div class="class-meta-item">Duración<span>2 horas</span></div>
+          <div class="class-meta-item">Cupos<span>Máx. 4</span></div>
+          <div class="class-meta-item">Instructor<span>Felipe R.</span></div>
+        </div>
+        <div class="class-footer">
+          <span class="class-price">$45.000</span>
+          <button class="btn-book">Reservar</button>
+        </div>
+      </div>
+      <div class="class-card">
+        <span class="class-num">02</span>
+        <span class="class-level-dot" style="background:var(--yellow)"></span>
+        <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--yellow);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">Intermedio</div>
+        <div class="class-name">Mejora tu técnica</div>
+        <p class="class-desc">Take-off, paddling y maniobras básicas en la ola. Para quienes ya conocen lo esencial.</p>
+        <div class="class-meta">
+          <div class="class-meta-item">Duración<span>2 horas</span></div>
+          <div class="class-meta-item">Cupos<span>Máx. 4</span></div>
+          <div class="class-meta-item">Instructor<span>Valentina C.</span></div>
+        </div>
+        <div class="class-footer">
+          <span class="class-price">$55.000</span>
+          <button class="btn-book">Reservar</button>
+        </div>
+      </div>
+      <div class="class-card" style="border:1px solid rgba(0,229,212,0.2)">
+        <span class="class-num">03</span>
+        <span class="class-level-dot" style="background:var(--red)"></span>
+        <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--red);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">Avanzado</div>
+        <div class="class-name">Alto rendimiento</div>
+        <p class="class-desc">Maniobras avanzadas + video análisis de tu surf. Para quienes quieren subir otro nivel.</p>
+        <div class="class-meta">
+          <div class="class-meta-item">Duración<span>2 horas</span></div>
+          <div class="class-meta-item">Cupos<span>Máx. 2</span></div>
+          <div class="class-meta-item">Instructor<span>Diego K.</span></div>
+        </div>
+        <div class="class-footer">
+          <span class="class-price">$80.000</span>
+          <button class="btn-book">Reservar</button>
+        </div>
+      </div>
+      <div class="class-card">
+        <span class="class-num">04</span>
+        <span class="class-level-dot" style="background:var(--cyan)"></span>
+        <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--cyan);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">Premium</div>
+        <div class="class-name">Clase privada 1:1</div>
+        <p class="class-desc">Máximo progreso, cualquier nivel. Instructor exclusivo a elección. Horario totalmente flexible.</p>
+        <div class="class-meta">
+          <div class="class-meta-item">Duración<span>1.5 horas</span></div>
+          <div class="class-meta-item">Cupos<span>Individual</span></div>
+          <div class="class-meta-item">Instructor<span>A elección</span></div>
+        </div>
+        <div class="class-footer">
+          <span class="class-price">$95.000</span>
+          <button class="btn-book">Reservar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Calendar -->
+  <section class="section" style="border-top:none;padding-top:0">
+    <div class="sec-head">
+      <div class="sec-head-left">
+        <div class="sec-eyebrow">02 — Disponibilidad</div>
+        <div class="sec-title">Elige tu fecha</div>
+      </div>
+    </div>
+    <div class="calendar-block">
+      <div class="cal-header">
+        <span class="cal-month-label">Abril 2026</span>
+        <div class="cal-nav-btns">
+          <button class="cal-nav-btn">‹</button>
+          <button class="cal-nav-btn">›</button>
+        </div>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-day-name">Dom</div>
+        <div class="cal-day-name">Lun</div>
+        <div class="cal-day-name">Mar</div>
+        <div class="cal-day-name">Mié</div>
+        <div class="cal-day-name">Jue</div>
+        <div class="cal-day-name">Vie</div>
+        <div class="cal-day-name">Sáb</div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day avail" onclick="pickDay(this)">1</div>
+        <div class="cal-day avail" onclick="pickDay(this)">2</div>
+        <div class="cal-day avail" onclick="pickDay(this)">3</div>
+        <div class="cal-day avail" onclick="pickDay(this)">4</div>
+        <div class="cal-day avail" onclick="pickDay(this)">5</div>
+        <div class="cal-day avail" onclick="pickDay(this)">6</div>
+        <div class="cal-day avail" onclick="pickDay(this)">7</div>
+        <div class="cal-day avail" onclick="pickDay(this)">8</div>
+        <div class="cal-day" onclick="pickDay(this)">9</div>
+        <div class="cal-day avail" onclick="pickDay(this)">10</div>
+        <div class="cal-day avail" onclick="pickDay(this)">11</div>
+        <div class="cal-day avail" onclick="pickDay(this)">12</div>
+        <div class="cal-day avail" onclick="pickDay(this)">13</div>
+        <div class="cal-day avail" onclick="pickDay(this)">14</div>
+        <div class="cal-day avail" onclick="pickDay(this)">15</div>
+        <div class="cal-day avail" onclick="pickDay(this)">16</div>
+        <div class="cal-day avail today" onclick="pickDay(this)">17</div>
+        <div class="cal-day avail" onclick="pickDay(this)">18</div>
+        <div class="cal-day avail" onclick="pickDay(this)">19</div>
+        <div class="cal-day avail" onclick="pickDay(this)">20</div>
+        <div class="cal-day" onclick="pickDay(this)">21</div>
+        <div class="cal-day avail" onclick="pickDay(this)">22</div>
+        <div class="cal-day avail" onclick="pickDay(this)">23</div>
+        <div class="cal-day avail" onclick="pickDay(this)">24</div>
+        <div class="cal-day avail" onclick="pickDay(this)">25</div>
+        <div class="cal-day avail" onclick="pickDay(this)">26</div>
+        <div class="cal-day avail" onclick="pickDay(this)">27</div>
+        <div class="cal-day avail" onclick="pickDay(this)">28</div>
+        <div class="cal-day avail" onclick="pickDay(this)">29</div>
+        <div class="cal-day avail" onclick="pickDay(this)">30</div>
+      </div>
+      <div id="timeSlots" style="display:none">
+        <div class="f-label" style="margin-top:16px;margin-bottom:8px">Horarios disponibles</div>
+        <div class="time-slots">
+          <button class="time-slot on" onclick="pickSlot(this)">08:00</button>
+          <button class="time-slot" onclick="pickSlot(this)">09:30</button>
+          <button class="time-slot full">11:00</button>
+          <button class="time-slot" onclick="pickSlot(this)">12:30</button>
+          <button class="time-slot" onclick="pickSlot(this)">14:00</button>
+          <button class="time-slot" onclick="pickSlot(this)">15:30</button>
+          <button class="time-slot full">17:00</button>
+        </div>
+        <button class="btn-primary" style="margin-top:16px;width:100%;padding:12px;font-size:0.7rem;letter-spacing:0.14em">
+          Confirmar reserva →
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TRACKING PANEL
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-tracking">
+
+  <div class="track-hero">
+    <div class="track-title">Track tu pedido</div>
+    <p class="track-sub">Concón · Chile · Via Starken + Chilexpress</p>
+    <div class="track-search">
+      <input class="track-input" id="trackInput" placeholder="Ej: KS-034" />
+      <button class="track-search-btn" onclick="searchOrder()">Buscar</button>
+    </div>
+  </div>
+
+  <div class="track-content" id="trackContent">
+    <div class="empty-state">
+      <span class="empty-state-icon">📦</span>
+      <span class="empty-state-text">Ingresa tu número de orden<br>Prueba con KS-034</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     ADMIN PANEL
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-admin">
+  <div class="admin-wrap">
+
+    <div class="admin-topbar">
+      <span class="admin-topbar-label">Admin · Kanki Surf</span>
+      <button class="adm-tab on" onclick="switchAdm(this,'dash')">Dashboard</button>
+      <button class="adm-tab" onclick="switchAdm(this,'stock')">Inventario</button>
+      <button class="adm-tab" onclick="switchAdm(this,'orders')">Pedidos</button>
+      <button class="adm-tab" onclick="switchAdm(this,'dispatch')">Despacho</button>
+      <button class="adm-tab" onclick="switchAdm(this,'classes')">Clases</button>
+      <button class="adm-tab" onclick="switchAdm(this,'emails')">Emails</button>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- DASHBOARD -->
+      <div class="adm-sub on" id="adm-dash">
+        <div class="stats-row">
+          <div class="stat-card success">
+            <div class="stat-num">$842K</div>
+            <div class="stat-label">Ventas del mes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">34</div>
+            <div class="stat-label">Pedidos activos</div>
+          </div>
+          <div class="stat-card warn">
+            <div class="stat-num">8</div>
+            <div class="stat-label">Stock bajo</div>
+          </div>
+          <div class="stat-card neutral">
+            <div class="stat-num">12</div>
+            <div class="stat-label">Clases agendadas</div>
+          </div>
+          <div class="stat-card danger">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Urgentes despacho</div>
+          </div>
+        </div>
+        <div class="adm-table-box">
+          <div class="adm-table-header">
+            <span class="adm-table-title">Actividad reciente</span>
+            <button class="adm-table-action">Exportar CSV</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Hora</th><th>Evento</th><th>Detalle</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan)">14:32</td>
+                <td style="color:var(--cream)">Nueva venta</td>
+                <td>KS-034 — Tabla Longboard + Traje 3/2</td>
+                <td><span class="chip chip-ok">Pagado</span></td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan)">13:58</td>
+                <td style="color:var(--cream)">Reserva clase</td>
+                <td>Iniciación — María González</td>
+                <td><span class="chip chip-ok">Confirmado</span></td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan)">12:15</td>
+                <td style="color:var(--cream)">Despacho</td>
+                <td>KS-028 enviado por Starken</td>
+                <td><span class="chip chip-ship">En camino</span></td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan)">11:00</td>
+                <td style="color:var(--cream)">Alerta stock</td>
+                <td>Shortboard 6'2 — solo 2 unidades</td>
+                <td><span class="chip chip-low">Stock bajo</span></td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan)">09:30</td>
+                <td style="color:var(--cream)">Nuevo usuario</td>
+                <td>carlos.surf@gmail.com</td>
+                <td><span class="chip chip-deliv">Registrado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INVENTARIO -->
+      <div class="adm-sub" id="adm-stock">
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-num">48</div><div class="stat-label">Productos activos</div></div>
+          <div class="stat-card warn"><div class="stat-num">8</div><div class="stat-label">Stock bajo (&lt;5)</div></div>
+          <div class="stat-card danger"><div class="stat-num">2</div><div class="stat-label">Sin stock</div></div>
+          <div class="stat-card success"><div class="stat-num">$4.2M</div><div class="stat-label">Valor inventario</div></div>
+          <div class="stat-card neutral"><div class="stat-num">6</div><div class="stat-label">Categorías</div></div>
+        </div>
+        <div class="adm-table-box">
+          <div class="adm-table-header">
+            <span class="adm-table-title">Inventario completo</span>
+            <button class="adm-table-action">+ Nuevo producto</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--cream);font-weight:600">Tabla Longboard 9'2</td>
+                <td>Tablas</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.75rem">$385.000</td>
+                <td>
+                  <div class="stock-bar-bg"><div class="stock-bar-fill" style="width:60%"></div></div>
+                  <span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cream)">6</span>
+                </td>
+                <td><span class="chip chip-ok">OK</span></td>
+                <td>
+                  <button class="adm-table-action" style="margin-right:4px">Editar</button>
+                  <button class="adm-table-action">+Stock</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="color:var(--cream);font-weight:600">Tabla Shortboard 6'2</td>
+                <td>Tablas</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.75rem">$295.000</td>
+                <td>
+                  <div class="stock-bar-bg"><div class="stock-bar-fill low" style="width:13%"></div></div>
+                  <span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--yellow)">2</span>
+                </td>
+                <td><span class="chip chip-low">Bajo</span></td>
+                <td>
+                  <button class="adm-table-action" style="margin-right:4px">Editar</button>
+                  <button class="adm-table-action">+Stock</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="color:var(--cream);font-weight:600">Tabla Fish 6'8</td>
+                <td>Tablas</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.75rem">$249.000</td>
+                <td>
+                  <div class="stock-bar-bg"><div class="stock-bar-fill empty" style="width:0%"></div></div>
+                  <span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--red)">0</span>
+                </td>
+                <td><span class="chip chip-out">Agotado</span></td>
+                <td>
+                  <button class="adm-table-action" style="margin-right:4px">Editar</button>
+                  <button class="adm-table-action">Reponer</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="color:var(--cream);font-weight:600">Traje 4/3mm Invierno</td>
+                <td>Trajes</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.75rem">$185.000</td>
+                <td>
+                  <div class="stock-bar-bg"><div class="stock-bar-fill" style="width:46%"></div></div>
+                  <span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cream)">7</span>
+                </td>
+                <td><span class="chip chip-ok">OK</span></td>
+                <td>
+                  <button class="adm-table-action">Editar</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="color:var(--cream);font-weight:600">Leash FCS 9'</td>
+                <td>Accesorios</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.75rem">$18.500</td>
+                <td>
+                  <div class="stock-bar-bg"><div class="stock-bar-fill" style="width:83%"></div></div>
+                  <span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cream)">25</span>
+                </td>
+                <td><span class="chip chip-ok">OK</span></td>
+                <td>
+                  <button class="adm-table-action">Editar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PEDIDOS -->
+      <div class="adm-sub" id="adm-orders">
+        <div class="stats-row">
+          <div class="stat-card warn"><div class="stat-num">5</div><div class="stat-label">Pendientes</div></div>
+          <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Procesando</div></div>
+          <div class="stat-card"><div class="stat-num">9</div><div class="stat-label">Despachados</div></div>
+          <div class="stat-card success"><div class="stat-num">8</div><div class="stat-label">Entregados</div></div>
+          <div class="stat-card neutral"><div class="stat-num">$842K</div><div class="stat-label">Total periodo</div></div>
+        </div>
+        <div class="adm-table-box">
+          <div class="adm-table-header">
+            <span class="adm-table-title">Gestión de pedidos</span>
+            <button class="adm-table-action">Exportar</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Orden</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--cyan);font-weight:700">KS-034</td>
+                <td style="color:var(--cream)">Ana Martínez</td>
+                <td style="font-size:0.78rem">Tabla Longboard + Traje 3/2</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700">$530.000</td>
+                <td><span class="chip chip-proc">Procesando</span></td>
+                <td style="font-size:0.75rem">26 Mar 2026</td>
+                <td>
+                  <button class="adm-table-action" style="margin-right:4px">Ver</button>
+                  <button class="adm-table-action">Actualizar</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--cyan);font-weight:700">KS-033</td>
+                <td style="color:var(--cream)">Carlos Rodríguez</td>
+                <td style="font-size:0.78rem">Pack Wax x5 + Leash FCS</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700">$36.000</td>
+                <td><span class="chip chip-ship">Despachado</span></td>
+                <td style="font-size:0.75rem">25 Mar 2026</td>
+                <td>
+                  <button class="adm-table-action">Ver</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--cyan);font-weight:700">KS-032</td>
+                <td style="color:var(--cream)">María López</td>
+                <td style="font-size:0.78rem">Traje 4/3mm Invierno</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700">$185.000</td>
+                <td><span class="chip chip-deliv">Entregado</span></td>
+                <td style="font-size:0.75rem">24 Mar 2026</td>
+                <td>
+                  <button class="adm-table-action">Ver</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--cyan);font-weight:700">KS-031</td>
+                <td style="color:var(--cream)">Diego Fuentes</td>
+                <td style="font-size:0.78rem">Quillas Futures + Gorra</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700">$60.000</td>
+                <td><span class="chip chip-pend">Pendiente</span></td>
+                <td style="font-size:0.75rem">26 Mar 2026</td>
+                <td>
+                  <button class="adm-table-action" style="margin-right:4px">Ver</button>
+                  <button class="adm-table-action">Procesar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DESPACHO -->
+      <div class="adm-sub" id="adm-dispatch">
+        <div class="dispatch-cards">
+          <div class="dispatch-card urgent">
+            <div class="dc-num">3</div>
+            <div class="dc-label">Urgentes (antes 17:00h)</div>
+          </div>
+          <div class="dispatch-card ready">
+            <div class="dc-num">7</div>
+            <div class="dc-label">Listos para enviar</div>
+          </div>
+          <div class="dispatch-card transit">
+            <div class="dc-num">9</div>
+            <div class="dc-label">En tránsito</div>
+          </div>
+          <div class="dispatch-card done">
+            <div class="dc-num">4</div>
+            <div class="dc-label">Entregados hoy</div>
+          </div>
+        </div>
+        <div class="adm-table-box">
+          <div class="adm-table-header">
+            <span class="adm-table-title">Cola de despacho</span>
+            <button class="adm-table-action">Imprimir etiquetas</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Orden</th><th>Cliente</th><th>Ciudad</th><th>Courier</th><th>Tracking</th><th>Estado</th><th>Acción</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--cyan);font-weight:700">KS-034</td>
+                <td style="color:var(--cream)">Ana Martínez</td>
+                <td>Viña del Mar</td>
+                <td>Starken</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.68rem">SK8823451</td>
+                <td><span class="chip chip-ship">En camino</span></td>
+                <td>
+                  <button class="adm-table-action" style="margin-right:4px">Despachar</button>
+                  <button class="adm-table-action">Notificar</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--cyan);font-weight:700">KS-033</td>
+                <td style="color:var(--cream)">Carlos Rodríguez</td>
+                <td>Valparaíso</td>
+                <td>Chilexpress</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.68rem">CX9912873</td>
+                <td><span class="chip chip-ship">En camino</span></td>
+                <td>
+                  <button class="adm-table-action">Notificar</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--cyan);font-weight:700">KS-031</td>
+                <td style="color:var(--cream)">Diego Fuentes</td>
+                <td>Santiago</td>
+                <td style="color:var(--muted)">Sin asignar</td>
+                <td style="color:var(--muted)">—</td>
+                <td><span class="chip chip-pend">Preparar</span></td>
+                <td>
+                  <button class="adm-table-action">Asignar courier</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CLASES -->
+      <div class="adm-sub" id="adm-classes">
+        <div class="stats-row">
+          <div class="stat-card success"><div class="stat-num">12</div><div class="stat-label">Reservas semana</div></div>
+          <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Instructores</div></div>
+          <div class="stat-card warn"><div class="stat-num">2</div><div class="stat-label">Cupos restantes hoy</div></div>
+          <div class="stat-card neutral"><div class="stat-num">$540K</div><div class="stat-label">Ingresos clases</div></div>
+          <div class="stat-card"><div class="stat-num">4.8</div><div class="stat-label">Rating promedio</div></div>
+        </div>
+        <div class="adm-table-box">
+          <div class="adm-table-header">
+            <span class="adm-table-title">Reservas de clases</span>
+            <button class="adm-table-action">Enviar recordatorios</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Alumno</th><th>Clase</th><th>Fecha</th><th>Hora</th><th>Instructor</th><th>Estado</th><th>Acción</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--cream)">Pedro Alvarado</td>
+                <td>Iniciación</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem">27 Mar</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan);font-weight:700">09:00</td>
+                <td>Felipe Reyes</td>
+                <td><span class="chip chip-ok">Confirmado</span></td>
+                <td><button class="adm-table-action">Recordatorio</button></td>
+              </tr>
+              <tr>
+                <td style="color:var(--cream)">Laura Soto</td>
+                <td>Avanzada</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem">27 Mar</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan);font-weight:700">11:00</td>
+                <td>Diego Kanki</td>
+                <td><span class="chip chip-ok">Confirmado</span></td>
+                <td><button class="adm-table-action">Recordatorio</button></td>
+              </tr>
+              <tr>
+                <td style="color:var(--cream)">Roberto Mena</td>
+                <td>Pack Familiar</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem">28 Mar</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--yellow);font-weight:700">10:00</td>
+                <td>Felipe Reyes</td>
+                <td><span class="chip chip-pend">Pendiente</span></td>
+                <td><button class="adm-table-action">Confirmar</button></td>
+              </tr>
+              <tr>
+                <td style="color:var(--cream)">Camila Torres</td>
+                <td>Privada 1:1</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem">29 Mar</td>
+                <td style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--cyan);font-weight:700">14:00</td>
+                <td>Valentina Cruz</td>
+                <td><span class="chip chip-ok">Confirmado</span></td>
+                <td><button class="adm-table-action">Recordatorio</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EMAILS -->
+      <div class="adm-sub" id="adm-emails">
+        <div class="stats-row">
+          <div class="stat-card success"><div class="stat-num">98%</div><div class="stat-label">Entregados</div></div>
+          <div class="stat-card"><div class="stat-num">42%</div><div class="stat-label">Tasa apertura</div></div>
+          <div class="stat-card warn"><div class="stat-num">156</div><div class="stat-label">Enviados este mes</div></div>
+          <div class="stat-card neutral"><div class="stat-num">432</div><div class="stat-label">Suscriptores</div></div>
+          <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Plantillas activas</div></div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Plantillas automáticas</div>
+        <div class="email-cards">
+          <div class="email-card">
+            <span class="email-card-icon">📦</span>
+            <div class="email-card-name">Confirmación de pedido</div>
+            <p class="email-card-desc">Se envía automáticamente al confirmar el pago</p>
+            <div class="email-card-footer">
+              <span class="email-status">● Activo</span>
+              <button class="email-preview-btn">Preview</button>
+            </div>
+          </div>
+          <div class="email-card">
+            <span class="email-card-icon">🚚</span>
+            <div class="email-card-name">Pedido despachado</div>
+            <p class="email-card-desc">Incluye número de tracking del courier</p>
+            <div class="email-card-footer">
+              <span class="email-status">● Activo</span>
+              <button class="email-preview-btn">Preview</button>
+            </div>
+          </div>
+          <div class="email-card">
+            <span class="email-card-icon">🏄</span>
+            <div class="email-card-name">Confirmación de clase</div>
+            <p class="email-card-desc">Detalles + recordatorio 24h antes</p>
+            <div class="email-card-footer">
+              <span class="email-status">● Activo</span>
+              <button class="email-preview-btn">Preview</button>
+            </div>
+          </div>
+          <div class="email-card">
+            <span class="email-card-icon">⭐</span>
+            <div class="email-card-name">Solicitud de reseña</div>
+            <p class="email-card-desc">3 días después de la entrega del pedido</p>
+            <div class="email-card-footer">
+              <span class="email-status">● Activo</span>
+              <button class="email-preview-btn">Preview</button>
+            </div>
+          </div>
+          <div class="email-card">
+            <span class="email-card-icon">🛒</span>
+            <div class="email-card-name">Carrito abandonado</div>
+            <p class="email-card-desc">Recordatorio automático a las 2 horas</p>
+            <div class="email-card-footer">
+              <span class="email-status">● Activo</span>
+              <button class="email-preview-btn">Preview</button>
+            </div>
+          </div>
+          <div class="email-card">
+            <span class="email-card-icon">🌊</span>
+            <div class="email-card-name">Newsletter mensual</div>
+            <p class="email-card-desc">Novedades, ofertas y condiciones del mar</p>
+            <div class="email-card-footer">
+              <span class="email-status">● Activo</span>
+              <button class="email-preview-btn" onclick="alert('Enviando newsletter a 432 suscriptores...')">Enviar ahora</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── PANEL NAVIGATION ──────────────────────── */
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+function switchNav(btn, panelName) {
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  btn.classList.add('active');
+  showPanel(panelName);
+}
+
+/* ─── ADMIN TABS ─────────────────────────────── */
+function switchAdm(btn, tabName) {
+  document.querySelectorAll('.adm-tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.adm-sub').forEach(s => s.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('adm-' + tabName).classList.add('on');
+}
+
+/* ─── PRODUCT FILTER ─────────────────────────── */
+function toggleFilter(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+/* ─── CALENDAR ───────────────────────────────── */
+function pickDay(el) {
+  document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('timeSlots').style.display = 'block';
+}
+
+function pickSlot(btn) {
+  document.querySelectorAll('.time-slot:not(.full)').forEach(s => s.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+/* ─── ORDER TRACKING ─────────────────────────── */
+document.getElementById('trackInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') searchOrder();
+});
+
+function searchOrder() {
+  const val = document.getElementById('trackInput').value.trim().toUpperCase();
+  const content = document.getElementById('trackContent');
+
+  const orders = {
+    'KS-034': { status: 'processing', client: 'Ana Martínez', items: 'Tabla Longboard 9\'2 + Traje 3/2mm', total: '$530.000', courier: 'Starken', tracking: 'SK8823451' },
+    'KS-033': { status: 'shipped',    client: 'Carlos Rodríguez', items: 'Pack Wax x5 + Leash FCS 9\'', total: '$36.000', courier: 'Chilexpress', tracking: 'CX9912873' },
+    'KS-032': { status: 'delivered',  client: 'María López', items: 'Traje 4/3mm Invierno', total: '$185.000', courier: 'Starken', tracking: 'SK7741209' },
+    'KS-031': { status: 'pending',    client: 'Diego Fuentes', items: 'Quillas Futures + Gorra Trucker', total: '$60.000', courier: '—', tracking: '—' },
+  };
+
+  const o = orders[val];
+
+  if (!o) {
+    content.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon" style="opacity:0.4">❌</span>
+        <span class="empty-state-text">Orden "${val}" no encontrada<br>Prueba con: KS-034, KS-033, KS-032</span>
+      </div>`;
+    return;
+  }
+
+  const statusLabel = { processing: 'Procesando', shipped: 'Despachado', delivered: 'Entregado', pending: 'Pendiente' };
+  const statusClass = { processing: 'st-processing', shipped: 'st-shipped', delivered: 'st-delivered', pending: 'st-pending' };
+
+  const steps = [
+    { label: 'Pedido confirmado', desc: `Orden ${val} confirmada · Pago verificado`, done: true, current: false },
+    { label: 'En preparación',    desc: 'Empaquetando tu pedido en tienda Concón', done: ['processing','shipped','delivered'].includes(o.status), current: o.status === 'processing' },
+    { label: 'Despachado',        desc: ['shipped','delivered'].includes(o.status) ? `${o.courier} · Tracking: ${o.tracking}` : 'Pendiente de despacho', done: ['shipped','delivered'].includes(o.status), current: o.status === 'shipped' },
+    { label: 'Entregado',         desc: o.status === 'delivered' ? '¡Tu pedido llegó! Gracias por comprar en Kanki.' : 'Estimado: 1–3 días hábiles', done: o.status === 'delivered', current: false },
+  ];
+
+  content.innerHTML = `
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-id-display">${val}</div>
+          <div class="order-desc">${o.items} · ${o.client} · ${o.total}</div>
+        </div>
+        <span class="status-tag ${statusClass[o.status]}">${statusLabel[o.status]}</span>
+      </div>
+      <div class="timeline">
+        ${steps.map(s => `
+          <div class="tl-step ${s.done ? 'done' : ''} ${s.current ? 'current' : ''}">
+            <div class="tl-dot">${s.done ? '✓' : s.current ? '●' : '○'}</div>
+            <div class="tl-content">
+              <h4>${s.label}</h4>
+              <p>${s.desc}</p>
+            </div>
+          </div>`).join('')}
+      </div>
+      ${o.tracking !== '—' ? `
+        <div style="padding:12px 20px;background:var(--surface);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div class="f-label" style="margin-bottom:4px">Número de tracking</div>
+            <div style="font-family:'Space Mono',monospace;font-weight:700;font-size:0.8rem;color:var(--cyan)">${o.tracking}</div>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--muted)">${o.courier}</div>
+          <button class="btn-primary" style="font-size:0.58rem;padding:7px 14px;" onclick="alert('Abriendo seguimiento en ${o.courier}...')">Rastrear →</button>
+        </div>` : ''}
+    </div>`;
+}
+</script>
+</body>
+</html>

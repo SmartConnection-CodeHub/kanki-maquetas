@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kanki · 20 Cortinas Mobile v6 VIBE — Beach + Graffiti + THPS</title>
+<style>
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1B2F4E;
+    --navy-mid: #243d63;
+    --navy-deep: #0d1a2e;
+    --navy-soft: #2c4670;
+    --gold: #C49A3A;
+    --gold-dim: #d4aa4a;
+    --gold-light: #e6c068;
+    --gold-dark: #8a6624;
+    --gold-hi:   #fff3c4;
+
+    /* Surf BEACH palette */
+    --sunset-coral: #ff6b4a;
+    --sunset-orange: #ff9a5e;
+    --sunset-pink: #ffb88c;
+    --sunset-cream: #ffe1c4;
+    --sand: #f0d9a8;
+    --sand-deep: #d4b87a;
+    --ocean: #2a5a8a;
+    --ocean-deep: #14365c;
+    --ocean-bright: #4a8db8;
+    --foam: #f5f5f0;
+    --palm-shadow: #1a0f2a;
+    --hibiscus-red: #e8344e;
+    --hibiscus-pink: #ff7a9a;
+    --hibiscus-yellow: #ffd84a;
+
+    /* Streetwear URBAN palette */
+    --spray-yellow: #f2ff3a;
+    --spray-pink: #ff2e9a;
+    --spray-cyan: #00e6ff;
+    --rubber: #0a0a0a;
+    --rubber-mid: #1a1a1a;
+    --concrete: #8a8a90;
+    --concrete-deep: #4a4a52;
+    --paper-white: #f8f6ef;
+    --kraft: #c9a86a;
+    --cassette-orange: #d97a2a;
+    --polaroid-white: #fafaf4;
+    --bandana-red: #c4202a;
+
+    /* Skate THPS arcade palette */
+    --thps-green: #2dff88;
+    --thps-amber: #ffaa00;
+    --thps-red: #ff2a4a;
+    --thps-blue: #00b4ff;
+    --thps-purple: #8a3aff;
+    --thps-cyan: #00ffea;
+    --neon-glow: #b0ff20;
+    --scoreboard: #0a1a14;
+
+    --ember: #ff7a3a;
+    --spark: #ffd84a;
+    --steel: #b8b8c0;
+    --cream: #F5EDD8;
+    --cream-mid: #EDE3C9;
+    --bg: #fafaf8;
+    --bg-alt: #f5f5f7;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --accent: var(--gold);
+    --panel: var(--cream-mid);
+    --t: 7s;
+
+    --gold-grad: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 35%, var(--gold-light) 50%, var(--gold-hi) 55%, var(--gold-light) 65%, var(--gold) 80%, var(--gold-dark) 100%);
+    --navy-grad: linear-gradient(155deg, var(--navy-soft) 0%, var(--navy) 40%, var(--navy-deep) 100%);
+    --sunset-grad: linear-gradient(180deg, var(--sunset-cream) 0%, var(--sunset-pink) 25%, var(--sunset-orange) 50%, var(--sunset-coral) 75%, var(--ocean-deep) 100%);
+    --sand-grad: linear-gradient(180deg, var(--sand) 0%, var(--sand-deep) 100%);
+
+    --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+    --ease-elastic: cubic-bezier(.68, -.55, .27, 1.55);
+    --ease-whip: cubic-bezier(.85, 0, .15, 1);
+    --ease-snap: cubic-bezier(.16, 1, .3, 1);
+    --ease-cinema: cubic-bezier(.65, .05, .36, 1);
+    --ease-breath: cubic-bezier(.4, 0, .2, 1);
+    --ease-anticipate: cubic-bezier(.5, -0.4, .5, 1.4);
+    --ease-pixel: steps(8);
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, var(--cream) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    font-feature-settings: 'ss01', 'cv11';
+    min-height: 100vh;
+    padding: 32px 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header { text-align: center; margin-bottom: 28px; max-width: 880px; margin-inline: auto; }
+  header h1 {
+    font-weight: 900; font-size: clamp(1.6rem,4vw,2.4rem);
+    letter-spacing: -.04em; margin-bottom: 8px;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  header p { color: var(--muted); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
+  header .lineage { display: inline-flex; gap: 6px; margin-bottom: 14px; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; flex-wrap: wrap; justify-content: center; }
+  header .lineage span { background: var(--cream); border: 1px solid var(--gold-dim); padding: 3px 10px; border-radius: 999px; color: var(--navy); font-weight: 800; }
+  .replay {
+    background: var(--navy-grad); color: var(--cream);
+    border: 1.5px solid var(--navy); padding: 12px 28px;
+    font-weight: 800; font-size: 12px; letter-spacing: .18em;
+    text-transform: uppercase; border-radius: 999px; cursor: pointer;
+    transition: transform .25s var(--ease-spring);
+    box-shadow: 0 4px 14px rgba(13,26,46,.25);
+  }
+  .replay:hover { transform: scale(1.06); }
+  .replay:active { transform: scale(.97); }
+
+  .section {
+    max-width: 1480px; margin: 32px auto 16px;
+    display: flex; align-items: center; gap: 14px;
+    color: var(--navy); font-weight: 900; font-size: 13px; letter-spacing: .22em; text-transform: uppercase;
+  }
+  .section::before { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim) 80%, var(--gold)); }
+  .section::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold), var(--gold-dim) 20%, transparent); }
+  .section .ico { font-size: 20px; }
+  .section .meta { font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: .15em; }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr; gap: 28px 22px;
+    max-width: 1480px; margin: 0 auto; justify-items: center;
+  }
+  @media (min-width: 580px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 920px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1240px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+
+  .card { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .caption { text-align: center; font-size: 11px; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+  .caption b { display: inline-block; background: var(--cream); border: 1px solid var(--gold-dim); color: var(--navy); padding: 2px 8px; border-radius: 6px; margin-right: 6px; font-weight: 800; }
+  .caption .tag { display: inline-block; margin-left: 6px; font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 900; letter-spacing: .14em; }
+  .tag.keeper { background: var(--gold-grad); color: var(--navy); }
+  .tag.surf   { background: linear-gradient(180deg, var(--sunset-orange), var(--sunset-coral)); color: #fff; }
+  .tag.street { background: linear-gradient(180deg, var(--rubber-mid), var(--rubber)); color: var(--spray-yellow); }
+  .tag.skate  { background: linear-gradient(180deg, var(--thps-green), #1ad670); color: var(--scoreboard); }
+
+  .phone {
+    position: relative; width: 240px; height: 520px;
+    background: linear-gradient(145deg, #3a4a64, var(--navy-mid) 40%, var(--navy-deep) 100%);
+    border-radius: 36px; padding: 10px;
+    box-shadow: 0 0 0 1.5px var(--navy), 0 24px 50px rgba(13,26,46,.4);
+  }
+  .screen { width: 100%; height: 100%; border-radius: 26px; overflow: hidden; background: #fff; position: relative; perspective: 1200px; isolation: isolate; }
+  .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 20px; background: #000; border-bottom-left-radius: 14px; border-bottom-right-radius: 14px; z-index: 100; }
+
+  .hero {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(196,154,58,.08) 0%, transparent 70%),
+      linear-gradient(135deg, rgba(27,47,78,.94), rgba(13,26,46,.98)),
+      repeating-linear-gradient(45deg, transparent 0 12px, rgba(196,154,58,.06) 12px 13px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--cream); padding: 24px; text-align: center;
+    animation: heroBreathe var(--t) var(--ease-breath) infinite;
+  }
+  .hero-eyebrow { font-size: 8px; letter-spacing: .35em; color: var(--gold); margin-bottom: 14px; font-weight: 700; }
+  .hero-title { font-size: 32px; font-weight: 900; letter-spacing: -.045em; line-height: .92; margin-bottom: 12px; background: linear-gradient(180deg, var(--cream) 0%, #e8dcb8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-sub { font-size: 9px; letter-spacing: .22em; color: rgba(245,237,216,.7); text-transform: uppercase; }
+  .hero-cta { margin-top: 22px; background: var(--gold-grad); color: var(--navy); font-size: 10px; font-weight: 800; letter-spacing: .18em; padding: 9px 20px; border-radius: 999px; }
+  @keyframes heroBreathe { 0%,14%{transform:scale(1)} 28%,71%{transform:scale(1.04)} 85%,100%{transform:scale(1)} }
+
+  .curtain { position: absolute; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; isolation: isolate; }
+  .grain::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1, 0 0 0 0 1, 0 0 0 0 1, 0 0 0 .12 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .35; mix-blend-mode: overlay; z-index: 5;
+  }
+
+  /* ═══════════════════════════════════════════════
+     KEEPERS 01–05 (idénticos v5 premium)
+     ═══════════════════════════════════════════════ */
+
+  /* 01 LOGO STAMP */
+  .c1 { background: var(--navy-grad); display: flex; align-items: center; justify-content: center; animation: c1-fade var(--t) var(--ease-cinema) infinite; }
+  .c1::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(0,0,0,.4) 100%); }
+  .c1 .stamp { position: relative; font-weight: 900; font-size: 40px; letter-spacing: -.05em; background: var(--gold-grad); background-size: 200% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 4px 16px rgba(196,154,58,.5)); animation: c1-stamp var(--t) var(--ease-anticipate) infinite; }
+  @keyframes c1-fade { 0%,14%{opacity:1} 28%,71%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes c1-stamp {
+    0%{transform:scale(.15) rotate(-8deg)} 8%{transform:scale(.9) rotate(2deg)}
+    14%{transform:scale(1.12) rotate(-1deg)} 18%{transform:scale(.96)} 22%{transform:scale(1.04)}
+    26%,28%{transform:scale(1)} 32%,71%{transform:scale(9);opacity:0}
+    85%{transform:scale(.15);opacity:0} 92%{transform:scale(1.06);opacity:1} 100%{transform:scale(1);opacity:1}
+  }
+
+  /* 02 TAPE CROSS X */
+  .c2 .panel { position: absolute; inset: 0; background: var(--navy-grad); animation: c2-panel var(--t) var(--ease-cinema) infinite; }
+  .c2 .tape { position: absolute; width: 250%; height: 50px; top: 50%; left: -75%; color: var(--navy); font-weight: 900; font-size: 10px; letter-spacing: .35em; display: flex; align-items: center; justify-content: center; transform-origin: center; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
+  .c2 .tape.a { background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.3) 50%, transparent 100%), repeating-linear-gradient(45deg, var(--gold) 0 7px, var(--gold-dark) 7px 14px); transform: translateY(-50%) rotate(-25deg); animation: c2-a var(--t) var(--ease-whip) infinite; }
+  .c2 .tape.b { background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.3) 50%, transparent 100%), repeating-linear-gradient(-45deg, var(--gold-light) 0 7px, var(--gold) 7px 14px); transform: translateY(-50%) rotate(25deg); animation: c2-b var(--t) var(--ease-whip) infinite .08s; }
+  @keyframes c2-panel { 0%,14%{opacity:1} 26%,75%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes c2-a { 0%,14%{transform:translate(0%,-50%) rotate(-25deg)} 18%{transform:translate(-5%,-50%) rotate(-30deg)} 28%,71%{transform:translate(-200%,-200%) rotate(-65deg)} 85%,100%{transform:translate(0%,-50%) rotate(-25deg)} }
+  @keyframes c2-b { 0%,14%{transform:translate(0%,-50%) rotate(25deg)} 18%{transform:translate(5%,-50%) rotate(30deg)} 28%,71%{transform:translate(200%,200%) rotate(65deg)} 85%,100%{transform:translate(0%,-50%) rotate(25deg)} }
+
+  /* 03 LETTER DROP */
+  .c3 { background: transparent; display: flex; align-items: stretch; }
+  .c3 .col { flex: 1; background: var(--navy-grad); display: flex; align-items: center; justify-content: center; color: var(--gold-light); font-weight: 900; font-size: 30px; letter-spacing: -.05em; transform: translateY(-100%); animation: c3-letter var(--t) var(--ease-spring) infinite; text-shadow: 0 2px 0 var(--gold-dark), 0 4px 12px rgba(0,0,0,.5); }
+  .c3 .col:nth-child(1){animation-delay:0s} .c3 .col:nth-child(2){animation-delay:.07s} .c3 .col:nth-child(3){animation-delay:.14s} .c3 .col:nth-child(4){animation-delay:.21s} .c3 .col:nth-child(5){animation-delay:.28s}
+  @keyframes c3-letter {
+    0%{transform:translateY(-110%)} 12%{transform:translateY(2%)} 16%{transform:translateY(-5%)}
+    19%{transform:translateY(0)} 22%{transform:translateY(-2%)} 25%,28%{transform:translateY(0)}
+    50%,71%{transform:translateY(-110%)} 85%,100%{transform:translateY(0)}
+  }
+
+  /* 04 TAPE SLINGSHOT */
+  .c4 .panel { position: absolute; inset: 0; background: var(--navy-grad); animation: c4-panel var(--t) var(--ease-cinema) infinite; }
+  .c4 .strap { position: absolute; top: 50%; left: 50%; width: 240px; height: 44px; margin-left: -120px; margin-top: -22px; background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.3) 50%, transparent 100%), repeating-linear-gradient(45deg, var(--gold) 0 7px, var(--gold-dark) 7px 14px); color: var(--navy); font-weight: 900; font-size: 11px; letter-spacing: .32em; display: flex; align-items: center; justify-content: center; transform-origin: left center; box-shadow: 0 6px 18px rgba(0,0,0,.45); animation: c4-strap var(--t) var(--ease-whip) infinite; }
+  @keyframes c4-panel { 0%,14%{opacity:1} 30%,75%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes c4-strap {
+    0%,8%{transform:scaleX(1) rotate(0)} 14%{transform:scaleX(1.8) rotate(-6deg)}
+    18%{transform:scaleX(.55) rotate(-2deg)} 24%{transform:scaleX(.85) rotate(0)}
+    30%,71%{transform:scaleX(9) translateX(40%) rotate(-18deg);opacity:0}
+    85%{transform:scaleX(0);opacity:0} 92%,100%{transform:scaleX(1);opacity:1}
+  }
+
+  /* 05 LETTER WAVE */
+  .c5 { background: transparent; display: flex; align-items: stretch; }
+  .c5 .col { flex: 1; background: var(--navy-grad); display: flex; align-items: center; justify-content: center; color: var(--gold-light); font-weight: 900; font-size: 30px; letter-spacing: -.05em; transform: translateY(-100%); animation: c3-letter var(--t) var(--ease-spring) infinite; text-shadow: 0 2px 0 var(--gold-dark), 0 4px 12px rgba(0,0,0,.5); }
+  .c5 .col:nth-child(1){animation-delay:.18s} .c5 .col:nth-child(2){animation-delay:.09s} .c5 .col:nth-child(3){animation-delay:0s} .c5 .col:nth-child(4){animation-delay:.09s} .c5 .col:nth-child(5){animation-delay:.18s}
+
+  /* ═══════════════════════════════════════════════
+     SURF BEACH VIBE (06–10) · sunset · palm · sand · hibiscus
+     ═══════════════════════════════════════════════ */
+
+  /* 06 PALM SUNSET REVEAL · sunset gradient + sun + palmeras */
+  .c6 {
+    background: var(--sunset-grad);
+    animation: c6-rise var(--t) var(--ease-cinema) infinite;
+    overflow: hidden;
+  }
+  .c6 .sun {
+    position: absolute; left: 50%; width: 70px; height: 70px;
+    margin-left: -35px;
+    background: radial-gradient(circle at 40% 40%, #fff5d0 0%, var(--sun-yellow, #ffd84a) 40%, var(--sunset-orange) 80%, transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 60px var(--sun-yellow, #ffd84a), 0 0 120px var(--sunset-orange);
+    animation: c6-sun var(--t) var(--ease-cinema) infinite;
+  }
+  .c6 .horizon {
+    position: absolute; left: 0; right: 0; height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--sunset-coral) 30%, var(--sunset-coral) 70%, transparent);
+    box-shadow: 0 0 12px var(--sunset-coral);
+    animation: c6-horizon var(--t) var(--ease-cinema) infinite;
+  }
+  .c6 .palm {
+    position: absolute; bottom: 0;
+    width: 90px; height: 280px;
+    animation: c6-palm var(--t) var(--ease-cinema) infinite;
+  }
+  .c6 .palm.L { left: -20px; transform-origin: bottom left; }
+  .c6 .palm.R { right: -20px; transform-origin: bottom right; transform: scaleX(-1); }
+  .c6 .palm svg { width: 100%; height: 100%; display: block; }
+  .c6 .reflection {
+    position: absolute; left: 50%; bottom: 30%; width: 60px;
+    height: 100px; margin-left: -30px;
+    background: linear-gradient(180deg, rgba(255,154,94,.5) 0%, transparent 100%);
+    transform: skewX(-15deg);
+    filter: blur(2px);
+    animation: c6-refl var(--t) ease-in-out infinite;
+  }
+  @keyframes c6-rise {
+    0%,14%   { transform: translateY(0); }
+    20%      { transform: translateY(-3%); }
+    28%,71%  { transform: translateY(-105%); }
+    85%,100% { transform: translateY(0); }
+  }
+  @keyframes c6-sun {
+    0%       { top: 80%; opacity: .8; }
+    14%      { top: 35%; opacity: 1; }
+    24%      { top: 28%; opacity: 1; transform: scale(1.1); }
+    28%,71%  { top: 35%; opacity: 0; }
+    85%,100% { top: 80%; opacity: .8; }
+  }
+  @keyframes c6-horizon {
+    0%   { top: 60%; opacity: 1; }
+    14%  { top: 55%; opacity: 1; }
+    28%,71% { opacity: 0; }
+    85%,100% { top: 60%; opacity: 1; }
+  }
+  @keyframes c6-palm {
+    0%,14%   { transform: scaleY(1); }
+    18%      { transform: scaleY(1.05) rotate(-1deg); }
+    22%      { transform: scaleY(.98) rotate(1deg); }
+    28%,71%  { transform: scaleY(1); opacity: 0; }
+    85%,100% { transform: scaleY(1) rotate(0); opacity: 1; }
+  }
+  @keyframes c6-refl {
+    0%,14%   { opacity: .6; }
+    20%      { opacity: 1; }
+    28%,100% { opacity: 0; }
+  }
+
+  /* 07 BOARD LINEUP · 5 tablas paradas en arena que caen como dominó */
+  .c7 {
+    background: var(--sand-grad);
+    display: flex; align-items: flex-end; justify-content: center; gap: 4px;
+    padding: 30px 14px 20px;
+    animation: c7-pull var(--t) var(--ease-cinema) infinite;
+  }
+  .c7 .ground {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 14px;
+    background: linear-gradient(180deg, var(--sand-deep) 0%, #b89a5a 100%);
+    box-shadow: 0 -2px 4px rgba(0,0,0,.15) inset;
+  }
+  .c7 .ground::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle 1px at 15% 50%, rgba(0,0,0,.2), transparent),
+      radial-gradient(circle 1px at 35% 70%, rgba(0,0,0,.2), transparent),
+      radial-gradient(circle 1px at 55% 30%, rgba(0,0,0,.2), transparent),
+      radial-gradient(circle 1px at 75% 60%, rgba(0,0,0,.2), transparent),
+      radial-gradient(circle 1px at 90% 40%, rgba(0,0,0,.2), transparent);
+  }
+  .c7 .board {
+    width: 24px; height: 160px;
+    border-radius: 12px 12px 12px 12px / 50px 50px 8px 8px;
+    transform-origin: bottom center;
+    box-shadow: 4px 8px 14px rgba(0,0,0,.25);
+    animation: c7-domino var(--t) var(--ease-spring) infinite;
+    position: relative;
+  }
+  .c7 .board::before, .c7 .board::after {
+    content: ''; position: absolute; left: 0; right: 0;
+  }
+  .c7 .b1 { background: linear-gradient(180deg, var(--hibiscus-red) 0%, #a01828 100%); animation-delay: 0s; }
+  .c7 .b1::before { top: 40%; height: 4px; background: var(--foam); }
+  .c7 .b2 { background: linear-gradient(180deg, var(--sunset-orange) 0%, var(--sunset-coral) 100%); animation-delay: .08s; }
+  .c7 .b2::before { top: 30%; height: 3px; background: var(--foam); box-shadow: 0 8px 0 var(--foam); }
+  .c7 .b3 { background: linear-gradient(180deg, var(--foam) 0%, var(--sunset-cream) 100%); animation-delay: .16s; }
+  .c7 .b3::before { top: 35%; height: 30px; background: var(--hibiscus-red); border-radius: 50%; left: 6px; right: 6px; }
+  .c7 .b4 { background: linear-gradient(180deg, var(--ocean-bright) 0%, var(--ocean-deep) 100%); animation-delay: .24s; }
+  .c7 .b4::before { top: 25%; height: 2px; background: var(--gold); box-shadow: 0 6px 0 var(--gold), 0 12px 0 var(--gold); }
+  .c7 .b5 { background: linear-gradient(180deg, var(--hibiscus-yellow) 0%, var(--sunset-orange) 100%); animation-delay: .32s; }
+  .c7 .b5::before { top: 50%; height: 12px; background: repeating-linear-gradient(45deg, var(--bandana-red) 0 3px, transparent 3px 6px); }
+  @keyframes c7-pull { 0%,14%{opacity:1} 36%,75%{opacity:0} 85%,100%{opacity:1} }
+  @keyframes c7-domino {
+    0%       { transform: rotate(0) translateY(0); }
+    14%      { transform: rotate(0) translateY(0); }
+    22%      { transform: rotate(-15deg) translateX(-4px); }
+    32%,71%  { transform: rotate(-95deg) translateX(-20px) translateY(40px); opacity: 0; }
+    85%,100% { transform: rotate(0) translateY(0); opacity: 1; }
+  }
+
+  /* 08 SAND WASH · arena dorada barriendo + ola de espuma */
+  .c8 {
+    background:
+      radial-gradient(ellipse 100% 50% at 50% 100%, var(--sand-deep) 0%, var(--sand) 60%, transparent 100%),
+      linear-gradient(180deg, var(--sunset-cream) 0%, var(--sand) 100%);
+    overflow: hidden;
+    animation: c8-tide var(--t) var(--ease-cinema) infinite;
+  }
+  .c8 .grain {
+    position: absolute; width: 3px; height: 3px;
+    background: var(--sand-deep);
+    border-radius: 50%;
+    opacity: 0;
+    animation: c8-grain var(--t) ease-out infinite;
+  }
+  /* Arena granos: positions específicas */
+  .c8 .g1  { top: 30%; left: 15%; animation-delay: .8s; }
+  .c8 .g2  { top: 40%; left: 30%; animation-delay: .9s; width: 4px; height: 4px; }
+  .c8 .g3  { top: 50%; left: 50%; animation-delay: 1.0s; }
+  .c8 .g4  { top: 35%; left: 70%; animation-delay: .85s; }
+  .c8 .g5  { top: 55%; left: 85%; animation-delay: .95s; width: 4px; height: 4px; }
+  .c8 .g6  { top: 45%; left: 40%; animation-delay: 1.05s; }
+  .c8 .g7  { top: 60%; left: 20%; animation-delay: 1.1s; }
+  .c8 .g8  { top: 25%; left: 60%; animation-delay: .92s; }
+  .c8 .foam-wave {
+    position: absolute; left: -10%; right: -10%; top: 0; height: 50%;
+    background:
+      radial-gradient(ellipse 25% 100% at 20% 100%, var(--foam) 30%, transparent 60%),
+      radial-gradient(ellipse 25% 100% at 50% 100%, var(--foam) 30%, transparent 60%),
+      radial-gradient(ellipse 25% 100% at 80% 100%, var(--foam) 30%, transparent 60%),
+      linear-gradient(180deg, var(--ocean-bright) 0%, var(--ocean) 60%, var(--foam) 100%);
+    border-bottom-left-radius: 50% 30%;
+    border-bottom-right-radius: 50% 30%;
+    animation: c8-foam var(--t) var(--ease-cinema) infinite;
+  }
+  .c8 .label {
+    position: absolute; bottom: 30%; left: 0; right: 0; text-align: center;
+    color: var(--ocean-deep); font-weight: 900; font-size: 22px; letter-spacing: .15em;
+    text-shadow: 0 2px 6px rgba(255,255,255,.4);
+  }
+  @keyframes c8-tide {
+    0%,14%   { transform: translateY(0); }
+    28%,71%  { transform: translateY(-105%); }
+    85%,100% { transform: translateY(0); }
+  }
+  @keyframes c8-foam {
+    0%       { transform: translateY(-60%); }
+    14%      { transform: translateY(0); }
+    22%      { transform: translateY(10%); }
+    28%,71%  { transform: translateY(-110%); opacity: 0; }
+    85%,100% { transform: translateY(-60%); opacity: 1; }
+  }
+  @keyframes c8-grain {
+    0%,16%  { opacity: 0; transform: translate(0,0); }
+    20%     { opacity: 1; }
+    28%     { opacity: 0; transform: translate(-30px, -20px); }
+    100%    { opacity: 0; }
+  }
+
+  /* 09 LINEUP SILHOUETTE · surfer esperando en lineup, ola pasa */
+  .c9 {
+    background: linear-gradient(180deg, var(--sunset-cream) 0%, var(--sunset-pink) 40%, var(--sunset-orange) 70%, var(--ocean-deep) 100%);
+    overflow: hidden;
+    animation: c8-tide var(--t) var(--ease-cinema) infinite;
+  }
+  .c9 .sun-disc {
+    position: absolute; top: 25%; left: 50%; width: 50px; height: 50px;
+    margin-left: -25px; border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, var(--hibiscus-yellow) 40%, var(--sunset-orange) 100%);
+    box-shadow: 0 0 40px var(--hibiscus-yellow);
+  }
+  .c9 .wave-bg {
+    position: absolute; left: -50%; right: -50%; bottom: 30%; height: 12px;
+    background:
+      radial-gradient(circle 8px at 10% 50%, var(--ocean-deep) 50%, transparent 60%),
+      radial-gradient(circle 8px at 30% 50%, var(--ocean-deep) 50%, transparent 60%),
+      radial-gradient(circle 8px at 50% 50%, var(--ocean-deep) 50%, transparent 60%),
+      radial-gradient(circle 8px at 70% 50%, var(--ocean-deep) 50%, transparent 60%),
+      radial-gradient(circle 8px at 90% 50%, var(--ocean-deep) 50%, transparent 60%);
+    animation: c9-wave linear infinite 3s;
+  }
+  .c9 .surfer {
+    position: absolute; bottom: 28%; left: 50%; width: 50px; height: 70px;
+    margin-left: -25px;
+    animation: c9-bob 2.5s ease-in-out infinite;
+  }
+  .c9 .surfer svg { width: 100%; height: 100%; }
+  .c9 .ocean {
+    position: absolute; left: 0; right: 0; bottom: 0; top: 60%;
+    background: linear-gradient(180deg, rgba(20,54,92,.8) 0%, var(--ocean-deep) 100%);
+  }
+  .c9 .ocean::before {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 4px;
+    background: linear-gradient(90deg, var(--foam) 0%, transparent 30%, var(--foam) 60%, transparent 90%);
+    opacity: .7;
+  }
+  @keyframes c9-wave { 0% { transform: translateX(0); } 100% { transform: translateX(20%); } }
+  @keyframes c9-bob {
+    0%,100% { transform: translateY(0)   rotate(-2deg); }
+    50%     { transform: translateY(-3px) rotate(2deg); }
+  }
+
+  /* 10 HIBISCUS BLOOM · flores florecen y se dispersan */
+  .c10 {
+    background:
+      radial-gradient(ellipse at 50% 60%, var(--sunset-pink) 0%, var(--sunset-coral) 50%, var(--hibiscus-red) 100%);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+  }
+  .c10 .flower {
+    position: absolute; width: 50px; height: 50px;
+    transform-origin: center;
+    animation: c10-bloom var(--t) var(--ease-spring) infinite;
+  }
+  .c10 .flower svg { width: 100%; height: 100%; }
+  .c10 .f1 { top: 15%; left: 20%; animation-delay: 0s; }
+  .c10 .f2 { top: 25%; right: 18%; animation-delay: .12s; transform: rotate(45deg); }
+  .c10 .f3 { top: 55%; left: 50%; margin-left: -25px; animation-delay: .06s; width: 70px; height: 70px; }
+  .c10 .f4 { bottom: 20%; left: 15%; animation-delay: .18s; }
+  .c10 .f5 { bottom: 25%; right: 12%; animation-delay: .24s; transform: rotate(-30deg); }
+  @keyframes c10-bloom {
+    0%       { transform: scale(0) rotate(-90deg); opacity: 0; }
+    12%      { transform: scale(1.2) rotate(0); opacity: 1; }
+    16%      { transform: scale(.9); }
+    22%, 28% { transform: scale(1); opacity: 1; }
+    50%, 71% { transform: scale(0) rotate(180deg); opacity: 0; }
+    85%, 100%{ transform: scale(0) rotate(-90deg); opacity: 0; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     STREETWEAR URBAN (11–15) · spray · sticker · mixtape · polaroid · bandana
+     ═══════════════════════════════════════════════ */
+
+  /* 11 STICKER SLAP · múltiples stickers entran rotando */
+  .c11 {
+    background: linear-gradient(180deg, var(--rubber-mid) 0%, var(--rubber) 100%);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+  }
+  .c11 .sticker {
+    position: absolute;
+    padding: 6px 12px;
+    font-weight: 900; font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    transform: scale(0) rotate(0);
+    box-shadow: 0 6px 14px rgba(0,0,0,.4), inset 0 -2px 0 rgba(0,0,0,.15);
+    animation: c11-slap var(--t) var(--ease-spring) infinite;
+    border: 2px solid;
+  }
+  .c11 .s1 { top: 15%; left: 12%; background: var(--spray-yellow); color: var(--rubber); border-color: var(--rubber); --rot: -8deg; animation-delay: 0s; }
+  .c11 .s2 { top: 20%; right: 10%; background: var(--spray-pink); color: #fff; border-color: var(--rubber); --rot: 12deg; animation-delay: .08s; }
+  .c11 .s3 { top: 45%; left: 50%; margin-left: -50px; background: #fff; color: var(--rubber); border-color: var(--rubber); --rot: -3deg; animation-delay: .16s; font-size: 16px; }
+  .c11 .s4 { bottom: 25%; left: 15%; background: var(--spray-cyan); color: var(--rubber); border-color: var(--rubber); --rot: 8deg; animation-delay: .24s; }
+  .c11 .s5 { bottom: 18%; right: 18%; background: var(--bandana-red); color: #fff; border-color: var(--rubber); --rot: -10deg; animation-delay: .32s; }
+  @keyframes c11-slap {
+    0%       { transform: scale(0) rotate(-180deg); opacity: 0; }
+    8%       { transform: scale(1.3) rotate(var(--rot, 0)); opacity: 1; }
+    12%      { transform: scale(.95) rotate(var(--rot, 0)); }
+    16%, 28% { transform: scale(1) rotate(var(--rot, 0)); opacity: 1; }
+    36%, 71% { transform: scale(.8) rotate(calc(var(--rot, 0) - 30deg)); opacity: 0; }
+    85%, 100%{ transform: scale(0) rotate(-180deg); opacity: 0; }
+  }
+
+  /* 12 SPRAY TAG · graffiti se "pinta" + drip */
+  .c12 {
+    background: linear-gradient(180deg, var(--concrete-deep) 0%, var(--rubber-mid) 100%);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+  }
+  .c12::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 1px, transparent 1px 8px);
+    opacity: .6;
+  }
+  .c12 .tag {
+    position: absolute; top: 35%; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Brush Script MT', cursive, sans-serif;
+    font-weight: 900; font-style: italic;
+    font-size: 56px; letter-spacing: -.04em;
+    color: var(--spray-yellow);
+    text-shadow:
+      0 0 12px var(--spray-yellow),
+      3px 3px 0 var(--rubber),
+      -2px -2px 0 var(--rubber);
+    clip-path: inset(0 100% 0 0);
+    animation: c12-spray var(--t) var(--ease-snap) infinite;
+    transform: skewX(-12deg);
+  }
+  .c12 .drip {
+    position: absolute; top: 50%; width: 4px;
+    background: var(--spray-yellow);
+    box-shadow: 0 0 6px var(--spray-yellow);
+    opacity: 0;
+    animation: c12-drip var(--t) ease-out infinite;
+  }
+  .c12 .d1 { left: 25%; height: 12px; animation-delay: 1.0s; }
+  .c12 .d2 { left: 40%; height: 18px; animation-delay: 1.15s; }
+  .c12 .d3 { left: 55%; height: 8px; animation-delay: 1.1s; }
+  .c12 .d4 { left: 68%; height: 22px; animation-delay: 1.2s; }
+  .c12 .d5 { left: 78%; height: 14px; animation-delay: 1.05s; }
+  .c12 .nozzle-spray {
+    position: absolute; top: 35%; width: 24px; height: 24px;
+    background: radial-gradient(circle, var(--spray-yellow) 0%, transparent 60%);
+    border-radius: 50%; opacity: 0;
+    filter: blur(2px);
+    animation: c12-nozzle var(--t) linear infinite;
+  }
+  @keyframes c12-spray {
+    0%       { clip-path: inset(0 100% 0 0); }
+    14%      { clip-path: inset(0 0 0 0); }
+    22%, 28% { clip-path: inset(0 0 0 0); }
+    36%, 71% { clip-path: inset(0 0 0 100%); opacity: 0; }
+    85%, 100%{ clip-path: inset(0 100% 0 0); opacity: 1; }
+  }
+  @keyframes c12-drip {
+    0%,16% { opacity: 0; transform: translateY(0); }
+    20%    { opacity: 1; }
+    28%    { opacity: 0; transform: translateY(40px); }
+    100%   { opacity: 0; }
+  }
+  @keyframes c12-nozzle {
+    0%   { left: -10%; opacity: 0; }
+    8%   { opacity: .8; }
+    14%  { left: 105%; opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* 13 MIXTAPE EJECT · cassette tape gira y se expulsa */
+  .c13 {
+    background:
+      radial-gradient(ellipse at 50% 50%, var(--cassette-orange) 0%, #a85a1a 100%);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+  }
+  .c13 .cassette {
+    position: absolute; top: 50%; left: 50%;
+    width: 160px; height: 100px;
+    margin-left: -80px; margin-top: -50px;
+    background: linear-gradient(180deg, #2a2a30 0%, #1a1a20 50%, #0a0a10 100%);
+    border-radius: 6px;
+    border: 2px solid #0a0a10;
+    box-shadow:
+      0 12px 32px rgba(0,0,0,.55),
+      inset 0 1px 0 rgba(255,255,255,.15);
+    animation: c13-eject var(--t) var(--ease-spring) infinite;
+  }
+  .c13 .label-strip {
+    position: absolute; top: 8px; left: 8px; right: 8px; height: 32px;
+    background: var(--paper-white);
+    color: var(--rubber);
+    font-weight: 900; font-size: 9px; letter-spacing: .15em;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 4px;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+  }
+  .c13 .label-strip span { font-size: 14px; letter-spacing: -.02em; }
+  .c13 .window {
+    position: absolute; bottom: 12px; left: 12px; right: 12px; height: 36px;
+    background: linear-gradient(180deg, rgba(255,255,255,.1) 0%, transparent 100%);
+    border: 1px solid #0a0a10;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: space-around;
+  }
+  .c13 .reel {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #444 0%, #1a1a20 60%);
+    border: 2px solid #0a0a10;
+    position: relative;
+    animation: c13-spin 1s linear infinite;
+  }
+  .c13 .reel::before, .c13 .reel::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width: 14px; height: 1.5px;
+    background: var(--cassette-orange);
+    transform: translate(-50%,-50%);
+  }
+  .c13 .reel::after { transform: translate(-50%,-50%) rotate(60deg); }
+  .c13 .reel.r2 { animation-delay: -.5s; }
+  .c13 .tape-strip {
+    position: absolute; top: 50%; left: 28%; right: 28%; height: 4px;
+    margin-top: -2px;
+    background: linear-gradient(180deg, var(--cassette-orange) 0%, #a85a1a 100%);
+  }
+  @keyframes c13-eject {
+    0%       { transform: translateY(-200%) rotate(-8deg); }
+    14%      { transform: translateY(0)     rotate(0); }
+    22%      { transform: translateY(-4%)   rotate(2deg); }
+    28%      { transform: translateY(0)     rotate(0); }
+    36%, 71% { transform: translateY(200%)  rotate(15deg); opacity: 0; }
+    85%, 100%{ transform: translateY(-200%) rotate(-8deg); opacity: 1; }
+  }
+  @keyframes c13-spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+
+  /* 14 POLAROID SHAKE · foto sale, shake horizontal, develop reveal */
+  .c14 {
+    background: linear-gradient(180deg, var(--rubber-mid) 0%, var(--rubber) 100%);
+    display: flex; align-items: center; justify-content: center;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+  }
+  .c14 .polaroid {
+    width: 140px; height: 170px;
+    background: var(--polaroid-white);
+    padding: 8px 8px 28px;
+    box-shadow:
+      0 12px 32px rgba(0,0,0,.55),
+      inset 0 -2px 0 rgba(0,0,0,.05);
+    transform: scale(0) rotate(-180deg);
+    animation: c14-shake var(--t) var(--ease-spring) infinite;
+    position: relative;
+  }
+  .c14 .photo {
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, var(--rubber-mid) 0%, var(--rubber) 100%);
+    overflow: hidden;
+    position: relative;
+  }
+  .c14 .photo::before {
+    content: 'KANKI';
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold-light);
+    font-weight: 900; font-size: 26px; letter-spacing: -.04em;
+    opacity: 0;
+    animation: c14-develop var(--t) var(--ease-breath) infinite;
+  }
+  .c14 .photo::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--polaroid-white) 0%, transparent 100%);
+    opacity: 1;
+    animation: c14-fade-photo var(--t) var(--ease-breath) infinite;
+  }
+  .c14 .polaroid-label {
+    position: absolute; bottom: 6px; left: 8px; right: 8px;
+    text-align: center; font-size: 9px; letter-spacing: .25em;
+    color: var(--rubber); font-weight: 600; font-style: italic;
+    font-family: 'Caveat', 'Brush Script MT', cursive;
+    font-size: 13px;
+  }
+  @keyframes c14-shake {
+    0%       { transform: scale(0) rotate(-180deg); opacity: 0; }
+    8%       { transform: scale(1.15) rotate(-8deg); opacity: 1; }
+    12%      { transform: scale(.95) rotate(5deg); }
+    15%      { transform: scale(1) rotate(-4deg); }
+    18%      { transform: scale(1) rotate(3deg); }
+    21%      { transform: scale(1) rotate(-2deg); }
+    24%, 28% { transform: scale(1) rotate(0); opacity: 1; }
+    36%, 71% { transform: scale(.9) rotate(15deg) translateY(80%); opacity: 0; }
+    85%, 100%{ transform: scale(0) rotate(-180deg); opacity: 0; }
+  }
+  @keyframes c14-develop {
+    0%,18%   { opacity: 0; filter: blur(10px); }
+    24%      { opacity: 1; filter: blur(0); }
+    28%      { opacity: 1; }
+    36%,100% { opacity: 0; filter: blur(10px); }
+  }
+  @keyframes c14-fade-photo {
+    0%,18% { opacity: 1; }
+    24%,28%{ opacity: 0; }
+    36%,100%{ opacity: 1; }
+  }
+
+  /* 15 BANDANA TWIST · paisley pattern ondea y se va */
+  .c15 {
+    background: var(--rubber-mid);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+  }
+  .c15 .bandana {
+    position: absolute; top: 50%; left: 50%;
+    width: 280px; height: 120px;
+    margin-left: -140px; margin-top: -60px;
+    background:
+      radial-gradient(circle 6px at 15% 30%, var(--paper-white) 50%, transparent 60%),
+      radial-gradient(circle 8px at 35% 60%, var(--paper-white) 50%, transparent 60%),
+      radial-gradient(circle 6px at 55% 25%, var(--paper-white) 50%, transparent 60%),
+      radial-gradient(circle 5px at 75% 70%, var(--paper-white) 50%, transparent 60%),
+      radial-gradient(circle 7px at 88% 35%, var(--paper-white) 50%, transparent 60%),
+      radial-gradient(circle 10px at 25% 75%, rgba(196,32,42,.4) 50%, transparent 60%),
+      radial-gradient(circle 12px at 65% 45%, rgba(196,32,42,.5) 50%, transparent 60%),
+      var(--bandana-red);
+    box-shadow:
+      inset 0 0 0 6px var(--paper-white),
+      inset 0 0 0 8px var(--bandana-red),
+      inset 0 0 0 10px var(--paper-white),
+      0 8px 24px rgba(0,0,0,.5);
+    animation: c15-twist var(--t) var(--ease-cinema) infinite;
+    transform-origin: center;
+  }
+  @keyframes c15-twist {
+    0%       { transform: translateY(120%) rotate(-15deg) skewX(-10deg); opacity: 0; }
+    12%      { transform: translateY(0)    rotate(-3deg)  skewX(-3deg); opacity: 1; }
+    18%      { transform: translateY(-2%)  rotate(2deg)   skewX(3deg); }
+    24%      { transform: translateY(0)    rotate(-1deg)  skewX(-2deg); }
+    28%      { transform: translateY(0)    rotate(0)      skewX(0); }
+    36%, 71% { transform: translateY(-120%) rotate(25deg) skewX(15deg); opacity: 0; }
+    85%, 100%{ transform: translateY(120%) rotate(-15deg) skewX(-10deg); opacity: 0; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     SKATE THPS ARCADE (16–20) · combo score · special meter · half-pipe · trick stack · countdown
+     ═══════════════════════════════════════════════ */
+
+  /* 16 COMBO SCORE POPUP · texto gigante THPS rotando perspective */
+  .c16 {
+    background:
+      radial-gradient(ellipse at 50% 50%, #1a3326 0%, var(--scoreboard) 100%);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+    perspective: 800px;
+  }
+  .c16::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(45,255,136,.06) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+  }
+  .c16 .score {
+    position: absolute; top: 38%; left: 0; right: 0;
+    text-align: center;
+    color: var(--thps-amber);
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-weight: 900; font-size: 44px; letter-spacing: -.02em;
+    text-shadow:
+      0 0 16px var(--thps-amber),
+      0 4px 0 #aa6600,
+      0 6px 14px rgba(0,0,0,.7);
+    transform: scale(0) rotateY(-90deg);
+    animation: c16-score var(--t) var(--ease-spring) infinite;
+  }
+  .c16 .multi {
+    position: absolute; top: 25%; right: 14%;
+    color: var(--thps-red);
+    font-family: 'Impact', sans-serif;
+    font-weight: 900; font-size: 24px;
+    text-shadow: 0 0 12px var(--thps-red), 0 2px 0 #aa1a2a;
+    transform: scale(0) rotate(15deg);
+    animation: c16-multi var(--t) var(--ease-spring) infinite;
+  }
+  .c16 .trick-line {
+    position: absolute; top: 60%; left: 0; right: 0;
+    text-align: center;
+    color: var(--thps-green);
+    font-family: 'Impact', sans-serif;
+    font-weight: 900; font-size: 11px; letter-spacing: .15em;
+    text-shadow: 0 0 8px var(--thps-green), 0 2px 0 #1a8844;
+    opacity: 0;
+    animation: c16-trick var(--t) var(--ease-snap) infinite;
+  }
+  .c16 .massive {
+    position: absolute; top: 12%; left: 0; right: 0;
+    text-align: center;
+    color: var(--thps-cyan);
+    font-family: 'Impact', sans-serif;
+    font-weight: 900; font-size: 18px; letter-spacing: .12em;
+    text-shadow: 0 0 12px var(--thps-cyan);
+    transform: scale(0) rotate(-8deg);
+    animation: c16-massive var(--t) var(--ease-elastic) infinite;
+  }
+  @keyframes c16-score {
+    0%       { transform: scale(0) rotateY(-90deg); opacity: 0; }
+    10%      { transform: scale(1.3) rotateY(0); opacity: 1; }
+    14%      { transform: scale(.95) rotateY(0); }
+    18%, 28% { transform: scale(1) rotateY(0); opacity: 1; }
+    36%, 71% { transform: scale(2) rotateY(90deg); opacity: 0; }
+    85%, 100%{ transform: scale(0) rotateY(-90deg); opacity: 0; }
+  }
+  @keyframes c16-multi {
+    0%       { transform: scale(0) rotate(15deg); opacity: 0; }
+    16%      { transform: scale(1.4) rotate(-5deg); opacity: 1; }
+    20%      { transform: scale(1) rotate(8deg); }
+    24%, 28% { transform: scale(1) rotate(0); opacity: 1; }
+    36%, 100%{ transform: scale(0) rotate(15deg); opacity: 0; }
+  }
+  @keyframes c16-trick {
+    0%, 12% { opacity: 0; transform: translateY(20px); }
+    18%, 28%{ opacity: 1; transform: translateY(0); }
+    36%, 100%{ opacity: 0; transform: translateY(-20px); }
+  }
+  @keyframes c16-massive {
+    0%       { transform: scale(0) rotate(-8deg); opacity: 0; }
+    8%       { transform: scale(1.5) rotate(5deg); opacity: 1; }
+    12%      { transform: scale(.9) rotate(-3deg); }
+    16%, 28% { transform: scale(1) rotate(0); opacity: 1; }
+    36%, 100%{ transform: scale(0) rotate(-8deg); opacity: 0; }
+  }
+
+  /* 17 SPECIAL METER · barra se llena, flash, "SPECIAL TRICK!" */
+  .c17 {
+    background:
+      radial-gradient(ellipse at 50% 80%, #1a3326 0%, var(--scoreboard) 100%);
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+    overflow: hidden;
+  }
+  .c17::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(45,255,136,.04) 0 1px, transparent 1px 3px);
+  }
+  .c17 .meter-label {
+    position: absolute; bottom: 25%; left: 0; right: 0;
+    text-align: center;
+    color: var(--thps-green);
+    font-family: 'Impact', sans-serif;
+    font-weight: 900; font-size: 14px; letter-spacing: .35em;
+    text-shadow: 0 0 8px var(--thps-green);
+  }
+  .c17 .meter-frame {
+    position: absolute; bottom: 18%; left: 20px; right: 20px; height: 22px;
+    background: rgba(0,0,0,.5);
+    border: 2px solid var(--thps-green);
+    border-radius: 3px;
+    box-shadow:
+      0 0 12px var(--thps-green),
+      inset 0 0 8px rgba(45,255,136,.2);
+    overflow: hidden;
+  }
+  .c17 .meter-fill {
+    position: absolute; top: 0; bottom: 0; left: 0;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.3) 0%, transparent 50%),
+      linear-gradient(90deg, var(--thps-blue) 0%, var(--thps-green) 50%, var(--thps-amber) 80%, var(--thps-red) 100%);
+    width: 0;
+    box-shadow: 0 0 8px var(--thps-amber);
+    animation: c17-fill var(--t) var(--ease-cinema) infinite;
+  }
+  .c17 .meter-shine {
+    position: absolute; top: 0; bottom: 0; width: 30px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent);
+    animation: c17-shine var(--t) ease-out infinite;
+    opacity: 0;
+  }
+  .c17 .special-text {
+    position: absolute; top: 40%; left: 0; right: 0;
+    text-align: center;
+    color: var(--thps-amber);
+    font-family: 'Impact', sans-serif;
+    font-weight: 900; font-size: 32px; letter-spacing: .04em;
+    text-shadow: 0 0 16px var(--thps-amber), 0 4px 0 #aa6600;
+    opacity: 0;
+    transform: scale(0);
+    animation: c17-special var(--t) var(--ease-spring) infinite;
+  }
+  .c17 .flash {
+    position: absolute; inset: 0;
+    background: var(--thps-amber);
+    opacity: 0;
+    mix-blend-mode: screen;
+    animation: c17-flash var(--t) var(--ease-snap) infinite;
+  }
+  @keyframes c17-fill {
+    0%       { width: 0; }
+    20%      { width: 100%; }
+    24%, 28% { width: 100%; }
+    36%, 100%{ width: 0; }
+  }
+  @keyframes c17-shine {
+    0%, 18% { opacity: 0; left: 0; }
+    22%     { opacity: 1; left: calc(100% - 30px); }
+    26%     { opacity: 0; }
+    100%    { opacity: 0; }
+  }
+  @keyframes c17-special {
+    0%, 20% { opacity: 0; transform: scale(0); }
+    24%     { opacity: 1; transform: scale(1.3); }
+    27%     { transform: scale(.95); }
+    28%     { transform: scale(1); }
+    36%, 100%{ opacity: 0; transform: scale(0); }
+  }
+  @keyframes c17-flash {
+    0%, 22% { opacity: 0; }
+    24%     { opacity: .8; }
+    27%, 100%{ opacity: 0; }
+  }
+
+  /* 18 HALF-PIPE POV · vista lateral U-shape con skater */
+  .c18 {
+    background:
+      radial-gradient(ellipse at 50% 30%, #1a3326 0%, var(--scoreboard) 100%);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+    perspective: 600px;
+  }
+  .c18::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(45,255,136,.04) 0 1px, transparent 1px 3px);
+  }
+  .c18 .pipe {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 70%;
+    transform-origin: 50% 100%;
+    animation: c18-tilt var(--t) var(--ease-cinema) infinite;
+  }
+  .c18 .pipe svg { width: 100%; height: 100%; display: block; }
+  .c18 .trail {
+    position: absolute; left: 5%; right: 5%; height: 50%; top: 20%;
+    border-top-left-radius: 50% 80%;
+    border-top-right-radius: 50% 80%;
+    border-top: 2px dashed var(--thps-amber);
+    border-left: 2px dashed var(--thps-amber);
+    border-right: 2px dashed var(--thps-amber);
+    box-shadow: 0 0 12px var(--thps-amber);
+    opacity: 0;
+    animation: c18-trail var(--t) var(--ease-cinema) infinite;
+  }
+  .c18 .skater {
+    position: absolute; width: 22px; height: 22px;
+    background: radial-gradient(circle at 30% 30%, var(--foam) 0%, var(--gold) 60%, var(--ember) 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 14px var(--thps-amber), 0 4px 8px rgba(0,0,0,.4);
+    animation: c18-skater var(--t) var(--ease-cinema) infinite;
+  }
+  .c18 .skater::after {
+    content: ''; position: absolute; bottom: -6px; left: 50%; width: 18px; height: 4px;
+    margin-left: -9px;
+    background: var(--rubber);
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.4);
+  }
+  .c18 .label {
+    position: absolute; top: 12%; left: 0; right: 0;
+    text-align: center;
+    color: var(--thps-green);
+    font-family: 'Impact', sans-serif;
+    font-weight: 900; font-size: 13px; letter-spacing: .3em;
+    text-shadow: 0 0 8px var(--thps-green);
+  }
+  @keyframes c18-tilt {
+    0%, 14%  { transform: rotateX(0); }
+    20%      { transform: rotateX(10deg); }
+    28%, 71% { transform: rotateX(0) translateY(100%); opacity: 0; }
+    85%, 100%{ transform: rotateX(0); opacity: 1; }
+  }
+  @keyframes c18-trail {
+    0%, 14%   { opacity: 0; clip-path: inset(0 100% 0 0); }
+    20%       { opacity: 1; clip-path: inset(0 0 0 0); }
+    28%, 71%  { opacity: 0; }
+    85%, 100% { opacity: 0; }
+  }
+  @keyframes c18-skater {
+    0%       { left: 8%; bottom: 30%; transform: rotate(0); }
+    14%      { left: 8%; bottom: 30%; transform: rotate(0); }
+    18%      { left: 20%; bottom: 50%; transform: rotate(-90deg); }
+    22%      { left: 50%; bottom: 70%; transform: rotate(-180deg); }
+    26%      { left: 80%; bottom: 50%; transform: rotate(-270deg); }
+    28%, 71% { left: 92%; bottom: 30%; transform: rotate(-360deg); opacity: 0; }
+    85%, 100%{ left: 8%; bottom: 30%; transform: rotate(0); opacity: 1; }
+  }
+
+  /* 19 SPINNING TRICKS STACK · 4 textos trick rotando perspective */
+  .c19 {
+    background:
+      radial-gradient(ellipse at 50% 50%, #1a3326 0%, var(--scoreboard) 100%);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+    perspective: 1000px;
+  }
+  .c19::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(45,255,136,.04) 0 1px, transparent 1px 3px);
+  }
+  .c19 .trick {
+    position: absolute; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Impact', sans-serif;
+    font-weight: 900; letter-spacing: .04em;
+    transform-style: preserve-3d;
+    animation: c19-spin var(--t) var(--ease-cinema) infinite;
+    opacity: 0;
+  }
+  .c19 .t1 { top: 18%; font-size: 28px; color: var(--thps-amber);  text-shadow: 0 0 12px var(--thps-amber), 0 3px 0 #aa6600;  animation-delay: 0s; }
+  .c19 .t2 { top: 32%; font-size: 22px; color: var(--thps-green);  text-shadow: 0 0 10px var(--thps-green), 0 2px 0 #1a8844; animation-delay: .08s; }
+  .c19 .t3 { top: 46%; font-size: 30px; color: var(--thps-red);    text-shadow: 0 0 12px var(--thps-red), 0 3px 0 #aa1a2a;   animation-delay: .16s; }
+  .c19 .t4 { top: 62%; font-size: 22px; color: var(--thps-cyan);   text-shadow: 0 0 10px var(--thps-cyan), 0 2px 0 #0088aa; animation-delay: .24s; }
+  .c19 .plus { color: var(--foam); font-size: 14px; padding: 0 8px; opacity: .7; }
+  @keyframes c19-spin {
+    0%, 10%   { opacity: 0; transform: rotateY(90deg) scale(.5); }
+    14%       { opacity: 1; transform: rotateY(0)     scale(1); }
+    20%, 26%  { opacity: 1; transform: rotateY(0)     scale(1); }
+    32%, 71%  { opacity: 0; transform: rotateY(-90deg) scale(.5); }
+    85%, 100% { opacity: 0; transform: rotateY(90deg) scale(.5); }
+  }
+
+  /* 20 DROP IN COUNTDOWN · 3...2...1...DROP IN! pixel retro */
+  .c20 {
+    background:
+      radial-gradient(ellipse at 50% 50%, #1a3326 0%, var(--scoreboard) 100%);
+    overflow: hidden;
+    animation: c1-fade var(--t) var(--ease-cinema) infinite;
+  }
+  .c20::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(45,255,136,.08) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(45,255,136,.05) 0 1px, transparent 1px 6px);
+  }
+  .c20 .scan {
+    position: absolute; left: 0; right: 0; height: 4px;
+    background: linear-gradient(180deg, transparent, var(--thps-green), transparent);
+    opacity: .5;
+    animation: c20-scan 2s linear infinite;
+  }
+  .c20 .digit {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    color: var(--thps-green);
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    font-size: 100px;
+    text-shadow:
+      0 0 18px var(--thps-green),
+      0 0 36px var(--thps-green),
+      0 4px 0 #1a8844;
+    opacity: 0;
+    animation-timing-function: steps(2);
+  }
+  .c20 .d3 { animation: c20-d3 var(--t) infinite; }
+  .c20 .d2 { animation: c20-d2 var(--t) infinite; }
+  .c20 .d1 { animation: c20-d1 var(--t) infinite; }
+  .c20 .drop-text {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%) scale(0);
+    color: var(--thps-amber);
+    font-family: 'Impact', sans-serif;
+    font-weight: 900;
+    font-size: 38px; letter-spacing: .04em;
+    text-shadow: 0 0 16px var(--thps-amber), 0 4px 0 #aa6600;
+    opacity: 0;
+    animation: c20-drop var(--t) var(--ease-elastic) infinite;
+  }
+  .c20 .ready {
+    position: absolute; top: 18%; left: 0; right: 0;
+    text-align: center;
+    color: var(--thps-cyan);
+    font-family: 'Courier New', monospace;
+    font-weight: 900; font-size: 12px; letter-spacing: .4em;
+    text-shadow: 0 0 8px var(--thps-cyan);
+    opacity: 0;
+    animation: c20-ready var(--t) infinite;
+  }
+  @keyframes c20-scan { 0%{top:-4px} 100%{top:100%} }
+  @keyframes c20-d3 { 0%,4%{opacity:0} 8%,11%{opacity:1} 14%,100%{opacity:0} }
+  @keyframes c20-d2 { 0%,14%{opacity:0} 16%,19%{opacity:1} 22%,100%{opacity:0} }
+  @keyframes c20-d1 { 0%,22%{opacity:0} 24%,27%{opacity:1} 30%,100%{opacity:0} }
+  @keyframes c20-drop {
+    0%, 28%  { opacity: 0; transform: translate(-50%,-50%) scale(0); }
+    30%      { opacity: 1; transform: translate(-50%,-50%) scale(1.5) rotate(-3deg); }
+    33%      { transform: translate(-50%,-50%) scale(.92) rotate(2deg); }
+    36%      { transform: translate(-50%,-50%) scale(1) rotate(0); }
+    50%, 71% { opacity: 0; transform: translate(-50%,-50%) scale(8); }
+    85%, 100%{ opacity: 0; transform: translate(-50%,-50%) scale(0); }
+  }
+  @keyframes c20-ready { 0%,1%{opacity:0} 3%,7%{opacity:1} 9%,100%{opacity:0} }
+
+  footer {
+    text-align: center; margin-top: 40px;
+    color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  }
+  footer code { background: var(--panel); padding: 2px 8px; border-radius: 4px; font-size: 10px; color: var(--accent); border: 1px solid var(--gold-dim); }
+  footer .specs { margin-top: 8px; font-size: 9px; color: var(--muted); opacity: .7; letter-spacing: .15em; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>20 Cortinas Mobile v6 VIBE — Kanki Street</h1>
+  <p>Beach summer · Urban graffiti · Tony Hawk arcade</p>
+  <div class="lineage">
+    <span>01–05 KEEPERS</span>
+    <span>06–10 BEACH SURF</span>
+    <span>11–15 URBAN STREET</span>
+    <span>16–20 THPS SKATE</span>
+  </div>
+  <br>
+  <button class="replay" id="replay">↻ Repetir todas</button>
+</header>
+
+<!-- ════════════════ KEEPERS ════════════════ -->
+<div class="section"><span class="ico">★</span> Keepers <span class="meta">consolidated from v5</span></div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c1 grain"><span class="stamp">KANKI</span></div>
+  </div></div><div class="caption"><b>01</b> Logo Stamp <span class="tag keeper">KEEPER</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c2"><div class="panel grain"></div><div class="tape a">KANKI · GRIP · KANKI</div><div class="tape b">STREET · SS26 · STREET</div></div>
+  </div></div><div class="caption"><b>02</b> Tape Cross X <span class="tag keeper">KEEPER</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c3 grain"><div class="col">K</div><div class="col">A</div><div class="col">N</div><div class="col">K</div><div class="col">I</div></div>
+  </div></div><div class="caption"><b>03</b> Letter Drop <span class="tag keeper">KEEPER</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c4"><div class="panel grain"></div><div class="strap">KANKI · STREET · SS26</div></div>
+  </div></div><div class="caption"><b>04</b> Tape Slingshot <span class="tag keeper">KEEPER</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c5 grain"><div class="col">K</div><div class="col">A</div><div class="col">N</div><div class="col">K</div><div class="col">I</div></div>
+  </div></div><div class="caption"><b>05</b> Letter Wave <span class="tag keeper">KEEPER</span></div></div>
+
+</main>
+
+<!-- ════════════════ BEACH SURF ════════════════ -->
+<div class="section"><span class="ico">🏝️</span> Beach Surf Vibe <span class="meta">sunset · palm · tablas · sand · hibiscus</span></div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c6">
+      <div class="sun"></div>
+      <div class="horizon"></div>
+      <div class="reflection"></div>
+      <div class="palm L">
+        <svg viewBox="0 0 100 280" preserveAspectRatio="none">
+          <path d="M50,280 L48,180 Q44,140 50,80 Q56,140 52,180 L52,280 Z" fill="#1a0f2a"/>
+          <path d="M50,80 Q20,60 5,30 Q25,45 50,80 Q40,40 30,15 Q40,30 50,80 Q70,40 85,20 Q70,40 50,80 Q85,55 100,40 Q85,55 50,80 Z" fill="#1a0f2a"/>
+        </svg>
+      </div>
+      <div class="palm R">
+        <svg viewBox="0 0 100 280" preserveAspectRatio="none">
+          <path d="M50,280 L48,180 Q44,140 50,80 Q56,140 52,180 L52,280 Z" fill="#1a0f2a"/>
+          <path d="M50,80 Q20,60 5,30 Q25,45 50,80 Q40,40 30,15 Q40,30 50,80 Q70,40 85,20 Q70,40 50,80 Q85,55 100,40 Q85,55 50,80 Z" fill="#1a0f2a"/>
+        </svg>
+      </div>
+    </div>
+  </div></div><div class="caption"><b>06</b> Palm Sunset <span class="tag surf">BEACH</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c7">
+      <div class="ground"></div>
+      <div class="board b1"></div>
+      <div class="board b2"></div>
+      <div class="board b3"></div>
+      <div class="board b4"></div>
+      <div class="board b5"></div>
+    </div>
+  </div></div><div class="caption"><b>07</b> Board Lineup <span class="tag surf">BEACH</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c8">
+      <div class="foam-wave"></div>
+      <div class="grain g1"></div><div class="grain g2"></div><div class="grain g3"></div>
+      <div class="grain g4"></div><div class="grain g5"></div><div class="grain g6"></div>
+      <div class="grain g7"></div><div class="grain g8"></div>
+      <div class="label">KANKI · SURF</div>
+    </div>
+  </div></div><div class="caption"><b>08</b> Sand Wash <span class="tag surf">BEACH</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c9">
+      <div class="sun-disc"></div>
+      <div class="ocean"></div>
+      <div class="wave-bg"></div>
+      <div class="surfer">
+        <svg viewBox="0 0 50 70" preserveAspectRatio="none">
+          <ellipse cx="25" cy="62" rx="22" ry="3" fill="#1a0f2a"/>
+          <path d="M19,60 L17,40 Q15,30 22,22 L20,12 Q22,8 25,8 Q28,8 30,12 L28,22 Q35,30 33,40 L31,60 Z" fill="#1a0f2a"/>
+          <circle cx="25" cy="9" r="4" fill="#1a0f2a"/>
+        </svg>
+      </div>
+    </div>
+  </div></div><div class="caption"><b>09</b> Lineup Silhouette <span class="tag surf">BEACH</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c10">
+      <div class="flower f1">
+        <svg viewBox="0 0 50 50">
+          <g><circle cx="25" cy="12" r="9" fill="#e8344e"/><circle cx="38" cy="25" r="9" fill="#e8344e"/><circle cx="25" cy="38" r="9" fill="#e8344e"/><circle cx="12" cy="25" r="9" fill="#e8344e"/><circle cx="25" cy="25" r="6" fill="#ffd84a"/></g>
+        </svg>
+      </div>
+      <div class="flower f2">
+        <svg viewBox="0 0 50 50">
+          <g><circle cx="25" cy="12" r="9" fill="#ff7a9a"/><circle cx="38" cy="25" r="9" fill="#ff7a9a"/><circle cx="25" cy="38" r="9" fill="#ff7a9a"/><circle cx="12" cy="25" r="9" fill="#ff7a9a"/><circle cx="25" cy="25" r="6" fill="#ffd84a"/></g>
+        </svg>
+      </div>
+      <div class="flower f3">
+        <svg viewBox="0 0 50 50">
+          <g><circle cx="25" cy="12" r="9" fill="#e8344e"/><circle cx="38" cy="25" r="9" fill="#e8344e"/><circle cx="25" cy="38" r="9" fill="#e8344e"/><circle cx="12" cy="25" r="9" fill="#e8344e"/><circle cx="25" cy="25" r="6" fill="#ffd84a"/></g>
+        </svg>
+      </div>
+      <div class="flower f4">
+        <svg viewBox="0 0 50 50">
+          <g><circle cx="25" cy="12" r="9" fill="#ff7a9a"/><circle cx="38" cy="25" r="9" fill="#ff7a9a"/><circle cx="25" cy="38" r="9" fill="#ff7a9a"/><circle cx="12" cy="25" r="9" fill="#ff7a9a"/><circle cx="25" cy="25" r="6" fill="#ffd84a"/></g>
+        </svg>
+      </div>
+      <div class="flower f5">
+        <svg viewBox="0 0 50 50">
+          <g><circle cx="25" cy="12" r="9" fill="#e8344e"/><circle cx="38" cy="25" r="9" fill="#e8344e"/><circle cx="25" cy="38" r="9" fill="#e8344e"/><circle cx="12" cy="25" r="9" fill="#e8344e"/><circle cx="25" cy="25" r="6" fill="#ffd84a"/></g>
+        </svg>
+      </div>
+    </div>
+  </div></div><div class="caption"><b>10</b> Hibiscus Bloom <span class="tag surf">BEACH</span></div></div>
+
+</main>
+
+<!-- ════════════════ URBAN STREETWEAR ════════════════ -->
+<div class="section"><span class="ico">🏷️</span> Urban Streetwear <span class="meta">sticker slap · spray tag · mixtape · polaroid · bandana</span></div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c11">
+      <div class="sticker s1">SS26</div>
+      <div class="sticker s2">REAL</div>
+      <div class="sticker s3">KANKI</div>
+      <div class="sticker s4">SURF</div>
+      <div class="sticker s5">DROP</div>
+    </div>
+  </div></div><div class="caption"><b>11</b> Sticker Slap <span class="tag street">URBAN</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c12">
+      <div class="tag">KANKI</div>
+      <div class="nozzle-spray"></div>
+      <div class="drip d1"></div><div class="drip d2"></div><div class="drip d3"></div>
+      <div class="drip d4"></div><div class="drip d5"></div>
+    </div>
+  </div></div><div class="caption"><b>12</b> Spray Tag <span class="tag street">URBAN</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c13">
+      <div class="cassette">
+        <div class="label-strip">
+          KANKI MIXTAPE
+          <span>SS26 · VOL 02</span>
+        </div>
+        <div class="window">
+          <div class="reel r1"></div>
+          <div class="tape-strip"></div>
+          <div class="reel r2"></div>
+        </div>
+      </div>
+    </div>
+  </div></div><div class="caption"><b>13</b> Mixtape Eject <span class="tag street">URBAN</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c14">
+      <div class="polaroid">
+        <div class="photo"></div>
+        <div class="polaroid-label">Kanki · SS26</div>
+      </div>
+    </div>
+  </div></div><div class="caption"><b>14</b> Polaroid Develop <span class="tag street">URBAN</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c15"><div class="bandana"></div></div>
+  </div></div><div class="caption"><b>15</b> Bandana Twist <span class="tag street">URBAN</span></div></div>
+
+</main>
+
+<!-- ════════════════ THPS SKATE ════════════════ -->
+<div class="section"><span class="ico">🎮</span> THPS Skate Arcade <span class="meta">combo · meter · half-pipe · tricks stack · countdown</span></div>
+<main class="grid">
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c16">
+      <div class="massive">MASSIVE!</div>
+      <div class="score">12,500</div>
+      <div class="multi">x4</div>
+      <div class="trick-line">INDY GRAB → MANUAL → 900°</div>
+    </div>
+  </div></div><div class="caption"><b>16</b> Combo Score <span class="tag skate">THPS</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c17">
+      <div class="flash"></div>
+      <div class="special-text">SPECIAL!</div>
+      <div class="meter-label">SPECIAL METER</div>
+      <div class="meter-frame">
+        <div class="meter-fill"></div>
+        <div class="meter-shine"></div>
+      </div>
+    </div>
+  </div></div><div class="caption"><b>17</b> Special Meter <span class="tag skate">THPS</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c18">
+      <div class="label">HALF-PIPE · KANKI PARK</div>
+      <div class="trail"></div>
+      <div class="pipe">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M0,0 L0,40 Q0,100 50,100 Q100,100 100,40 L100,0 L94,0 L94,40 Q94,94 50,94 Q6,94 6,40 L6,0 Z" fill="#2dff88" opacity="0.18" stroke="#2dff88" stroke-width="1.5"/>
+          <path d="M6,0 L6,40 Q6,94 50,94 Q94,94 94,40 L94,0" fill="none" stroke="#2dff88" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/>
+        </svg>
+      </div>
+      <div class="skater"></div>
+    </div>
+  </div></div><div class="caption"><b>18</b> Half-Pipe POV <span class="tag skate">THPS</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c19">
+      <div class="trick t1">900°</div>
+      <div class="trick t2">INDY GRAB</div>
+      <div class="trick t3">MANUAL</div>
+      <div class="trick t4">+ KANKI</div>
+    </div>
+  </div></div><div class="caption"><b>19</b> Tricks Stack <span class="tag skate">THPS</span></div></div>
+
+  <div class="card"><div class="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="hero"><div class="hero-eyebrow">SS26</div><div class="hero-title">KANKI<br>STREET</div><div class="hero-sub">RAW SURF · REAL STREET</div><div class="hero-cta">SHOP NOW</div></div>
+    <div class="curtain c20">
+      <div class="scan"></div>
+      <div class="ready">READY</div>
+      <div class="digit d3">3</div>
+      <div class="digit d2">2</div>
+      <div class="digit d1">1</div>
+      <div class="drop-text">DROP IN!</div>
+    </div>
+  </div></div><div class="caption"><b>20</b> Drop In Countdown <span class="tag skate">THPS</span></div></div>
+
+</main>
+
+<footer>
+  v6 VIBE · Beach summer · Urban graffiti · Tony Hawk Pro Skater · Loop 7 s
+  <div class="specs">Tony Hawk Pro Skater 1+2 inspired · Composite-only animations · 60fps target</div>
+</footer>
+
+<script>
+  document.getElementById('replay').addEventListener('click', () => {
+    document.querySelectorAll('.curtain, .curtain *, .hero').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
+  });
+</script>
+
+</body>
+</html>
