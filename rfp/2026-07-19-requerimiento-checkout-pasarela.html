@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Requerimiento · Checkout & Pasarela de Pago — KANKI & CO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ocean:#0c1b2e; --ocean-mid:#0d4f7c;
+    --teal:#1a8f82; --teal-light:#22b5a5;
+    --sunset:#e8651a; --sunset-dark:#c04e0e;
+    --sand:#f0e4cc; --sand-dark:#e0ceae;
+    --gray:#6b7280; --gray-light:#f3f4f6; --border:#e5e7eb;
+    --ok:#16a34a; --err:#dc2626;
+    --r-sm:4px; --r-md:10px; --r-lg:20px;
+    --font:'Inter','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font:15px/1.6 var(--font);color:var(--ocean);background:#fbfaf7}
+  a{color:var(--teal)}
+
+  header.doc{background:linear-gradient(135deg,var(--ocean),#0d2a47);color:#fff;padding:48px 20px 40px;text-align:center;position:relative;overflow:hidden}
+  header.doc::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:linear-gradient(90deg,var(--teal),var(--sunset))}
+  header.doc .kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-light);font-weight:700}
+  header.doc h1{font-size:clamp(24px,4.5vw,38px);font-weight:900;letter-spacing:-.01em;margin:10px 0 6px;text-transform:uppercase}
+  header.doc h1 em{font-style:italic;color:var(--sunset)}
+  header.doc p{font-size:14px;opacity:.85;max-width:640px;margin:8px auto 0}
+  header.doc .meta{margin-top:16px;font-size:11px;opacity:.7;font-family:monospace}
+  .pill{display:inline-block;font:700 10px/1 var(--font);letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin:14px 4px 0}
+  .pill.fase1{background:rgba(34,181,165,.2);color:var(--teal-light);border:1px solid var(--teal)}
+  .pill.demo{background:rgba(232,101,26,.18);color:#ffb385;border:1px solid var(--sunset)}
+
+  main{max-width:900px;margin:0 auto;padding:36px 20px 64px}
+  section{margin-bottom:44px}
+  h2{font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--ocean);border-left:5px solid var(--sunset);padding-left:12px;margin-bottom:16px}
+  h3{font-size:15px;font-weight:700;color:var(--ocean-mid);margin:20px 0 8px}
+  p{margin-bottom:10px}
+  ul,ol{margin:8px 0 12px 22px}
+  li{margin-bottom:6px}
+  code{font:600 12.5px/1.4 ui-monospace,Menlo,monospace;background:var(--gray-light);border:1px solid var(--border);border-radius:var(--r-sm);padding:1px 6px;color:var(--ocean-mid)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0 8px;background:#fff;border-radius:var(--r-md);overflow:hidden;box-shadow:0 1px 3px rgba(12,27,46,.06)}
+  th{background:var(--ocean);color:var(--sand);text-align:left;padding:10px 14px;font:700 11px/1.3 var(--font);text-transform:uppercase;letter-spacing:.08em}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  tr:nth-child(even) td{background:#fafaf8}
+
+  .callout{border-radius:var(--r-md);padding:16px 18px;margin:14px 0;font-size:14px}
+  .callout.info{background:rgba(26,143,130,.08);border:1px solid rgba(26,143,130,.35)}
+  .callout.warn{background:rgba(232,101,26,.08);border:1px solid rgba(232,101,26,.35)}
+  .callout strong{color:var(--ocean)}
+
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0;font-size:13px;font-weight:600}
+  .flow .step{background:#fff;border:1.5px solid var(--teal);color:var(--ocean);border-radius:999px;padding:8px 14px}
+  .flow .step.hot{border-color:var(--sunset);background:rgba(232,101,26,.08)}
+  .flow .arr{color:var(--gray);font-weight:900}
+
+  .check li{list-style:none;position:relative;padding-left:26px}
+  .check li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:900}
+  .out li::before{content:"✕";color:var(--err)}
+
+  footer.doc{border-top:1px solid var(--border);padding:24px 20px;text-align:center;font-size:12px;color:var(--gray)}
+  @media(max-width:600px){
+    table{font-size:12px}
+    th,td{padding:8px 10px}
+  }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <p class="kicker">Smart Connection · Functional-Lead + Architect</p>
+  <h1>Checkout & <em>Pasarela de Pago</em></h1>
+  <p>Requerimiento funcional y técnico — e-commerce KANKI & CO (streetwear × surf). Checkout vertical de una página con Webpay Plus (Transbank) y PayPal, referencia UX: infopetrenaca.cl.</p>
+  <div class="meta">DOC-KK-2026-07-19 · v1.0 · repo kanki-maquetas · qas.kanki.smconnection.cl</div>
+  <div>
+    <span class="pill fase1">Fase 1 · Maqueta funcional</span>
+    <span class="pill demo">Pasarela simulada — sin cobro real</span>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <h2>1 · Contexto y alcance</h2>
+  <p>Hoy el storefront oficial (<code>VF-storefront.html</code>) cierra ventas exclusivamente por WhatsApp: el carrito arma un mensaje y el pago se coordina por transferencia + pantallazo. El carrito vive en memoria JavaScript y se pierde al recargar la página.</p>
+  <p>Este requerimiento incorpora una experiencia de pago estándar de e-commerce, replicando el patrón del checkout vertical de <strong>InfoPet Reñaca</strong> (<code>infopetrenaca.cl/v2/checkout/vertical/</code>), definido por Guillermo como referencia de éxito.</p>
+  <div class="callout warn">
+    <strong>Alcance Fase 1 (esta entrega):</strong> maqueta de alta fidelidad 100% funcional en front (validaciones, envío por región, totales, flujo completo), con pasarelas <strong>simuladas</strong>. Kanki SpA (RUT 78.433.042-7) aún no tiene contrato Transbank ni cuenta PayPal Business — no hay cobro real. La Fase 2 (sección 6) especifica la integración real.
+  </div>
+  <h3>Objetivos</h3>
+  <ul>
+    <li>Checkout vertical de una página: Contacto → Método de Entrega → Pago, con resumen sticky.</li>
+    <li>Persistencia del carrito (localStorage) — corrige además la pérdida del carrito al recargar.</li>
+    <li>Pasarelas Webpay Plus y PayPal presentadas como en producción, con redirección simulada y resultado éxito/rechazo.</li>
+    <li>Confirmación con número de orden <code>KK-2026-NNNN</code> persistido localmente.</li>
+    <li>Cero errores de consola y flujo completo verificado end-to-end antes de publicar.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2 · Referencia UX (InfoPet Reñaca)</h2>
+  <p>Elementos del patrón que se replican con identidad visual KANKI (ocean <code>#0c1b2e</code> · teal <code>#1a8f82</code> · sunset <code>#e8651a</code> · Inter):</p>
+  <table>
+    <tr><th>Elemento InfoPet</th><th>Adaptación Kanki</th></tr>
+    <tr><td>Secciones numeradas ① Contacto ② Método de Entrega ③ Pago en una sola columna</td><td>Igual, con badges numerados circulares estilo KANKI</td></tr>
+    <tr><td>Formas de envío aparecen recién al completar la dirección</td><td>Igual: Standard/Express visibles solo con región + ciudad + dirección válidas</td></tr>
+    <tr><td>Facturación: checkbox "igual a la de envío" + RUT con error rojo si formato inválido</td><td>Igual, pero validación RUT <strong>módulo 11 real</strong> (no solo formato)</td></tr>
+    <tr><td>Pago: "Tarjeta (Webpay Plus)" con logos + "Paypal" con logos + nota de redirección externa + candado "Pago seguro"</td><td>Igual, logos SVG inline (sin CDNs)</td></tr>
+    <tr><td>Columna derecha: resumen del pedido (items, subtotal, envío, total) + botón "Realizar pedido"</td><td>Igual, sticky en desktop, acordeón colapsable en mobile 375px</td></tr>
+    <tr><td>Sección Pago bloqueada hasta completar envío ("Ingrese su información de envío arriba…")</td><td>Igual: sección 3 atenuada + botón deshabilitado hasta que ① y ② sean válidos</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>3 · Especificación funcional — Fase 1</h2>
+
+  <h3>3.1 · Flujo general</h3>
+  <div class="flow">
+    <span class="step">Carrito (drawer)</span><span class="arr">→</span>
+    <span class="step hot">Proceder al Pago</span><span class="arr">→</span>
+    <span class="step">/checkout/</span><span class="arr">→</span>
+    <span class="step">Pasarela simulada</span><span class="arr">→</span>
+    <span class="step hot">Confirmación KK-2026-NNNN</span>
+  </div>
+  <p>El drawer del carrito conserva "Pedir por WhatsApp" como método secundario (canal comercial vigente). "Proceder al Pago" es el CTA principal.</p>
+
+  <h3>3.2 · Estado compartido</h3>
+  <table>
+    <tr><th>Clave localStorage</th><th>Contenido</th><th>Escribe</th><th>Lee</th></tr>
+    <tr><td><code>kanki_cart_v1</code></td><td>Array de items <code>{brand, name, price, src, id, qty}</code> (talla embebida en <code>name</code> cuando viene del Quick View)</td><td>VF-storefront en cada mutación · checkout la limpia al pagar</td><td>Checkout</td></tr>
+    <tr><td><code>kanki_orders_v1</code></td><td>Órdenes confirmadas <code>{orderNumber, createdAt, items, contact, delivery, shipMethod, payMethod, status, totals}</code></td><td>Checkout</td><td>Futuro panel admin</td></tr>
+    <tr><td><code>kanki_order_seq</code></td><td>Correlativo para <code>KK-2026-NNNN</code></td><td>Checkout</td><td>Checkout</td></tr>
+  </table>
+  <p>Todo <code>JSON.parse</code> va en <code>try/catch</code> con fallback seguro.</p>
+
+  <h3>3.3 · Sección ① Contacto</h3>
+  <ul>
+    <li><strong>E-mail*</strong>: validación de formato en vivo.</li>
+    <li><strong>Teléfono*</strong>: prefijo fijo 🇨🇱 +56, campo de 9 dígitos (formato móvil 9 XXXX XXXX).</li>
+  </ul>
+
+  <h3>3.4 · Sección ② Método de Entrega</h3>
+  <ul>
+    <li>Radio <strong>Envío a domicilio</strong> (default) / <strong>Retiro en tienda</strong> (envío $0, oculta formulario de dirección y muestra dirección del punto de retiro).</li>
+    <li>Dirección: País (Chile, fijo) · Región* (select 16 regiones, orden oficial norte→sur) · Ciudad* · Dirección* · Depto/Casa (opcional).</li>
+    <li><strong>Formas de envío</strong>: aparecen solo con región + ciudad + dirección completas. Fecha estimada calculada según grupo.</li>
+    <li><strong>Facturación</strong>: checkbox "Dirección de facturación igual a la de envío" (marcado) + <strong>RUT*</strong> con validación módulo 11; error rojo "Por favor, ocupe un RUT válido. Formato: xxxxxxxx-x".</li>
+  </ul>
+
+  <h3>3.5 · Tarifas de envío</h3>
+  <table>
+    <tr><th>Grupo</th><th>Regiones</th><th>Standard</th><th>Express</th><th>Estimado</th></tr>
+    <tr><td>RM</td><td>Metropolitana</td><td>$3.990</td><td>$5.990</td><td>2–3 días / 24–48 h</td></tr>
+    <tr><td>Centro-Sur</td><td>Coquimbo · Valparaíso · O'Higgins · Maule · Ñuble · Biobío · Araucanía · Los Ríos · Los Lagos</td><td>$4.990</td><td>$7.990</td><td>3–5 días</td></tr>
+    <tr><td>Extremas</td><td>Arica y Parinacota · Tarapacá · Antofagasta · Atacama · Aysén · Magallanes</td><td>$6.990</td><td>$9.990</td><td>5–7 días</td></tr>
+  </table>
+  <div class="callout info"><strong>Envío Standard GRATIS</strong> con subtotal ≥ $110.000 CLP — coherente con la barra de envío gratis del carrito (<code>FREE_SHIP = 110000</code>).</div>
+
+  <h3>3.6 · Sección ③ Pago</h3>
+  <ul>
+    <li>Deshabilitada (atenuada) con el mensaje "Ingresa tu información de contacto y envío arriba para ver los métodos de pago" hasta que ① y ② sean válidos.</li>
+    <li>Radio <strong>Tarjeta de crédito o débito (Webpay Plus)</strong> — logos Visa/Mastercard/Amex/Redcompra (SVG inline).</li>
+    <li>Radio <strong>PayPal</strong> — wordmark SVG.</li>
+    <li>Nota: "Serás redirigido a la Pasarela de Pago Externa para realizar un pago seguro" + candado 🔒 "Pago seguro".</li>
+  </ul>
+
+  <h3>3.7 · Simulación de pasarela</h3>
+  <ol>
+    <li>"Realizar Pedido" → interstitial 1,5 s "Conectando con la pasarela segura…" (spinner).</li>
+    <li>Pantalla full-screen simulada según método: <strong>Webpay</strong> (mock formulario de tarjeta, botones "Pagar $TOTAL" y "Anular transacción") o <strong>PayPal</strong> (fondo azul, botón "Pay Now" / "Cancel"). Ambas con etiqueta discreta "SIMULACIÓN · DEMO".</li>
+    <li><strong>Éxito</strong>: check animado, "¡Pedido confirmado!", N° de orden, resumen, "Te enviaremos la confirmación a {email}", CTAs "Volver a la tienda" y "Coordinar entrega por WhatsApp" (mensaje con el N° de orden). Se limpia el carrito.</li>
+    <li><strong>Rechazo</strong>: "Pago no procesado", CTAs "Reintentar" (vuelve al formulario con todo el estado intacto) y "Pedir por WhatsApp". El carrito NO se limpia.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>4 · Cambios al storefront (quirúrgicos)</h2>
+  <ul>
+    <li>Carrito inicializa desde <code>kanki_cart_v1</code> y se guarda en cada mutación (hook único en <code>renderCart()</code>).</li>
+    <li>Drawer: nuevo CTA principal "Proceder al Pago →" (sunset) hacia <code>checkout/</code> + WhatsApp como secundario.</li>
+    <li>Sin cambios al catálogo ni al resto de secciones.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>5 · Criterios de aceptación (gate de publicación)</h2>
+  <ul class="check">
+    <li>Consola con 0 errores en storefront, checkout (con y sin items) y banco.</li>
+    <li>Flujo feliz completo: agregar con talla → recargar (persiste) → checkout → RM + Standard → RUT válido → Webpay simulado → confirmación con N° correlativo → carrito vacío.</li>
+    <li>Flujo rechazo conserva el formulario al reintentar.</li>
+    <li>PayPal, Retiro en tienda ($0) y envío gratis ≥ $110.000 funcionan.</li>
+    <li>Validaciones negativas: email inválido, RUT inválido (módulo 11), teléfono corto → botón bloqueado y mensajes claros.</li>
+    <li>Mobile 375px: una columna, resumen colapsable, sin scroll horizontal.</li>
+    <li>Links relativos válidos en localhost y GitHub Pages (QAS).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>6 · Fase 2 — Integración real (futura)</h2>
+  <div class="callout warn"><strong>Prerequisitos de negocio:</strong> Kanki SpA operativa (firma pendiente) + cuenta corriente + contrato Webpay Plus con Transbank + cuenta PayPal Business. Sin esto no se inicia Fase 2.</div>
+  <h3>6.1 · Webpay Plus (Transbank) — REST</h3>
+  <ol>
+    <li><strong>Create</strong>: Supabase Edge Function <code>webpay-create</code> llama <code>POST /rswebpaytransaction/api/webpay/v1.2/transactions</code> con <code>buy_order, session_id, amount, return_url</code> (llaves <code>Tbk-Api-Key-Id/Secret</code> solo server-side).</li>
+    <li><strong>Redirect</strong>: front redirige a <code>url + token_ws</code> (POST form).</li>
+    <li><strong>Commit</strong>: en <code>return_url</code>, Edge Function <code>webpay-commit</code> hace <code>PUT .../transactions/{token}</code>, valida <code>response_code === 0</code>, marca orden pagada.</li>
+    <li>Ambiente de integración Transbank (comercio de prueba 597055555532) antes de producción.</li>
+  </ol>
+  <h3>6.2 · PayPal — Orders API v2</h3>
+  <ol>
+    <li>Edge Function <code>paypal-create-order</code> → <code>POST /v2/checkout/orders</code> (intent CAPTURE, CLP→USD con tasa del día o cuenta en USD).</li>
+    <li>Aprobación vía redirect o JS SDK → <code>paypal-capture-order</code> → <code>POST /v2/checkout/orders/{id}/capture</code>.</li>
+    <li>Sandbox antes de Live.</li>
+  </ol>
+  <h3>6.3 · Modelo de datos (Supabase)</h3>
+  <p>Base ya diseñada en <code>scaffolds/checkout.md</code> y <code>supabase-schema.sql</code>: <code>orders</code>, <code>order_items</code>, <code>customers</code>, <code>shipping_addresses</code>, <code>shipping_rates</code> (tarifas por región = tabla de la sección 3.5), <code>payment_proofs</code>. RLS activo; escrituras de pago solo vía Edge Functions con <code>service_role</code>.</p>
+  <h3>6.4 · Migración desde Fase 1</h3>
+  <p>El checkout Fase 1 ya separa estado y UI: para Fase 2 se reemplaza la simulación (<code>view-gateway</code>) por las redirecciones reales y el guardado local de órdenes por <code>INSERT</code> a Supabase. La UI no cambia.</p>
+</section>
+
+<section>
+  <h2>7 · Fuera de alcance (Fase 1)</h2>
+  <ul class="out">
+    <li>Cobro real y conciliación bancaria.</li>
+    <li>E-mails transaccionales de confirmación.</li>
+    <li>Stock en tiempo real / reserva de inventario.</li>
+    <li>Captura de talla en el botón directo "Comprar Ahora" de las cards (solo vía Quick View, limitación conocida).</li>
+    <li>Cuentas de usuario / login en el checkout (checkout como invitado).</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="doc">
+  <p>KANKI & CO × Smart Connection · Requerimiento Checkout & Pasarela · 2026-07-19 · Fase 1 maqueta funcional</p>
+</footer>
+
+</body>
+</html>

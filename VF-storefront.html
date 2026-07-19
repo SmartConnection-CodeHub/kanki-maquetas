@@ -1143,6 +1143,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transition: all var(--t); display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .cart-checkout:hover { background: var(--sunset-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,101,26,0.35); }
+.cart-checkout--wa {
+  background: var(--white); color: var(--teal); border: 1.5px solid var(--teal);
+  padding: 13px;
+}
+.cart-checkout--wa:hover { background: rgba(26,143,130,0.07); box-shadow: none; transform: none; }
+a.cart-checkout { text-decoration: none; }
 .cart-continue {
   text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--gray); cursor: pointer;
@@ -2770,9 +2776,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
         <span class="cart-subtotal__label">Subtotal</span>
         <span class="cart-subtotal__val" id="cart-total">$0</span>
       </div>
-      <button class="cart-checkout" id="cart-checkout-btn">
+      <a class="cart-checkout" id="cart-pay-btn" href="checkout/">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+        Proceder al Pago →
+      </a>
+      <button class="cart-checkout cart-checkout--wa" id="cart-checkout-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Pedir por WhatsApp
+        o pide por WhatsApp
       </button>
       <div class="cart-continue" onclick="closeCart()">← Seguir comprando</div>
     </div>
@@ -2808,7 +2818,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    KANKI & CO — CART LOGIC
    ══════════════════════════════════════ */
 
+const CART_KEY = 'kanki_cart_v1';
 let cart = [];
+try { const saved = JSON.parse(localStorage.getItem(CART_KEY)); if (Array.isArray(saved)) cart = saved; } catch (e) {}
+function saveCart() { try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {} }
 const FREE_SHIP = 110000;
 
 function fmt(n) {
@@ -2856,6 +2869,7 @@ function getProductFromCard(card) {
 }
 
 function renderCart() {
+  saveCart();
   const itemsEl   = document.getElementById('cart-items');
   const emptyEl   = document.getElementById('cart-empty');
   const footEl    = document.getElementById('cart-foot');
