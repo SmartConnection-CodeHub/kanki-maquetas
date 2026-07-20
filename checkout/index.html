@@ -1,262 +1,801 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Checkout · Maqueta · KANKI STREET</title>
+<title>Checkout — KANKI & CO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,900;1,700&display=swap" rel="stylesheet">
 <style>
-  :root{--navy:#1B2F4E;--gold:#C49A3A;--cream:#F5EDD8;--bg:#fafaf7;--bg-alt:#f5f5f7;--ink:#1d1d1f;--mute:#6b7280;--line:#e5e7eb;--success:#16a34a;--err:#dc2626}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font:15px/1.55 -apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--ink);background:var(--bg-alt)}
-  .nav-top{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-  .nav-top .logo{font:700 16px/1 'Times New Roman',serif;color:var(--navy)}
-  .nav-top .secure{font:600 11px/1 system-ui;color:var(--success);display:inline-flex;align-items:center;gap:6px}
-
-  /* Stepper */
-  .stepper{max-width:520px;margin:24px auto 0;padding:0 20px;display:flex;align-items:center;gap:8px}
-  .step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
-  .step .circle{width:32px;height:32px;border-radius:50%;background:#e5e7eb;color:var(--mute);font:700 13px system-ui;display:flex;align-items:center;justify-content:center;transition:all .2s}
-  .step.active .circle{background:var(--navy);color:#fff}
-  .step.done .circle{background:var(--success);color:#fff}
-  .step .label{font:600 11px/1 system-ui;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
-  .step.active .label{color:var(--navy)}
-  .step:not(:last-child)::after{content:"";position:absolute;left:55%;top:16px;width:90%;height:2px;background:#e5e7eb;z-index:-1}
-  .step.done:not(:last-child)::after{background:var(--success)}
-
-  main{max-width:520px;margin:0 auto;padding:24px 20px 100px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px 20px;margin-bottom:16px}
-  .card h2{font:700 18px/1.2 system-ui;color:var(--navy);margin-bottom:4px}
-  .card p.subtitle{font-size:13px;color:var(--mute);margin-bottom:18px}
-
-  .field{margin-bottom:14px}
-  .field label{display:block;font:600 12px/1 system-ui;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
-  .field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:8px;font:15px/1.4 system-ui;background:var(--bg);transition:border-color .15s}
-  .field input:focus,.field select:focus{border-color:var(--gold);outline:none;background:#fff}
-  .field .hint{font-size:11px;color:var(--mute);margin-top:4px}
-  .field .err{font-size:11px;color:var(--err);margin-top:4px;display:none}
-
-  .field.check{display:flex;align-items:center;gap:8px}
-  .field.check input{width:auto}
-  .field.check label{margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--ink);font-weight:500}
-
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-  /* Pay options */
-  .pay-opt{border:2px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;margin-bottom:10px;transition:all .15s}
-  .pay-opt.selected{border-color:var(--navy);background:rgba(196,154,58,.05)}
-  .pay-opt .head{display:flex;justify-content:space-between;align-items:center}
-  .pay-opt .head .name{font-weight:600;font-size:14px;color:var(--navy)}
-  .pay-opt .head .fee{font:600 11px monospace;color:var(--mute)}
-  .pay-opt .desc{font-size:12px;color:var(--mute);margin-top:4px}
-
-  /* Sticky bottom CTA */
-  .cta-sticky{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:14px 20px;display:flex;gap:10px;align-items:center;z-index:10}
-  .cta-sticky .total{flex:1;font:700 18px/1 system-ui;color:var(--navy)}
-  .cta-sticky .total small{display:block;font:500 11px/1.2 system-ui;color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
-  .cta-sticky button{padding:13px 22px;background:var(--navy);color:#fff;border:none;border-radius:10px;font:600 14px system-ui;cursor:pointer;display:flex;align-items:center;gap:8px}
-  .cta-sticky button:hover{background:#0e1a2e}
-
-  /* Order summary */
-  .summary{margin-top:16px;font-size:13px}
-  .summary-row{display:flex;justify-content:space-between;padding:6px 0;color:var(--mute)}
-  .summary-row.total{padding-top:10px;border-top:1px solid var(--line);color:var(--navy);font-weight:700;font-size:15px}
-
-  /* Confirmation success state */
-  .success-state{text-align:center;padding:40px 20px}
-  .success-state .icon{font-size:64px;color:var(--success);margin-bottom:12px}
-  .success-state h2{font:800 24px/1.2 system-ui;color:var(--navy);margin-bottom:8px}
-  .success-state p{color:var(--mute);max-width:380px;margin:0 auto 24px;line-height:1.5}
-  .success-state .order-id{font:700 18px monospace;background:var(--cream);color:var(--navy);padding:8px 16px;border-radius:8px;display:inline-block;margin-bottom:24px}
-  .success-state .actions{display:flex;flex-direction:column;gap:10px}
-  .success-state .actions a{padding:14px;border-radius:10px;font:600 14px system-ui;text-decoration:none;text-align:center}
-  .success-state .actions a.wa{background:#25d366;color:#fff}
-  .success-state .actions a.home{background:#fff;color:var(--navy);border:1px solid var(--line)}
-
-  /* View toggle (maqueta only) */
-  .demo-toggle{position:fixed;top:60px;right:10px;background:#000;color:#fff;border-radius:8px;padding:8px;z-index:100;font:600 11px system-ui;display:flex;gap:4px;flex-direction:column}
-  .demo-toggle button{background:none;color:#fff;border:1px solid #444;border-radius:4px;padding:4px 8px;cursor:pointer;font:11px system-ui}
-  .demo-toggle button.active{background:var(--gold);color:#000;border-color:var(--gold)}
-
-  .view{display:none}
-  .view.active{display:block}
-
-  @media (max-width:600px){
-    .row{grid-template-columns:1fr}
-    .demo-toggle{top:auto;bottom:90px;right:8px}
+  :root{
+    --ocean:#0c1b2e; --ocean-mid:#0d4f7c;
+    --teal:#1a8f82; --teal-light:#22b5a5;
+    --sunset:#e8651a; --sunset-dark:#c04e0e;
+    --sand:#f0e4cc; --sand-dark:#e0ceae;
+    --gray:#6b7280; --gray-light:#f3f4f6; --border:#e5e7eb;
+    --ok:#16a34a; --err:#dc2626;
+    --r-sm:4px; --r-md:10px; --r-lg:20px; --r-full:9999px;
+    --font:'Inter','Helvetica Neue',Arial,sans-serif;
   }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font:15px/1.55 var(--font);color:var(--ocean);background:#fbfaf7}
+  a{color:inherit;text-decoration:none}
+  button{font-family:var(--font);cursor:pointer}
+  [hidden]{display:none !important}
+
+  /* ── Header ─────────────────────────────── */
+  .ck-head{background:var(--ocean);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:40}
+  .ck-head .logo{font-weight:900;font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+  .ck-head .logo em{font-style:italic;color:var(--sunset)}
+  .ck-head .secure{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--teal-light)}
+
+  /* ── Layout ─────────────────────────────── */
+  .ck-wrap{max-width:1120px;margin:0 auto;padding:20px 16px 60px;display:grid;grid-template-columns:1fr;gap:20px}
+  @media(min-width:960px){
+    .ck-wrap{grid-template-columns:1fr 400px;gap:36px;padding-top:36px;align-items:start}
+    .ck-form{order:1}
+    .summary{order:2;position:sticky;top:76px}
+  }
+
+  /* ── Secciones del form ─────────────────── */
+  .sec{background:#fff;border:1px solid var(--border);border-radius:var(--r-md);padding:22px 20px;margin-bottom:18px;transition:opacity .25s}
+  .sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .sec-num{width:28px;height:28px;border-radius:var(--r-full);background:var(--ocean);color:#fff;font:900 14px/28px var(--font);text-align:center;flex:none}
+  .sec-head h2{font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+  .sec.locked{opacity:.45}
+  .sec .locked-msg{font-size:13px;color:var(--gray)}
+
+  label{display:block;font-size:12.5px;font-weight:600;color:var(--ocean);margin:12px 0 5px}
+  label .req{color:var(--sunset)}
+  input[type=text],input[type=email],input[type=tel],select{
+    width:100%;padding:11px 12px;font:400 14.5px var(--font);color:var(--ocean);
+    background:var(--gray-light);border:1.5px solid var(--border);border-radius:var(--r-sm);outline:none;transition:border .15s,background .15s;
+  }
+  input:focus,select:focus{border-color:var(--teal);background:#fff}
+  input.bad{border-color:var(--err);background:rgba(220,38,38,.04)}
+  .err-msg{display:none;font-size:12px;color:var(--err);margin-top:4px;font-weight:600}
+  .err-msg.on{display:block}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+
+  .phone-wrap{display:flex;gap:8px}
+  .phone-flag{flex:none;display:flex;align-items:center;gap:6px;padding:0 12px;background:var(--gray-light);border:1.5px solid var(--border);border-radius:var(--r-sm);font-weight:600;font-size:14px}
+
+  /* ── Radios (entrega / envío / pago) ────── */
+  .opt-group{border:1.5px solid var(--border);border-radius:var(--r-md);overflow:hidden;margin-top:8px}
+  .opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1.5px solid var(--border);cursor:pointer;background:#fff;transition:background .15s}
+  .opt:last-child{border-bottom:0}
+  .opt:hover{background:#fafaf8}
+  .opt input{margin-top:3px;accent-color:var(--sunset);width:16px;height:16px;flex:none}
+  .opt .opt-body{flex:1}
+  .opt .opt-title{display:block;font-weight:700;font-size:14px}
+  .opt .opt-sub{display:block;font-size:12.5px;color:var(--gray);margin-top:2px}
+  .opt .opt-price{font-weight:900;font-size:14px;white-space:nowrap}
+  .opt .opt-price.free{color:var(--ok)}
+  .opt.on{background:rgba(26,143,130,.06)}
+  .opt .paylogos{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+  .gateway-note{background:var(--gray-light);border-top:1.5px solid var(--border);padding:12px 16px;font-size:12.5px;color:var(--gray);border-radius:0 0 var(--r-md) var(--r-md);margin-top:-1px}
+
+  .check-line{display:flex;align-items:center;gap:8px;margin:14px 0 2px;font-size:13.5px;font-weight:600;cursor:pointer}
+  .check-line input{accent-color:var(--teal);width:16px;height:16px}
+
+  .pickup-info{background:rgba(26,143,130,.07);border:1.5px solid rgba(26,143,130,.3);border-radius:var(--r-md);padding:14px 16px;font-size:13.5px;margin-top:12px}
+  .pickup-info strong{display:block;margin-bottom:2px}
+
+  .ship-hint{font-size:13px;color:var(--gray);margin-top:12px}
+  .sub-label{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-top:20px;padding-top:16px;border-top:1px dashed var(--border)}
+
+  /* ── Resumen ────────────────────────────── */
+  .summary{background:#fff;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden}
+  .sum-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 18px;background:var(--sand);border:0;font:700 14px var(--font);color:var(--ocean)}
+  .sum-toggle .car{display:inline-block;transition:transform .2s}
+  .summary.open .sum-toggle .car{transform:rotate(180deg)}
+  .sum-body{display:none;padding:16px 18px}
+  .summary.open .sum-body{display:block}
+  @media(min-width:960px){
+    .sum-toggle{pointer-events:none}
+    .sum-toggle .car{display:none}
+    .sum-body{display:block}
+  }
+  .sum-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+  .sum-item:last-of-type{border-bottom:0}
+  .sum-thumb{width:56px;height:56px;flex:none;border-radius:var(--r-sm);background:var(--sand);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:22px}
+  .sum-thumb img{width:100%;height:100%;object-fit:cover}
+  .sum-info{flex:1;min-width:0}
+  .sum-name{font-weight:700;font-size:13px;line-height:1.3}
+  .sum-brand{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em}
+  .sum-qty{font-size:12px;color:var(--gray)}
+  .sum-price{font-weight:700;font-size:13.5px;white-space:nowrap}
+  .sum-totals{border-top:1.5px solid var(--border);margin-top:12px;padding-top:12px;font-size:14px}
+  .sum-line{display:flex;justify-content:space-between;margin-bottom:8px;gap:12px}
+  .sum-line .muted{color:var(--gray)}
+  .sum-line.total{font-size:17px;font-weight:900;margin-top:4px}
+  .free{color:var(--ok);font-weight:700}
+
+  .btn-pay{width:100%;padding:16px;margin-top:14px;background:var(--sunset);color:#fff;border:0;border-radius:var(--r-md);
+    font:900 15px var(--font);text-transform:uppercase;letter-spacing:.08em;transition:all .2s}
+  .btn-pay:hover:not(:disabled){background:var(--sunset-dark);transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,101,26,.35)}
+  .btn-pay:disabled{background:#cbd5e1;cursor:not-allowed}
+  .pay-hint{font-size:12px;color:var(--gray);text-align:center;margin-top:10px}
+  .back-store{display:block;text-align:center;font-size:13px;font-weight:600;color:var(--teal);margin-top:14px}
+  .back-store:hover{text-decoration:underline}
+
+  /* ── Carrito vacío ──────────────────────── */
+  .empty{max-width:520px;margin:60px auto;text-align:center;padding:0 20px}
+  .empty .big{font-size:56px;margin-bottom:12px}
+  .empty h1{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+  .empty p{color:var(--gray);margin-bottom:22px}
+  .btn-sunset{display:inline-block;background:var(--sunset);color:#fff;padding:14px 30px;border-radius:var(--r-md);border:0;
+    font:900 14px var(--font);text-transform:uppercase;letter-spacing:.08em;transition:all .2s}
+  .btn-sunset:hover{background:var(--sunset-dark);transform:translateY(-2px)}
+  .btn-ghost-teal{display:inline-block;background:#fff;color:var(--teal);border:1.5px solid var(--teal);padding:13px 26px;border-radius:var(--r-md);
+    font:700 13px var(--font);text-transform:uppercase;letter-spacing:.06em;transition:all .2s}
+  .btn-ghost-teal:hover{background:rgba(26,143,130,.07)}
+
+  /* ── Pasarela simulada ──────────────────── */
+  .gw{position:fixed;inset:0;z-index:100;overflow-y:auto;background:#fbfaf7}
+  .gw-demo-tag{position:fixed;top:10px;right:10px;z-index:110;font:700 10px var(--font);letter-spacing:.1em;background:rgba(12,27,46,.75);color:#fff;padding:5px 10px;border-radius:var(--r-full)}
+  .gw-inter{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:18px}
+  .spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--sunset);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .gw-inter p{font-weight:600;color:var(--gray)}
+
+  .gw-webpay{background:#f4f4f6;min-height:100vh}
+  .gw-webpay .wp-top{background:#5c2d91;color:#fff;padding:16px 20px;font-weight:900;letter-spacing:.06em;font-size:16px}
+  .gw-webpay .wp-card{max-width:460px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.1);padding:28px 26px}
+  .gw-webpay h3{font-size:16px;margin-bottom:4px}
+  .gw-webpay .wp-merchant{font-size:13px;color:var(--gray);margin-bottom:18px}
+  .gw-webpay .wp-amount{font-size:26px;font-weight:900;margin-bottom:20px}
+  .gw-webpay .wp-btns{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+  .wp-pay{background:#5c2d91;color:#fff;border:0;padding:14px;border-radius:8px;font:700 15px var(--font)}
+  .wp-pay:hover{background:#4a2375}
+  .wp-cancel{background:#fff;color:#5c2d91;border:1.5px solid #5c2d91;padding:12px;border-radius:8px;font:700 14px var(--font)}
+
+  .gw-mp{background:#ebebeb;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px}
+  .mp-card{background:#fff;border-radius:12px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+  .mp-head{background:#009EE3;color:#fff;padding:16px 22px;font-weight:900;letter-spacing:.03em;font-size:16px}
+  .mp-body{padding:24px 22px}
+  .mp-body h3{font-size:15px;margin-bottom:2px}
+  .mp-merchant{font-size:13px;color:var(--gray);margin-bottom:14px}
+  .mp-amount{font-size:26px;font-weight:900;margin-bottom:16px;color:#333}
+  .mp-body select{width:100%;padding:11px 12px;font:400 14.5px var(--font);background:var(--gray-light);border:1.5px solid var(--border);border-radius:var(--r-sm)}
+  .mp-pay{width:100%;margin-top:20px;background:#009EE3;color:#fff;border:0;padding:14px;border-radius:8px;font:700 15px var(--font)}
+  .mp-pay:hover{background:#0089c4}
+  .mp-cancel{display:block;width:100%;margin-top:10px;font-size:13px;color:var(--gray);background:none;border:0;text-decoration:underline}
+
+  .gw-paypal{background:#001c64;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px 16px}
+  .pp-card{background:#fff;border-radius:12px;max-width:420px;width:100%;padding:32px 28px;text-align:center}
+  .pp-logo{font:900 26px var(--font);font-style:italic;margin-bottom:6px}
+  .pp-logo .p1{color:#003087}.pp-logo .p2{color:#0070e0}
+  .pp-sub{font-size:13px;color:var(--gray);margin-bottom:18px}
+  .pp-amount{font-size:24px;font-weight:900;margin-bottom:22px}
+  .pp-pay{width:100%;background:#ffc439;border:0;padding:14px;border-radius:var(--r-full);font:900 15px var(--font);color:#111}
+  .pp-pay:hover{background:#f2b535}
+  .pp-cancel{display:inline-block;margin-top:14px;font-size:13px;color:var(--gray);background:none;border:0;text-decoration:underline}
+
+  /* ── Resultado ──────────────────────────── */
+  .result{max-width:560px;margin:50px auto;padding:0 20px;text-align:center}
+  .res-icon{width:84px;height:84px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;animation:pop .4s ease}
+  .res-icon.ok{background:var(--ok)}
+  .res-icon.fail{background:var(--err)}
+  @keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+  .result h1{font-size:24px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .result .order-n{font:700 15px ui-monospace,Menlo,monospace;color:var(--sunset);margin-bottom:10px}
+  .result p{color:var(--gray);margin-bottom:8px}
+  .res-box{background:#fff;border:1px solid var(--border);border-radius:var(--r-md);padding:18px;margin:22px 0;text-align:left;font-size:13.5px}
+  .res-box .sum-line{margin-bottom:6px}
+  .res-ctas{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+  .btn-wa{display:inline-block;background:#25D366;color:#fff;padding:14px 26px;border-radius:var(--r-md);font:900 14px var(--font);text-transform:uppercase;letter-spacing:.06em}
+  .btn-wa:hover{filter:brightness(.93)}
 </style>
 </head>
 <body>
 
-<div class="nav-top">
-  <a href="/" class="logo">Kanki Street</a>
-  <span class="secure">🔒 Compra segura</span>
+<header class="ck-head">
+  <a class="logo" href="../VF-storefront.html">KANKI <em>&amp; CO</em></a>
+  <span class="secure">🔒 Pago seguro</span>
+</header>
+
+<!-- ══ CARRITO VACÍO ══ -->
+<div id="view-empty" hidden>
+  <div class="empty">
+    <div class="big">🛒</div>
+    <h1>Tu carrito está vacío</h1>
+    <p>Agrega productos desde la tienda para continuar con tu compra.</p>
+    <a class="btn-sunset" href="../VF-storefront.html">Volver a la tienda</a>
+  </div>
 </div>
 
-<!-- Demo toggle (sólo maqueta) -->
-<div class="demo-toggle">
-  <strong style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#888;text-align:center;margin-bottom:4px">Vista demo</strong>
-  <button class="active" data-view="contacto">1 · Contacto</button>
-  <button data-view="envio">2 · Envío</button>
-  <button data-view="pago">3 · Pago</button>
-  <button data-view="confirmacion">✓ Confirmación</button>
-</div>
+<!-- ══ CHECKOUT ══ -->
+<main class="ck-wrap" id="view-checkout" hidden>
 
-<!-- Stepper · contexto del paso actual -->
-<div class="stepper">
-  <div class="step active" data-step="contacto"><div class="circle">1</div><div class="label">Contacto</div></div>
-  <div class="step" data-step="envio"><div class="circle">2</div><div class="label">Envío</div></div>
-  <div class="step" data-step="pago"><div class="circle">3</div><div class="label">Pago</div></div>
-  <div class="step" data-step="confirmacion"><div class="circle">✓</div><div class="label">Listo</div></div>
-</div>
-
-<main>
-
-  <!-- VISTA 1 · CONTACTO -->
-  <div class="view active" id="view-contacto">
-    <div class="card">
-      <h2>Datos de contacto</h2>
-      <p class="subtitle">Te enviaremos el número de orden y tracking aquí.</p>
-      <div class="field">
-        <label>Email</label>
-        <input type="email" placeholder="hola@email.com">
-        <div class="hint">Confirmación + tracking del pedido</div>
+  <!-- Resumen (primero en DOM = arriba en mobile) -->
+  <aside class="summary" id="summary">
+    <button type="button" class="sum-toggle" id="sum-toggle">
+      <span>🛍️ Resumen del pedido</span>
+      <span><strong id="sum-toggle-total"></strong> <span class="car">▾</span></span>
+    </button>
+    <div class="sum-body">
+      <div id="sum-items"></div>
+      <div class="sum-totals">
+        <div class="sum-line"><span class="muted">Subtotal (<span id="sum-count"></span>)</span><span id="sum-subtotal"></span></div>
+        <div class="sum-line"><span class="muted">Envío</span><span id="sum-ship">—</span></div>
+        <div class="sum-line total"><span>Total</span><span id="sum-total"></span></div>
       </div>
-      <div class="field">
-        <label>Teléfono</label>
-        <input type="tel" placeholder="+56 9 1234 5678">
-        <div class="hint">WhatsApp para coordinar entrega</div>
-      </div>
-      <div class="field">
-        <label>Nombre completo</label>
-        <input type="text" placeholder="Nombre Apellido">
-      </div>
-      <div class="field check">
-        <input type="checkbox" id="newsletter" checked>
-        <label for="newsletter">Quiero recibir drops y ofertas (1 email/mes)</label>
-      </div>
+      <button class="btn-pay" id="btn-pay" disabled>Realizar Pedido</button>
+      <p class="pay-hint" id="pay-hint">Completa contacto, entrega y pago para continuar</p>
+      <a class="back-store" href="../VF-storefront.html">← Seguir comprando</a>
     </div>
-  </div>
+  </aside>
 
-  <!-- VISTA 2 · ENVÍO -->
-  <div class="view" id="view-envio">
-    <div class="card">
-      <h2>¿Dónde te lo enviamos?</h2>
-      <p class="subtitle">Envíos por Chilexpress · 2-7 días según región.</p>
-      <div class="row">
-        <div class="field">
-          <label>Región</label>
-          <select>
-            <option>Metropolitana</option>
-            <option>Valparaíso</option>
-            <option>Bío Bío</option>
-            <option>Antofagasta</option>
-            <option>Magallanes</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Comuna</label>
-          <select><option>Las Condes</option><option>Providencia</option><option>Ñuñoa</option></select>
-        </div>
-      </div>
-      <div class="field">
-        <label>Calle y número</label>
-        <input type="text" placeholder="Ej: Av Apoquindo 4501">
-      </div>
-      <div class="field">
-        <label>Departamento / Casa (opcional)</label>
-        <input type="text" placeholder="Ej: 1502">
-      </div>
-      <div class="field">
-        <label>Notas para repartidor</label>
-        <textarea rows="2" placeholder="Ej: Dejar con conserje"></textarea>
-      </div>
-      <div class="summary">
-        <div class="summary-row"><span>Subtotal · 2 items</span><span>$72.000</span></div>
-        <div class="summary-row"><span>Envío (RM · 2 días)</span><span>$3.990</span></div>
-        <div class="summary-row total"><span>Total</span><span>$75.990</span></div>
-      </div>
-    </div>
-  </div>
+  <!-- Formulario -->
+  <form class="ck-form" id="ck-form" novalidate autocomplete="on">
 
-  <!-- VISTA 3 · PAGO -->
-  <div class="view" id="view-pago">
-    <div class="card">
-      <h2>¿Cómo pagás?</h2>
-      <p class="subtitle">Pago seguro · sin almacenamos datos de tarjeta.</p>
+    <!-- ① CONTACTO -->
+    <section class="sec" id="sec-contact">
+      <div class="sec-head"><span class="sec-num">1</span><h2>Contacto</h2></div>
+      <label for="f-email">E-mail <span class="req">*</span></label>
+      <input type="email" id="f-email" autocomplete="email" placeholder="tucorreo@ejemplo.cl">
+      <p class="err-msg" id="err-email">Ingresa un e-mail válido</p>
+      <label for="f-phone">Número Teléfono <span class="req">*</span></label>
+      <div class="phone-wrap">
+        <span class="phone-flag">🇨🇱 +56</span>
+        <input type="tel" id="f-phone" inputmode="numeric" maxlength="9" autocomplete="tel-national" placeholder="912345678">
+      </div>
+      <p class="err-msg" id="err-phone">Ingresa un móvil chileno de 9 dígitos (empieza con 9)</p>
+    </section>
 
-      <div class="pay-opt selected">
-        <div class="head"><div class="name">💳 WebPay Plus</div><div class="fee">comisión 3.49%</div></div>
-        <div class="desc">Tarjeta crédito/débito · redirect Transbank · instantáneo</div>
+    <!-- ② MÉTODO DE ENTREGA -->
+    <section class="sec" id="sec-delivery">
+      <div class="sec-head"><span class="sec-num">2</span><h2>Método de Entrega</h2></div>
+
+      <div class="opt-group" id="delivery-opts">
+        <label class="opt on">
+          <input type="radio" name="delivery" value="domicilio" checked>
+          <span class="opt-body">
+            <span class="opt-title">Envío a domicilio</span>
+            <span class="opt-sub">Recibe tu pedido en la dirección que indiques</span>
+          </span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="delivery" value="retiro">
+          <span class="opt-body">
+            <span class="opt-title">Retiro en tienda o punto físico</span>
+            <span class="opt-sub">Retira tu pedido directamente en nuestro punto de La Boca, Concón</span>
+          </span>
+          <span class="opt-price free">Gratis</span>
+        </label>
       </div>
 
-      <div class="pay-opt">
-        <div class="head"><div class="name">⚡ Khipu</div><div class="fee">comisión 1%</div></div>
-        <div class="desc">Transferencia bancaria directa · BancoEstado, BCI, Itaú, Santander · instantáneo</div>
-      </div>
-
-      <div class="pay-opt">
-        <div class="head"><div class="name">🏦 Transferencia manual</div><div class="fee">sin comisión · 6h validación</div></div>
-        <div class="desc">Te mostramos datos · envías pantallazo por WhatsApp</div>
-      </div>
-
-      <div class="field check" style="margin-top:18px">
-        <input type="checkbox" id="terms">
-        <label for="terms">Acepto los <a href="#" style="color:var(--navy);text-decoration:underline">términos y devoluciones</a></label>
-      </div>
-    </div>
-  </div>
-
-  <!-- VISTA 4 · CONFIRMACIÓN -->
-  <div class="view" id="view-confirmacion">
-    <div class="card">
-      <div class="success-state">
-        <div class="icon">✓</div>
-        <h2>¡Compra confirmada!</h2>
-        <p>Te enviamos el detalle y tracking a <strong>hola@email.com</strong>. Coordinamos despacho en 24h.</p>
-        <div class="order-id">N° KK-2026-0042</div>
-        <div class="actions">
-          <a class="wa" href="#">📱 Hablar por WhatsApp con Kanki</a>
-          <a class="home" href="/">← Volver a la tienda</a>
+      <div id="pickup-block" hidden>
+        <div class="pickup-info">
+          <strong>📍 Punto de retiro — KANKI La Boca</strong>
+          Av. Borgoño s/n, La Boca, Concón · Vie a Dom 11:00–19:00 hrs.<br>
+          Te avisaremos por WhatsApp cuando tu pedido esté listo (24–48 h).
         </div>
       </div>
-    </div>
-  </div>
 
+      <div id="address-block">
+        <p class="sub-label">Dirección de envío</p>
+        <div class="row2">
+          <div>
+            <label for="f-country">País <span class="req">*</span></label>
+            <select id="f-country" disabled><option>Chile</option></select>
+          </div>
+          <div>
+            <label for="f-region">Estado / Región <span class="req">*</span></label>
+            <select id="f-region"><option value="">Seleccione...</option></select>
+          </div>
+        </div>
+        <div class="row2">
+          <div>
+            <label for="f-city">Ciudad / Comuna <span class="req">*</span></label>
+            <input type="text" id="f-city" autocomplete="address-level2" placeholder="Ej: Concón">
+          </div>
+          <div>
+            <label for="f-apt">Apartamento, casa, puerta, etc. (opcional)</label>
+            <input type="text" id="f-apt" placeholder="Depto 42, Casa B...">
+          </div>
+        </div>
+        <label for="f-address">Dirección <span class="req">*</span></label>
+        <input type="text" id="f-address" autocomplete="street-address" placeholder="Calle y número">
+
+        <p class="sub-label">Formas de envío</p>
+        <p class="ship-hint" id="ship-hint">Ingresa tu información de envío arriba para ver los métodos de entrega disponibles.</p>
+        <div class="opt-group" id="ship-opts" hidden></div>
+      </div>
+
+      <p class="sub-label">Facturación</p>
+      <label class="check-line"><input type="checkbox" id="f-samebill" checked> Dirección de facturación igual a la de envío</label>
+      <label for="f-rut">RUT (Ej: 12345678-9) <span class="req">*</span></label>
+      <input type="text" id="f-rut" maxlength="12" placeholder="12345678-9">
+      <p class="err-msg" id="err-rut">Por favor, ocupe un RUT válido. Formato: xxxxxxxx-x</p>
+    </section>
+
+    <!-- ③ PAGO -->
+    <section class="sec locked" id="sec-pay">
+      <div class="sec-head"><span class="sec-num">3</span><h2>Pago</h2><span style="margin-left:auto;color:var(--teal);font-size:12px;font-weight:600" id="pay-secure" hidden>🔒 Pago seguro</span></div>
+      <p class="locked-msg" id="pay-locked-msg">Ingresa tu información de contacto y envío arriba para ver los métodos de pago disponibles.</p>
+
+      <div id="pay-block" hidden>
+        <div class="opt-group">
+          <label class="opt">
+            <input type="radio" name="pay" value="webpay">
+            <span class="opt-body">
+              <span class="opt-title">Tarjeta de crédito o débito (Webpay Plus)</span>
+            </span>
+            <span class="paylogos">
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><text x="17" y="15" text-anchor="middle" font-family="Inter,Arial" font-size="8" font-weight="900" font-style="italic" fill="#1a1f71">VISA</text></svg>
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><circle cx="14" cy="11" r="6" fill="#eb001b"/><circle cx="21" cy="11" r="6" fill="#f79e1b" fill-opacity=".85"/></svg>
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#2557d6"/><text x="17" y="14.5" text-anchor="middle" font-family="Inter,Arial" font-size="6.5" font-weight="900" fill="#fff">AMEX</text></svg>
+              <svg width="46" height="22" viewBox="0 0 46 22"><rect width="46" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><text x="23" y="14.5" text-anchor="middle" font-family="Inter,Arial" font-size="6" font-weight="900" fill="#e8651a">redcompra</text></svg>
+            </span>
+          </label>
+          <label class="opt">
+            <input type="radio" name="pay" value="mercadopago">
+            <span class="opt-body">
+              <span class="opt-title">Mercado Pago</span>
+              <span class="opt-sub">Tarjetas, cuotas y dinero en cuenta</span>
+            </span>
+            <span class="paylogos">
+              <svg width="72" height="22" viewBox="0 0 72 22"><rect width="72" height="22" rx="3" fill="#009EE3"/><text x="36" y="14.5" text-anchor="middle" font-family="Inter,Arial" font-size="8" font-weight="900" fill="#fff">mercado pago</text></svg>
+            </span>
+          </label>
+          <label class="opt">
+            <input type="radio" name="pay" value="paypal">
+            <span class="opt-body">
+              <span class="opt-title">PayPal</span>
+            </span>
+            <span class="paylogos">
+              <svg width="64" height="22" viewBox="0 0 64 22"><rect width="64" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><text x="32" y="15" text-anchor="middle" font-family="Inter,Arial" font-size="10" font-weight="900" font-style="italic"><tspan fill="#003087">Pay</tspan><tspan fill="#0070e0">Pal</tspan></text></svg>
+            </span>
+          </label>
+        </div>
+        <div class="gateway-note">Serás redirigido a la Pasarela de Pago Externa para realizar un pago seguro.</div>
+      </div>
+    </section>
+
+  </form>
 </main>
 
-<div class="cta-sticky" id="cta-sticky">
-  <div class="total"><small>Total</small>$75.990</div>
-  <button id="cta-btn">Continuar →</button>
+<!-- ══ PASARELA SIMULADA ══ -->
+<div class="gw" id="view-gateway" hidden>
+  <span class="gw-demo-tag">SIMULACIÓN · DEMO</span>
+
+  <div class="gw-inter" id="gw-inter">
+    <div class="spinner"></div>
+    <p>Conectando con la pasarela de pago segura…</p>
+  </div>
+
+  <div class="gw-webpay" id="gw-webpay" hidden>
+    <div class="wp-top">webpay<span style="font-weight:400">.plus</span></div>
+    <div class="wp-card">
+      <h3>Estás pagando en:</h3>
+      <p class="wp-merchant">KANKI &amp; CO SpA — kanki.smconnection.cl</p>
+      <div class="wp-amount" id="wp-amount"></div>
+      <label>Número de tarjeta</label>
+      <input type="text" placeholder="•••• •••• •••• ••••" disabled>
+      <div class="row2">
+        <div><label>Vencimiento</label><input type="text" placeholder="MM/AA" disabled></div>
+        <div><label>CVV</label><input type="text" placeholder="•••" disabled></div>
+      </div>
+      <div class="wp-btns">
+        <button type="button" class="wp-pay" id="wp-pay"></button>
+        <button type="button" class="wp-cancel" id="wp-cancel">Anular transacción</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gw-paypal" id="gw-paypal" hidden>
+    <div class="pp-card">
+      <div class="pp-logo"><span class="p1">Pay</span><span class="p2">Pal</span></div>
+      <p class="pp-sub">KANKI &amp; CO SpA</p>
+      <div class="pp-amount" id="pp-amount"></div>
+      <button type="button" class="pp-pay" id="pp-pay">Pay Now</button>
+      <button type="button" class="pp-cancel" id="pp-cancel">Cancelar y volver</button>
+    </div>
+  </div>
+
+  <div class="gw-mp" id="gw-mp" hidden>
+    <div class="mp-card">
+      <div class="mp-head">mercado pago</div>
+      <div class="mp-body">
+        <h3>Estás pagando a:</h3>
+        <p class="mp-merchant">KANKI &amp; CO SpA</p>
+        <div class="mp-amount" id="mp-amount"></div>
+        <label>Tarjeta de crédito o débito</label>
+        <input type="text" placeholder="•••• •••• •••• ••••" disabled>
+        <div class="row2">
+          <div><label>Vencimiento</label><input type="text" placeholder="MM/AA" disabled></div>
+          <div><label>Cód. seguridad</label><input type="text" placeholder="•••" disabled></div>
+        </div>
+        <label>Cuotas</label>
+        <select disabled><option>1 cuota sin interés</option></select>
+        <button type="button" class="mp-pay" id="mp-pay">Pagar</button>
+        <button type="button" class="mp-cancel" id="mp-cancel">Cancelar y volver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESULTADO ══ -->
+<div id="view-result" hidden>
+  <div class="result" id="res-ok" hidden>
+    <div class="res-icon ok">✓</div>
+    <h1>¡Pedido confirmado!</h1>
+    <p class="order-n" id="res-order-n"></p>
+    <p id="res-mail-line">Te enviamos la confirmación a <strong id="res-email"></strong>.</p>
+    <div class="res-box" id="res-box"></div>
+    <div class="res-ctas">
+      <a class="btn-ghost-teal" id="res-track" href="../pedido/">📦 Seguir mi pedido</a>
+      <a class="btn-wa" id="res-wa" target="_blank" rel="noopener">💬 Coordinar entrega por WhatsApp</a>
+      <a class="btn-sunset" href="../VF-storefront.html">Volver a la tienda</a>
+    </div>
+  </div>
+  <div class="result" id="res-fail" hidden>
+    <div class="res-icon fail">✕</div>
+    <h1>Pago no procesado</h1>
+    <p>La transacción fue anulada o rechazada por la pasarela. No se realizó ningún cargo.</p>
+    <div class="res-ctas">
+      <button type="button" class="btn-sunset" id="res-retry">Reintentar el pago</button>
+      <a class="btn-ghost-teal" id="res-fail-wa" target="_blank" rel="noopener">O pide por WhatsApp</a>
+    </div>
+  </div>
 </div>
 
 <script>
-  // Maqueta demo · cambio de view con toggle
-  const toggleBtns = document.querySelectorAll('.demo-toggle button');
-  const views = document.querySelectorAll('.view');
-  const steps = document.querySelectorAll('.step');
-  const stepsOrder = ['contacto', 'envio', 'pago', 'confirmacion'];
-  const ctaSticky = document.getElementById('cta-sticky');
-  const ctaBtn = document.getElementById('cta-btn');
+(() => {
+  'use strict';
 
-  function switchView(name) {
-    toggleBtns.forEach(b => b.classList.toggle('active', b.dataset.view === name));
-    views.forEach(v => v.classList.toggle('active', v.id === `view-${name}`));
-    const idx = stepsOrder.indexOf(name);
-    steps.forEach((s, i) => {
-      s.classList.toggle('active', i === idx);
-      s.classList.toggle('done', i < idx);
-    });
-    ctaSticky.style.display = name === 'confirmacion' ? 'none' : 'flex';
-    ctaBtn.textContent = name === 'pago' ? 'Pagar →' : 'Continuar →';
+  /* ── Constantes ─────────────────────────── */
+  const WA_NUM = '56957807766';
+  const FREE_SHIP = 110000;
+  const KEY_CART = 'kanki_cart_v1';
+  const KEY_ORDERS = 'kanki_orders_v1';
+  const KEY_SEQ = 'kanki_order_seq';
+
+  const REGIONS = [
+    { n: 'Arica y Parinacota', g: 'ext' }, { n: 'Tarapacá', g: 'ext' },
+    { n: 'Antofagasta', g: 'ext' }, { n: 'Atacama', g: 'ext' },
+    { n: 'Coquimbo', g: 'cs' }, { n: 'Valparaíso', g: 'cs' },
+    { n: 'Metropolitana de Santiago', g: 'rm' }, { n: "O'Higgins", g: 'cs' },
+    { n: 'Maule', g: 'cs' }, { n: 'Ñuble', g: 'cs' }, { n: 'Biobío', g: 'cs' },
+    { n: 'La Araucanía', g: 'cs' }, { n: 'Los Ríos', g: 'cs' }, { n: 'Los Lagos', g: 'cs' },
+    { n: 'Aysén', g: 'ext' }, { n: 'Magallanes y la Antártica Chilena', g: 'ext' },
+  ];
+  const RATES = {
+    rm:  { std: 3990, exp: 5990, dStd: [2, 3], dExp: [1, 2] },
+    cs:  { std: 4990, exp: 7990, dStd: [3, 5], dExp: [2, 3] },
+    ext: { std: 6990, exp: 9990, dStd: [5, 7], dExp: [3, 5] },
+  };
+
+  /* ── Utilidades ─────────────────────────── */
+  const $ = id => document.getElementById(id);
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-CL') + ' CLP';
+  const lsGet = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fb; } catch { return fb; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
+  function validPhone(v) { const d = v.replace(/\D/g, ''); return d.length === 9 && d[0] === '9'; }
+  function validRut(v) {
+    const clean = v.replace(/\./g, '').replace(/-/g, '').toUpperCase().trim();
+    if (!/^\d{7,8}[0-9K]$/.test(clean)) return false;
+    const body = clean.slice(0, -1), dv = clean.slice(-1);
+    let sum = 0, mul = 2;
+    for (let i = body.length - 1; i >= 0; i--) { sum += +body[i] * mul; mul = mul === 7 ? 2 : mul + 1; }
+    const res = 11 - (sum % 11);
+    const dvCalc = res === 11 ? '0' : res === 10 ? 'K' : String(res);
+    return dv === dvCalc;
+  }
+  function estDate(days) {
+    const d = new Date(); d.setDate(d.getDate() + days);
+    return d.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
   }
 
-  toggleBtns.forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
-  ctaBtn.addEventListener('click', () => {
-    const current = stepsOrder.findIndex(s => document.getElementById(`view-${s}`).classList.contains('active'));
-    if (current < stepsOrder.length - 1) switchView(stepsOrder[current + 1]);
+  /* ── Estado ─────────────────────────────── */
+  const cart = lsGet(KEY_CART, []);
+  const state = { delivery: 'domicilio', ship: null, pay: null };
+
+  if (!Array.isArray(cart) || cart.length === 0) {
+    $('view-empty').hidden = false;
+    return;
+  }
+  $('view-checkout').hidden = false;
+
+  /* Regiones */
+  const selRegion = $('f-region');
+  REGIONS.forEach(r => {
+    const o = document.createElement('option');
+    o.value = r.n; o.textContent = r.n;
+    selRegion.appendChild(o);
   });
+
+  /* ── Resumen ────────────────────────────── */
+  const subtotal = cart.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.qty) || 1), 0);
+  const itemCount = cart.reduce((s, i) => s + (Number(i.qty) || 1), 0);
+
+  function renderItems() {
+    $('sum-items').innerHTML = cart.map(i => `
+      <div class="sum-item">
+        <div class="sum-thumb">${i.src ? `<img src="${esc(i.src)}" alt="" loading="lazy" onerror="this.remove()">` : '🏄'}</div>
+        <div class="sum-info">
+          <div class="sum-brand">${esc(i.brand || '')}</div>
+          <div class="sum-name">${esc(i.name || 'Producto')}</div>
+          <div class="sum-qty">Cantidad: ${Number(i.qty) || 1}</div>
+        </div>
+        <div class="sum-price">${fmt((Number(i.price) || 0) * (Number(i.qty) || 1))}</div>
+      </div>`).join('');
+    $('sum-count').textContent = itemCount + (itemCount === 1 ? ' producto' : ' productos');
+  }
+
+  function shipCost() {
+    if (state.delivery === 'retiro') return 0;
+    if (!state.ship) return null;
+    if (state.ship.type === 'std' && subtotal >= FREE_SHIP) return 0;
+    return state.ship.price;
+  }
+
+  function renderTotals() {
+    const ship = shipCost();
+    $('sum-subtotal').textContent = fmt(subtotal);
+    if (ship === null) { $('sum-ship').textContent = '—'; }
+    else if (ship === 0) { $('sum-ship').innerHTML = '<span class="free">Gratis</span>'; }
+    else { $('sum-ship').textContent = fmt(ship); }
+    const total = subtotal + (ship || 0);
+    $('sum-total').textContent = fmt(total);
+    $('sum-toggle-total').textContent = fmt(total);
+    return total;
+  }
+
+  /* ── Formas de envío ────────────────────── */
+  function addressComplete() {
+    return !!selRegion.value && $('f-city').value.trim().length >= 2 && $('f-address').value.trim().length >= 4;
+  }
+
+  function renderShipOptions() {
+    const box = $('ship-opts'), hint = $('ship-hint');
+    if (state.delivery === 'retiro') { box.hidden = true; return; }
+    if (!addressComplete()) {
+      box.hidden = true; hint.hidden = false;
+      state.ship = null;
+      return;
+    }
+    const region = REGIONS.find(r => r.n === selRegion.value);
+    const g = region ? region.g : 'cs';
+    const rate = RATES[g];
+    const stdFree = subtotal >= FREE_SHIP;
+    /* re-anclar precio si ya había selección (cambio de región) */
+    if (state.ship) { state.ship.price = state.ship.type === 'std' ? rate.std : rate.exp; state.ship.group = g; }
+    box.innerHTML = `
+      <label class="opt ${state.ship && state.ship.type === 'std' ? 'on' : ''}">
+        <input type="radio" name="ship" value="std" ${state.ship && state.ship.type === 'std' ? 'checked' : ''}>
+        <span class="opt-body">
+          <span class="opt-title">Standard</span>
+          <span class="opt-sub">Llegada estimada: ${estDate(rate.dStd[0])} – ${estDate(rate.dStd[1])}</span>
+        </span>
+        <span class="opt-price ${stdFree ? 'free' : ''}">${stdFree ? 'Gratis' : fmt(rate.std)}</span>
+      </label>
+      <label class="opt ${state.ship && state.ship.type === 'exp' ? 'on' : ''}">
+        <input type="radio" name="ship" value="exp" ${state.ship && state.ship.type === 'exp' ? 'checked' : ''}>
+        <span class="opt-body">
+          <span class="opt-title">Express</span>
+          <span class="opt-sub">Llegada estimada: ${estDate(rate.dExp[0])} – ${estDate(rate.dExp[1])}</span>
+        </span>
+        <span class="opt-price">${fmt(rate.exp)}</span>
+      </label>`;
+    box.hidden = false; hint.hidden = true;
+    box.querySelectorAll('input[name=ship]').forEach(r => {
+      r.addEventListener('change', () => {
+        state.ship = { type: r.value, price: r.value === 'std' ? rate.std : rate.exp, group: g };
+        update();
+      });
+    });
+  }
+
+  /* ── Validación global ──────────────────── */
+  const touched = {};
+  function markField(input, errEl, ok, isTouched) {
+    const bad = !!isTouched && !ok;
+    input.classList.toggle('bad', bad);
+    errEl.classList.toggle('on', bad);
+  }
+  function sectionOneOk() { return validEmail($('f-email').value) && validPhone($('f-phone').value); }
+  function sectionTwoOk() {
+    const rutOk = validRut($('f-rut').value);
+    if (state.delivery === 'retiro') return rutOk;
+    return addressComplete() && !!state.ship && rutOk;
+  }
+
+  function update() {
+    markField($('f-email'), $('err-email'), validEmail($('f-email').value), touched.email);
+    markField($('f-phone'), $('err-phone'), validPhone($('f-phone').value), touched.phone);
+    markField($('f-rut'), $('err-rut'), validRut($('f-rut').value), touched.rut);
+
+    renderShipOptions();
+    const ready = sectionOneOk() && sectionTwoOk();
+    $('pay-block').hidden = !ready;
+    $('pay-locked-msg').hidden = ready;
+    $('pay-secure').hidden = !ready;
+    $('sec-pay').classList.toggle('locked', !ready);
+
+    const allOk = ready && !!state.pay;
+    $('btn-pay').disabled = !allOk;
+    $('pay-hint').textContent = allOk
+      ? 'Serás redirigido a la pasarela de pago externa'
+      : 'Completa contacto, entrega y pago para continuar';
+    renderTotals();
+  }
+
+  /* ── Listeners ──────────────────────────── */
+  [['f-email', 'email'], ['f-phone', 'phone'], ['f-rut', 'rut']].forEach(([id, key]) => {
+    $(id).addEventListener('input', update);
+    $(id).addEventListener('blur', () => { touched[key] = true; update(); });
+  });
+  ['f-city', 'f-address', 'f-apt'].forEach(id => $(id).addEventListener('input', update));
+  selRegion.addEventListener('change', () => { state.ship = null; update(); });
+
+  document.querySelectorAll('input[name=delivery]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.delivery = r.value;
+      document.querySelectorAll('#delivery-opts .opt').forEach(o => o.classList.toggle('on', o.contains(r)));
+      $('address-block').hidden = r.value === 'retiro';
+      $('pickup-block').hidden = r.value !== 'retiro';
+      if (r.value === 'retiro') state.ship = null;
+      update();
+    });
+  });
+
+  $('pay-block').addEventListener('change', e => {
+    if (e.target.name === 'pay') {
+      state.pay = e.target.value;
+      document.querySelectorAll('#pay-block .opt').forEach(o => o.classList.toggle('on', o.contains(e.target)));
+      update();
+    }
+  });
+
+  $('sum-toggle').addEventListener('click', () => $('summary').classList.toggle('open'));
+  $('ck-form').addEventListener('submit', e => e.preventDefault());
+
+  /* re-marcar selección de envío visualmente al re-render */
+  $('ship-opts').addEventListener('change', () => {
+    document.querySelectorAll('#ship-opts .opt').forEach(o => {
+      const inp = o.querySelector('input');
+      o.classList.toggle('on', inp && inp.checked);
+    });
+  });
+
+  /* ── Pasarela simulada ──────────────────── */
+  let currentTotal = 0;
+
+  $('btn-pay').addEventListener('click', e => {
+    e.preventDefault();
+    if ($('btn-pay').disabled) return;
+    currentTotal = renderTotals();
+    $('view-checkout').hidden = true;
+    $('view-gateway').hidden = false;
+    $('gw-inter').hidden = false;
+    $('gw-webpay').hidden = true;
+    $('gw-paypal').hidden = true;
+    $('gw-mp').hidden = true;
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      $('gw-inter').hidden = true;
+      if (state.pay === 'webpay') {
+        $('wp-amount').textContent = fmt(currentTotal);
+        $('wp-pay').textContent = 'Pagar ' + fmt(currentTotal);
+        $('gw-webpay').hidden = false;
+      } else if (state.pay === 'mercadopago') {
+        $('mp-amount').textContent = fmt(currentTotal);
+        $('gw-mp').hidden = false;
+      } else {
+        $('pp-amount').textContent = fmt(currentTotal);
+        $('gw-paypal').hidden = false;
+      }
+    }, 1500);
+  });
+
+  function backToCheckout() {
+    $('view-gateway').hidden = true;
+    $('view-result').hidden = true;
+    $('res-ok').hidden = true;
+    $('res-fail').hidden = true;
+    $('view-checkout').hidden = false;
+    window.scrollTo(0, 0);
+  }
+
+  function showFail() {
+    $('view-gateway').hidden = true;
+    $('view-result').hidden = false;
+    $('res-fail').hidden = false;
+    $('res-fail-wa').href = 'https://wa.me/' + WA_NUM + '?text=' +
+      encodeURIComponent('¡Hola Kanki! Intenté pagar online pero no resultó. ¿Me ayudan a completar mi pedido?');
+    window.scrollTo(0, 0);
+  }
+
+  const EF_URL = 'https://yjjtbwfgtoepsevvkzta.supabase.co/functions/v1/kanki-orders';
+  const PAY_LABEL = { webpay: 'Webpay Plus', paypal: 'PayPal', mercadopago: 'Mercado Pago' };
+  let processingOrder = false;
+
+  async function showSuccess() {
+    if (processingOrder) return;
+    processingOrder = true;
+    /* volver al interstitial mientras se registra la orden */
+    $('gw-webpay').hidden = true; $('gw-paypal').hidden = true; $('gw-mp').hidden = true;
+    $('gw-inter').hidden = false;
+    $('gw-inter').querySelector('p').textContent = 'Registrando tu pedido…';
+
+    const ship = shipCost() || 0;
+    const contact = { email: $('f-email').value.trim(), phone: '+56' + $('f-phone').value.replace(/\D/g, '') };
+    const delivery = state.delivery === 'retiro'
+      ? { mode: 'retiro' }
+      : { mode: 'domicilio', region: selRegion.value, city: $('f-city').value.trim(), address: $('f-address').value.trim(), apt: $('f-apt').value.trim() };
+    const payload = {
+      action: 'create',
+      contact, delivery,
+      shipMethod: state.delivery === 'retiro' ? 'retiro' : (state.ship ? state.ship.type : null),
+      payMethod: state.pay,
+      billing: { rut: $('f-rut').value.trim(), sameAsShipping: $('f-samebill').checked },
+      items: cart,
+      totals: { subtotal, shipping: ship, total: subtotal + ship },
+    };
+
+    /* registrar en el servidor; si falla, la venta NO se pierde (fallback local) */
+    let orderN = null, emailBuyer = false;
+    try {
+      const res = await fetch(EF_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const data = await res.json();
+      if (data && data.ok) { orderN = data.orderNumber; emailBuyer = !!data.emailBuyer; }
+    } catch (e) { /* sin red o EF caída → fallback */ }
+    if (!orderN) {
+      const seq = (parseInt(localStorage.getItem(KEY_SEQ), 10) || 0) + 1;
+      try { localStorage.setItem(KEY_SEQ, String(seq)); } catch {}
+      orderN = 'KK-LOCAL-' + String(seq).padStart(4, '0');
+    }
+
+    /* respaldo local siempre */
+    const orders = lsGet(KEY_ORDERS, []);
+    orders.push({ orderNumber: orderN, createdAt: new Date().toISOString(), ...payload, status: 'confirmed' });
+    lsSet(KEY_ORDERS, orders);
+    lsSet(KEY_CART, []);
+
+    $('res-order-n').textContent = 'Orden N° ' + orderN;
+    if (emailBuyer) {
+      $('res-mail-line').innerHTML = 'Te enviamos la confirmación a <strong>' + contact.email.replace(/</g, '&lt;') + '</strong>. Revisa tu bandeja (y spam).';
+    } else {
+      $('res-mail-line').innerHTML = 'Guarda tu N° de pedido — te confirmaremos por <strong>WhatsApp</strong>.';
+    }
+    const shipLabel = payload.shipMethod === 'retiro' ? '(retiro en tienda)' : payload.shipMethod === 'exp' ? '(Express)' : '(Standard)';
+    $('res-box').innerHTML = `
+      <div class="sum-line"><span class="muted">Productos (${itemCount})</span><span>${fmt(subtotal)}</span></div>
+      <div class="sum-line"><span class="muted">Envío ${shipLabel}</span><span>${ship === 0 ? '<span class="free">Gratis</span>' : fmt(ship)}</span></div>
+      <div class="sum-line total"><span>Total pagado (${PAY_LABEL[state.pay] || 'Webpay Plus'})</span><span>${fmt(payload.totals.total)}</span></div>`;
+    $('res-track').href = '../pedido/?n=' + encodeURIComponent(orderN) + '&e=' + encodeURIComponent(contact.email);
+    $('res-wa').href = 'https://wa.me/' + WA_NUM + '?text=' +
+      encodeURIComponent('¡Hola Kanki! Acabo de realizar el pedido ' + orderN + ' por ' + fmt(payload.totals.total) + '. Quiero coordinar la entrega 🤙');
+
+    $('view-gateway').hidden = true;
+    $('view-result').hidden = false;
+    $('res-ok').hidden = false;
+    $('gw-inter').querySelector('p').textContent = 'Conectando con la pasarela de pago segura…';
+    processingOrder = false;
+    window.scrollTo(0, 0);
+  }
+
+  $('wp-pay').addEventListener('click', showSuccess);
+  $('pp-pay').addEventListener('click', showSuccess);
+  $('mp-pay').addEventListener('click', showSuccess);
+  $('wp-cancel').addEventListener('click', showFail);
+  $('pp-cancel').addEventListener('click', showFail);
+  $('mp-cancel').addEventListener('click', showFail);
+  $('res-retry').addEventListener('click', backToCheckout);
+
+  /* ── Primer render ──────────────────────── */
+  renderItems();
+  update();
+})();
 </script>
 
 </body>
