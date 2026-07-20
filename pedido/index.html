@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Seguimiento de pedido — KANKI & CO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ocean:#0c1b2e; --teal:#1a8f82; --teal-light:#22b5a5;
+    --sunset:#e8651a; --sunset-dark:#c04e0e; --sand:#f0e4cc;
+    --gray:#6b7280; --gray-light:#f3f4f6; --border:#e5e7eb;
+    --ok:#16a34a; --err:#dc2626;
+    --r-sm:4px; --r-md:10px; --r-full:9999px;
+    --font:'Inter','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font:15px/1.55 var(--font);color:var(--ocean);background:#fbfaf7}
+  a{color:inherit;text-decoration:none}
+  button{font-family:var(--font);cursor:pointer}
+  [hidden]{display:none !important}
+
+  .ck-head{background:var(--ocean);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+  .ck-head .logo{font-weight:900;font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+  .ck-head .logo em{font-style:italic;color:var(--sunset)}
+  .ck-head span{font-size:12px;font-weight:600;color:var(--teal-light)}
+
+  main{max-width:640px;margin:0 auto;padding:32px 16px 64px}
+  h1{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .lead{color:var(--gray);font-size:14px;margin-bottom:22px}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--r-md);padding:22px 20px;margin-bottom:18px}
+  label{display:block;font-size:12.5px;font-weight:600;margin:12px 0 5px}
+  input{width:100%;padding:11px 12px;font:400 14.5px var(--font);background:var(--gray-light);border:1.5px solid var(--border);border-radius:var(--r-sm);outline:none}
+  input:focus{border-color:var(--teal);background:#fff}
+  .btn-sunset{width:100%;margin-top:16px;background:var(--sunset);color:#fff;border:0;padding:14px;border-radius:var(--r-md);font:900 14px var(--font);text-transform:uppercase;letter-spacing:.08em;transition:all .2s}
+  .btn-sunset:hover{background:var(--sunset-dark)}
+  .btn-sunset:disabled{background:#cbd5e1}
+  .err{display:none;color:var(--err);font-weight:600;font-size:13px;margin-top:10px}
+  .err.on{display:block}
+
+  .order-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .order-n{font:700 16px ui-monospace,Menlo,monospace;color:var(--sunset)}
+  .badge{font:700 11px var(--font);text-transform:uppercase;letter-spacing:.06em;padding:5px 12px;border-radius:var(--r-full)}
+  .badge.ok{background:rgba(22,163,74,.12);color:var(--ok)}
+  .badge.cancel{background:rgba(220,38,38,.12);color:var(--err)}
+
+  .timeline{margin:22px 0 8px}
+  .tl-step{display:flex;gap:14px;position:relative;padding-bottom:26px}
+  .tl-step:last-child{padding-bottom:0}
+  .tl-step::before{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--border)}
+  .tl-step:last-child::before{display:none}
+  .tl-step.done::before{background:var(--teal)}
+  .tl-dot{width:28px;height:28px;border-radius:50%;background:var(--gray-light);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none;z-index:1}
+  .tl-step.done .tl-dot{background:var(--teal);border-color:var(--teal);color:#fff}
+  .tl-step.current .tl-dot{background:var(--sunset);border-color:var(--sunset);color:#fff;box-shadow:0 0 0 5px rgba(232,101,26,.18)}
+  .tl-title{font-weight:700;font-size:14px}
+  .tl-step.pending .tl-title{color:var(--gray);font-weight:600}
+  .tl-sub{font-size:12.5px;color:var(--gray)}
+
+  .track-box{background:rgba(26,143,130,.07);border:1.5px solid rgba(26,143,130,.3);border-radius:var(--r-md);padding:14px 16px;font-size:13.5px;margin-top:14px}
+  .items{border-top:1px dashed var(--border);margin-top:16px;padding-top:8px;font-size:13.5px}
+  .item-line{display:flex;justify-content:space-between;padding:6px 0;gap:10px}
+  .tot{display:flex;justify-content:space-between;font-weight:900;font-size:15px;border-top:1.5px solid var(--border);margin-top:8px;padding-top:10px}
+  .muted{color:var(--gray)}
+  .wa-line{text-align:center;margin-top:18px;font-size:13px}
+  .wa-line a{color:var(--teal);font-weight:700;text-decoration:underline}
+  .back{display:block;text-align:center;margin-top:22px;font-size:13px;font-weight:600;color:var(--teal)}
+</style>
+</head>
+<body>
+
+<header class="ck-head">
+  <a class="logo" href="../VF-storefront.html">KANKI <em>&amp; CO</em></a>
+  <span>📦 Seguimiento</span>
+</header>
+
+<main>
+  <h1>Sigue tu pedido</h1>
+  <p class="lead">Ingresa tu número de pedido (lo recibiste al confirmar tu compra y en tu correo) y el e-mail con el que compraste.</p>
+
+  <div class="card" id="form-card">
+    <label for="f-n">N° de pedido</label>
+    <input id="f-n" type="text" placeholder="KK-2026-0001" autocomplete="off">
+    <label for="f-e">E-mail de la compra</label>
+    <input id="f-e" type="email" placeholder="tucorreo@ejemplo.cl" autocomplete="email">
+    <button class="btn-sunset" id="btn-track">Buscar mi pedido</button>
+    <p class="err" id="track-err"></p>
+  </div>
+
+  <div class="card" id="result-card" hidden>
+    <div class="order-head">
+      <span class="order-n" id="r-number"></span>
+      <span class="badge ok" id="r-badge"></span>
+    </div>
+    <div class="timeline" id="r-timeline"></div>
+    <div class="track-box" id="r-track" hidden></div>
+    <div class="items" id="r-items"></div>
+    <p class="wa-line">¿Dudas con tu pedido? <a id="r-wa" target="_blank" rel="noopener">Escríbenos por WhatsApp</a></p>
+  </div>
+
+  <a class="back" href="../VF-storefront.html">← Volver a la tienda</a>
+</main>
+
+<script>
+(() => {
+  'use strict';
+  const EF_URL = 'https://yjjtbwfgtoepsevvkzta.supabase.co/functions/v1/kanki-orders';
+  const WA_NUM = '56957807766';
+  const $ = id => document.getElementById(id);
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-CL') + ' CLP';
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  const STEPS = [
+    { key: 'confirmed',  icon: '✓',  title: 'Pedido confirmado',   sub: 'Recibimos tu pedido y tu pago' },
+    { key: 'preparing',  icon: '🧵', title: 'En preparación',       sub: 'Estamos armando tu pedido' },
+    { key: 'shipped',    icon: '🚚', title: 'Despachado',           sub: 'Tu pedido va en camino' },
+    { key: 'delivered',  icon: '🤙', title: 'Entregado',            sub: '¡A disfrutarlo!' },
+  ];
+  const STATUS_IDX = { pending_payment: -1, payment_uploaded: -1, confirmed: 0, preparing: 1, shipped: 2, delivered: 3 };
+  const STATUS_LABEL = {
+    pending_payment: 'Esperando pago', payment_uploaded: 'Pago en revisión', confirmed: 'Confirmado',
+    preparing: 'En preparación', shipped: 'Despachado', delivered: 'Entregado', cancelled: 'Cancelado',
+  };
+
+  function render(order) {
+    $('r-number').textContent = order.order_number;
+    const st = order.status || 'confirmed';
+    const badge = $('r-badge');
+    badge.textContent = STATUS_LABEL[st] || st;
+    badge.className = 'badge ' + (st === 'cancelled' ? 'cancel' : 'ok');
+
+    const idx = STATUS_IDX[st] ?? 0;
+    $('r-timeline').innerHTML = st === 'cancelled'
+      ? '<p style="color:var(--err);font-weight:600">Este pedido fue cancelado. Si tienes dudas escríbenos por WhatsApp.</p>'
+      : STEPS.map((s, i) => {
+          const cls = i < idx ? 'done' : i === idx ? 'done current' : 'pending';
+          return `<div class="tl-step ${cls}"><div class="tl-dot">${i <= idx ? s.icon : ''}</div><div><div class="tl-title">${s.title}</div><div class="tl-sub">${s.sub}</div></div></div>`;
+        }).join('');
+
+    if (order.tracking_number) {
+      $('r-track').hidden = false;
+      $('r-track').innerHTML = '<strong>📮 Código de seguimiento:</strong> ' + esc(order.tracking_number);
+    } else { $('r-track').hidden = true; }
+
+    const items = Array.isArray(order.items) ? order.items : [];
+    $('r-items').innerHTML =
+      items.map(i => `<div class="item-line"><span>${esc(i.name)} <span class="muted">× ${Number(i.qty) || 1}</span></span><span>${fmt((Number(i.price) || 0) * (Number(i.qty) || 1))}</span></div>`).join('') +
+      `<div class="item-line"><span class="muted">Envío</span><span>${(order.shipping_cost || 0) === 0 ? 'Gratis' : fmt(order.shipping_cost)}</span></div>` +
+      `<div class="tot"><span>Total</span><span>${fmt(order.total || 0)}</span></div>`;
+
+    $('r-wa').href = 'https://wa.me/' + WA_NUM + '?text=' + encodeURIComponent('¡Hola Kanki! Consulta sobre mi pedido ' + order.order_number);
+    $('result-card').hidden = false;
+  }
+
+  async function track() {
+    const n = $('f-n').value.trim(), e = $('f-e').value.trim();
+    const errEl = $('track-err');
+    errEl.classList.remove('on');
+    if (!n || !e) { errEl.textContent = 'Completa el N° de pedido y tu e-mail.'; errEl.classList.add('on'); return; }
+    if (n.toUpperCase().startsWith('KK-LOCAL')) {
+      errEl.textContent = 'Ese pedido quedó registrado localmente (sin conexión). Escríbenos por WhatsApp +56 9 5780 7766 para confirmarlo.';
+      errEl.classList.add('on'); return;
+    }
+    const btn = $('btn-track');
+    btn.disabled = true; btn.textContent = 'Buscando…';
+    try {
+      const res = await fetch(EF_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'track', orderNumber: n, email: e }) });
+      const data = await res.json();
+      if (data && data.ok) { render(data.order); }
+      else { errEl.textContent = data.error || 'No encontramos ese pedido.'; errEl.classList.add('on'); $('result-card').hidden = true; }
+    } catch {
+      errEl.textContent = 'No pudimos conectar. Intenta de nuevo en unos minutos.'; errEl.classList.add('on');
+    }
+    btn.disabled = false; btn.textContent = 'Buscar mi pedido';
+  }
+
+  $('btn-track').addEventListener('click', track);
+  ['f-n', 'f-e'].forEach(id => $(id).addEventListener('keydown', ev => { if (ev.key === 'Enter') track(); }));
+
+  /* prefill desde ?n=&e= (link del correo y de la confirmación) */
+  const q = new URLSearchParams(location.search);
+  if (q.get('n')) $('f-n').value = q.get('n');
+  if (q.get('e')) $('f-e').value = q.get('e');
+  if (q.get('n') && q.get('e')) track();
+})();
+</script>
+
+</body>
+</html>

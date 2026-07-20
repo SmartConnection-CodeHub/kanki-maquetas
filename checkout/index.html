@@ -153,6 +153,18 @@
   .wp-pay:hover{background:#4a2375}
   .wp-cancel{background:#fff;color:#5c2d91;border:1.5px solid #5c2d91;padding:12px;border-radius:8px;font:700 14px var(--font)}
 
+  .gw-mp{background:#ebebeb;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px}
+  .mp-card{background:#fff;border-radius:12px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+  .mp-head{background:#009EE3;color:#fff;padding:16px 22px;font-weight:900;letter-spacing:.03em;font-size:16px}
+  .mp-body{padding:24px 22px}
+  .mp-body h3{font-size:15px;margin-bottom:2px}
+  .mp-merchant{font-size:13px;color:var(--gray);margin-bottom:14px}
+  .mp-amount{font-size:26px;font-weight:900;margin-bottom:16px;color:#333}
+  .mp-body select{width:100%;padding:11px 12px;font:400 14.5px var(--font);background:var(--gray-light);border:1.5px solid var(--border);border-radius:var(--r-sm)}
+  .mp-pay{width:100%;margin-top:20px;background:#009EE3;color:#fff;border:0;padding:14px;border-radius:8px;font:700 15px var(--font)}
+  .mp-pay:hover{background:#0089c4}
+  .mp-cancel{display:block;width:100%;margin-top:10px;font-size:13px;color:var(--gray);background:none;border:0;text-decoration:underline}
+
   .gw-paypal{background:#001c64;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px 16px}
   .pp-card{background:#fff;border-radius:12px;max-width:420px;width:100%;padding:32px 28px;text-align:center}
   .pp-logo{font:900 26px var(--font);font-style:italic;margin-bottom:6px}
@@ -322,6 +334,16 @@
             </span>
           </label>
           <label class="opt">
+            <input type="radio" name="pay" value="mercadopago">
+            <span class="opt-body">
+              <span class="opt-title">Mercado Pago</span>
+              <span class="opt-sub">Tarjetas, cuotas y dinero en cuenta</span>
+            </span>
+            <span class="paylogos">
+              <svg width="72" height="22" viewBox="0 0 72 22"><rect width="72" height="22" rx="3" fill="#009EE3"/><text x="36" y="14.5" text-anchor="middle" font-family="Inter,Arial" font-size="8" font-weight="900" fill="#fff">mercado pago</text></svg>
+            </span>
+          </label>
+          <label class="opt">
             <input type="radio" name="pay" value="paypal">
             <span class="opt-body">
               <span class="opt-title">PayPal</span>
@@ -375,6 +397,27 @@
       <button type="button" class="pp-cancel" id="pp-cancel">Cancelar y volver</button>
     </div>
   </div>
+
+  <div class="gw-mp" id="gw-mp" hidden>
+    <div class="mp-card">
+      <div class="mp-head">mercado pago</div>
+      <div class="mp-body">
+        <h3>Estás pagando a:</h3>
+        <p class="mp-merchant">KANKI &amp; CO SpA</p>
+        <div class="mp-amount" id="mp-amount"></div>
+        <label>Tarjeta de crédito o débito</label>
+        <input type="text" placeholder="•••• •••• •••• ••••" disabled>
+        <div class="row2">
+          <div><label>Vencimiento</label><input type="text" placeholder="MM/AA" disabled></div>
+          <div><label>Cód. seguridad</label><input type="text" placeholder="•••" disabled></div>
+        </div>
+        <label>Cuotas</label>
+        <select disabled><option>1 cuota sin interés</option></select>
+        <button type="button" class="mp-pay" id="mp-pay">Pagar</button>
+        <button type="button" class="mp-cancel" id="mp-cancel">Cancelar y volver</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ══ RESULTADO ══ -->
@@ -383,9 +426,10 @@
     <div class="res-icon ok">✓</div>
     <h1>¡Pedido confirmado!</h1>
     <p class="order-n" id="res-order-n"></p>
-    <p>Te enviaremos la confirmación y el seguimiento a <strong id="res-email"></strong>.</p>
+    <p id="res-mail-line">Te enviamos la confirmación a <strong id="res-email"></strong>.</p>
     <div class="res-box" id="res-box"></div>
     <div class="res-ctas">
+      <a class="btn-ghost-teal" id="res-track" href="../pedido/">📦 Seguir mi pedido</a>
       <a class="btn-wa" id="res-wa" target="_blank" rel="noopener">💬 Coordinar entrega por WhatsApp</a>
       <a class="btn-sunset" href="../VF-storefront.html">Volver a la tienda</a>
     </div>
@@ -635,6 +679,7 @@
     $('gw-inter').hidden = false;
     $('gw-webpay').hidden = true;
     $('gw-paypal').hidden = true;
+    $('gw-mp').hidden = true;
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('gw-inter').hidden = true;
@@ -642,6 +687,9 @@
         $('wp-amount').textContent = fmt(currentTotal);
         $('wp-pay').textContent = 'Pagar ' + fmt(currentTotal);
         $('gw-webpay').hidden = false;
+      } else if (state.pay === 'mercadopago') {
+        $('mp-amount').textContent = fmt(currentTotal);
+        $('gw-mp').hidden = false;
       } else {
         $('pp-amount').textContent = fmt(currentTotal);
         $('gw-paypal').hidden = false;
@@ -667,52 +715,81 @@
     window.scrollTo(0, 0);
   }
 
-  function showSuccess() {
-    const seq = (parseInt(localStorage.getItem(KEY_SEQ), 10) || 0) + 1;
-    try { localStorage.setItem(KEY_SEQ, String(seq)); } catch {}
-    const orderN = 'KK-' + new Date().getFullYear() + '-' + String(seq).padStart(4, '0');
+  const EF_URL = 'https://yjjtbwfgtoepsevvkzta.supabase.co/functions/v1/kanki-orders';
+  const PAY_LABEL = { webpay: 'Webpay Plus', paypal: 'PayPal', mercadopago: 'Mercado Pago' };
+  let processingOrder = false;
+
+  async function showSuccess() {
+    if (processingOrder) return;
+    processingOrder = true;
+    /* volver al interstitial mientras se registra la orden */
+    $('gw-webpay').hidden = true; $('gw-paypal').hidden = true; $('gw-mp').hidden = true;
+    $('gw-inter').hidden = false;
+    $('gw-inter').querySelector('p').textContent = 'Registrando tu pedido…';
 
     const ship = shipCost() || 0;
-    const order = {
-      orderNumber: orderN,
-      createdAt: new Date().toISOString(),
-      items: cart,
-      contact: { email: $('f-email').value.trim(), phone: '+56' + $('f-phone').value.replace(/\D/g, '') },
-      delivery: state.delivery === 'retiro'
-        ? { mode: 'retiro' }
-        : { mode: 'domicilio', region: selRegion.value, city: $('f-city').value.trim(), address: $('f-address').value.trim(), apt: $('f-apt').value.trim() },
+    const contact = { email: $('f-email').value.trim(), phone: '+56' + $('f-phone').value.replace(/\D/g, '') };
+    const delivery = state.delivery === 'retiro'
+      ? { mode: 'retiro' }
+      : { mode: 'domicilio', region: selRegion.value, city: $('f-city').value.trim(), address: $('f-address').value.trim(), apt: $('f-apt').value.trim() };
+    const payload = {
+      action: 'create',
+      contact, delivery,
       shipMethod: state.delivery === 'retiro' ? 'retiro' : (state.ship ? state.ship.type : null),
       payMethod: state.pay,
-      status: 'paid_demo',
-      totals: { subtotal, shipping: ship, total: subtotal + ship },
       billing: { rut: $('f-rut').value.trim(), sameAsShipping: $('f-samebill').checked },
+      items: cart,
+      totals: { subtotal, shipping: ship, total: subtotal + ship },
     };
-    const orders = lsGet(KEY_ORDERS, []);
-    orders.push(order);
-    lsSet(KEY_ORDERS, orders);
 
+    /* registrar en el servidor; si falla, la venta NO se pierde (fallback local) */
+    let orderN = null, emailBuyer = false;
+    try {
+      const res = await fetch(EF_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const data = await res.json();
+      if (data && data.ok) { orderN = data.orderNumber; emailBuyer = !!data.emailBuyer; }
+    } catch (e) { /* sin red o EF caída → fallback */ }
+    if (!orderN) {
+      const seq = (parseInt(localStorage.getItem(KEY_SEQ), 10) || 0) + 1;
+      try { localStorage.setItem(KEY_SEQ, String(seq)); } catch {}
+      orderN = 'KK-LOCAL-' + String(seq).padStart(4, '0');
+    }
+
+    /* respaldo local siempre */
+    const orders = lsGet(KEY_ORDERS, []);
+    orders.push({ orderNumber: orderN, createdAt: new Date().toISOString(), ...payload, status: 'confirmed' });
+    lsSet(KEY_ORDERS, orders);
     lsSet(KEY_CART, []);
 
     $('res-order-n').textContent = 'Orden N° ' + orderN;
-    $('res-email').textContent = order.contact.email;
-    const shipLabel = order.shipMethod === 'retiro' ? '(retiro en tienda)' : order.shipMethod === 'exp' ? '(Express)' : '(Standard)';
+    if (emailBuyer) {
+      $('res-mail-line').innerHTML = 'Te enviamos la confirmación a <strong>' + contact.email.replace(/</g, '&lt;') + '</strong>. Revisa tu bandeja (y spam).';
+    } else {
+      $('res-mail-line').innerHTML = 'Guarda tu N° de pedido — te confirmaremos por <strong>WhatsApp</strong>.';
+    }
+    const shipLabel = payload.shipMethod === 'retiro' ? '(retiro en tienda)' : payload.shipMethod === 'exp' ? '(Express)' : '(Standard)';
     $('res-box').innerHTML = `
       <div class="sum-line"><span class="muted">Productos (${itemCount})</span><span>${fmt(subtotal)}</span></div>
       <div class="sum-line"><span class="muted">Envío ${shipLabel}</span><span>${ship === 0 ? '<span class="free">Gratis</span>' : fmt(ship)}</span></div>
-      <div class="sum-line total"><span>Total pagado (${state.pay === 'paypal' ? 'PayPal' : 'Webpay Plus'})</span><span>${fmt(order.totals.total)}</span></div>`;
+      <div class="sum-line total"><span>Total pagado (${PAY_LABEL[state.pay] || 'Webpay Plus'})</span><span>${fmt(payload.totals.total)}</span></div>`;
+    $('res-track').href = '../pedido/?n=' + encodeURIComponent(orderN) + '&e=' + encodeURIComponent(contact.email);
     $('res-wa').href = 'https://wa.me/' + WA_NUM + '?text=' +
-      encodeURIComponent('¡Hola Kanki! Acabo de realizar el pedido ' + orderN + ' por ' + fmt(order.totals.total) + '. Quiero coordinar la entrega 🤙');
+      encodeURIComponent('¡Hola Kanki! Acabo de realizar el pedido ' + orderN + ' por ' + fmt(payload.totals.total) + '. Quiero coordinar la entrega 🤙');
 
     $('view-gateway').hidden = true;
     $('view-result').hidden = false;
     $('res-ok').hidden = false;
+    $('gw-inter').querySelector('p').textContent = 'Conectando con la pasarela de pago segura…';
+    processingOrder = false;
     window.scrollTo(0, 0);
   }
 
   $('wp-pay').addEventListener('click', showSuccess);
   $('pp-pay').addEventListener('click', showSuccess);
+  $('mp-pay').addEventListener('click', showSuccess);
   $('wp-cancel').addEventListener('click', showFail);
   $('pp-cancel').addEventListener('click', showFail);
+  $('mp-cancel').addEventListener('click', showFail);
   $('res-retry').addEventListener('click', backToCheckout);
 
   /* ── Primer render ──────────────────────── */

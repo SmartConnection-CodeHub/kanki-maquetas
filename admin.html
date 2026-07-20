@@ -946,215 +946,101 @@
       <div class="page-header-row">
         <div>
           <div class="page-title">Pedidos</div>
-          <div class="page-subtitle">34 pedidos totales · 3 requieren atención</div>
+          <div class="page-subtitle" id="pedidos-live-sub">Pedidos reales · Supabase</div>
         </div>
         <div style="margin-left:auto; display:flex; gap:8px;">
-          <button class="btn btn-ghost btn-sm">Exportar</button>
-          <button class="btn btn-navy btn-sm">+ Pedido manual</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadPedidos()">🔄 Actualizar</button>
         </div>
       </div>
     </div>
 
-    <div class="filter-tabs">
-      <button class="btn btn-navy btn-sm" onclick="filterOrders('all',this)">Todos (34)</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterOrders('nuevo',this)">🟡 Nuevos (2)</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterOrders('comprobante',this)">🔵 Comprobante (3)</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterOrders('validado',this)">🟢 Validados (5)</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterOrders('despachado',this)">✅ Despachados (24)</button>
+    <div class="card" id="pedidos-auth" style="padding:18px; display:none;">
+      <div style="font-weight:700; margin-bottom:8px;">🔐 Clave admin Kanki</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <input type="password" id="pedidos-key" placeholder="Clave admin" style="flex:1; min-width:200px; padding:9px 12px; border:1.5px solid #e5e7eb; border-radius:6px;">
+        <button class="btn btn-gold btn-sm" onclick="connectPedidos()">Conectar</button>
+      </div>
+      <div id="pedidos-auth-err" style="color:#dc2626; font-size:12.5px; margin-top:6px; display:none;">Clave incorrecta</div>
     </div>
 
     <div class="card">
       <table class="table" id="orders-table">
         <thead>
-          <tr><th>Pedido</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
+          <tr><th>Pedido</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Tracking / Guardar</th></tr>
         </thead>
-        <tbody>
-          <tr data-status="comprobante" class="order-row" onclick="toggleDetail('d42')">
-            <td><strong>#0042</strong><br><small style="color:var(--text-secondary)">hace 15 min</small></td>
-            <td>Valentina Morales<br><small style="color:var(--text-secondary)">+56 9 8712 3456</small></td>
-            <td>OG Bear Hoodie Negro M</td>
-            <td><strong>$48.990</strong></td>
-            <td><span class="badge badge-comprobante">Comprobante</span></td>
-            <td>
-              <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
-                <button class="btn btn-ghost btn-sm" onclick="openProof('#0042','Valentina Morales','$48.990')">📎 Ver</button>
-                <button class="btn btn-gold btn-sm" onclick="confirmPay(this)">✓ Confirmar pago</button>
-              </div>
-            </td>
-          </tr>
-          <tr class="order-detail" id="d42"><td colspan="6"><div class="detail-inner">
-            <div class="detail-grid">
-              <div><div class="detail-label">Dirección</div>Los Leones 044, Providencia<button class="ship-copy-btn" onclick="copyShipping('Valentina Morales','Los Leones 044, Providencia','+56 9 8712 3456','Starken')">📋 Copiar datos envío</button></div>
-              <div><div class="detail-label">Despacho</div>Starken · $3.490</div>
-              <div><div class="detail-label">Nota cliente</div>Talla M confirmada</div>
-            </div>
-            <div class="order-notes">
-              <div class="order-notes-label">📝 Notas internas <small style="font-weight:400;text-transform:none">(solo tú las ves)</small></div>
-              <textarea placeholder="Agregar nota… ej: 'Cliente pidió cambio de talla', 'Enviar con Starken mañana'"></textarea>
-            </div>
-            <div class="timeline">
-              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Recibido</div></div>
-              <div class="tl-line done"></div>
-              <div class="tl-step"><div class="tl-dot current">2</div><div class="tl-label current">Pago</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">3</div><div class="tl-label">Preparando</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">4</div><div class="tl-label">Despachado</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
-            </div>
-          </div></td></tr>
-          <tr data-status="comprobante" class="order-row" onclick="toggleDetail('d41')">
-            <td><strong>#0041</strong><br><small style="color:var(--text-secondary)">hace 42 min</small></td>
-            <td>Diego Riquelme<br><small style="color:var(--text-secondary)">+56 9 7823 4567</small></td>
-            <td>OG Bear Tee Negro S</td>
-            <td><strong>$24.990</strong></td>
-            <td><span class="badge badge-comprobante">Comprobante</span></td>
-            <td>
-              <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
-                <button class="btn btn-ghost btn-sm" onclick="openProof('#0041','Diego Riquelme','$24.990')">📎 Ver</button>
-                <button class="btn btn-gold btn-sm" onclick="confirmPay(this)">✓ Confirmar pago</button>
-              </div>
-            </td>
-          </tr>
-          <tr class="order-detail" id="d41"><td colspan="6"><div class="detail-inner">
-            <div class="detail-grid">
-              <div><div class="detail-label">Dirección</div>Av. Irarrázaval 2401, Ñuñoa<button class="ship-copy-btn" onclick="copyShipping('Diego Riquelme','Av. Irarrázaval 2401, Ñuñoa','+56 9 7823 4567','Retiro')">📋 Copiar datos envío</button></div>
-              <div><div class="detail-label">Despacho</div>Retiro en tienda</div>
-              <div><div class="detail-label">Nota cliente</div>—</div>
-            </div>
-            <div class="order-notes">
-              <div class="order-notes-label">📝 Notas internas</div>
-              <textarea placeholder="Agregar nota…"></textarea>
-            </div>
-            <div class="timeline">
-              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Recibido</div></div>
-              <div class="tl-line done"></div>
-              <div class="tl-step"><div class="tl-dot current">2</div><div class="tl-label current">Pago</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">3</div><div class="tl-label">Preparando</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">4</div><div class="tl-label">Despachado</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
-            </div>
-          </div></td></tr>
-          <tr data-status="nuevo" class="order-row" onclick="toggleDetail('d40')">
-            <td><strong>#0040</strong><br><small style="color:var(--text-secondary)">hace 1h</small></td>
-            <td>Catalina Vega<br><small style="color:var(--text-secondary)">+56 9 6934 5678</small></td>
-            <td>Fleece Hoodie FW24 Black L</td>
-            <td><strong>$109.990</strong></td>
-            <td><span class="badge badge-nuevo">Nuevo</span></td>
-            <td>
-              <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
-                <button class="btn btn-ghost btn-sm">💬 WA</button>
-                <span style="font-size:12px; color:var(--warning); align-self:center; font-weight:600;">⏱ 1h</span>
-              </div>
-            </td>
-          </tr>
-          <tr class="order-detail" id="d40"><td colspan="6"><div class="detail-inner">
-            <div class="detail-grid">
-              <div><div class="detail-label">Dirección</div>Moneda 970, Santiago Centro<button class="ship-copy-btn" onclick="copyShipping('Catalina Vega','Moneda 970, Santiago Centro','+56 9 6934 5678','Chilexpress')">📋 Copiar datos envío</button></div>
-              <div><div class="detail-label">Despacho</div>Chilexpress · $4.990</div>
-              <div><div class="detail-label">Nota cliente</div>Consultar por talla XL</div>
-            </div>
-            <div class="order-notes">
-              <div class="order-notes-label">📝 Notas internas</div>
-              <textarea placeholder="Agregar nota…">Consultar disponibilidad XL con proveedor</textarea>
-            </div>
-            <div class="timeline">
-              <div class="tl-step"><div class="tl-dot current">1</div><div class="tl-label current">Recibido</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">2</div><div class="tl-label">Pago</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">3</div><div class="tl-label">Preparando</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">4</div><div class="tl-label">Despachado</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
-            </div>
-          </div></td></tr>
-          <tr data-status="validado" class="order-row" onclick="toggleDetail('d39')">
-            <td><strong>#0039</strong><br><small style="color:var(--text-secondary)">hace 3h</small></td>
-            <td>Ignacio Parra<br><small style="color:var(--text-secondary)">+56 9 5045 6789</small></td>
-            <td>Dark Oatmeal Hoodie M</td>
-            <td><strong>$99.990</strong></td>
-            <td><span class="badge badge-validado">Validado</span></td>
-            <td>
-              <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
-                <button class="btn btn-navy btn-sm" onclick="dispatchOrder(this)">📦 Despachar</button>
-              </div>
-            </td>
-          </tr>
-          <tr class="order-detail" id="d39"><td colspan="6"><div class="detail-inner">
-            <div class="detail-grid">
-              <div><div class="detail-label">Dirección</div>Av. Kennedy 5454, Las Condes<button class="ship-copy-btn" onclick="copyShipping('Ignacio Parra','Av. Kennedy 5454, Las Condes','+56 9 5045 6789','Starken')">📋 Copiar datos envío</button></div>
-              <div><div class="detail-label">Despacho</div>Starken · $3.490</div>
-              <div><div class="detail-label">Nota cliente</div>—</div>
-            </div>
-            <div class="order-notes">
-              <div class="order-notes-label">📝 Notas internas</div>
-              <textarea placeholder="Agregar nota…">Listo para despacho — empacar hoy</textarea>
-            </div>
-            <div class="timeline">
-              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Recibido</div></div>
-              <div class="tl-line done"></div>
-              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Pago</div></div>
-              <div class="tl-line done"></div>
-              <div class="tl-step"><div class="tl-dot current">3</div><div class="tl-label current">Preparando</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">4</div><div class="tl-label">Despachado</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
-            </div>
-          </div></td></tr>
-          <tr data-status="despachado" class="order-row" onclick="toggleDetail('d38')">
-            <td><strong>#0038</strong><br><small style="color:var(--text-secondary)">ayer 16:30</small></td>
-            <td>Sofía Lagos<br><small style="color:var(--text-secondary)">+56 9 4156 7890</small></td>
-            <td>OG Bear Hoodie Negro S</td>
-            <td><strong>$48.990</strong></td>
-            <td><span class="badge badge-despachado">Despachado</span></td>
-            <td>
-              <div onclick="event.stopPropagation()">
-                <button class="btn btn-ghost btn-sm">🔍 Tracking</button>
-              </div>
-            </td>
-          </tr>
-          <tr class="order-detail" id="d38"><td colspan="6"><div class="detail-inner">
-            <div class="detail-grid">
-              <div><div class="detail-label">Dirección</div>Av. Apoquindo 3000, Las Condes</div>
-              <div><div class="detail-label">Tracking</div>STK-78291034</div>
-              <div><div class="detail-label">Despacho</div>Starken · $3.490</div>
-            </div>
-            <div class="order-notes">
-              <div class="order-notes-label">📝 Notas internas</div>
-              <textarea placeholder="Agregar nota…">Despachado 9/4 — tracking enviado por WA</textarea>
-            </div>
-            <div class="timeline">
-              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Recibido</div></div>
-              <div class="tl-line done"></div>
-              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Pago</div></div>
-              <div class="tl-line done"></div>
-              <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Preparando</div></div>
-              <div class="tl-line done"></div>
-              <div class="tl-step"><div class="tl-dot current">4</div><div class="tl-label current">Despachado</div></div>
-              <div class="tl-line"></div>
-              <div class="tl-step"><div class="tl-dot">5</div><div class="tl-label">Entregado</div></div>
-            </div>
-          </div></td></tr>
-          <tr data-status="despachado" class="order-row">
-            <td><strong>#0037</strong><br><small style="color:var(--text-secondary)">ayer 12:10</small></td>
-            <td>Matías Torres<br><small style="color:var(--text-secondary)">+56 9 3267 8901</small></td>
-            <td>OG Bear Tee Beige M + Tee Negro S</td>
-            <td><strong>$49.980</strong></td>
-            <td><span class="badge badge-despachado">Despachado</span></td>
-            <td>
-              <button class="btn btn-ghost btn-sm">🔍 Tracking</button>
-            </td>
-          </tr>
+        <tbody id="pedidos-live-body">
+          <tr><td colspan="6" style="padding:18px; color:#6b7280;">Conecta con tu clave admin para ver los pedidos.</td></tr>
         </tbody>
       </table>
     </div>
+
+    <script>
+    (function(){
+      var EF = 'https://yjjtbwfgtoepsevvkzta.supabase.co/functions/v1/kanki-orders';
+      var LBL = {pending_payment:'Esperando pago', payment_uploaded:'Comprobante', confirmed:'Confirmado', preparing:'Preparando', shipped:'Despachado', delivered:'Entregado', cancelled:'Cancelado'};
+      var COL = {pending_payment:'#ca8a04', payment_uploaded:'#0ea5e9', confirmed:'#16a34a', preparing:'#e8651a', shipped:'#0d4f7c', delivered:'#16a34a', cancelled:'#dc2626'};
+      var fmtK = function(n){ return '$' + Math.round(n||0).toLocaleString('es-CL'); };
+      var escP = function(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+
+      function getKey(){ return sessionStorage.getItem('kanki_admin_key') || ''; }
+
+      window.connectPedidos = function(){
+        var k = document.getElementById('pedidos-key').value.trim();
+        if (!k) return;
+        sessionStorage.setItem('kanki_admin_key', k);
+        document.getElementById('pedidos-auth-err').style.display = 'none';
+        loadPedidos();
+      };
+
+      async function callEF(body){
+        var r = await fetch(EF, { method:'POST', headers:{ 'Content-Type':'application/json', 'x-admin-key': getKey() }, body: JSON.stringify(body) });
+        var d = await r.json();
+        if (r.status === 401) { sessionStorage.removeItem('kanki_admin_key'); var err = new Error('auth'); err.auth = true; throw err; }
+        if (!d.ok) throw new Error(d.error || 'error EF');
+        return d;
+      }
+
+      window.loadPedidos = async function(){
+        var box = document.getElementById('pedidos-live-body');
+        var auth = document.getElementById('pedidos-auth');
+        if (!getKey()) { auth.style.display = 'block'; return; }
+        box.innerHTML = '<tr><td colspan="6" style="padding:18px; color:#6b7280;">Cargando pedidos…</td></tr>';
+        try {
+          var d = await callEF({ action: 'admin-list' });
+          auth.style.display = 'none';
+          document.getElementById('pedidos-live-sub').textContent = d.orders.length + ' pedidos (últimos 50) · datos reales Supabase';
+          box.innerHTML = d.orders.map(function(o){
+            var items = (Array.isArray(o.items) ? o.items : []).map(function(i){ return escP(i.name) + ' ×' + (i.qty||1); }).join(', ') || '—';
+            var opts = Object.keys(LBL).map(function(s){ return '<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+LBL[s]+'</option>'; }).join('');
+            return '<tr>' +
+              '<td><strong>' + escP(o.order_number || '—') + '</strong><br><small style="color:#6b7280">' + new Date(o.created_at).toLocaleString('es-CL') + '</small></td>' +
+              '<td>' + escP(o.customer_email || '') + '<br><small style="color:#6b7280">' + escP(o.customer_phone || '') + '</small></td>' +
+              '<td style="max-width:220px; font-size:12.5px;">' + items + '</td>' +
+              '<td><strong>' + fmtK(o.total) + '</strong></td>' +
+              '<td><span style="font-weight:700; color:' + (COL[o.status]||'#333') + '">' + (LBL[o.status]||escP(o.status)) + '</span><br>' +
+                '<select class="ped-status" data-id="' + o.id + '" style="margin-top:4px; padding:4px 6px; border:1px solid #e5e7eb; border-radius:5px;">' + opts + '</select></td>' +
+              '<td><input class="ped-track" data-id="' + o.id + '" placeholder="tracking" value="' + escP(o.tracking_number || '') + '" style="width:120px; padding:5px 8px; border:1px solid #e5e7eb; border-radius:5px;"> ' +
+                '<button class="btn btn-gold btn-sm" onclick="savePedido(\'' + o.id + '\', this)">💾 Guardar</button></td>' +
+              '</tr>';
+          }).join('') || '<tr><td colspan="6" style="padding:18px;">Sin pedidos aún</td></tr>';
+        } catch(e) {
+          if (e.auth) { auth.style.display = 'block'; document.getElementById('pedidos-auth-err').style.display = 'block'; box.innerHTML = '<tr><td colspan="6" style="padding:18px; color:#6b7280;">Conecta con tu clave admin para ver los pedidos.</td></tr>'; }
+          else { box.innerHTML = '<tr><td colspan="6" style="padding:18px; color:#dc2626;">' + escP(e.message) + ' — <a href="#" onclick="loadPedidos(); return false;">reintentar</a></td></tr>'; }
+        }
+      };
+
+      window.savePedido = async function(id, btn){
+        var st = document.querySelector('.ped-status[data-id="' + id + '"]').value;
+        var tr = document.querySelector('.ped-track[data-id="' + id + '"]').value;
+        var orig = btn.textContent;
+        btn.textContent = '…';
+        try { await callEF({ action:'admin-update', id: id, status: st, tracking_number: tr }); btn.textContent = '✓ Listo'; setTimeout(function(){ btn.textContent = orig; loadPedidos(); }, 1200); }
+        catch(e) { btn.textContent = '✗ Error'; setTimeout(function(){ btn.textContent = orig; }, 2000); }
+      };
+
+      if (getKey()) { loadPedidos(); } else { document.getElementById('pedidos-auth').style.display = 'block'; }
+    })();
+    </script>
   </div>
 
   <!-- VIEW: PRODUCTOS -->
