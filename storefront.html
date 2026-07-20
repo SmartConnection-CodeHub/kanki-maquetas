@@ -94,11 +94,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
   will-change:opacity;
 }
 .hero-vid.active{opacity:1;z-index:2}
-/* fallback gradient behind videos */
-.hero-vid-fallback{display:none}
+/* fallback image behind videos, in case a video never loads a frame */
+.hero-vid-fallback{
+  position:absolute;inset:0;z-index:0;
+  background-image:url('hero-street-poster.jpg');
+  background-size:cover;background-position:center;
+}
 /* Scene label */
 .hero-scene-label{
-  position:absolute;bottom:20px;left:24px;z-index:3;
+  position:absolute;bottom:20px;left:24px;z-index:6;
   display:inline-flex;align-items:center;gap:6px;
   font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
   color:rgba(255,255,255,0.55);
@@ -120,10 +124,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 #music-btn.playing{background:var(--gold);color:var(--navy)}
 #music-btn .note{font-size:17px;line-height:1}
 .hero-overlay{
-  position:absolute;inset:0;
+  position:absolute;inset:0;z-index:3;
   background:linear-gradient(to bottom,rgba(27,47,78,0.15) 0%,rgba(27,47,78,0.05) 25%,rgba(27,47,78,0.55) 65%,rgba(27,47,78,0.96) 100%);
 }
-.hero-content{position:relative;z-index:1;max-width:720px}
+.hero-content{position:relative;z-index:4;max-width:720px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
 .hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp 0.6s 0.25s cubic-bezier(0.4,0,0.2,1) forwards}
 .hero-title{font-size:clamp(3.2rem,8vw,5.8rem);font-weight:800;letter-spacing:-0.045em;line-height:0.97;color:#fff;margin-bottom:22px;opacity:0;animation:fadeUp 0.75s 0.4s cubic-bezier(0.4,0,0.2,1) forwards}
@@ -1198,17 +1202,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
   <div class="hero-vid-wrap" id="heroBg">
     <div class="hero-vid-fallback"></div>
     <!-- 🌊 V1 — SURF DRONE (preload=metadata + poster para carga rápida mobile) -->
-    <video class="hero-vid active" id="vidSurf" autoplay muted loop playsinline preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%231B2F4E'/%3E%3Cstop offset='1' stop-color='%230a1525'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='1920' height='1080'/%3E%3C/svg%3E">
+    <video class="hero-vid active" id="vidSurf" autoplay muted loop playsinline preload="metadata" poster="hero-street-poster.jpg">
       <source src="./Skate.mp4" type="video/mp4">
       <source src="./Skate.mp4" type="video/mp4">
     </video>
     <!-- 🛹 V2 — SKATE PARK -->
-    <video class="hero-vid" id="vidSkate" muted loop playsinline preload="none">
+    <video class="hero-vid" id="vidSkate" muted loop playsinline preload="none" poster="hero-street-poster.jpg">
       <source src="./Skate.mp4" type="video/mp4">
       <source src="./Skate.mp4" type="video/mp4">
     </video>
     <!-- 🌀 V3 — OLA / TUBAZO -->
-    <video class="hero-vid" id="vidTube" muted loop playsinline preload="none">
+    <video class="hero-vid" id="vidTube" muted loop playsinline preload="none" poster="hero-street-poster.jpg">
       <source src="./Skate.mp4" type="video/mp4">
       <source src="./Skate.mp4" type="video/mp4">
     </video>
