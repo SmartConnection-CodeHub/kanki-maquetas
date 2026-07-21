@@ -14,9 +14,9 @@ const MAIL_SENDER = Deno.env.get("MAIL_SENDER") || "guillermo.gonzalez@smconnect
 const ADMIN_NOTIFY = (Deno.env.get("ADMIN_NOTIFY") || "").split(",").map(s => s.trim()).filter(Boolean);
 const ADMIN_KEY = Deno.env.get("KANKI_ADMIN_KEY") || "";
 const SA_RAW = Deno.env.get("SMC_MAILER_KEY") || "";
-const TRACK_URL = "https://qas.kanki.smconnection.cl/pedido/";
+const TRACK_URL = "https://kankisurf.cl/pedido/";
 const MP_TOKEN = Deno.env.get("MP_ACCESS_TOKEN") || "";
-const MP_RETURN_URL = Deno.env.get("MP_RETURN_URL") || "https://qas.kanki.smconnection.cl/checkout/";
+const MP_RETURN_URL = Deno.env.get("MP_RETURN_URL") || "https://kankisurf.cl/checkout/";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -131,7 +131,7 @@ function emailInterno(o: any): string {
   <strong>Pago:</strong> ${o.payment_label} (simulado QAS)</p>
   <p>${items}</p>
   <p>Subtotal ${fmt(o.subtotal)} · Envío ${o.shipping_cost === 0 ? "Gratis" : fmt(o.shipping_cost)} · <strong>Total ${fmt(o.total)}</strong></p>
-  <p style="font-size:12px;color:#6b7280">Gestionar: https://qas.kanki.smconnection.cl/admin.html (vista Pedidos)</p></div>`;
+  <p style="font-size:12px;color:#6b7280">Gestionar: https://kankisurf.cl/admin.html (vista Pedidos)</p></div>`;
 }
 
 /* ── Usuario autenticado (opcional): valida el Bearer contra GoTrue ── */
