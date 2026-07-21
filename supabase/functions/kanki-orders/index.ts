@@ -1,9 +1,12 @@
-// KANKI — Edge Function kanki-orders (v2 · Fase perfiles · 2026-07-21)
-// Acciones: create (orden + 2 emails) · track (seguimiento) · admin-list · admin-update
+// KANKI — Edge Function kanki-orders (v3 · Mercado Pago Checkout Pro · 2026-07-21)
+// Acciones: create (orden simulada + 2 emails) · track · admin-list · admin-update
+//           mp-preference (orden pending_payment + preferencia Checkout Pro → initPoint)
+//           mp-webhook (notificación MP → confirma orden + emails)
 // Escrituras con service_role (RLS intacto). Email vía Gmail API con service account
 // smc-mailer (delegación de dominio, remitente MAIL_SENDER).
-// v2: si create llega con Authorization Bearer válido (sesión Supabase), la orden y el
-// customer quedan vinculados al user_id — invitados siguen igual que v1. + labels Khipu/Fintoc.
+// v2: Authorization Bearer válido → orden/customer vinculados al user_id (invitado intacto).
+// v3: única pasarela = Mercado Pago. Sin MP_ACCESS_TOKEN configurado, mp-preference
+//     responde configured:false y el front cae a la simulación (QAS sin credenciales).
 
 const SB_URL = Deno.env.get("SUPABASE_URL")!;
 const SB_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -12,6 +15,8 @@ const ADMIN_NOTIFY = (Deno.env.get("ADMIN_NOTIFY") || "").split(",").map(s => s.
 const ADMIN_KEY = Deno.env.get("KANKI_ADMIN_KEY") || "";
 const SA_RAW = Deno.env.get("SMC_MAILER_KEY") || "";
 const TRACK_URL = "https://qas.kanki.smconnection.cl/pedido/";
+const MP_TOKEN = Deno.env.get("MP_ACCESS_TOKEN") || "";
+const MP_RETURN_URL = Deno.env.get("MP_RETURN_URL") || "https://qas.kanki.smconnection.cl/checkout/";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -142,11 +147,11 @@ async function getAuthedUser(req: Request): Promise<{ id: string } | null> {
   } catch { return null; }
 }
 
-/* ── Acciones ── */
-async function actionCreate(req: Request, body: any) {
+/* ── Núcleo compartido: crea customer + orden + items (create simulado y mp-preference) ── */
+async function insertOrderCore(req: Request, body: any, status: string) {
   const { contact, delivery, shipMethod, payMethod, billing, items, totals } = body;
   if (!contact?.email || !Array.isArray(items) || !items.length || !totals) {
-    return json({ error: "payload incompleto" }, 400);
+    return { errorResponse: json({ error: "payload incompleto" }, 400) };
   }
   const email = String(contact.email).trim().toLowerCase();
   const user = await getAuthedUser(req);
@@ -187,7 +192,7 @@ async function actionCreate(req: Request, body: any) {
           customer_id: customerId,
           user_id: user?.id ?? null,
           order_number: orderNumber,
-          status: "confirmed",
+          status: status,
           customer_name: email.split("@")[0],
           customer_email: email,
           customer_phone: contact.phone || null,
@@ -209,7 +214,7 @@ async function actionCreate(req: Request, body: any) {
       if (!String(e).includes("23505")) throw e; // solo reintenta colisión de unique
     }
   }
-  if (!order) return json({ error: "no se pudo generar N° de orden" }, 500);
+  if (!order) return { errorResponse: json({ error: "no se pudo generar N° de orden" }, 500) };
 
   // order_items
   const itemRows = items.map((i: any) => {
@@ -224,26 +229,108 @@ async function actionCreate(req: Request, body: any) {
   });
   await rest("order_items", { method: "POST", body: JSON.stringify(itemRows) });
 
-  // emails (fallo de correo NO tumba la orden)
-  const payLabel = payMethod === "paypal" ? "PayPal" : payMethod === "mercadopago" ? "Mercado Pago"
-    : payMethod === "khipu" ? "Khipu" : payMethod === "fintoc" ? "Fintoc" : "Webpay Plus";
   const mailCtx = {
     order_number: order.order_number, items, subtotal: totals.subtotal, shipping_cost: totals.shipping,
-    total: totals.total, payment_label: payLabel, customer_email: email, customer_phone: contact.phone,
+    total: totals.total, payment_label: "Mercado Pago", customer_email: email, customer_phone: contact.phone,
     billing_rut: billing?.rut, delivery: delivery || { mode: "retiro" }, ship_method: shipMethod,
   };
+  return { order, email, user, mailCtx };
+}
+
+/* ── Emails de orden (fallo de correo NO tumba la orden) ── */
+async function sendOrderEmails(email: string, mailCtx: any) {
   let emailBuyer = false, emailAdmin = false, emailError = "";
   try {
     const token = await gmailToken();
-    try { await sendMail(token, [email], `Pedido confirmado ${order.order_number} — KANKI & CO`, emailComprador(mailCtx)); emailBuyer = true; } catch (e) { emailError += String(e).slice(0, 200); }
+    try { await sendMail(token, [email], `Pedido confirmado ${mailCtx.order_number} — KANKI & CO`, emailComprador(mailCtx)); emailBuyer = true; } catch (e) { emailError += String(e).slice(0, 200); }
     if (ADMIN_NOTIFY.length) {
-      try { await sendMail(token, ADMIN_NOTIFY, `🛒 Pedido nuevo ${order.order_number} · ${fmt(totals.total)}`, emailInterno(mailCtx)); emailAdmin = true; } catch (e) { emailError += " | " + String(e).slice(0, 200); }
+      try { await sendMail(token, ADMIN_NOTIFY, `🛒 Pedido nuevo ${mailCtx.order_number} · ${fmt(mailCtx.total)}`, emailInterno(mailCtx)); emailAdmin = true; } catch (e) { emailError += " | " + String(e).slice(0, 200); }
     }
   } catch (e) {
     emailError = String(e).slice(0, 300);
   }
+  return { emailBuyer, emailAdmin, emailError };
+}
 
-  return json({ ok: true, orderNumber: order.order_number, orderId: order.id, emailBuyer, emailAdmin, emailError: emailError || undefined });
+/* ── create: flujo simulado QAS (orden confirmada + emails inmediatos) ── */
+async function actionCreate(req: Request, body: any) {
+  const core = await insertOrderCore(req, body, "confirmed");
+  if (core.errorResponse) return core.errorResponse;
+  const { emailBuyer, emailAdmin, emailError } = await sendOrderEmails(core.email, core.mailCtx);
+  return json({ ok: true, orderNumber: core.order.order_number, orderId: core.order.id, emailBuyer, emailAdmin, emailError: emailError || undefined });
+}
+
+/* ── mp-preference: Checkout Pro real (orden pending_payment + init_point) ── */
+async function actionMpPreference(req: Request, body: any) {
+  if (!MP_TOKEN) return json({ ok: false, configured: false }); // front cae a simulación
+  const core = await insertOrderCore(req, body, "pending_payment");
+  if (core.errorResponse) return core.errorResponse;
+  const { order } = core;
+  const items = (body.items as any[]).map((i) => ({
+    title: String(i.name || "Producto"),
+    quantity: Number(i.qty) || 1,
+    unit_price: Number(i.price) || 0,
+    currency_id: "CLP",
+  }));
+  if (Number(body.totals.shipping) > 0) {
+    items.push({ title: "Envío", quantity: 1, unit_price: Number(body.totals.shipping), currency_id: "CLP" });
+  }
+  const back = (r: string) => `${MP_RETURN_URL}?mp=${r}&n=${encodeURIComponent(order.order_number)}`;
+  const res = await fetch("https://api.mercadopago.com/checkout/preferences", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${MP_TOKEN}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      items,
+      payer: { email: core.email },
+      external_reference: order.order_number,
+      back_urls: { success: back("success"), failure: back("failure"), pending: back("pending") },
+      auto_return: "approved",
+      notification_url: `${SB_URL}/functions/v1/kanki-orders?action=mp-webhook`,
+      statement_descriptor: "KANKI CO",
+    }),
+  });
+  const pref = await res.json().catch(() => null);
+  if (!res.ok || !pref?.init_point) {
+    console.error("mp-preference error:", res.status, JSON.stringify(pref).slice(0, 300));
+    return json({ ok: false, configured: true, error: "no se pudo crear la preferencia MP" }, 502);
+  }
+  return json({ ok: true, orderNumber: order.order_number, orderId: order.id, initPoint: pref.init_point });
+}
+
+/* ── mp-webhook: MP notifica un pago → si approved, confirmar orden + emails ── */
+async function actionMpWebhook(req: Request) {
+  const url = new URL(req.url);
+  let paymentId = url.searchParams.get("data.id") || url.searchParams.get("id") || "";
+  const topic = url.searchParams.get("type") || url.searchParams.get("topic") || "";
+  if (!paymentId) {
+    const body = await req.json().catch(() => ({}));
+    paymentId = body?.data?.id || "";
+  }
+  if (!MP_TOKEN || !paymentId || (topic && topic !== "payment")) return json({ ok: true }); // ack para que MP no reintente
+  const res = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+    headers: { Authorization: `Bearer ${MP_TOKEN}` },
+  });
+  const pay = await res.json().catch(() => null);
+  if (!res.ok || !pay?.external_reference) return json({ ok: true });
+  if (pay.status !== "approved") return json({ ok: true, status: pay.status });
+
+  const rows = await rest(`orders?order_number=eq.${encodeURIComponent(pay.external_reference)}&select=*&limit=1`);
+  const order = rows?.[0];
+  if (!order) return json({ ok: true });
+  if (order.status !== "pending_payment") return json({ ok: true, already: order.status }); // idempotente
+
+  await rest(`orders?id=eq.${order.id}`, { method: "PATCH", body: JSON.stringify({ status: "confirmed", updated_at: new Date().toISOString() }) });
+  const mailCtx = {
+    order_number: order.order_number, items: order.items || [], subtotal: order.subtotal, shipping_cost: order.shipping_cost,
+    total: order.total, payment_label: "Mercado Pago", customer_email: order.customer_email, customer_phone: order.customer_phone,
+    billing_rut: order.billing_rut,
+    delivery: order.ship_method === "retiro"
+      ? { mode: "retiro" }
+      : { mode: "domicilio", region: order.shipping_region, city: order.shipping_comuna, address: order.shipping_address },
+    ship_method: order.ship_method,
+  };
+  const mails = await sendOrderEmails(order.customer_email, mailCtx);
+  return json({ ok: true, confirmed: order.order_number, ...mails });
 }
 
 async function actionTrack(body: any) {
@@ -275,13 +362,18 @@ async function actionAdminUpdate(req: Request, body: any) {
   return json({ ok: true, order: rows[0] });
 }
 
-Deno.serve(async (req: Request) => {
+Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
-  if (req.method !== "POST") return json({ error: "POST only" }, 405);
   try {
+    /* webhook MP llega por query param (GET o POST, body no-JSON posible) */
+    if (new URL(req.url).searchParams.get("action") === "mp-webhook") {
+      return await actionMpWebhook(req);
+    }
+    if (req.method !== "POST") return json({ error: "POST only" }, 405);
     const body = await req.json().catch(() => ({}));
     switch (body.action) {
       case "create": return await actionCreate(req, body);
+      case "mp-preference": return await actionMpPreference(req, body);
       case "track": return await actionTrack(body);
       case "admin-list": return await actionAdminList(req);
       case "admin-update": return await actionAdminUpdate(req, body);
