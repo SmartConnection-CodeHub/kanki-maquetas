@@ -1,7 +1,9 @@
-// KANKI — Edge Function kanki-orders (Fase 1.5 · 2026-07-20)
+// KANKI — Edge Function kanki-orders (v2 · Fase perfiles · 2026-07-21)
 // Acciones: create (orden + 2 emails) · track (seguimiento) · admin-list · admin-update
 // Escrituras con service_role (RLS intacto). Email vía Gmail API con service account
 // smc-mailer (delegación de dominio, remitente MAIL_SENDER).
+// v2: si create llega con Authorization Bearer válido (sesión Supabase), la orden y el
+// customer quedan vinculados al user_id — invitados siguen igual que v1. + labels Khipu/Fintoc.
 
 const SB_URL = Deno.env.get("SUPABASE_URL")!;
 const SB_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -127,21 +129,46 @@ function emailInterno(o: any): string {
   <p style="font-size:12px;color:#6b7280">Gestionar: https://qas.kanki.smconnection.cl/admin.html (vista Pedidos)</p></div>`;
 }
 
+/* ── Usuario autenticado (opcional): valida el Bearer contra GoTrue ── */
+async function getAuthedUser(req: Request): Promise<{ id: string } | null> {
+  const h = req.headers.get("authorization") || "";
+  const token = h.replace(/^Bearer\s+/i, "").trim();
+  if (!token || token.split(".").length !== 3) return null;
+  try {
+    const res = await fetch(`${SB_URL}/auth/v1/user`, { headers: { apikey: SB_KEY, Authorization: `Bearer ${token}` } });
+    if (!res.ok) return null; // anon key o token inválido → invitado
+    const u = await res.json();
+    return u?.id ? u : null;
+  } catch { return null; }
+}
+
 /* ── Acciones ── */
-async function actionCreate(body: any) {
+async function actionCreate(req: Request, body: any) {
   const { contact, delivery, shipMethod, payMethod, billing, items, totals } = body;
   if (!contact?.email || !Array.isArray(items) || !items.length || !totals) {
     return json({ error: "payload incompleto" }, 400);
   }
   const email = String(contact.email).trim().toLowerCase();
+  const user = await getAuthedUser(req);
 
-  // customer: buscar o crear
-  const found = await rest(`customers?email=eq.${encodeURIComponent(email)}&select=id&limit=1`);
-  let customerId = found?.[0]?.id;
+  // customer: por user_id (sesión) → por email → crear. Con sesión, deja el user_id vinculado.
+  let customerId: string | undefined;
+  if (user) {
+    const byUser = await rest(`customers?user_id=eq.${encodeURIComponent(user.id)}&select=id&limit=1`);
+    customerId = byUser?.[0]?.id;
+  }
+  if (!customerId) {
+    const found = await rest(`customers?email=eq.${encodeURIComponent(email)}&select=id,user_id&limit=1`);
+    customerId = found?.[0]?.id;
+    if (customerId && user && !found[0].user_id) {
+      await rest(`customers?id=eq.${customerId}`, { method: "PATCH", body: JSON.stringify({ user_id: user.id }) })
+        .catch(() => null); // si el user ya tiene otro customer (unique), la orden sigue
+    }
+  }
   if (!customerId) {
     const created = await rest("customers", {
       method: "POST",
-      body: JSON.stringify({ email, name: email.split("@")[0], phone: contact.phone || null, address: delivery?.address || null }),
+      body: JSON.stringify({ email, name: email.split("@")[0], phone: contact.phone || null, address: delivery?.address || null, user_id: user?.id ?? null }),
     });
     customerId = created?.[0]?.id;
   }
@@ -158,6 +185,7 @@ async function actionCreate(body: any) {
         method: "POST",
         body: JSON.stringify({
           customer_id: customerId,
+          user_id: user?.id ?? null,
           order_number: orderNumber,
           status: "confirmed",
           customer_name: email.split("@")[0],
@@ -197,7 +225,8 @@ async function actionCreate(body: any) {
   await rest("order_items", { method: "POST", body: JSON.stringify(itemRows) });
 
   // emails (fallo de correo NO tumba la orden)
-  const payLabel = payMethod === "paypal" ? "PayPal" : payMethod === "mercadopago" ? "Mercado Pago" : "Webpay Plus";
+  const payLabel = payMethod === "paypal" ? "PayPal" : payMethod === "mercadopago" ? "Mercado Pago"
+    : payMethod === "khipu" ? "Khipu" : payMethod === "fintoc" ? "Fintoc" : "Webpay Plus";
   const mailCtx = {
     order_number: order.order_number, items, subtotal: totals.subtotal, shipping_cost: totals.shipping,
     total: totals.total, payment_label: payLabel, customer_email: email, customer_phone: contact.phone,
@@ -252,7 +281,7 @@ Deno.serve(async (req: Request) => {
   try {
     const body = await req.json().catch(() => ({}));
     switch (body.action) {
-      case "create": return await actionCreate(body);
+      case "create": return await actionCreate(req, body);
       case "track": return await actionTrack(body);
       case "admin-list": return await actionAdminList(req);
       case "admin-update": return await actionAdminUpdate(req, body);

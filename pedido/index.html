@@ -81,6 +81,13 @@
   <h1>Sigue tu pedido</h1>
   <p class="lead">Ingresa tu número de pedido (lo recibiste al confirmar tu compra y en tu correo) y el e-mail con el que compraste.</p>
 
+  <!-- Con sesión iniciada: lista de pedidos del usuario (lo controla el script de perfil) -->
+  <div class="card" id="my-orders-card" hidden>
+    <p style="font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px">👤 Mis pedidos</p>
+    <div id="my-orders-list"></div>
+    <p style="font-size:12.5px;color:var(--gray);margin-top:10px">¿Buscas un pedido hecho con otro correo? Usa el formulario de abajo.</p>
+  </div>
+
   <div class="card" id="form-card">
     <label for="f-n">N° de pedido</label>
     <input id="f-n" type="text" placeholder="KK-2026-0001" autocomplete="off">
@@ -185,6 +192,42 @@
   if (q.get('n')) $('f-n').value = q.get('n');
   if (q.get('e')) $('f-e').value = q.get('e');
   if (q.get('n') && q.get('e')) track();
+})();
+</script>
+
+<!-- ── Con sesión: lista de pedidos del usuario (guard: si falla, el formulario invitado queda igual) ── -->
+<script src="../js/supabase.umd.js"></script>
+<script src="../js/supabase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/account.js"></script>
+<script>
+(() => {
+  'use strict';
+  if (!window.supabase || !supabase || !window.KankiAccount) return;
+  const $ = id => document.getElementById(id);
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-CL') + ' CLP';
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const LBL = { pending_payment:'Esperando pago', payment_uploaded:'Pago en revisión', confirmed:'Confirmado', preparing:'En preparación', shipped:'Despachado', delivered:'Entregado', cancelled:'Cancelado' };
+
+  document.addEventListener('auth-ready', async () => {
+    if (!currentUser) return;
+    try {
+      const rows = await KankiAccount.listMyOrders();
+      if (!rows.length) return;
+      $('my-orders-list').innerHTML = rows.map(o => {
+        const d = o.created_at ? new Date(o.created_at).toLocaleDateString('es-CL', { day: '2-digit', month: 'short' }) : '';
+        return `<a href="?n=${encodeURIComponent(o.order_number)}&e=${encodeURIComponent(currentUser.email)}"
+          style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid var(--border);font-size:13.5px">
+          <span style="font:700 13px ui-monospace,Menlo,monospace;color:var(--sunset)">${esc(o.order_number)}</span>
+          <span style="color:var(--gray);flex:1">${d}</span>
+          <span style="font-weight:700">${fmt(o.total || 0)}</span>
+          <span class="badge ${o.status === 'cancelled' ? 'cancel' : 'ok'}" style="font-size:10.5px">${LBL[o.status] || esc(o.status || '')}</span>
+        </a>`;
+      }).join('');
+      $('my-orders-card').hidden = false;
+    } catch (e) { console.warn('mis pedidos no disponibles:', e); }
+  });
+  initAuth();
 })();
 </script>
 

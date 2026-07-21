@@ -165,6 +165,30 @@
   .mp-pay:hover{background:#0089c4}
   .mp-cancel{display:block;width:100%;margin-top:10px;font-size:13px;color:var(--gray);background:none;border:0;text-decoration:underline}
 
+  .gw-khipu{background:#f3f0fa;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px}
+  .kh-card{background:#fff;border-radius:12px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+  .kh-head{background:#5b2d90;color:#fff;padding:16px 22px;font-weight:900;letter-spacing:.03em;font-size:16px}
+  .kh-body{padding:24px 22px}
+  .kh-body h3{font-size:15px;margin-bottom:2px}
+  .kh-merchant{font-size:13px;color:var(--gray);margin-bottom:14px}
+  .kh-amount{font-size:26px;font-weight:900;margin-bottom:16px;color:#333}
+  .kh-body select{width:100%;padding:11px 12px;font:400 14.5px var(--font);background:var(--gray-light);border:1.5px solid var(--border);border-radius:var(--r-sm)}
+  .kh-pay{width:100%;margin-top:20px;background:#5b2d90;color:#fff;border:0;padding:14px;border-radius:8px;font:700 15px var(--font)}
+  .kh-pay:hover{background:#48226f}
+  .kh-cancel{display:block;width:100%;margin-top:10px;font-size:13px;color:var(--gray);background:none;border:0;text-decoration:underline}
+
+  .gw-fintoc{background:#0f1e42;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px 16px}
+  .ft-card{background:#fff;border-radius:14px;max-width:400px;width:100%;padding:28px 26px}
+  .ft-logo{font:900 20px var(--font);letter-spacing:-.02em;color:#0f1e42;margin-bottom:4px}
+  .ft-logo .dot{color:#3b6ef6}
+  .ft-sub{font-size:13px;color:var(--gray);margin-bottom:16px}
+  .ft-amount{font-size:24px;font-weight:900;margin-bottom:18px}
+  .ft-card label{margin-top:10px}
+  .ft-card select,.ft-card input{width:100%;padding:11px 12px;font:400 14.5px var(--font);background:var(--gray-light);border:1.5px solid var(--border);border-radius:var(--r-sm)}
+  .ft-pay{width:100%;margin-top:20px;background:#3b6ef6;color:#fff;border:0;padding:14px;border-radius:10px;font:700 15px var(--font)}
+  .ft-pay:hover{background:#2c5be0}
+  .ft-cancel{display:block;width:100%;margin-top:10px;font-size:13px;color:var(--gray);background:none;border:0;text-decoration:underline}
+
   .gw-paypal{background:#001c64;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px 16px}
   .pp-card{background:#fff;border-radius:12px;max-width:420px;width:100%;padding:32px 28px;text-align:center}
   .pp-logo{font:900 26px var(--font);font-style:italic;margin-bottom:6px}
@@ -233,6 +257,9 @@
   <!-- Formulario -->
   <form class="ck-form" id="ck-form" novalidate autocomplete="on">
 
+    <!-- Aviso de cuenta (lo controla el script de perfil; sin sesión invita a entrar) -->
+    <div id="acct-banner" hidden style="background:rgba(26,143,130,.07);border:1.5px solid rgba(26,143,130,.3);border-radius:var(--r-md);padding:12px 16px;font-size:13.5px;margin-bottom:14px"></div>
+
     <!-- ① CONTACTO -->
     <section class="sec" id="sec-contact">
       <div class="sec-head"><span class="sec-num">1</span><h2>Contacto</h2></div>
@@ -279,6 +306,7 @@
 
       <div id="address-block">
         <p class="sub-label">Dirección de envío</p>
+        <div id="saved-addr" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px"></div>
         <div class="row2">
           <div>
             <label for="f-country">País <span class="req">*</span></label>
@@ -312,6 +340,7 @@
       <label for="f-rut">RUT (Ej: 12345678-9) <span class="req">*</span></label>
       <input type="text" id="f-rut" maxlength="12" placeholder="12345678-9">
       <p class="err-msg" id="err-rut">Por favor, ocupe un RUT válido. Formato: xxxxxxxx-x</p>
+      <label class="check-line" id="save-profile-line" hidden><input type="checkbox" id="f-saveprofile" checked> Guardar estos datos en mi perfil para la próxima compra</label>
     </section>
 
     <!-- ③ PAGO -->
@@ -341,6 +370,26 @@
             </span>
             <span class="paylogos">
               <svg width="72" height="22" viewBox="0 0 72 22"><rect width="72" height="22" rx="3" fill="#009EE3"/><text x="36" y="14.5" text-anchor="middle" font-family="Inter,Arial" font-size="8" font-weight="900" fill="#fff">mercado pago</text></svg>
+            </span>
+          </label>
+          <label class="opt">
+            <input type="radio" name="pay" value="khipu">
+            <span class="opt-body">
+              <span class="opt-title">Khipu — transferencia desde tu banco</span>
+              <span class="opt-sub">Paga con tu banco de forma instantánea, sin tarjeta</span>
+            </span>
+            <span class="paylogos">
+              <svg width="52" height="22" viewBox="0 0 52 22"><rect width="52" height="22" rx="3" fill="#5b2d90"/><text x="26" y="15" text-anchor="middle" font-family="Inter,Arial" font-size="10" font-weight="900" fill="#fff">khipu</text></svg>
+            </span>
+          </label>
+          <label class="opt">
+            <input type="radio" name="pay" value="fintoc">
+            <span class="opt-body">
+              <span class="opt-title">Fintoc — pago con tu cuenta bancaria</span>
+              <span class="opt-sub">Conecta tu banco y paga en segundos</span>
+            </span>
+            <span class="paylogos">
+              <svg width="52" height="22" viewBox="0 0 52 22"><rect width="52" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><text x="26" y="15" text-anchor="middle" font-family="Inter,Arial" font-size="9.5" font-weight="900" fill="#0f1e42">fintoc<tspan fill="#3b6ef6">.</tspan></text></svg>
             </span>
           </label>
           <label class="opt">
@@ -395,6 +444,41 @@
       <div class="pp-amount" id="pp-amount"></div>
       <button type="button" class="pp-pay" id="pp-pay">Pay Now</button>
       <button type="button" class="pp-cancel" id="pp-cancel">Cancelar y volver</button>
+    </div>
+  </div>
+
+  <div class="gw-khipu" id="gw-khipu" hidden>
+    <div class="kh-card">
+      <div class="kh-head">khipu</div>
+      <div class="kh-body">
+        <h3>Transferencia a:</h3>
+        <p class="kh-merchant">KANKI &amp; CO SpA — RUT 78.433.042-7</p>
+        <div class="kh-amount" id="kh-amount"></div>
+        <label>Selecciona tu banco</label>
+        <select disabled><option>BancoEstado</option></select>
+        <label>RUT</label>
+        <input type="text" placeholder="12.345.678-9" disabled>
+        <label>Clave de tu banco</label>
+        <input type="password" placeholder="••••••••" disabled>
+        <button type="button" class="kh-pay" id="kh-pay">Pagar con mi banco</button>
+        <button type="button" class="kh-cancel" id="kh-cancel">Cancelar y volver</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gw-fintoc" id="gw-fintoc" hidden>
+    <div class="ft-card">
+      <div class="ft-logo">fintoc<span class="dot">.</span></div>
+      <p class="ft-sub">KANKI &amp; CO SpA te solicita un pago</p>
+      <div class="ft-amount" id="ft-amount"></div>
+      <label>Tu banco</label>
+      <select disabled><option>Banco de Chile</option></select>
+      <label>RUT</label>
+      <input type="text" placeholder="12.345.678-9" disabled>
+      <label>Contraseña</label>
+      <input type="password" placeholder="••••••••" disabled>
+      <button type="button" class="ft-pay" id="ft-pay">Continuar y pagar</button>
+      <button type="button" class="ft-cancel" id="ft-cancel">Cancelar y volver</button>
     </div>
   </div>
 
@@ -680,6 +764,8 @@
     $('gw-webpay').hidden = true;
     $('gw-paypal').hidden = true;
     $('gw-mp').hidden = true;
+    $('gw-khipu').hidden = true;
+    $('gw-fintoc').hidden = true;
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('gw-inter').hidden = true;
@@ -690,6 +776,12 @@
       } else if (state.pay === 'mercadopago') {
         $('mp-amount').textContent = fmt(currentTotal);
         $('gw-mp').hidden = false;
+      } else if (state.pay === 'khipu') {
+        $('kh-amount').textContent = fmt(currentTotal);
+        $('gw-khipu').hidden = false;
+      } else if (state.pay === 'fintoc') {
+        $('ft-amount').textContent = fmt(currentTotal);
+        $('gw-fintoc').hidden = false;
       } else {
         $('pp-amount').textContent = fmt(currentTotal);
         $('gw-paypal').hidden = false;
@@ -716,7 +808,7 @@
   }
 
   const EF_URL = 'https://yjjtbwfgtoepsevvkzta.supabase.co/functions/v1/kanki-orders';
-  const PAY_LABEL = { webpay: 'Webpay Plus', paypal: 'PayPal', mercadopago: 'Mercado Pago' };
+  const PAY_LABEL = { webpay: 'Webpay Plus', paypal: 'PayPal', mercadopago: 'Mercado Pago', khipu: 'Khipu', fintoc: 'Fintoc' };
   let processingOrder = false;
 
   async function showSuccess() {
@@ -724,6 +816,7 @@
     processingOrder = true;
     /* volver al interstitial mientras se registra la orden */
     $('gw-webpay').hidden = true; $('gw-paypal').hidden = true; $('gw-mp').hidden = true;
+    $('gw-khipu').hidden = true; $('gw-fintoc').hidden = true;
     $('gw-inter').hidden = false;
     $('gw-inter').querySelector('p').textContent = 'Registrando tu pedido…';
 
@@ -745,10 +838,12 @@
     /* registrar en el servidor; si falla, la venta NO se pierde (fallback local) */
     let orderN = null, emailBuyer = false;
     try {
-      const res = await fetch(EF_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      /* con sesión iniciada, __kankiAuthHeader vincula la orden al perfil del comprador */
+      const res = await fetch(EF_URL, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, window.__kankiAuthHeader || {}), body: JSON.stringify(payload) });
       const data = await res.json();
       if (data && data.ok) { orderN = data.orderNumber; emailBuyer = !!data.emailBuyer; }
     } catch (e) { /* sin red o EF caída → fallback */ }
+    if (orderN && window.__kankiOnOrderCreated) { try { window.__kankiOnOrderCreated(payload); } catch (e) {} }
     if (!orderN) {
       const seq = (parseInt(localStorage.getItem(KEY_SEQ), 10) || 0) + 1;
       try { localStorage.setItem(KEY_SEQ, String(seq)); } catch {}
@@ -787,14 +882,122 @@
   $('wp-pay').addEventListener('click', showSuccess);
   $('pp-pay').addEventListener('click', showSuccess);
   $('mp-pay').addEventListener('click', showSuccess);
+  $('kh-pay').addEventListener('click', showSuccess);
+  $('ft-pay').addEventListener('click', showSuccess);
   $('wp-cancel').addEventListener('click', showFail);
   $('pp-cancel').addEventListener('click', showFail);
   $('mp-cancel').addEventListener('click', showFail);
+  $('kh-cancel').addEventListener('click', showFail);
+  $('ft-cancel').addEventListener('click', showFail);
   $('res-retry').addEventListener('click', backToCheckout);
 
   /* ── Primer render ──────────────────────── */
   renderItems();
   update();
+})();
+</script>
+
+<!-- ── Perfil de comprador (autofill) · si algo falla, el checkout invitado sigue intacto ── -->
+<script src="../js/supabase.umd.js"></script>
+<script src="../js/supabase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/checkout-utils.js"></script>
+<script src="../js/account.js"></script>
+<script>
+(() => {
+  'use strict';
+  if (!window.supabase || !supabase || !window.KankiAccount) return; /* guard: sin supabase no hay perfil, checkout normal */
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function setVal(id, val, evt) {
+    const el = $(id);
+    if (!el || !val) return;
+    el.value = val;
+    el.dispatchEvent(new Event(evt || 'input', { bubbles: true }));
+  }
+  function fillAddress(a) {
+    const f = KankiUtils.mapAddressToForm(a);
+    if (!f) return;
+    setVal('f-region', f.region, 'change'); /* change resetea envío y re-renderiza opciones */
+    setVal('f-city', f.city);
+    setVal('f-address', f.address);
+    setVal('f-apt', f.apt);
+  }
+
+  let savedAddresses = [];
+
+  function renderChips(selectedId) {
+    const box = $('saved-addr');
+    if (!savedAddresses.length) { box.hidden = true; return; }
+    const chip = 'display:inline-block;padding:8px 14px;border-radius:9999px;font:600 12.5px var(--font);border:1.5px solid var(--teal);background:#fff;color:var(--teal);cursor:pointer';
+    const chipOn = chip + ';background:var(--teal);color:#fff';
+    box.innerHTML = savedAddresses.map(a =>
+      `<button type="button" data-addr="${a.id}" style="${a.id === selectedId ? chipOn : chip}">📍 ${esc(a.label || a.comuna)}${a.is_default ? ' ★' : ''}</button>`
+    ).join('') + `<button type="button" data-addr="" style="${selectedId ? chip : chipOn}">✏️ Otra dirección</button>`;
+    box.hidden = false;
+    box.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      const id = b.dataset.addr;
+      if (id) {
+        fillAddress(savedAddresses.find(x => x.id === id));
+      } else {
+        ['f-city', 'f-address', 'f-apt'].forEach(i => setVal(i, ' ')); /* limpia */
+        ['f-city', 'f-address', 'f-apt'].forEach(i => { $(i).value = ''; $(i).dispatchEvent(new Event('input', { bubbles: true })); });
+      }
+      renderChips(id || null);
+    }));
+  }
+
+  async function onSession() {
+    const banner = $('acct-banner');
+    try {
+      const token = await getAccessToken();
+      if (token) window.__kankiAuthHeader = { 'Authorization': 'Bearer ' + token };
+
+      const c = await KankiAccount.ensureCustomer();
+      banner.innerHTML = '👤 Comprando como <strong>' + esc(currentUser.email) + '</strong> — tus datos se completaron desde tu perfil. <a href="../cuenta/" style="color:var(--teal);font-weight:700;text-decoration:underline">Mi cuenta</a>';
+      banner.hidden = false;
+      $('save-profile-line').hidden = false;
+
+      /* prefill contacto + RUT (solo campos vacíos: no pisar lo que el usuario ya tipeó) */
+      if (!$('f-email').value) setVal('f-email', currentUser.email);
+      if (!$('f-phone').value && c.phone) setVal('f-phone', KankiUtils.phoneToInput(c.phone));
+      if (!$('f-rut').value && c.rut) setVal('f-rut', c.rut);
+
+      savedAddresses = await KankiAccount.listAddresses();
+      const def = savedAddresses.find(a => a.is_default) || savedAddresses[0];
+      if (def && !$('f-address').value) { fillAddress(def); renderChips(def.id); }
+      else renderChips(def ? def.id : null);
+
+      /* al confirmar la orden: persistir teléfono/RUT y la dirección si es nueva */
+      window.__kankiOnOrderCreated = payload => {
+        if (!$('f-saveprofile') || !$('f-saveprofile').checked) return;
+        const upd = {};
+        const ph = (payload.contact.phone || '').replace(/\D/g, '');
+        if (ph.length >= 9) upd.phone = '+56' + ph.slice(-9);
+        if (payload.billing && payload.billing.rut) upd.rut = payload.billing.rut;
+        KankiAccount.updateProfile(upd).catch(() => {});
+        if (payload.delivery && payload.delivery.mode === 'domicilio') {
+          const d = payload.delivery;
+          const dup = savedAddresses.some(a =>
+            a.region === d.region && a.comuna.toLowerCase() === (d.city || '').toLowerCase() && a.address.toLowerCase() === (d.address || '').toLowerCase());
+          if (!dup) KankiAccount.saveAddress({ label: d.city, region: d.region, comuna: d.city, address: d.address, apt: d.apt }).catch(() => {});
+        }
+      };
+    } catch (e) {
+      console.warn('perfil no disponible:', e);
+      banner.hidden = true;
+    }
+  }
+
+  function onNoSession() {
+    const banner = $('acct-banner');
+    banner.innerHTML = '⚡ <a href="../cuenta/" style="color:var(--teal);font-weight:700;text-decoration:underline">Ingresa a tu cuenta</a> y compra en segundos con tus datos y dirección guardados.';
+    banner.hidden = false;
+  }
+
+  document.addEventListener('auth-ready', () => { currentUser ? onSession() : onNoSession(); });
+  initAuth();
 })();
 </script>
 

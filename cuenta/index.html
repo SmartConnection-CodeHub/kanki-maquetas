@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Mi Cuenta — KANKI & CO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ocean:#0c1b2e; --teal:#1a8f82; --teal-light:#22b5a5;
+    --sunset:#e8651a; --sunset-dark:#c04e0e; --sand:#f0e4cc;
+    --gray:#6b7280; --gray-light:#f3f4f6; --border:#e5e7eb;
+    --ok:#16a34a; --err:#dc2626;
+    --r-sm:4px; --r-md:10px; --r-full:9999px;
+    --font:'Inter','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font:15px/1.55 var(--font);color:var(--ocean);background:#fbfaf7}
+  a{color:inherit;text-decoration:none}
+  button{font-family:var(--font);cursor:pointer}
+  [hidden]{display:none !important}
+
+  .ck-head{background:var(--ocean);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+  .ck-head .logo{font-weight:900;font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+  .ck-head .logo em{font-style:italic;color:var(--sunset)}
+  .ck-head span{font-size:12px;font-weight:600;color:var(--teal-light)}
+
+  main{max-width:640px;margin:0 auto;padding:32px 16px 64px}
+  h1{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .lead{color:var(--gray);font-size:14px;margin-bottom:22px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--r-md);padding:22px 20px;margin-bottom:18px}
+
+  label{display:block;font-size:12.5px;font-weight:600;margin:12px 0 5px}
+  input,select{width:100%;padding:11px 12px;font:400 14.5px var(--font);color:var(--ocean);background:var(--gray-light);border:1.5px solid var(--border);border-radius:var(--r-sm);outline:none}
+  input:focus,select:focus{border-color:var(--teal);background:#fff}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+
+  .btn-sunset{width:100%;margin-top:16px;background:var(--sunset);color:#fff;border:0;padding:14px;border-radius:var(--r-md);font:900 14px var(--font);text-transform:uppercase;letter-spacing:.08em;transition:all .2s}
+  .btn-sunset:hover:not(:disabled){background:var(--sunset-dark)}
+  .btn-sunset:disabled{background:#cbd5e1;cursor:not-allowed}
+  .btn-ghost{width:100%;margin-top:10px;background:#fff;color:var(--teal);border:1.5px solid var(--teal);padding:12px;border-radius:var(--r-md);font:700 13px var(--font);text-transform:uppercase;letter-spacing:.06em}
+  .btn-ghost:hover{background:rgba(26,143,130,.07)}
+  .btn-mini{background:none;border:0;font:600 12.5px var(--font);color:var(--teal);text-decoration:underline;padding:4px 6px}
+  .btn-mini.danger{color:var(--err)}
+  .err{display:none;color:var(--err);font-weight:600;font-size:13px;margin-top:10px}
+  .err.on{display:block}
+  .okmsg{display:none;color:var(--ok);font-weight:600;font-size:13px;margin-top:10px}
+  .okmsg.on{display:block}
+
+  /* Social login */
+  .btn-social{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px;margin-top:10px;background:#fff;border:1.5px solid var(--border);border-radius:var(--r-md);font:700 14px var(--font);transition:all .15s}
+  .btn-social:hover:not(:disabled){border-color:var(--ocean);background:#fafaf8}
+  .btn-social:disabled{opacity:.55;cursor:not-allowed}
+  .btn-social .soon{font-size:10.5px;font-weight:700;color:var(--gray);background:var(--gray-light);border-radius:var(--r-full);padding:3px 9px;text-transform:uppercase;letter-spacing:.05em}
+  .divider{display:flex;align-items:center;gap:12px;margin:18px 0 4px;color:var(--gray);font-size:12px;font-weight:600}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
+
+  /* Tabs */
+  .tabs{display:flex;gap:2px;background:var(--gray-light);padding:4px;border-radius:var(--r-md);margin-bottom:18px}
+  .tab{flex:1;padding:10px 6px;border:0;background:none;border-radius:calc(var(--r-md) - 3px);font:700 13px var(--font);color:var(--gray);transition:all .15s;text-align:center}
+  .tab.on{background:#fff;color:var(--ocean);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+  /* Panel */
+  .who{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .avatar{width:52px;height:52px;border-radius:50%;background:var(--ocean);color:#fff;display:flex;align-items:center;justify-content:center;font:900 20px var(--font);flex:none;overflow:hidden}
+  .avatar img{width:100%;height:100%;object-fit:cover}
+  .who .nm{font-weight:900;font-size:16px}
+  .who .em{font-size:12.5px;color:var(--gray)}
+  .who .out{margin-left:auto}
+
+  .addr-card{border:1.5px solid var(--border);border-radius:var(--r-md);padding:14px 16px;margin-bottom:12px;display:flex;gap:12px;align-items:flex-start}
+  .addr-card.default{border-color:var(--teal)}
+  .addr-info{flex:1;font-size:13.5px}
+  .addr-info .lbl{font-weight:700}
+  .addr-info .dt{color:var(--gray)}
+  .badge{font:700 10.5px var(--font);text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:var(--r-full);background:rgba(26,143,130,.12);color:var(--teal);white-space:nowrap}
+  .addr-actions{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+
+  .order-row{border:1.5px solid var(--border);border-radius:var(--r-md);padding:14px 16px;margin-bottom:12px}
+  .order-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+  .order-n{font:700 14px ui-monospace,Menlo,monospace;color:var(--sunset)}
+  .st{font:700 11px var(--font);text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:var(--r-full);background:rgba(22,163,74,.12);color:var(--ok)}
+  .st.cancel{background:rgba(220,38,38,.12);color:var(--err)}
+  .order-sub{font-size:12.5px;color:var(--gray);margin-top:4px}
+  .order-tot{font-weight:900;font-size:14px;margin-top:6px}
+  .muted{color:var(--gray)}
+  .empty-hint{color:var(--gray);font-size:13.5px;text-align:center;padding:14px 0}
+  .back{display:block;text-align:center;margin-top:22px;font-size:13px;font-weight:600;color:var(--teal)}
+  .spinner{width:34px;height:34px;border:4px solid var(--border);border-top-color:var(--sunset);border-radius:50%;animation:spin .8s linear infinite;margin:26px auto}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<header class="ck-head">
+  <a class="logo" href="../VF-storefront.html">KANKI <em>&amp; CO</em></a>
+  <span>👤 Mi Cuenta</span>
+</header>
+
+<main>
+
+  <div class="spinner" id="loading"></div>
+
+  <!-- ══ LOGIN / REGISTRO (sin sesión) ══ -->
+  <div id="view-login" hidden>
+    <h1>Tu cuenta Kanki</h1>
+    <p class="lead">Guarda tus datos y direcciones una sola vez — tus próximas compras serán en segundos, como en Mercado Libre.</p>
+
+    <div class="card">
+      <div class="tabs">
+        <button type="button" class="tab on" id="tab-login">Ingresar</button>
+        <button type="button" class="tab" id="tab-register">Crear cuenta</button>
+      </div>
+
+      <button type="button" class="btn-social" id="btn-google">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 5.9 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 5.9 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C41.4 35.2 44 30 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+        Continuar con Google
+      </button>
+      <button type="button" class="btn-social" disabled aria-disabled="true" title="Disponible próximamente">
+        <svg width="16" height="18" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+        Continuar con Apple
+        <span class="soon">Próximamente</span>
+      </button>
+
+      <div class="divider">o con tu correo</div>
+
+      <!-- Login -->
+      <div id="form-login">
+        <label for="l-email">E-mail</label>
+        <input type="email" id="l-email" autocomplete="email" placeholder="tucorreo@ejemplo.cl">
+        <label for="l-pass">Contraseña</label>
+        <input type="password" id="l-pass" autocomplete="current-password" placeholder="••••••••">
+        <button type="button" class="btn-sunset" id="btn-login">Ingresar</button>
+      </div>
+
+      <!-- Registro -->
+      <div id="form-register" hidden>
+        <label for="r-name">Nombre</label>
+        <input type="text" id="r-name" autocomplete="name" placeholder="Tu nombre">
+        <label for="r-email">E-mail</label>
+        <input type="email" id="r-email" autocomplete="email" placeholder="tucorreo@ejemplo.cl">
+        <label for="r-pass">Contraseña (mínimo 6 caracteres)</label>
+        <input type="password" id="r-pass" autocomplete="new-password" placeholder="••••••••">
+        <button type="button" class="btn-sunset" id="btn-register">Crear mi cuenta</button>
+      </div>
+
+      <p class="err" id="auth-err"></p>
+      <p class="okmsg" id="auth-ok"></p>
+    </div>
+  </div>
+
+  <!-- ══ PANEL MI CUENTA (con sesión) ══ -->
+  <div id="view-panel" hidden>
+    <div class="who">
+      <div class="avatar" id="p-avatar">K</div>
+      <div>
+        <div class="nm" id="p-name">—</div>
+        <div class="em" id="p-email">—</div>
+      </div>
+      <button type="button" class="btn-mini out" id="btn-logout">Cerrar sesión</button>
+    </div>
+
+    <div class="tabs">
+      <button type="button" class="tab on" data-view="data">Mis Datos</button>
+      <button type="button" class="tab" data-view="addresses">Direcciones</button>
+      <button type="button" class="tab" data-view="orders">Mis Pedidos</button>
+    </div>
+
+    <!-- Mis Datos -->
+    <div class="card" id="panel-data">
+      <div class="row2">
+        <div><label for="d-name">Nombre</label><input type="text" id="d-name"></div>
+        <div><label for="d-lastname">Apellido</label><input type="text" id="d-lastname"></div>
+      </div>
+      <div class="row2">
+        <div><label for="d-phone">Teléfono (9 dígitos)</label><input type="tel" id="d-phone" inputmode="numeric" maxlength="9" placeholder="912345678"></div>
+        <div><label for="d-rut">RUT</label><input type="text" id="d-rut" maxlength="12" placeholder="12345678-9"></div>
+      </div>
+      <label for="d-birth">Fecha de nacimiento (opcional)</label>
+      <input type="date" id="d-birth">
+      <button type="button" class="btn-sunset" id="btn-save-data">Guardar mis datos</button>
+      <p class="err" id="data-err"></p>
+      <p class="okmsg" id="data-ok">✓ Datos guardados</p>
+    </div>
+
+    <!-- Direcciones -->
+    <div class="card" id="panel-addresses" hidden>
+      <div id="addr-list"><p class="empty-hint">Cargando direcciones…</p></div>
+      <button type="button" class="btn-ghost" id="btn-addr-new">+ Agregar dirección</button>
+
+      <div id="addr-form" hidden>
+        <input type="hidden" id="a-id">
+        <label for="a-label">Nombre de la dirección (Ej: Casa, Trabajo)</label>
+        <input type="text" id="a-label" placeholder="Casa">
+        <div class="row2">
+          <div>
+            <label for="a-region">Región</label>
+            <select id="a-region"><option value="">Seleccione...</option></select>
+          </div>
+          <div><label for="a-comuna">Comuna</label><input type="text" id="a-comuna" placeholder="Ej: Concón"></div>
+        </div>
+        <label for="a-address">Dirección (calle y número)</label>
+        <input type="text" id="a-address" placeholder="Av. Borgoño 1234">
+        <label for="a-apt">Depto / casa / oficina (opcional)</label>
+        <input type="text" id="a-apt" placeholder="Depto 42">
+        <button type="button" class="btn-sunset" id="btn-addr-save">Guardar dirección</button>
+        <button type="button" class="btn-mini" id="btn-addr-cancel">Cancelar</button>
+      </div>
+      <p class="err" id="addr-err"></p>
+    </div>
+
+    <!-- Mis Pedidos -->
+    <div class="card" id="panel-orders" hidden>
+      <div id="orders-list"><p class="empty-hint">Cargando pedidos…</p></div>
+    </div>
+  </div>
+
+  <a class="back" href="../VF-storefront.html">← Volver a la tienda</a>
+</main>
+
+<script src="../js/supabase.umd.js"></script>
+<script src="../js/supabase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/checkout-utils.js"></script>
+<script src="../js/account.js"></script>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-CL') + ' CLP';
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const REGIONS = ['Arica y Parinacota','Tarapacá','Antofagasta','Atacama','Coquimbo','Valparaíso','Metropolitana de Santiago',"O'Higgins",'Maule','Ñuble','Biobío','La Araucanía','Los Ríos','Los Lagos','Aysén','Magallanes y la Antártica Chilena'];
+  const STATUS_LABEL = { pending_payment:'Esperando pago', payment_uploaded:'Pago en revisión', confirmed:'Confirmado', preparing:'En preparación', shipped:'Despachado', delivered:'Entregado', cancelled:'Cancelado' };
+
+  if (!window.supabase || !supabase) {
+    $('loading').hidden = true;
+    document.body.insertAdjacentHTML('beforeend', '<p style="text-align:center;color:#6b7280">No pudimos cargar tu cuenta. Intenta de nuevo más tarde.</p>');
+    return;
+  }
+
+  REGIONS.forEach(r => { const o = document.createElement('option'); o.value = r; o.textContent = r; $('a-region').appendChild(o); });
+
+  function showErr(id, msg) { const el = $(id); el.textContent = msg; el.classList.add('on'); setTimeout(() => el.classList.remove('on'), 6000); }
+  function flash(id) { const el = $(id); el.classList.add('on'); setTimeout(() => el.classList.remove('on'), 3000); }
+  const humanErr = e => {
+    const m = String(e?.message || e);
+    if (/invalid login/i.test(m)) return 'Correo o contraseña incorrectos.';
+    if (/already registered/i.test(m)) return 'Ese correo ya tiene cuenta. Usa "Ingresar".';
+    if (/at least 6/i.test(m)) return 'La contraseña debe tener al menos 6 caracteres.';
+    if (/rate limit/i.test(m)) return 'Demasiados intentos. Espera un momento.';
+    return m;
+  };
+
+  /* ── Login / registro ── */
+  $('tab-login').addEventListener('click', () => { $('tab-login').classList.add('on'); $('tab-register').classList.remove('on'); $('form-login').hidden = false; $('form-register').hidden = true; });
+  $('tab-register').addEventListener('click', () => { $('tab-register').classList.add('on'); $('tab-login').classList.remove('on'); $('form-register').hidden = false; $('form-login').hidden = true; });
+
+  $('btn-google').addEventListener('click', async () => {
+    try { await loginWithGoogle(window.location.origin + window.location.pathname); }
+    catch (e) { showErr('auth-err', 'Google no está disponible aún: ' + humanErr(e)); }
+  });
+  $('btn-login').addEventListener('click', async () => {
+    try { await loginWithEmail($('l-email').value.trim(), $('l-pass').value); render(); }
+    catch (e) { showErr('auth-err', humanErr(e)); }
+  });
+  $('btn-register').addEventListener('click', async () => {
+    try {
+      const r = await registerWithEmail($('r-email').value.trim(), $('r-pass').value, $('r-name').value.trim());
+      if (r.session) { render(); }
+      else { $('auth-ok').textContent = '✓ Cuenta creada. Revisa tu correo para confirmarla y luego ingresa.'; $('auth-ok').classList.add('on'); }
+    } catch (e) { showErr('auth-err', humanErr(e)); }
+  });
+  $('btn-logout').addEventListener('click', logout);
+
+  /* ── Tabs del panel ── */
+  document.querySelectorAll('#view-panel .tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('#view-panel .tab').forEach(x => x.classList.toggle('on', x === t));
+    $('panel-data').hidden = t.dataset.view !== 'data';
+    $('panel-addresses').hidden = t.dataset.view !== 'addresses';
+    $('panel-orders').hidden = t.dataset.view !== 'orders';
+    if (t.dataset.view === 'addresses') loadAddresses();
+    if (t.dataset.view === 'orders') loadOrders();
+  }));
+
+  /* ── Mis Datos ── */
+  async function loadProfile() {
+    const c = await KankiAccount.ensureCustomer();
+    $('d-name').value = c.name || '';
+    $('d-lastname').value = c.last_name || '';
+    $('d-phone').value = KankiUtils.phoneToInput(c.phone);
+    $('d-rut').value = c.rut || '';
+    $('d-birth').value = c.birth_date || '';
+  }
+  $('btn-save-data').addEventListener('click', async () => {
+    const phone = $('d-phone').value.trim(), rut = $('d-rut').value.trim();
+    if (phone && !KankiUtils.validPhone(phone)) return showErr('data-err', 'El teléfono debe ser un móvil chileno de 9 dígitos (empieza con 9).');
+    if (rut && !KankiUtils.validRut(rut)) return showErr('data-err', 'RUT inválido. Formato: 12345678-9');
+    try {
+      await KankiAccount.updateProfile({
+        name: $('d-name').value.trim(), last_name: $('d-lastname').value.trim(),
+        phone: phone ? '+56' + phone.replace(/\D/g, '') : '', rut, birth_date: $('d-birth').value || '',
+      });
+      flash('data-ok');
+    } catch (e) { showErr('data-err', humanErr(e)); }
+  });
+
+  /* ── Direcciones ── */
+  async function loadAddresses() {
+    try {
+      const rows = await KankiAccount.listAddresses();
+      $('addr-list').innerHTML = rows.length === 0
+        ? '<p class="empty-hint">Aún no tienes direcciones guardadas.</p>'
+        : rows.map(a => `
+          <div class="addr-card ${a.is_default ? 'default' : ''}">
+            <div class="addr-info">
+              <div class="lbl">${esc(a.label || 'Dirección')} ${a.is_default ? '<span class="badge">Principal</span>' : ''}</div>
+              <div class="dt">${esc(a.address)}${a.apt ? ', ' + esc(a.apt) : ''} · ${esc(a.comuna)}, ${esc(a.region)}</div>
+            </div>
+            <div class="addr-actions">
+              ${a.is_default ? '' : `<button type="button" class="btn-mini" data-act="default" data-id="${a.id}">Hacer principal</button>`}
+              <button type="button" class="btn-mini" data-act="edit" data-id="${a.id}">Editar</button>
+              <button type="button" class="btn-mini danger" data-act="del" data-id="${a.id}">Eliminar</button>
+            </div>
+          </div>`).join('');
+      $('addr-list').querySelectorAll('button').forEach(b => b.addEventListener('click', () => addrAction(b.dataset.act, b.dataset.id, rows)));
+    } catch (e) { showErr('addr-err', humanErr(e)); }
+  }
+  async function addrAction(act, id, rows) {
+    try {
+      if (act === 'default') { await KankiAccount.setDefaultAddress(id); loadAddresses(); }
+      if (act === 'del') { await KankiAccount.deleteAddress(id); loadAddresses(); }
+      if (act === 'edit') {
+        const a = rows.find(x => x.id === id);
+        $('a-id').value = a.id; $('a-label').value = a.label || ''; $('a-region').value = a.region;
+        $('a-comuna').value = a.comuna; $('a-address').value = a.address; $('a-apt').value = a.apt || '';
+        $('addr-form').hidden = false;
+      }
+    } catch (e) { showErr('addr-err', humanErr(e)); }
+  }
+  $('btn-addr-new').addEventListener('click', () => {
+    ['a-id','a-label','a-comuna','a-address','a-apt'].forEach(i => $(i).value = '');
+    $('a-region').value = '';
+    $('addr-form').hidden = false;
+  });
+  $('btn-addr-cancel').addEventListener('click', () => { $('addr-form').hidden = true; });
+  $('btn-addr-save').addEventListener('click', async () => {
+    const region = $('a-region').value, comuna = $('a-comuna').value.trim(), address = $('a-address').value.trim();
+    if (!region || comuna.length < 2 || address.length < 4) return showErr('addr-err', 'Completa región, comuna y dirección.');
+    try {
+      await KankiAccount.saveAddress({ id: $('a-id').value || null, label: $('a-label').value.trim(), region, comuna, address, apt: $('a-apt').value.trim() });
+      $('addr-form').hidden = true;
+      loadAddresses();
+    } catch (e) { showErr('addr-err', humanErr(e)); }
+  });
+
+  /* ── Mis Pedidos ── */
+  async function loadOrders() {
+    try {
+      const rows = await KankiAccount.listMyOrders();
+      $('orders-list').innerHTML = rows.length === 0
+        ? '<p class="empty-hint">Aún no tienes pedidos. <a href="../VF-storefront.html" style="color:var(--teal);font-weight:700">¡Vamos a la tienda! 🤙</a></p>'
+        : rows.map(o => {
+            const items = Array.isArray(o.items) ? o.items : [];
+            const names = items.map(i => esc(i.name) + ' × ' + (Number(i.qty) || 1)).join(' · ');
+            const d = o.created_at ? new Date(o.created_at).toLocaleDateString('es-CL', { day: '2-digit', month: 'short', year: 'numeric' }) : '';
+            return `
+            <div class="order-row">
+              <div class="order-top">
+                <a class="order-n" href="../pedido/?n=${encodeURIComponent(o.order_number)}&e=${encodeURIComponent(currentUser.email)}">${esc(o.order_number)}</a>
+                <span class="st ${o.status === 'cancelled' ? 'cancel' : ''}">${STATUS_LABEL[o.status] || esc(o.status || '')}</span>
+              </div>
+              <div class="order-sub">${d}${names ? ' · ' + names : ''}${o.tracking_number ? ' · 📮 ' + esc(o.tracking_number) : ''}</div>
+              <div class="order-tot">${fmt(o.total || 0)} <span class="muted" style="font-weight:400;font-size:12px">· ${esc(o.payment_method || '')}</span></div>
+            </div>`;
+          }).join('');
+    } catch (e) { showErr('addr-err', humanErr(e)); $('orders-list').innerHTML = '<p class="empty-hint">No pudimos cargar tus pedidos.</p>'; }
+  }
+
+  /* ── Render según sesión ── */
+  async function render() {
+    $('loading').hidden = true;
+    if (currentUser) {
+      $('view-login').hidden = true;
+      $('view-panel').hidden = false;
+      const meta = currentUser.user_metadata || {};
+      $('p-name').textContent = meta.full_name || currentUser.email.split('@')[0];
+      $('p-email').textContent = currentUser.email;
+      const av = $('p-avatar');
+      if (meta.avatar_url) av.innerHTML = '<img src="' + esc(meta.avatar_url) + '" alt="" referrerpolicy="no-referrer">';
+      else av.textContent = (meta.full_name || currentUser.email)[0].toUpperCase();
+      try { await loadProfile(); } catch (e) { showErr('data-err', humanErr(e)); }
+    } else {
+      $('view-panel').hidden = true;
+      $('view-login').hidden = false;
+    }
+  }
+
+  document.addEventListener('auth-ready', render);
+  document.addEventListener('auth-changed', render);
+  initAuth();
+})();
+</script>
+
+</body>
+</html>
