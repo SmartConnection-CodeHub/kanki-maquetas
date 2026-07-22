@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanki & Co. — Stock & Inversión Guille</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:      #1B2F4E;
+  --navy-mid:  #243d63;
+  --gold:      #C49A3A;
+  --gold-dim:  #d4aa4a;
+  --sage:      #6B9B7A;
+  --cream:     #F5EDD8;
+  --cream-mid: #EDE3C9;
+  --bg:        #ffffff;
+  --bg-alt:    #f5f5f7;
+  --bg-warm:   #fafaf8;
+  --text:      #1d1d1f;
+  --muted:     #6e6e73;
+  --subtle:    #86868b;
+  --border:    #d2d2d7;
+  --border-w:  #e8e8ed;
+  --font:      -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  --red:       #c0392b;
+  --red-bg:    rgba(192,57,43,0.08);
+  --shadow-sm: 0 2px 10px rgba(27,47,78,0.07);
+  --shadow-md: 0 6px 24px rgba(27,47,78,0.10);
+  --radius:    16px;
+  --radius-sm: 10px;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--bg-alt); color: var(--text); -webkit-font-smoothing: antialiased; padding-bottom: 60px; }
+
+/* NAV */
+.nav-global {
+  position: sticky; top: 0; left: 0; right: 0; z-index: 200;
+  height: 52px;
+  background: rgba(27,47,78,0.97);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(196,154,58,0.25);
+  display: flex; align-items: center; padding: 0 24px;
+}
+.nav-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark { width: 22px; height: 22px; border: 2px solid var(--gold); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 11px; font-weight: 800; }
+.nav-logo-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.08em; text-transform: uppercase; }
+.nav-logo-sep { font-size: 12px; color: rgba(255,255,255,0.25); margin: 0 2px; }
+.nav-logo-sub { font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 400; }
+.nav-back { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255,255,255,0.6); text-decoration: none; padding: 6px 14px; border-radius: 980px; border: 1.5px solid rgba(255,255,255,0.2); transition: all .2s; }
+.nav-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* SHELL */
+.shell { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* HERO */
+.hero { background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 100%); padding: 44px 0 36px; color: #fff; }
+.hero .shell { display: flex; flex-direction: column; gap: 10px; }
+.eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-dim); }
+.hero h1 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 800; letter-spacing: -0.01em; }
+.hero p { color: rgba(255,255,255,0.65); font-size: .92rem; max-width: 620px; }
+.hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.badge { font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 5px 12px; border-radius: 980px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
+.badge.gold { background: rgba(196,154,58,0.18); border-color: rgba(196,154,58,0.4); color: var(--gold-dim); }
+.badge.red  { background: rgba(192,57,43,0.18); border-color: rgba(192,57,43,0.4); color: #ff8a75; }
+
+/* KPI ROW */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: -28px 0 32px; }
+.kpi-card { background: #fff; border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-md); border-top: 3px solid var(--gold); }
+.kpi-card.sage { border-top-color: var(--sage); }
+.kpi-card.red { border-top-color: var(--red); }
+.kpi-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.kpi-value { font-size: 1.6rem; font-weight: 800; color: var(--navy); }
+.kpi-sub { font-size: 12px; color: var(--subtle); margin-top: 4px; }
+
+/* SECTION */
+.section { margin-bottom: 40px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+.section-title { font-size: 1.25rem; font-weight: 800; color: var(--navy); }
+.section-note { font-size: 12.5px; color: var(--muted); }
+
+.card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+thead th { text-align: left; padding: 12px 16px; background: var(--bg-warm); color: var(--muted); font-size: 10.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; border-bottom: 1px solid var(--border-w); }
+tbody td { padding: 12px 16px; border-bottom: 1px solid var(--border-w); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr.missing { background: var(--red-bg); }
+.brand-tag { font-size: 10.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; }
+.brand-tag.fog { background: rgba(27,47,78,0.08); color: var(--navy); }
+.brand-tag.grizzly { background: rgba(107,155,122,0.14); color: #4d7a5a; }
+.brand-tag.stussy { background: rgba(196,154,58,0.14); color: #8a6a1f; }
+.prod-name { font-weight: 700; color: var(--text); }
+.prod-sizes { font-size: 11.5px; color: var(--subtle); }
+.status-pill { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 980px; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.status-pill.ok { background: rgba(107,155,122,0.15); color: #3f6a4c; }
+.status-pill.missing { background: rgba(192,57,43,0.12); color: var(--red); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+tfoot td { padding: 12px 16px; font-weight: 800; color: var(--navy); background: var(--bg-warm); border-top: 2px solid var(--border-w); }
+
+/* INVESTMENT LIST */
+.inv-list { display: flex; flex-direction: column; }
+.inv-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border-w); gap: 16px; }
+.inv-row:last-child { border-bottom: none; }
+.inv-left { display: flex; align-items: center; gap: 12px; }
+.inv-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.inv-desc { font-weight: 700; color: var(--text); font-size: 13.5px; }
+.inv-meta { font-size: 11.5px; color: var(--subtle); margin-top: 2px; }
+.inv-amt { font-weight: 800; color: var(--navy); font-size: 14.5px; white-space: nowrap; }
+.inv-total-row { background: var(--navy); }
+.inv-total-row .inv-desc, .inv-total-row .inv-amt { color: #fff; }
+.inv-total-row .inv-meta { color: rgba(255,255,255,0.6); }
+.inv-total-row .inv-icon { background: rgba(196,154,58,0.25); }
+
+.footnote { font-size: 11.5px; color: var(--subtle); padding: 14px 20px; background: var(--bg-warm); border-top: 1px solid var(--border-w); }
+
+@media (max-width: 720px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  table, thead, tbody { font-size: 12px; }
+  thead th:nth-child(3), tbody td:nth-child(3) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-global">
+  <div class="nav-inner">
+    <a href="panel-socios.html" class="nav-logo">
+      <span class="nav-logo-mark">K</span>
+      <span class="nav-logo-name">Kanki</span><span class="nav-logo-sep">/</span><span class="nav-logo-sub">Stock & Inversión</span>
+    </a>
+    <a href="panel-socios.html" class="nav-back">← Panel de Socios</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="shell">
+    <span class="eyebrow">Inventario · Compras · Aportes</span>
+    <h1>Stock comprado, recibido y pendiente</h1>
+    <p>Estado real de las últimas compras de mercadería (FOG · Grizzly · Stussy) y detalle de lo que Guille ha invertido en Kanki.</p>
+    <div class="hero-badges">
+      <span class="badge gold">15 productos comprados</span>
+      <span class="badge">36 unidades recibidas</span>
+      <span class="badge red">12 unidades pendientes (Essential Hoodies)</span>
+    </div>
+  </div>
+</section>
+
+<div class="shell">
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Unidades compradas</div>
+      <div class="kpi-value">48</div>
+      <div class="kpi-sub">15 productos · 3 marcas</div>
+    </div>
+    <div class="kpi-card sage">
+      <div class="kpi-label">Unidades recibidas</div>
+      <div class="kpi-value">36</div>
+      <div class="kpi-sub">Grizzly + Stussy + poleras FOG</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Unidades pendientes</div>
+      <div class="kpi-value">12</div>
+      <div class="kpi-sub">5 hoodies FOG Essentials</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Invertido por Guille</div>
+      <div class="kpi-value">$744.750</div>
+      <div class="kpi-sub">Stock + operación · may–jul 2026</div>
+    </div>
+  </div>
+
+  <!-- STOCK TABLE -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Detalle de stock por producto</div>
+      <div class="section-note">Recibimos todo el pedido excepto los 5 hoodies Fear of God Essentials</div>
+    </div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Marca</th>
+            <th>Precio</th>
+            <th class="num">Comprado</th>
+            <th class="num">Recibido</th>
+            <th class="num">Falta</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="missing">
+            <td><div class="prod-name">Fleece Hoodie FW24 — Black</div><div class="prod-sizes">M · L · XL</div></td>
+            <td><span class="brand-tag fog">FOG</span></td>
+            <td>$109.990</td>
+            <td class="num">3</td>
+            <td class="num">0</td>
+            <td class="num">3</td>
+            <td><span class="status-pill missing">✕ Pendiente</span></td>
+          </tr>
+          <tr class="missing">
+            <td><div class="prod-name">Fleece Hoodie FW24 — Grey</div><div class="prod-sizes">L · XL</div></td>
+            <td><span class="brand-tag fog">FOG</span></td>
+            <td>$109.990</td>
+            <td class="num">3</td>
+            <td class="num">0</td>
+            <td class="num">3</td>
+            <td><span class="status-pill missing">✕ Pendiente</span></td>
+          </tr>
+          <tr class="missing">
+            <td><div class="prod-name">Dark Oatmeal Hoodie</div><div class="prod-sizes">L · XL</div></td>
+            <td><span class="brand-tag fog">FOG</span></td>
+            <td>$99.990</td>
+            <td class="num">2</td>
+            <td class="num">0</td>
+            <td class="num">2</td>
+            <td><span class="status-pill missing">✕ Pendiente</span></td>
+          </tr>
+          <tr class="missing">
+            <td><div class="prod-name">Light Oatmeal Hoodie</div><div class="prod-sizes">L · XL</div></td>
+            <td><span class="brand-tag fog">FOG</span></td>
+            <td>$99.990</td>
+            <td class="num">2</td>
+            <td class="num">0</td>
+            <td class="num">2</td>
+            <td><span class="status-pill missing">✕ Pendiente</span></td>
+          </tr>
+          <tr class="missing">
+            <td><div class="prod-name">Stretch Limo Hoodie</div><div class="prod-sizes">L · XL</div></td>
+            <td><span class="brand-tag fog">FOG</span></td>
+            <td>$99.990</td>
+            <td class="num">2</td>
+            <td class="num">0</td>
+            <td class="num">2</td>
+            <td><span class="status-pill missing">✕ Pendiente</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Bright White T-Shirt</div><div class="prod-sizes">M · L · XL</div></td>
+            <td><span class="brand-tag fog">FOG</span></td>
+            <td>$65.000</td>
+            <td class="num">3</td>
+            <td class="num">3</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Essentials Fleece Black Tee</div><div class="prod-sizes">L</div></td>
+            <td><span class="brand-tag fog">FOG</span></td>
+            <td>$65.000</td>
+            <td class="num">2</td>
+            <td class="num">2</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">OG Bear Basic Hoodie — Negro</div><div class="prod-sizes">S · M · L · XL · XXL</div></td>
+            <td><span class="brand-tag grizzly">Grizzly</span></td>
+            <td>$48.990</td>
+            <td class="num">9</td>
+            <td class="num">9</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">OG Bear Basic Tee — Negro</div><div class="prod-sizes">S · M · L · XL · XXL</div></td>
+            <td><span class="brand-tag grizzly">Grizzly</span></td>
+            <td>$24.990</td>
+            <td class="num">7</td>
+            <td class="num">7</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">OG Bear Basic Tee — Beige</div><div class="prod-sizes">S · M · L · XL · XXL</div></td>
+            <td><span class="brand-tag grizzly">Grizzly</span></td>
+            <td>$24.990</td>
+            <td class="num">7</td>
+            <td class="num">7</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Basic Stussy Tee — Negra</div><div class="prod-sizes">XL</div></td>
+            <td><span class="brand-tag stussy">Stussy</span></td>
+            <td>$65.000</td>
+            <td class="num">1</td>
+            <td class="num">1</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Basic Stussy Tee — Blanca</div><div class="prod-sizes">XL</div></td>
+            <td><span class="brand-tag stussy">Stussy</span></td>
+            <td>$65.000</td>
+            <td class="num">1</td>
+            <td class="num">1</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">BXR 8 Ball Tee</div><div class="prod-sizes">M</div></td>
+            <td><span class="brand-tag stussy">Stussy</span></td>
+            <td>$70.000</td>
+            <td class="num">1</td>
+            <td class="num">1</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">8 Ball Tee Clasic — Negra</div><div class="prod-sizes">L · XL</div></td>
+            <td><span class="brand-tag stussy">Stussy</span></td>
+            <td>$65.000</td>
+            <td class="num">2</td>
+            <td class="num">2</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">8 Ball Tee Clasic — Blanca</div><div class="prod-sizes">L · XL</div></td>
+            <td><span class="brand-tag stussy">Stussy</span></td>
+            <td>$65.000</td>
+            <td class="num">3</td>
+            <td class="num">3</td>
+            <td class="num">0</td>
+            <td><span class="status-pill ok">✓ Recibido</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Totales</td>
+            <td class="num">48</td>
+            <td class="num">36</td>
+            <td class="num">12</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="footnote">Fuente de cantidades y precios: <code>products.json</code> (2026-07-22). Las tallas listadas son las disponibles al pedir, no reflejan stock actual por talla. Los 5 hoodies FOG Essentials (12 unidades, valor retail ≈ $1.259.880) siguen sin llegar de luked.cl.</div>
+    </div>
+  </div>
+
+  <!-- INVERSIÓN GUILLE -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Inversión de Guille en Kanki</div>
+      <div class="section-note">Fechas exactas pendientes salvo donde se indica</div>
+    </div>
+    <div class="card">
+      <div class="inv-list">
+        <div class="inv-row">
+          <div class="inv-left">
+            <div class="inv-icon">📦</div>
+            <div>
+              <div class="inv-desc">Stock Stussy + poleras Essential (FOG)</div>
+              <div class="inv-meta">Factura 12 de julio de 2026 · incluye las 5 poleras Stussy + Bright White Tee + Fleece Black Tee</div>
+            </div>
+          </div>
+          <div class="inv-amt">$624.750</div>
+        </div>
+        <div class="inv-row">
+          <div class="inv-left">
+            <div class="inv-icon">🚚</div>
+            <div>
+              <div class="inv-desc">Envío stock Grizzly</div>
+              <div class="inv-meta">Fecha por confirmar</div>
+            </div>
+          </div>
+          <div class="inv-amt">$8.000</div>
+        </div>
+        <div class="inv-row">
+          <div class="inv-left">
+            <div class="inv-icon">💻</div>
+            <div>
+              <div class="inv-desc">Claude Code Pro — suscripción</div>
+              <div class="inv-meta">$24.000/mes × 3 meses (mayo, junio, julio 2026)</div>
+            </div>
+          </div>
+          <div class="inv-amt">$72.000</div>
+        </div>
+        <div class="inv-row">
+          <div class="inv-left">
+            <div class="inv-icon">🍽️</div>
+            <div>
+              <div class="inv-desc">Comidas gerenciales</div>
+              <div class="inv-meta">Fecha por confirmar</div>
+            </div>
+          </div>
+          <div class="inv-amt">$40.000</div>
+        </div>
+        <div class="inv-row inv-total-row">
+          <div class="inv-left">
+            <div class="inv-icon">Σ</div>
+            <div>
+              <div class="inv-desc">Total invertido por Guille</div>
+              <div class="inv-meta">Stock + operación, may–jul 2026</div>
+            </div>
+          </div>
+          <div class="inv-amt">$744.750</div>
+        </div>
+      </div>
+      <div class="footnote">Montos entregados por Martín el 2026-07-22. Faltan fechas exactas de comidas gerenciales y envío Grizzly — actualizar cuando estén disponibles.</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
