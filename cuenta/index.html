@@ -262,6 +262,16 @@
     try { await loginWithGoogle(window.location.origin + window.location.pathname); }
     catch (e) { showErr('auth-err', 'Google no está disponible aún: ' + humanErr(e)); }
   });
+  /* si el proveedor Google está apagado en Supabase, deshabilitar el botón (evita el 400 crudo) */
+  fetch(SUPABASE_URL + '/auth/v1/settings', { headers: { apikey: SUPABASE_ANON_KEY } })
+    .then(r => r.json())
+    .then(s => {
+      if (!s.external || !s.external.google) {
+        const b = $('btn-google');
+        b.disabled = true;
+        b.insertAdjacentHTML('beforeend', ' <span class="soon">Muy pronto</span>');
+      }
+    }).catch(() => {});
   $('btn-login').addEventListener('click', async () => {
     try { await loginWithEmail($('l-email').value.trim(), $('l-pass').value); render(); }
     catch (e) { showErr('auth-err', humanErr(e)); }
