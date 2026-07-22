@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<title>Tests — checkout-utils · KANKI QAS</title>
+<style>
+  body{font:14px/1.6 ui-monospace,Menlo,monospace;background:#0c1b2e;color:#e5e7eb;padding:24px;max-width:720px;margin:0 auto}
+  h1{font-size:16px;color:#e8651a}
+  .pass{color:#4ade80}.fail{color:#f87171;font-weight:700}
+  #summary{margin-top:14px;padding-top:10px;border-top:1px solid #374151;font-weight:700}
+</style>
+</head>
+<body>
+<h1>🧪 checkout-utils.js — suite unitaria</h1>
+<div id="out"></div>
+<div id="summary"></div>
+<script src="../js/checkout-utils.js"></script>
+<script>
+(() => {
+  const U = window.KankiUtils, out = document.getElementById('out');
+  let pass = 0, fail = 0;
+  const t = (name, cond) => {
+    (cond ? pass++ : fail++);
+    out.insertAdjacentHTML('beforeend', `<div class="${cond ? 'pass' : 'fail'}">${cond ? '✓' : '✗'} ${name}</div>`);
+  };
+  /* validRut */
+  t('rut válido 76811863-9', U.validRut('76.811.863-9'));
+  t('rut válido sin puntos', U.validRut('76811863-9'));
+  t('rut dígito K (10000013-K)', U.validRut('10000013-K'));
+  t('rut K minúscula', U.validRut('10000013-k'));
+  t('rut K con dv incorrecto', !U.validRut('10000013-5'));
+  t('rut inválido dv', !U.validRut('76811863-1'));
+  t('rut corto', !U.validRut('123-4'));
+  t('rut vacío', !U.validRut(''));
+  t('rut basura', !U.validRut('abcdefgh-i'));
+  /* validEmail / validPhone */
+  t('email ok', U.validEmail('martin@kanki.cl'));
+  t('email sin TLD', !U.validEmail('martin@kanki'));
+  t('phone ok', U.validPhone('912345678'));
+  t('phone no empieza con 9', !U.validPhone('812345678'));
+  t('phone corto', !U.validPhone('91234567'));
+  /* mapAddressToForm */
+  const m = U.mapAddressToForm({ region: 'Valparaíso', comuna: 'Concón', address: 'Av. Borgoño 123', apt: 'Depto 4' });
+  t('map region', m.region === 'Valparaíso');
+  t('map comuna→city', m.city === 'Concón');
+  t('map apt', m.apt === 'Depto 4');
+  t('map sin apt → vacío', U.mapAddressToForm({ region: 'X', comuna: 'Y', address: 'Z' }).apt === '');
+  t('map null → null', U.mapAddressToForm(null) === null);
+  /* phoneToInput */
+  t('phone +56912345678 → 912345678', U.phoneToInput('+56912345678') === '912345678');
+  t('phone corto → vacío', U.phoneToInput('1234') === '');
+  document.getElementById('summary').innerHTML =
+    fail === 0 ? `<span class="pass">✅ ${pass}/${pass + fail} PASS</span>` : `<span class="fail">❌ ${fail} FAIL · ${pass} pass</span>`;
+})();
+</script>
+</body>
+</html>

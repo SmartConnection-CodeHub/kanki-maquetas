@@ -142,17 +142,7 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   .gw-inter p{font-weight:600;color:var(--gray)}
 
-  .gw-webpay{background:#f4f4f6;min-height:100vh}
-  .gw-webpay .wp-top{background:#5c2d91;color:#fff;padding:16px 20px;font-weight:900;letter-spacing:.06em;font-size:16px}
-  .gw-webpay .wp-card{max-width:460px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.1);padding:28px 26px}
-  .gw-webpay h3{font-size:16px;margin-bottom:4px}
-  .gw-webpay .wp-merchant{font-size:13px;color:var(--gray);margin-bottom:18px}
-  .gw-webpay .wp-amount{font-size:26px;font-weight:900;margin-bottom:20px}
-  .gw-webpay .wp-btns{margin-top:24px;display:flex;flex-direction:column;gap:10px}
-  .wp-pay{background:#5c2d91;color:#fff;border:0;padding:14px;border-radius:8px;font:700 15px var(--font)}
-  .wp-pay:hover{background:#4a2375}
-  .wp-cancel{background:#fff;color:#5c2d91;border:1.5px solid #5c2d91;padding:12px;border-radius:8px;font:700 14px var(--font)}
-
+  
   .gw-mp{background:#ebebeb;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px}
   .mp-card{background:#fff;border-radius:12px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12)}
   .mp-head{background:#009EE3;color:#fff;padding:16px 22px;font-weight:900;letter-spacing:.03em;font-size:16px}
@@ -165,16 +155,9 @@
   .mp-pay:hover{background:#0089c4}
   .mp-cancel{display:block;width:100%;margin-top:10px;font-size:13px;color:var(--gray);background:none;border:0;text-decoration:underline}
 
-  .gw-paypal{background:#001c64;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px 16px}
-  .pp-card{background:#fff;border-radius:12px;max-width:420px;width:100%;padding:32px 28px;text-align:center}
-  .pp-logo{font:900 26px var(--font);font-style:italic;margin-bottom:6px}
-  .pp-logo .p1{color:#003087}.pp-logo .p2{color:#0070e0}
-  .pp-sub{font-size:13px;color:var(--gray);margin-bottom:18px}
-  .pp-amount{font-size:24px;font-weight:900;margin-bottom:22px}
-  .pp-pay{width:100%;background:#ffc439;border:0;padding:14px;border-radius:var(--r-full);font:900 15px var(--font);color:#111}
-  .pp-pay:hover{background:#f2b535}
-  .pp-cancel{display:inline-block;margin-top:14px;font-size:13px;color:var(--gray);background:none;border:0;text-decoration:underline}
-
+  
+  
+  
   /* ── Resultado ──────────────────────────── */
   .result{max-width:560px;margin:50px auto;padding:0 20px;text-align:center}
   .res-icon{width:84px;height:84px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;animation:pop .4s ease}
@@ -233,6 +216,9 @@
   <!-- Formulario -->
   <form class="ck-form" id="ck-form" novalidate autocomplete="on">
 
+    <!-- Aviso de cuenta (lo controla el script de perfil; sin sesión invita a entrar) -->
+    <div id="acct-banner" hidden style="background:rgba(26,143,130,.07);border:1.5px solid rgba(26,143,130,.3);border-radius:var(--r-md);padding:12px 16px;font-size:13.5px;margin-bottom:14px"></div>
+
     <!-- ① CONTACTO -->
     <section class="sec" id="sec-contact">
       <div class="sec-head"><span class="sec-num">1</span><h2>Contacto</h2></div>
@@ -279,6 +265,7 @@
 
       <div id="address-block">
         <p class="sub-label">Dirección de envío</p>
+        <div id="saved-addr" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px"></div>
         <div class="row2">
           <div>
             <label for="f-country">País <span class="req">*</span></label>
@@ -312,6 +299,7 @@
       <label for="f-rut">RUT (Ej: 12345678-9) <span class="req">*</span></label>
       <input type="text" id="f-rut" maxlength="12" placeholder="12345678-9">
       <p class="err-msg" id="err-rut">Por favor, ocupe un RUT válido. Formato: xxxxxxxx-x</p>
+      <label class="check-line" id="save-profile-line" hidden><input type="checkbox" id="f-saveprofile" checked> Guardar estos datos en mi perfil para la próxima compra</label>
     </section>
 
     <!-- ③ PAGO -->
@@ -321,39 +309,20 @@
 
       <div id="pay-block" hidden>
         <div class="opt-group">
-          <label class="opt">
-            <input type="radio" name="pay" value="webpay">
-            <span class="opt-body">
-              <span class="opt-title">Tarjeta de crédito o débito (Webpay Plus)</span>
-            </span>
-            <span class="paylogos">
-              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><text x="17" y="15" text-anchor="middle" font-family="Inter,Arial" font-size="8" font-weight="900" font-style="italic" fill="#1a1f71">VISA</text></svg>
-              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><circle cx="14" cy="11" r="6" fill="#eb001b"/><circle cx="21" cy="11" r="6" fill="#f79e1b" fill-opacity=".85"/></svg>
-              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#2557d6"/><text x="17" y="14.5" text-anchor="middle" font-family="Inter,Arial" font-size="6.5" font-weight="900" fill="#fff">AMEX</text></svg>
-              <svg width="46" height="22" viewBox="0 0 46 22"><rect width="46" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><text x="23" y="14.5" text-anchor="middle" font-family="Inter,Arial" font-size="6" font-weight="900" fill="#e8651a">redcompra</text></svg>
-            </span>
-          </label>
-          <label class="opt">
-            <input type="radio" name="pay" value="mercadopago">
+          <label class="opt on">
+            <input type="radio" name="pay" value="mercadopago" checked>
             <span class="opt-body">
               <span class="opt-title">Mercado Pago</span>
-              <span class="opt-sub">Tarjetas, cuotas y dinero en cuenta</span>
+              <span class="opt-sub">Tarjetas de crédito y débito, cuotas y dinero en cuenta</span>
             </span>
             <span class="paylogos">
               <svg width="72" height="22" viewBox="0 0 72 22"><rect width="72" height="22" rx="3" fill="#009EE3"/><text x="36" y="14.5" text-anchor="middle" font-family="Inter,Arial" font-size="8" font-weight="900" fill="#fff">mercado pago</text></svg>
-            </span>
-          </label>
-          <label class="opt">
-            <input type="radio" name="pay" value="paypal">
-            <span class="opt-body">
-              <span class="opt-title">PayPal</span>
-            </span>
-            <span class="paylogos">
-              <svg width="64" height="22" viewBox="0 0 64 22"><rect width="64" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><text x="32" y="15" text-anchor="middle" font-family="Inter,Arial" font-size="10" font-weight="900" font-style="italic"><tspan fill="#003087">Pay</tspan><tspan fill="#0070e0">Pal</tspan></text></svg>
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><text x="17" y="15" text-anchor="middle" font-family="Inter,Arial" font-size="8" font-weight="900" font-style="italic" fill="#1a1f71">VISA</text></svg>
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="3" fill="#fff" stroke="#e5e7eb"/><circle cx="14" cy="11" r="6" fill="#eb001b"/><circle cx="21" cy="11" r="6" fill="#f79e1b" fill-opacity=".85"/></svg>
             </span>
           </label>
         </div>
-        <div class="gateway-note">Serás redirigido a la Pasarela de Pago Externa para realizar un pago seguro.</div>
+        <div class="gateway-note">Serás redirigido a Mercado Pago para realizar un pago seguro.</div>
       </div>
     </section>
 
@@ -367,35 +336,6 @@
   <div class="gw-inter" id="gw-inter">
     <div class="spinner"></div>
     <p>Conectando con la pasarela de pago segura…</p>
-  </div>
-
-  <div class="gw-webpay" id="gw-webpay" hidden>
-    <div class="wp-top">webpay<span style="font-weight:400">.plus</span></div>
-    <div class="wp-card">
-      <h3>Estás pagando en:</h3>
-      <p class="wp-merchant">KANKI &amp; CO SpA — kanki.smconnection.cl</p>
-      <div class="wp-amount" id="wp-amount"></div>
-      <label>Número de tarjeta</label>
-      <input type="text" placeholder="•••• •••• •••• ••••" disabled>
-      <div class="row2">
-        <div><label>Vencimiento</label><input type="text" placeholder="MM/AA" disabled></div>
-        <div><label>CVV</label><input type="text" placeholder="•••" disabled></div>
-      </div>
-      <div class="wp-btns">
-        <button type="button" class="wp-pay" id="wp-pay"></button>
-        <button type="button" class="wp-cancel" id="wp-cancel">Anular transacción</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="gw-paypal" id="gw-paypal" hidden>
-    <div class="pp-card">
-      <div class="pp-logo"><span class="p1">Pay</span><span class="p2">Pal</span></div>
-      <p class="pp-sub">KANKI &amp; CO SpA</p>
-      <div class="pp-amount" id="pp-amount"></div>
-      <button type="button" class="pp-pay" id="pp-pay">Pay Now</button>
-      <button type="button" class="pp-cancel" id="pp-cancel">Cancelar y volver</button>
-    </div>
   </div>
 
   <div class="gw-mp" id="gw-mp" hidden>
@@ -497,7 +437,34 @@
 
   /* ── Estado ─────────────────────────────── */
   const cart = lsGet(KEY_CART, []);
-  const state = { delivery: 'domicilio', ship: null, pay: null };
+  const state = { delivery: 'domicilio', ship: null, pay: 'mercadopago' }; /* única pasarela: Mercado Pago */
+
+  /* ── Retorno desde Mercado Pago (Checkout Pro real) ── */
+  const mpq = new URLSearchParams(location.search);
+  if (mpq.get('mp')) {
+    const pending = lsGet('kanki_pending_order', null);
+    const orderN = mpq.get('n') || (pending && pending.orderNumber) || '';
+    if (mpq.get('mp') === 'success' || mpq.get('mp') === 'pending') {
+      lsSet(KEY_CART, []);
+      lsSet('kanki_pending_order', null);
+      $('res-order-n').textContent = 'Orden N° ' + orderN;
+      $('res-mail-line').innerHTML = mpq.get('mp') === 'success'
+        ? 'Tu pago fue aprobado por Mercado Pago. Te enviaremos la confirmación a <strong>' + ((pending && pending.email) || 'tu correo').replace(/</g, '&lt;') + '</strong>.'
+        : 'Tu pago quedó <strong>pendiente</strong> en Mercado Pago. Te confirmaremos apenas se acredite.';
+      if (pending && pending.summaryHtml) $('res-box').innerHTML = pending.summaryHtml; else $('res-box').hidden = true;
+      $('res-track').href = '../pedido/?n=' + encodeURIComponent(orderN) + '&e=' + encodeURIComponent((pending && pending.email) || '');
+      $('res-wa').href = 'https://wa.me/56957807766?text=' + encodeURIComponent('¡Hola Kanki! Acabo de pagar el pedido ' + orderN + ' con Mercado Pago 🤙');
+      $('view-result').hidden = false;
+      $('res-ok').hidden = false;
+    } else {
+      /* failure: el carrito sigue intacto, la orden quedó pending_payment */
+      $('view-result').hidden = false;
+      $('res-fail').hidden = false;
+      $('res-retry').addEventListener('click', () => { location.href = './'; });
+      $('res-fail-wa').href = 'https://wa.me/56957807766?text=' + encodeURIComponent('¡Hola Kanki! Intenté pagar el pedido ' + orderN + ' pero no resultó. ¿Me ayudan?');
+    }
+    return;
+  }
 
   if (!Array.isArray(cart) || cart.length === 0) {
     $('view-empty').hidden = false;
@@ -667,34 +634,67 @@
     });
   });
 
-  /* ── Pasarela simulada ──────────────────── */
+  /* ── Pago: Checkout Pro real si está configurado · simulación si no ── */
   let currentTotal = 0;
 
-  $('btn-pay').addEventListener('click', e => {
+  function buildPayload() {
+    const ship = shipCost() || 0;
+    const contact = { email: $('f-email').value.trim(), phone: '+56' + $('f-phone').value.replace(/\D/g, '') };
+    const delivery = state.delivery === 'retiro'
+      ? { mode: 'retiro' }
+      : { mode: 'domicilio', region: selRegion.value, city: $('f-city').value.trim(), address: $('f-address').value.trim(), apt: $('f-apt').value.trim() };
+    return {
+      contact, delivery,
+      shipMethod: state.delivery === 'retiro' ? 'retiro' : (state.ship ? state.ship.type : null),
+      payMethod: state.pay,
+      billing: { rut: $('f-rut').value.trim(), sameAsShipping: $('f-samebill').checked },
+      items: cart,
+      totals: { subtotal, shipping: ship, total: subtotal + ship },
+    };
+  }
+
+  function summaryHtml(payload) {
+    const ship = payload.totals.shipping;
+    const shipLabel = payload.shipMethod === 'retiro' ? '(retiro en tienda)' : payload.shipMethod === 'exp' ? '(Express)' : '(Standard)';
+    return `
+      <div class="sum-line"><span class="muted">Productos (${itemCount})</span><span>${fmt(payload.totals.subtotal)}</span></div>
+      <div class="sum-line"><span class="muted">Envío ${shipLabel}</span><span>${ship === 0 ? '<span class="free">Gratis</span>' : fmt(ship)}</span></div>
+      <div class="sum-line total"><span>Total (Mercado Pago)</span><span>${fmt(payload.totals.total)}</span></div>`;
+  }
+
+  $('btn-pay').addEventListener('click', async e => {
     e.preventDefault();
     if ($('btn-pay').disabled) return;
     currentTotal = renderTotals();
     $('view-checkout').hidden = true;
     $('view-gateway').hidden = false;
     $('gw-inter').hidden = false;
-    $('gw-webpay').hidden = true;
-    $('gw-paypal').hidden = true;
     $('gw-mp').hidden = true;
     window.scrollTo(0, 0);
+
+    /* 1) Intento Checkout Pro REAL: la EF crea la orden (pending_payment) + preferencia MP.
+       Si MP aún no está configurado (sin Access Token) responde configured:false → simulación. */
+    const payload = buildPayload();
+    try {
+      const res = await fetch(EF_URL, {
+        method: 'POST',
+        headers: Object.assign({ 'Content-Type': 'application/json' }, window.__kankiAuthHeader || {}),
+        body: JSON.stringify(Object.assign({ action: 'mp-preference' }, payload)),
+      });
+      const d = await res.json();
+      if (d && d.ok && d.initPoint) {
+        lsSet('kanki_pending_order', { orderNumber: d.orderNumber, email: payload.contact.email, summaryHtml: summaryHtml(payload) });
+        location.href = d.initPoint; /* → Mercado Pago; vuelve con ?mp=success|failure|pending */
+        return;
+      }
+    } catch (e) { /* EF caída → simulación */ }
+
+    /* 2) Fallback: pasarela simulada (QAS sin credenciales MP) */
     setTimeout(() => {
       $('gw-inter').hidden = true;
-      if (state.pay === 'webpay') {
-        $('wp-amount').textContent = fmt(currentTotal);
-        $('wp-pay').textContent = 'Pagar ' + fmt(currentTotal);
-        $('gw-webpay').hidden = false;
-      } else if (state.pay === 'mercadopago') {
-        $('mp-amount').textContent = fmt(currentTotal);
-        $('gw-mp').hidden = false;
-      } else {
-        $('pp-amount').textContent = fmt(currentTotal);
-        $('gw-paypal').hidden = false;
-      }
-    }, 1500);
+      $('mp-amount').textContent = fmt(currentTotal);
+      $('gw-mp').hidden = false;
+    }, 900);
   });
 
   function backToCheckout() {
@@ -716,39 +716,30 @@
   }
 
   const EF_URL = 'https://yjjtbwfgtoepsevvkzta.supabase.co/functions/v1/kanki-orders';
-  const PAY_LABEL = { webpay: 'Webpay Plus', paypal: 'PayPal', mercadopago: 'Mercado Pago' };
+  const PAY_LABEL = { mercadopago: 'Mercado Pago' };
   let processingOrder = false;
 
   async function showSuccess() {
     if (processingOrder) return;
     processingOrder = true;
     /* volver al interstitial mientras se registra la orden */
-    $('gw-webpay').hidden = true; $('gw-paypal').hidden = true; $('gw-mp').hidden = true;
+    $('gw-mp').hidden = true;
     $('gw-inter').hidden = false;
     $('gw-inter').querySelector('p').textContent = 'Registrando tu pedido…';
 
-    const ship = shipCost() || 0;
-    const contact = { email: $('f-email').value.trim(), phone: '+56' + $('f-phone').value.replace(/\D/g, '') };
-    const delivery = state.delivery === 'retiro'
-      ? { mode: 'retiro' }
-      : { mode: 'domicilio', region: selRegion.value, city: $('f-city').value.trim(), address: $('f-address').value.trim(), apt: $('f-apt').value.trim() };
-    const payload = {
-      action: 'create',
-      contact, delivery,
-      shipMethod: state.delivery === 'retiro' ? 'retiro' : (state.ship ? state.ship.type : null),
-      payMethod: state.pay,
-      billing: { rut: $('f-rut').value.trim(), sameAsShipping: $('f-samebill').checked },
-      items: cart,
-      totals: { subtotal, shipping: ship, total: subtotal + ship },
-    };
+    const payload = Object.assign({ action: 'create' }, buildPayload());
+    const contact = payload.contact;
+    const ship = payload.totals.shipping;
 
     /* registrar en el servidor; si falla, la venta NO se pierde (fallback local) */
     let orderN = null, emailBuyer = false;
     try {
-      const res = await fetch(EF_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      /* con sesión iniciada, __kankiAuthHeader vincula la orden al perfil del comprador */
+      const res = await fetch(EF_URL, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, window.__kankiAuthHeader || {}), body: JSON.stringify(payload) });
       const data = await res.json();
       if (data && data.ok) { orderN = data.orderNumber; emailBuyer = !!data.emailBuyer; }
     } catch (e) { /* sin red o EF caída → fallback */ }
+    if (orderN && window.__kankiOnOrderCreated) { try { window.__kankiOnOrderCreated(payload); } catch (e) {} }
     if (!orderN) {
       const seq = (parseInt(localStorage.getItem(KEY_SEQ), 10) || 0) + 1;
       try { localStorage.setItem(KEY_SEQ, String(seq)); } catch {}
@@ -771,7 +762,7 @@
     $('res-box').innerHTML = `
       <div class="sum-line"><span class="muted">Productos (${itemCount})</span><span>${fmt(subtotal)}</span></div>
       <div class="sum-line"><span class="muted">Envío ${shipLabel}</span><span>${ship === 0 ? '<span class="free">Gratis</span>' : fmt(ship)}</span></div>
-      <div class="sum-line total"><span>Total pagado (${PAY_LABEL[state.pay] || 'Webpay Plus'})</span><span>${fmt(payload.totals.total)}</span></div>`;
+      <div class="sum-line total"><span>Total pagado (${PAY_LABEL[state.pay] || 'Mercado Pago'})</span><span>${fmt(payload.totals.total)}</span></div>`;
     $('res-track').href = '../pedido/?n=' + encodeURIComponent(orderN) + '&e=' + encodeURIComponent(contact.email);
     $('res-wa').href = 'https://wa.me/' + WA_NUM + '?text=' +
       encodeURIComponent('¡Hola Kanki! Acabo de realizar el pedido ' + orderN + ' por ' + fmt(payload.totals.total) + '. Quiero coordinar la entrega 🤙');
@@ -784,17 +775,117 @@
     window.scrollTo(0, 0);
   }
 
-  $('wp-pay').addEventListener('click', showSuccess);
-  $('pp-pay').addEventListener('click', showSuccess);
   $('mp-pay').addEventListener('click', showSuccess);
-  $('wp-cancel').addEventListener('click', showFail);
-  $('pp-cancel').addEventListener('click', showFail);
   $('mp-cancel').addEventListener('click', showFail);
   $('res-retry').addEventListener('click', backToCheckout);
 
   /* ── Primer render ──────────────────────── */
   renderItems();
   update();
+})();
+</script>
+
+<!-- ── Perfil de comprador (autofill) · si algo falla, el checkout invitado sigue intacto ── -->
+<script src="../js/supabase.umd.js"></script>
+<script src="../js/supabase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/checkout-utils.js"></script>
+<script src="../js/account.js"></script>
+<script>
+(() => {
+  'use strict';
+  if (!window.supabase || !supabase || !window.KankiAccount) return; /* guard: sin supabase no hay perfil, checkout normal */
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function setVal(id, val, evt) {
+    const el = $(id);
+    if (!el || !val) return;
+    el.value = val;
+    el.dispatchEvent(new Event(evt || 'input', { bubbles: true }));
+  }
+  function fillAddress(a) {
+    const f = KankiUtils.mapAddressToForm(a);
+    if (!f) return;
+    setVal('f-region', f.region, 'change'); /* change resetea envío y re-renderiza opciones */
+    setVal('f-city', f.city);
+    setVal('f-address', f.address);
+    setVal('f-apt', f.apt);
+  }
+
+  let savedAddresses = [];
+
+  function renderChips(selectedId) {
+    const box = $('saved-addr');
+    if (!savedAddresses.length) { box.hidden = true; return; }
+    const chip = 'display:inline-block;padding:8px 14px;border-radius:9999px;font:600 12.5px var(--font);border:1.5px solid var(--teal);background:#fff;color:var(--teal);cursor:pointer';
+    const chipOn = chip + ';background:var(--teal);color:#fff';
+    box.innerHTML = savedAddresses.map(a =>
+      `<button type="button" data-addr="${a.id}" style="${a.id === selectedId ? chipOn : chip}">📍 ${esc(a.label || a.comuna)}${a.is_default ? ' ★' : ''}</button>`
+    ).join('') + `<button type="button" data-addr="" style="${selectedId ? chip : chipOn}">✏️ Otra dirección</button>`;
+    box.hidden = false;
+    box.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      const id = b.dataset.addr;
+      if (id) {
+        fillAddress(savedAddresses.find(x => x.id === id));
+      } else {
+        ['f-city', 'f-address', 'f-apt'].forEach(i => setVal(i, ' ')); /* limpia */
+        ['f-city', 'f-address', 'f-apt'].forEach(i => { $(i).value = ''; $(i).dispatchEvent(new Event('input', { bubbles: true })); });
+      }
+      renderChips(id || null);
+    }));
+  }
+
+  async function onSession() {
+    const banner = $('acct-banner');
+    try {
+      const token = await getAccessToken();
+      if (token) window.__kankiAuthHeader = { 'Authorization': 'Bearer ' + token };
+
+      const c = await KankiAccount.ensureCustomer();
+      banner.innerHTML = '👤 Comprando como <strong>' + esc(currentUser.email) + '</strong> — tus datos se completaron desde tu perfil. <a href="../cuenta/" style="color:var(--teal);font-weight:700;text-decoration:underline">Mi cuenta</a>';
+      banner.hidden = false;
+      $('save-profile-line').hidden = false;
+
+      /* prefill contacto + RUT (solo campos vacíos: no pisar lo que el usuario ya tipeó) */
+      if (!$('f-email').value) setVal('f-email', currentUser.email);
+      if (!$('f-phone').value && c.phone) setVal('f-phone', KankiUtils.phoneToInput(c.phone));
+      if (!$('f-rut').value && c.rut) setVal('f-rut', c.rut);
+
+      savedAddresses = await KankiAccount.listAddresses();
+      const def = savedAddresses.find(a => a.is_default) || savedAddresses[0];
+      if (def && !$('f-address').value) { fillAddress(def); renderChips(def.id); }
+      else renderChips(def ? def.id : null);
+
+      /* al confirmar la orden: persistir teléfono/RUT y la dirección si es nueva */
+      window.__kankiOnOrderCreated = payload => {
+        if (!$('f-saveprofile') || !$('f-saveprofile').checked) return;
+        const upd = {};
+        const ph = (payload.contact.phone || '').replace(/\D/g, '');
+        if (ph.length >= 9) upd.phone = '+56' + ph.slice(-9);
+        if (payload.billing && payload.billing.rut) upd.rut = payload.billing.rut;
+        KankiAccount.updateProfile(upd).catch(() => {});
+        if (payload.delivery && payload.delivery.mode === 'domicilio') {
+          const d = payload.delivery;
+          const dup = savedAddresses.some(a =>
+            a.region === d.region && a.comuna.toLowerCase() === (d.city || '').toLowerCase() && a.address.toLowerCase() === (d.address || '').toLowerCase());
+          if (!dup) KankiAccount.saveAddress({ label: d.city, region: d.region, comuna: d.city, address: d.address, apt: d.apt }).catch(() => {});
+        }
+      };
+    } catch (e) {
+      console.warn('perfil no disponible:', e);
+      banner.hidden = true;
+    }
+  }
+
+  function onNoSession() {
+    const banner = $('acct-banner');
+    banner.innerHTML = '⚡ <a href="../cuenta/" style="color:var(--teal);font-weight:700;text-decoration:underline">Ingresa a tu cuenta</a> y compra en segundos con tus datos y dirección guardados.';
+    banner.hidden = false;
+  }
+
+  document.addEventListener('auth-ready', () => { currentUser ? onSession() : onNoSession(); });
+  initAuth();
 })();
 </script>
 
