@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KANKI SURF · Status de Proyecto — 2 de agosto 2026</title>
+<meta name="description" content="Reporte de estado verificado de kankisurf.cl: dónde estamos, qué falta, evidencia cruzada de código, base de datos, AWS y Mercado Pago.">
+<style>
+:root{
+  --navy:#0c1b2e; --navy-2:#0d2a47; --orange:#e8651a; --teal:#22b5a5;
+  --cream:#f5edd8; --bg:#f4f6f9; --card:#ffffff; --line:#e3e8ef;
+  --txt:#0c1b2e; --muted:#5b6b80; --ok:#12a150; --warn:#e8a021; --bad:#d92d20;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px 80px}
+
+/* ── Header ── */
+header{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;padding:34px 0 30px;margin-bottom:26px}
+header .wrap{padding-bottom:0}
+.brand{font-weight:900;font-size:22px;letter-spacing:.16em}
+.brand em{color:var(--orange);font-style:normal}
+h1{font-size:clamp(24px,4.6vw,38px);line-height:1.15;margin:14px 0 8px;font-weight:900;letter-spacing:-.01em}
+.sub{color:#9fb6cd;font-size:14.5px;max-width:70ch}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#dce8f4;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:600}
+.pill.live{background:rgba(34,181,165,.18);border-color:rgba(34,181,165,.45);color:#8ff0e3}
+.pill.alert{background:rgba(217,45,32,.2);border-color:rgba(217,45,32,.5);color:#ffb4ac}
+
+/* ── Bloques ── */
+section{margin:38px 0 0}
+h2{font-size:20px;font-weight:900;margin:0 0 4px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px}
+h2 .n{background:var(--navy);color:#fff;width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.lead{color:var(--muted);font-size:14.5px;margin:0 0 16px;max-width:80ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;margin-bottom:14px}
+.card h3{margin:0 0 10px;font-size:15px;font-weight:800}
+
+/* ── Semáforo ── */
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.blk{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px;position:relative;overflow:hidden}
+.blk::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--bad)}
+.blk[data-s="ok"]::before{background:var(--ok)} .blk[data-s="warn"]::before{background:var(--warn)}
+.blk .t{font-size:13px;font-weight:800;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.blk .pct{font-family:var(--mono);font-size:19px;font-weight:800}
+.blk[data-s="ok"] .pct{color:var(--ok)} .blk[data-s="warn"] .pct{color:var(--warn)} .blk[data-s="bad"] .pct{color:var(--bad)}
+.bar{height:6px;background:#eef1f6;border-radius:99px;margin:9px 0 10px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--warn)}
+.blk[data-s="ok"] .bar i{background:var(--ok)} .blk[data-s="bad"] .bar i{background:var(--bad)}
+.blk ul{margin:0;padding-left:16px;font-size:12.6px;color:var(--muted)}
+.blk li{margin:2px 0}
+.blk li.y{color:var(--ok)} .blk li.n{color:var(--bad)} .blk li.w{color:#a8730c}
+
+/* ── Tablas ── */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13.4px;min-width:520px}
+th{background:#f7f9fc;text-align:left;padding:10px 12px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #f0f3f7;vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:var(--mono);font-size:12.4px;white-space:nowrap}
+.tag{display:inline-block;border-radius:6px;padding:2px 8px;font-size:11.5px;font-weight:800;white-space:nowrap}
+.tag.ok{background:#e6f7ee;color:#0a7a3d} .tag.bad{background:#fdeceb;color:#b42318}
+.tag.warn{background:#fdf3e2;color:#96620a} .tag.info{background:#eaf1fb;color:#1c4f9c}
+
+/* ── Diagramas ── */
+.diagram{background:var(--navy);color:#cfe0f0;border-radius:14px;padding:16px;overflow-x:auto}
+.diagram pre{margin:0;font-family:var(--mono);font-size:12px;line-height:1.5;white-space:pre}
+.diagram .ok{color:#63e6cf} .diagram .bad{color:#ff8b7d} .diagram .warn{color:#ffc978} .diagram .dim{color:#6a8299}
+
+/* ── Flujo ── */
+.flow{display:grid;gap:9px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.step{border:1px solid var(--line);border-radius:11px;padding:11px 12px;background:var(--card);border-left:4px solid var(--bad)}
+.step[data-s="ok"]{border-left-color:var(--ok)} .step[data-s="warn"]{border-left-color:var(--warn)}
+.step .k{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.step .h{font-weight:800;font-size:13.4px;margin:2px 0 4px}
+.step .d{font-size:12.2px;color:var(--muted)}
+
+/* ── Evidencia ── */
+.ev{background:#0a1524;color:#c7d7e6;border-radius:12px;padding:14px 16px;font-family:var(--mono);font-size:12.1px;overflow-x:auto;line-height:1.6}
+.ev .c{color:#63e6cf} .ev .o{color:#e6edf3} .ev .r{color:#ff8b7d} .ev .g{color:#7ee0a1} .ev .y{color:#ffcf74}
+details{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:0;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:13px 16px;font-weight:800;font-size:13.6px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'▾';color:var(--muted);font-size:14px}
+details[open] summary::after{content:'▴'}
+details .body{padding:0 16px 16px}
+
+/* ── Alerta ── */
+.alert{border:1px solid #f3c0bb;background:#fff6f5;border-radius:14px;padding:17px;margin:14px 0}
+.alert h3{margin:0 0 8px;font-size:15.5px;color:#b42318;font-weight:900}
+.alert p{margin:0 0 9px;font-size:13.8px}
+.alert .why{background:#fff;border:1px solid #f3c0bb;border-radius:10px;padding:12px;font-size:13.2px;margin-top:10px}
+.note{border-left:3px solid var(--teal);background:#f0fbf9;padding:11px 14px;border-radius:0 10px 10px 0;font-size:13.4px;margin:12px 0}
+
+/* ── Roadmap ── */
+.fase{display:grid;grid-template-columns:74px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid #f0f3f7}
+.fase:last-child{border-bottom:0}
+.fase .id{font-family:var(--mono);font-weight:800;font-size:12.5px;color:#fff;background:var(--navy);border-radius:8px;height:fit-content;padding:5px 0;text-align:center}
+.fase[data-p="0"] .id{background:var(--bad)}
+.fase .ttl{font-weight:800;font-size:14.4px;margin-bottom:3px}
+.fase .dsc{font-size:13px;color:var(--muted)}
+.fase .días{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:5px}
+
+footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:12.4px;color:var(--muted)}
+@media (max-width:640px){table{min-width:460px}.fase{grid-template-columns:60px 1fr}}
+@media print{body{background:#fff}header{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}details{page-break-inside:avoid}details:not([open]) .body{display:block}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">KANKI <em>&amp; CO</em></div>
+    <h1>Status de proyecto — kankisurf.cl</h1>
+    <p class="sub">Reporte verificado el 2 de agosto de 2026. Todo lo que sigue fue comprobado hoy contra el sitio en producción, la base de datos, la consola de AWS y los registros de la función de pedidos. Nada está heredado de reportes anteriores.</p>
+    <div class="meta-row">
+      <span class="pill live">🟢 Sitio en línea</span>
+      <span class="pill">💳 Mercado Pago en producción</span>
+      <span class="pill alert">🔴 20 pedidos sin pagar</span>
+      <span class="pill">👥 Guillermo · Martín</span>
+      <span class="pill">📅 2 ago 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ══════════ 1. RESUMEN ══════════ -->
+<section>
+  <h2><span class="n">1</span> Dónde estamos, en una frase</h2>
+  <p class="lead">La tienda vende de verdad: hay dominio, carrito, checkout de tres pasos, cuenta de comprador, seguimiento de pedido y cobro con Mercado Pago en producción. Lo que falta no es la vitrina — es <strong>el motor detrás</strong>: el catálogo no vive en la base de datos, el cliente no recibe avisos después de comprar, y hoy no hay dónde probar sin publicar en vivo.</p>
+
+  <div class="grid g3">
+    <div class="blk" data-s="warn"><div class="t"><span>Circuito de compra</span><span class="pct">75%</span></div><div class="bar"><i style="width:75%"></i></div><ul><li class="y">Carrito y checkout completos</li><li class="y">Pedido con número correlativo</li><li class="n">No valida ni descuenta stock</li></ul></div>
+    <div class="blk" data-s="bad"><div class="t"><span>Catálogo</span><span class="pct">15%</span></div><div class="bar"><i style="width:15%"></i></div><ul><li class="n">Productos escritos en el HTML</li><li class="n">Sin tallas ni stock en base</li><li class="n">Sin página por producto</li></ul></div>
+    <div class="blk" data-s="bad"><div class="t"><span>Avisos al cliente</span><span class="pct">30%</span></div><div class="bar"><i style="width:30%"></i></div><ul><li class="y">Correo al confirmar la compra</li><li class="n">Nada después de eso</li><li class="w">Dominio de correo listo hoy</li></ul></div>
+    <div class="blk" data-s="warn"><div class="t"><span>Pagos</span><span class="pct">70%</span></div><div class="bar"><i style="width:70%"></i></div><ul><li class="y">Checkout Pro en producción</li><li class="y">Aviso automático de pago</li><li class="n">20 pedidos sin completar</li></ul></div>
+    <div class="blk" data-s="bad"><div class="t"><span>Visibilidad</span><span class="pct">20%</span></div><div class="bar"><i style="width:20%"></i></div><ul><li class="y">Dominio con HTTPS y CDN</li><li class="n">Google no puede indexar bien</li><li class="n">Sin métricas de visitas</li></ul></div>
+    <div class="blk" data-s="bad"><div class="t"><span>Ambientes</span><span class="pct">10%</span></div><div class="bar"><i style="width:10%"></i></div><ul><li class="n">Pruebas y producción son lo mismo</li><li class="y">Martín con acceso propio</li><li class="y">Respaldo de versiones activo</li></ul></div>
+  </div>
+</section>
+
+<!-- ══════════ 2. MAPA ══════════ -->
+<section>
+  <h2><span class="n">2</span> El mapa: qué está armado y qué no</h2>
+  <p class="lead">El recorrido completo del comprador, de punta a punta, con el estado real de cada tramo.</p>
+
+  <div class="diagram">
+<pre>
+   COMPRADOR                                                          NEGOCIO
+   ─────────────────────────────────────────────────────────────────────────────────
+
+   <span class="bad">① Descubre</span>            Instagram <span class="bad">✗</span>   Google <span class="bad">✗</span>   WhatsApp <span class="bad">✗</span>   Dominio directo <span class="ok">✓</span>
+        │
+        ▼
+   <span class="ok">② Navega</span>              Vitrina <span class="ok">✓</span>   Buscador <span class="ok">✓</span>   Filtros <span class="warn">~</span>   Stock real <span class="bad">✗</span>
+        │
+        ▼
+   <span class="bad">③ Ve el producto</span>      <span class="bad">No hay página de producto.</span> Abre una ventana emergente.
+        │                    Sin tallas, sin stock, sin fotos propias, sin reseñas.
+        ▼
+   <span class="ok">④ Al carrito</span>          Agregar <span class="ok">✓</span>   Cantidad <span class="ok">✓</span>   Tope por stock <span class="bad">✗</span>
+        │
+        ▼
+   <span class="warn">⑤ Se identifica</span>       Invitado <span class="ok">✓</span>   Correo y clave <span class="ok">✓</span>   Google <span class="bad">✗ apagado</span>   Apple <span class="bad">✗</span>
+        │
+        ▼
+   <span class="ok">⑥⑦ Checkout</span>          Datos <span class="ok">✓</span>   Direcciones guardadas <span class="ok">✓</span>   Envío por comuna <span class="bad">✗</span>
+        │                    Fecha de entrega prometida <span class="bad">✗</span>
+        ▼
+   <span class="warn">⑧ Paga</span>  ──────────►  MERCADO PAGO (producción)  ──────►  <span class="bad">20 de 28 pedidos</span>
+        │                    Redirección <span class="ok">✓</span>  Aviso automático <span class="ok">✓</span>      <span class="bad">quedan sin pagar</span>
+        ▼
+   <span class="ok">⑨ Confirmación</span>        Número de pedido <span class="ok">✓</span>   Resumen <span class="ok">✓</span>   Boleta <span class="bad">✗</span>
+        │
+        ▼
+   <span class="ok">⑩ Correo de compra</span>    Sale al cliente <span class="ok">✓</span>   Copia interna <span class="ok">✓</span>
+        │
+        ▼
+   <span class="bad">⑪ Lo mantienen al día</span>  <span class="bad">Silencio total.</span> Ni preparando, ni despachado, ni entregado.
+        │
+        ▼
+   <span class="warn">⑫ Seguimiento</span>        Ver pedido <span class="ok">✓</span>   Estados <span class="ok">✓</span>   Fechas reales <span class="bad">✗</span>   Link al courier <span class="bad">✗</span>
+        │
+        ▼
+   <span class="bad">⑬ Postventa</span>          Sin reseña, sin cupón, sin devolución. <span class="dim">Plantillas escritas, sin conectar.</span>
+</pre>
+  </div>
+</section>
+
+<!-- ══════════ 3. ALERTA ══════════ -->
+<section>
+  <h2><span class="n">3</span> Lo más importante de este reporte</h2>
+
+  <div class="alert">
+    <h3>🔴 20 de 28 pedidos quedaron sin pagar — y dos son de hoy</h3>
+    <p>El sistema crea el pedido y redirige a Mercado Pago correctamente. Lo que no ocurre es la <strong>aprobación del pago</strong>. Los dos intentos de hoy (22:38 y 23:04 UTC) son de Martín, ambos por $50, ambos trabados en «esperando pago».</p>
+
+    <div class="tw" style="margin:12px 0">
+      <table>
+        <thead><tr><th>Estado</th><th class="mono">Cantidad</th><th>Rango de fechas</th><th class="mono">Monto</th><th>Lectura</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag bad">Esperando pago</span></td><td class="mono">20</td><td>1 may → <strong>2 ago (hoy)</strong></td><td class="mono">$125.770</td><td>17 de Mercado Pago + 3 antiguos por transferencia</td></tr>
+          <tr><td><span class="tag ok">Confirmado</span></td><td class="mono">6</td><td>20 jul → 22 jul</td><td class="mono">$10.280</td><td>Solo 3 pagados por Mercado Pago real</td></tr>
+          <tr><td><span class="tag info">Preparando</span></td><td class="mono">1</td><td>21 jul</td><td class="mono">$50</td><td>Prueba manual del panel</td></tr>
+          <tr><td><span class="tag info">Enviado</span></td><td class="mono">1</td><td>20 jul</td><td class="mono">$5.040</td><td>Prueba manual del panel</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="why">
+      <strong>Lo que sí sabemos (verificado):</strong> el aviso automático de Mercado Pago <em>funciona</em> — confirmó tres pedidos el 21 y 22 de julio por sí solo. La función está abierta para recibirlo (no exige autenticación), así que el canal está bien. En las últimas 24 horas los registros muestran solo <strong>dos llamadas de creación de pedido y ninguna de confirmación de pago</strong>: es decir, en los intentos de hoy nadie llegó a completar el pago del otro lado.
+      <br><br>
+      <strong>Las tres causas posibles, en orden:</strong>
+      <br>1. <strong>El monto.</strong> Todas las pruebas son por $50 pesos. Mercado Pago Chile tiene un mínimo por transacción y $50 casi con seguridad está por debajo. <em>Hay que probar con un monto realista antes de seguir buscando culpables.</em>
+      <br>2. <strong>Cuenta real mezclada con credenciales de prueba.</strong> Ya nos pasó y está documentado: Mercado Pago responde «una de las partes es de prueba» y no deja avanzar.
+      <br>3. <strong>Abandono genuino</strong> en la pantalla de pago.
+      <br><br>
+      <strong>El problema de fondo:</strong> hoy el sistema <u>no guarda nada</u> del pago fallido — ni el identificador, ni el motivo del rechazo. Por eso estamos deduciendo en lugar de leer. Registrar eso es media hora de trabajo y cierra la discusión para siempre.
+    </div>
+  </div>
+
+  <div class="note"><strong>Consecuencia operativa:</strong> si mañana un cliente real paga y el aviso falla, su pedido queda en «esperando pago» y nadie lo prepara. No hay alerta que avise de esa situación.</div>
+</section>
+
+<!-- ══════════ 4. BLOQUES ══════════ -->
+<section>
+  <h2><span class="n">4</span> Estado bloque por bloque</h2>
+  <p class="lead">Los ocho bloques del circuito más la infraestructura que los sostiene.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Bloque</th><th>Qué funciona hoy</th><th>Qué falta</th><th class="mono">Avance</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>1 · Ingresar</strong></td>
+          <td>Correo y clave funcionan. Panel con Mis Datos, Direcciones y Mis Pedidos. Quien compró como invitado recupera sus pedidos al registrarse.</td>
+          <td>Google está <strong>apagado</strong> (comprobado hoy: el servidor responde error 400). Apple solo dice «próximamente». No hay recuperación de clave ni verificación de correo. <strong>Solo 2 usuarios registrados en total.</strong></td>
+          <td class="mono">70%</td>
+        </tr>
+        <tr>
+          <td><strong>2 · Publicar producto</strong></td>
+          <td>Existe la tabla de productos con 3 filas y la de categorías con 4.</td>
+          <td><strong>La tienda no lee la base de datos.</strong> Los 4 productos visibles están escritos dentro del archivo HTML. No existen las tablas de tallas ni de fotos. El formulario de «nuevo producto» del panel está dibujado pero no guarda nada.</td>
+          <td class="mono">15%</td>
+        </tr>
+        <tr>
+          <td><strong>3 · Comprar</strong></td>
+          <td>Checkout en 3 pasos (contacto, entrega, pago). Retiro en tienda y despacho. Número correlativo KK-2026-XXXX. Funciona como invitado y con sesión.</td>
+          <td>No valida stock: se puede pedir 10 unidades de algo que tiene 2. No descuenta stock al pagar. No reserva mientras el cliente paga. Envío con precio fijo para todo Chile.</td>
+          <td class="mono">75%</td>
+        </tr>
+        <tr>
+          <td><strong>4 · Visibilizar</strong></td>
+          <td>Dominio propio con certificado y red de distribución. Buscador funcionando. Título de página correcto.</td>
+          <td><strong>No existen robots.txt ni sitemap.xml</strong> (parecían estar, pero el servidor devuelve la portada disfrazada). Sin descripción ni vista previa al compartir. Sin métricas de visitas. <strong>9 enlaces del sitio no llevan a ninguna parte</strong>, entre ellos «Colecciones» del menú.</td>
+          <td class="mono">20%</td>
+        </tr>
+        <tr>
+          <td><strong>5 · Notificar</strong></td>
+          <td>Al comprar salen 2 correos: uno al cliente y otro interno. <strong>Novedad de hoy:</strong> el dominio kankisurf.cl quedó verificado para enviar correo, con firma digital activa.</td>
+          <td>Después de la compra, silencio absoluto: no hay «preparando», ni «despachado», ni «entregado», ni «pago rechazado». Cambiar el estado en el panel no avisa a nadie. Falta la llave de envío para usar el dominio nuevo.</td>
+          <td class="mono">35%</td>
+        </tr>
+        <tr>
+          <td><strong>6 · Seguimiento</strong></td>
+          <td>Página de seguimiento con línea de tiempo. Se consulta con número y correo, o entrando a la cuenta. El panel permite cambiar estado y cargar el número de envío.</td>
+          <td>La línea de tiempo no muestra <em>cuándo</em> ocurrió cada paso. El número de envío es solo texto: no lleva al sitio del transportista. No hay fecha estimada de entrega ni forma de cancelar.</td>
+          <td class="mono">60%</td>
+        </tr>
+        <tr>
+          <td><strong>7 · Postventa</strong></td>
+          <td>Las plantillas de correo (bienvenida, despachado, pagado, recuperar clave) ya están escritas en el repositorio.</td>
+          <td><strong>Ninguna está conectada.</strong> Sin solicitud de reseña, sin cupón de recompra, sin política ni flujo de cambio o devolución.</td>
+          <td class="mono">10%</td>
+        </tr>
+        <tr>
+          <td><strong>8 · Mercado Pago</strong></td>
+          <td>Checkout Pro con dos ambientes separados por dominio. Credenciales de producción y de prueba configuradas. El aviso automático de pago funciona y no se duplica.</td>
+          <td>20 pedidos trabados (ver alerta arriba). No se guarda el identificador del pago ni el motivo de rechazo. Sin verificación de firma del aviso. Sin devoluciones desde el panel. <strong>Sin boleta electrónica.</strong> Credenciales que circularon por WhatsApp siguen sin rotar.</td>
+          <td class="mono">70%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin:22px 0 8px;font-size:15px">Infraestructura</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Componente</th><th>Estado verificado hoy</th><th class="mono">OK</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Hosting y dominio</strong></td><td>Almacenamiento + red de distribución + HTTPS. kankisurf.cl y www responden correctamente.</td><td><span class="tag ok">Sí</span></td></tr>
+        <tr><td><strong>Ambiente de pruebas</strong></td><td>⚠️ <strong>No existe.</strong> La dirección de pruebas y el sitio real son literalmente el mismo archivo, servidos desde el mismo lugar. Cualquier prueba sale publicada.</td><td><span class="tag bad">No</span></td></tr>
+        <tr><td><strong>Acceso de Martín</strong></td><td>Usuario propio con permisos acotados, creado el 28 de julio y ya usado para publicar. Guía de publicación entregada.</td><td><span class="tag ok">Sí</span></td></tr>
+        <tr><td><strong>Correo desde el dominio</strong></td><td>Dominio verificado con firma digital activa. Falta la llave para que el sistema pueda enviar.</td><td><span class="tag warn">Parcial</span></td></tr>
+        <tr><td><strong>Base de datos</strong></td><td>Compartida con la intranet de Smart Connection. Las tablas de Kanki tienen protección de acceso activa. <strong>Pero en el mismo proyecto hay 52 tablas de otros sistemas sin protección.</strong></td><td><span class="tag warn">Riesgo</span></td></tr>
+        <tr><td><strong>Función de pedidos</strong></td><td>Activa, versión 10, abierta para recibir el aviso de Mercado Pago. Responde en 2 a 3 segundos.</td><td><span class="tag ok">Sí</span></td></tr>
+        <tr><td><strong>Respaldo de versiones</strong></td><td>Historial de archivos activo: una publicación equivocada se puede revertir.</td><td><span class="tag ok">Sí</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ 5. EVIDENCIA ══════════ -->
+<section>
+  <h2><span class="n">5</span> La evidencia, para que nadie tenga que creerme</h2>
+  <p class="lead">Cada afirmación de arriba sale de una de estas comprobaciones, hechas hoy.</p>
+
+  <details open>
+    <summary>🔴 El ambiente de pruebas y el sitio real son el mismo</summary>
+    <div class="body">
+      <div class="ev">
+<span class="c">$ curl -sI https://kankisurf.cl/ | grep etag</span>
+<span class="o">kankisurf.cl                200  etag "2260d090b487db1e3ff3b61bc4e22726"  164.683 bytes</span>
+<span class="o">www.kankisurf.cl            200  etag "2260d090b487db1e3ff3b61bc4e22726"  164.683 bytes</span>
+<span class="r">qas.kanki.smconnection.cl   200  etag "2260d090b487db1e3ff3b61bc4e22726"  164.683 bytes  ← idéntico</span>
+<span class="o">kanki.smconnection.cl       200  etag "ee218a019b11758e51a306115a288827"  385.594 bytes  (sitio viejo)</span>
+
+<span class="c">$ aws cloudfront get-distribution-config --id E1HUCNDZ302JPS</span>
+<span class="y">Aliases: [ qas.kanki.smconnection.cl , www.kankisurf.cl , kankisurf.cl ]</span>
+<span class="y">Origen:  kanki-qas.s3.sa-east-1.amazonaws.com</span>
+      </div>
+      <p style="font-size:13.2px;color:var(--muted);margin:10px 0 0">Las tres direcciones apuntan al mismo archivo (mismo identificador de contenido) desde el mismo almacenamiento. No es una copia parecida: es el mismo objeto.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>🔴 Google no puede indexar bien el sitio</summary>
+    <div class="body">
+      <div class="ev">
+<span class="c">$ curl -s https://kankisurf.cl/robots.txt | head -3</span>
+<span class="r">&lt;!doctype html&gt;  ← devuelve la PORTADA, no un robots.txt</span>
+
+<span class="c">$ curl -s https://kankisurf.cl/sitemap.xml | head -3</span>
+<span class="r">&lt;!doctype html&gt;  ← lo mismo</span>
+
+<span class="c">$ curl -o /dev/null -w "%{http_code}" https://kankisurf.cl/ruta-que-no-existe-xyz/</span>
+<span class="r">200  ← cualquier dirección inventada responde "todo bien" con la portada</span>
+
+<span class="c">$ curl -s https://kankisurf.cl/ | grep -E 'description|og:'</span>
+<span class="r">(sin resultados)  ← sin descripción ni vista previa al compartir</span>
+      </div>
+      <p style="font-size:13.2px;color:var(--muted);margin:10px 0 0">Un buscador que pide una dirección inexistente recibe «200 correcto» con la portada. Eso se llama error suave y penaliza el posicionamiento. Los archivos que Google busca primero no existen: parecían estar porque el servidor responde la portada a todo.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>🔴 El catálogo no vive en la base de datos</summary>
+    <div class="body">
+      <div class="ev">
+<span class="c">-- productos en base de datos</span>
+<span class="o">products ................ 3 filas</span>
+<span class="r">product_variants ........ LA TABLA NO EXISTE</span>
+<span class="r">product_images .......... LA TABLA NO EXISTE</span>
+
+<span class="c">$ curl -s https://kankisurf.cl/ | grep "price:"</span>
+<span class="y">price:109990   price:65000   price:48990   price:24990   ← escritos dentro del HTML</span>
+
+<span class="c">$ curl -s https://kankisurf.cl/ | grep "name:'"</span>
+<span class="o">'Fleece Hoodie FW24 Black'  'OG Bear Basic Hoodie Negro'</span>
+<span class="o">'OG Bear Basic Tee Beige'   'Basic Stussy Tee Negra'</span>
+      </div>
+      <p style="font-size:13.2px;color:var(--muted);margin:10px 0 0">Para cambiar un precio hoy hay que editar el archivo del sitio y volver a publicarlo. No hay tallas ni stock por talla en ninguna parte.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>🔴 Los pedidos trabados y las pruebas de hoy</summary>
+    <div class="body">
+      <div class="ev">
+<span class="c">-- últimos pedidos</span>
+<span class="r">KK-2026-0025  esperando pago  mercadopago  $50  martin.sanhueza012008@gmail.com  02-ago 23:04</span>
+<span class="r">KK-2026-0024  esperando pago  mercadopago  $50  martin.sanhueza012008@gmail.com  02-ago 22:38</span>
+<span class="r">KK-2026-0023  esperando pago  mercadopago  $50  ...  28-jul</span>
+<span class="o">KK-2026-0010  CONFIRMADO      mercadopago  $50  ...  22-jul  ← el aviso automático funcionó</span>
+<span class="o">KK-2026-0007  CONFIRMADO      mercadopago  $50  ...  21-jul  ← y acá también</span>
+
+<span class="c">-- registros de la función, últimas 24 horas</span>
+<span class="o">POST 200  creación de pedido   02-ago 23:04  (3,08 s)</span>
+<span class="o">POST 200  creación de pedido   02-ago 22:38  (2,33 s)</span>
+<span class="r">(ninguna llamada de confirmación de pago)</span>
+      </div>
+      <p style="font-size:13.2px;color:var(--muted);margin:10px 0 0">El pedido se crea bien y rápido. La confirmación nunca llega porque el pago no se completa del otro lado. Todas las pruebas son por $50.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>🟡 Google apagado y solo 2 usuarios</summary>
+    <div class="body">
+      <div class="ev">
+<span class="c">$ curl -o /dev/null -w "%{http_code}" ".../auth/v1/authorize?provider=google"</span>
+<span class="r">400  ← el proveedor no está habilitado</span>
+
+<span class="c">-- personas en el sistema</span>
+<span class="o">usuarios registrados ..... 2</span>
+<span class="o">clientes (con compra) .... 10</span>
+<span class="o">direcciones guardadas .... 1</span>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>🟢 Lo que sí está verificado y funcionando</summary>
+    <div class="body">
+      <div class="ev">
+<span class="c">$ aws sesv2 get-email-identity --email-identity kankisurf.cl</span>
+<span class="g">Verificado: true     Firma digital: SUCCESS     ← novedad de hoy</span>
+
+<span class="c">$ aws iam list-access-keys --user-name martin-kanki</span>
+<span class="g">AKIAUYPU67GHMHBUHLN7   Activa   creada 28-jul-2026</span>
+
+<span class="c">-- función de pedidos</span>
+<span class="g">kanki-orders  versión 10  ACTIVA  abierta para recibir avisos de Mercado Pago</span>
+
+<span class="c">$ curl -s https://kankisurf.cl/ | grep search-input</span>
+<span class="g">addEventListener('input', e =&gt; renderSearchResults(e.target.value))  ← el buscador SÍ funciona</span>
+
+<span class="c">-- páginas que responden con contenido propio</span>
+<span class="g">/checkout/  46 KB    /cuenta/  24 KB    /pedido/  13 KB    /admin.html  101 KB</span>
+      </div>
+      <p style="font-size:13.2px;color:var(--muted);margin:10px 0 0"><strong>Corrección a reportes previos:</strong> el buscador no era decorativo — tiene lógica real y filtra sobre los productos cargados. Lo que lo limita es que solo hay 4 productos escritos a mano.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════ 6. QUÉ NOS FALTA ══════════ -->
+<section>
+  <h2><span class="n">6</span> Qué nos falta, ordenado</h2>
+  <p class="lead">Las fases están en el orden en que se desbloquean unas a otras, no en el orden en que aparecen en pantalla.</p>
+
+  <div class="card">
+    <div class="fase" data-p="0">
+      <div class="id">FASE 0<br>hoy</div>
+      <div>
+        <div class="ttl">Piso firme — antes de tocar nada más</div>
+        <div class="dsc">Separar el ambiente de pruebas del sitio real (almacenamiento y dirección propios). Rotar las credenciales de Mercado Pago que circularon por WhatsApp y activar doble factor. Sacar del correo la frase «demostración sin cargo real», porque el cobro ya es de verdad. Registrar el identificador y el motivo de rechazo de cada pago.</div>
+        <div class="días">≈ 1 día · sin esto, cada prueba de Martín sale publicada</div>
+      </div>
+    </div>
+    <div class="fase">
+      <div class="id">FASE 1</div>
+      <div>
+        <div class="ttl">Catálogo de verdad — desbloquea todo lo demás</div>
+        <div class="dsc">Tablas de productos, tallas y fotos. Fotos propias subidas al servidor (hoy se cargan desde los sitios de otras marcas). Panel para crear, editar, publicar y pausar. La tienda leyendo de la base. Página propia por producto con su dirección para compartir.</div>
+        <div class="días">≈ 2-3 días · habilita stock, buscador real, posicionamiento y catálogo para redes</div>
+      </div>
+    </div>
+    <div class="fase">
+      <div class="id">FASE 2</div>
+      <div>
+        <div class="ttl">Que el cliente sepa qué pasa con su pedido</div>
+        <div class="dsc">Conectar las plantillas que ya están escritas. Seis correos: pago rechazado, preparando, despachado con número de envío, entregado, cancelado y bienvenida. Que salgan solos al cambiar el estado en el panel.</div>
+        <div class="días">≈ 1-2 días · el dominio de correo ya quedó listo hoy</div>
+      </div>
+    </div>
+    <div class="fase">
+      <div class="id">FASE 3</div>
+      <div>
+        <div class="ttl">Vender solo lo que existe</div>
+        <div class="dsc">Validar stock antes de cobrar, reservarlo mientras el cliente paga, descontarlo al confirmar y liberar los pedidos que quedan sin pagar a las 24 horas.</div>
+        <div class="días">≈ 1-2 días</div>
+      </div>
+    </div>
+    <div class="fase">
+      <div class="id">FASE 4</div>
+      <div>
+        <div class="ttl">Seguimiento y postventa</div>
+        <div class="dsc">Historial con fecha real de cada estado, enlace directo al transportista, fecha estimada de entrega, y el correo final que pide reseña y entrega un cupón.</div>
+        <div class="días">≈ 1 día</div>
+      </div>
+    </div>
+    <div class="fase">
+      <div class="id">FASE 5</div>
+      <div>
+        <div class="ttl">Que nos encuentren</div>
+        <div class="dsc">Descripción y vista previa al compartir, robots.txt y sitemap.xml de verdad, datos de producto para Google, catálogo para Instagram y WhatsApp, y métricas de visitas. Arreglar los 9 enlaces muertos.</div>
+        <div class="días">≈ 1-2 días</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note"><strong>En paralelo, y no depende de programar:</strong> boleta electrónica, retiro de fondos desde Mercado Pago a la cuenta de la sociedad, credencial de Google para el ingreso, definición del remitente de correo, proveedores de ropa y la logística de retiro.</div>
+</section>
+
+<!-- ══════════ 7. BLOQUEOS ══════════ -->
+<section>
+  <h2><span class="n">7</span> Lo que está trabado y quién lo destraba</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Qué</th><th>Por qué no avanza</th><th>Quién</th><th>Tiempo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Credencial de Google</strong> para el ingreso</td><td>Google no permite crearla por programa: hay que hacerlo con clics en su consola. El botón ya está en el sitio y se enciende solo.</td><td>Guillermo</td><td class="mono">3 min</td></tr>
+        <tr><td><strong>Llave de envío de correo</strong></td><td>El dominio quedó verificado hoy, falta generar la credencial de envío.</td><td>Guillermo</td><td class="mono">5 min</td></tr>
+        <tr><td><strong>Remitente definitivo</strong></td><td>Decidir si los correos salen desde el dominio propio (listo hoy) o desde la casilla de Gmail de la marca.</td><td>Guillermo + Martín</td><td class="mono">decisión</td></tr>
+        <tr><td><strong>Rotar credenciales de pago</strong></td><td>Circularon por WhatsApp. Se renuevan desde el panel de Mercado Pago.</td><td>Martín</td><td class="mono">10 min</td></tr>
+        <tr><td><strong>Boleta electrónica</strong></td><td>Se está cobrando de verdad sin emitir documento tributario.</td><td>Guillermo</td><td class="mono">gestión</td></tr>
+        <tr><td><strong>Prueba de pago real</strong></td><td>Necesita un producto con precio realista, no $50, y hacerse en el ambiente separado.</td><td>Martín + equipo</td><td class="mono">20 min</td></tr>
+        <tr><td><strong>Proveedores y logística</strong></td><td>Los proveedores vistos están caros; el retiro depende de Alberto.</td><td>Martín</td><td class="mono">gestión</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ 8. PRÓXIMA REUNIÓN ══════════ -->
+<section>
+  <h2><span class="n">8</span> Para la reunión de mañana, 8 a 9 AM</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Tres decisiones que necesitamos cerrar</h3>
+      <ol style="margin:0;padding-left:18px;font-size:13.6px;line-height:1.75">
+        <li><strong>¿Separamos el ambiente de pruebas?</strong> Hoy Martín no puede probar filtros sin publicar en vivo con el cobro activo.</li>
+        <li><strong>¿Desde qué correo salen los avisos?</strong> Dominio propio (listo hoy) o casilla de Gmail de la marca.</li>
+        <li><strong>¿Cuál es el producto de prueba y a qué precio?</strong> Con $50 no se puede validar el pago.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Qué se puede empezar apenas terminemos</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13.6px;line-height:1.75">
+        <li>Fase 0 completa (ambiente, credenciales, registro de pagos)</li>
+        <li>Prueba de pago real de punta a punta, con evidencia</li>
+        <li>Arranque del catálogo en base de datos</li>
+      </ul>
+      <p style="font-size:12.8px;color:var(--muted);margin:12px 0 0">Reunión fija: lunes, martes y viernes de 8 a 9 AM.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>KANKI &amp; CO</strong> · Reporte de estado del 2 de agosto de 2026 · Elaborado por el equipo Smart Connection.<br>
+  Comprobado contra: sitio en producción, base de datos, consola AWS (distribución de contenido, correo, accesos), registros de la función de pedidos y el repositorio de código.<br>
+  Distribución interna: Guillermo González León · Martín Sanhueza.
+</footer>
+
+</div>
+</body>
+</html>
