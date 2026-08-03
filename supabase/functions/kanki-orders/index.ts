@@ -15,8 +15,17 @@ const ADMIN_NOTIFY = (Deno.env.get("ADMIN_NOTIFY") || "").split(",").map(s => s.
 const ADMIN_KEY = Deno.env.get("KANKI_ADMIN_KEY") || "";
 const SA_RAW = Deno.env.get("SMC_MAILER_KEY") || "";
 const TRACK_URL = "https://kankisurf.cl/pedido/";
-const MP_TOKEN = Deno.env.get("MP_ACCESS_TOKEN") || "";
-const MP_RETURN_URL = Deno.env.get("MP_RETURN_URL") || "https://kankisurf.cl/checkout/";
+// Ambientes MP: QAS (qas.kanki/localhost) usa credenciales TEST · PRD (kankisurf.cl) usa PROD.
+const MP_TOKEN_PROD = Deno.env.get("MP_ACCESS_TOKEN") || "";
+const MP_TOKEN_TEST = Deno.env.get("MP_ACCESS_TOKEN_TEST") || "";
+
+function mpEnv(req: Request): { token: string; returnUrl: string; env: string } {
+  const origin = req.headers.get("origin") || req.headers.get("referer") || "";
+  const isQas = /qas\.kanki\.smconnection\.cl|localhost|127\.0\.0\.1/.test(origin);
+  return isQas
+    ? { token: MP_TOKEN_TEST, returnUrl: "https://qas.kanki.smconnection.cl/checkout/", env: "test" }
+    : { token: MP_TOKEN_PROD, returnUrl: "https://kankisurf.cl/checkout/", env: "prod" };
+}
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -262,7 +271,8 @@ async function actionCreate(req: Request, body: any) {
 
 /* ── mp-preference: Checkout Pro real (orden pending_payment + init_point) ── */
 async function actionMpPreference(req: Request, body: any) {
-  if (!MP_TOKEN) return json({ ok: false, configured: false }); // front cae a simulación
+  const mp = mpEnv(req);
+  if (!mp.token) return json({ ok: false, configured: false, env: mp.env }); // front cae a simulación
   const core = await insertOrderCore(req, body, "pending_payment");
   if (core.errorResponse) return core.errorResponse;
   const { order } = core;
@@ -275,10 +285,10 @@ async function actionMpPreference(req: Request, body: any) {
   if (Number(body.totals.shipping) > 0) {
     items.push({ title: "Envío", quantity: 1, unit_price: Number(body.totals.shipping), currency_id: "CLP" });
   }
-  const back = (r: string) => `${MP_RETURN_URL}?mp=${r}&n=${encodeURIComponent(order.order_number)}`;
+  const back = (r: string) => `${mp.returnUrl}?mp=${r}&n=${encodeURIComponent(order.order_number)}`;
   const res = await fetch("https://api.mercadopago.com/checkout/preferences", {
     method: "POST",
-    headers: { Authorization: `Bearer ${MP_TOKEN}`, "Content-Type": "application/json" },
+    headers: { Authorization: `Bearer ${mp.token}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       items,
       payer: { email: core.email },
@@ -292,9 +302,9 @@ async function actionMpPreference(req: Request, body: any) {
   const pref = await res.json().catch(() => null);
   if (!res.ok || !pref?.init_point) {
     console.error("mp-preference error:", res.status, JSON.stringify(pref).slice(0, 300));
-    return json({ ok: false, configured: true, error: "no se pudo crear la preferencia MP" }, 502);
+    return json({ ok: false, configured: true, env: mp.env, error: "no se pudo crear la preferencia MP" }, 502);
   }
-  return json({ ok: true, orderNumber: order.order_number, orderId: order.id, initPoint: pref.init_point });
+  return json({ ok: true, orderNumber: order.order_number, orderId: order.id, initPoint: pref.init_point, env: mp.env });
 }
 
 /* ── mp-webhook: MP notifica un pago → si approved, confirmar orden + emails ── */
@@ -306,12 +316,16 @@ async function actionMpWebhook(req: Request) {
     const body = await req.json().catch(() => ({}));
     paymentId = body?.data?.id || "";
   }
-  if (!MP_TOKEN || !paymentId || (topic && topic !== "payment")) return json({ ok: true }); // ack para que MP no reintente
-  const res = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-    headers: { Authorization: `Bearer ${MP_TOKEN}` },
-  });
-  const pay = await res.json().catch(() => null);
-  if (!res.ok || !pay?.external_reference) return json({ ok: true });
+  if ((!MP_TOKEN_PROD && !MP_TOKEN_TEST) || !paymentId || (topic && topic !== "payment")) return json({ ok: true }); // ack para que MP no reintente
+  // el pago puede venir del ambiente prod o test → probar con ambos tokens
+  let pay: any = null;
+  for (const tk of [MP_TOKEN_PROD, MP_TOKEN_TEST].filter(Boolean)) {
+    const res = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+      headers: { Authorization: `Bearer ${tk}` },
+    });
+    if (res.ok) { pay = await res.json().catch(() => null); break; }
+  }
+  if (!pay?.external_reference) return json({ ok: true });
   if (pay.status !== "approved") return json({ ok: true, status: pay.status });
 
   const rows = await rest(`orders?order_number=eq.${encodeURIComponent(pay.external_reference)}&select=*&limit=1`);
