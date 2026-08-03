@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidad — KANKI & CO</title>
+<meta name="description" content="Política de privacidad y tratamiento de datos personales de KANKI & CO — Surf × Street, Viña del Mar.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --ocean:#0c1b2e; --ocean-mid:#0d4f7c; --teal:#1a8f82; --teal-light:#22b5a5;
+    --sunset:#e8651a; --sunset-dark:#c04e0e; --sand:#f0e4cc; --foam:#f8f4ef;
+    --gray:#6b7280; --border:#e6ddd0; --white:#ffffff;
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--foam); color:var(--ocean); line-height:1.6;
+  }
+  a{color:var(--teal); text-decoration:none}
+  a:hover{color:var(--sunset)}
+
+  header{
+    background:var(--ocean); color:#fff; padding:18px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:10;
+  }
+  header .logo{font-weight:900; font-size:16px; letter-spacing:0.02em}
+  header .logo span{color:var(--teal-light)}
+  header .back{font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.7)}
+  header .back:hover{color:#fff}
+
+  .hero{
+    background:linear-gradient(180deg,var(--ocean) 0%,#0d2540 100%);
+    color:#fff; padding:56px 20px 44px; text-align:center;
+  }
+  .hero .eyebrow{
+    font-size:10px; font-weight:700; letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--teal-light); margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(28px,6vw,44px); font-weight:900; text-transform:uppercase;
+    letter-spacing:-0.02em; line-height:1.05; margin-bottom:14px;
+  }
+  .hero p{color:rgba(255,255,255,0.6); font-size:14px; max-width:520px; margin:0 auto}
+
+  main{max-width:760px; margin:0 auto; padding:48px 20px 80px}
+
+  .updated{
+    font-size:12px; color:var(--gray); margin-bottom:32px; padding-bottom:24px;
+    border-bottom:1px solid var(--border);
+  }
+
+  .toc{
+    background:var(--white); border:1px solid var(--border); border-radius:14px;
+    padding:20px 22px; margin-bottom:40px;
+  }
+  .toc__title{
+    font-size:10px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--sunset); margin-bottom:12px;
+  }
+  .toc ol{padding-left:18px; font-size:13px; display:grid; gap:6px}
+  .toc a{color:var(--ocean)}
+  .toc a:hover{color:var(--sunset)}
+
+  section.term{margin-bottom:36px; scroll-margin-top:80px}
+  section.term h2{
+    font-size:17px; font-weight:800; text-transform:uppercase; letter-spacing:-0.01em;
+    margin-bottom:12px; display:flex; align-items:baseline; gap:10px;
+  }
+  section.term h2 .num{color:var(--sunset); font-size:13px; font-weight:900}
+  section.term p{font-size:14px; color:rgba(12,27,46,0.78); margin-bottom:10px}
+  section.term ul{padding-left:20px; font-size:14px; color:rgba(12,27,46,0.78); margin-bottom:10px; display:grid; gap:6px}
+  section.term strong{color:var(--ocean)}
+
+  .callout{
+    background:var(--sand); border-left:3px solid var(--sunset);
+    border-radius:8px; padding:14px 16px; font-size:13px; color:var(--ocean);
+    margin:14px 0;
+  }
+
+  table.data-table{width:100%; border-collapse:collapse; font-size:13px; margin:14px 0}
+  table.data-table th, table.data-table td{
+    text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top;
+  }
+  table.data-table th{
+    font-size:10px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:var(--sunset);
+  }
+  table.data-table td{color:rgba(12,27,46,0.78)}
+
+  .contact-box{
+    background:var(--ocean); color:#fff; border-radius:16px; padding:28px 24px;
+    text-align:center; margin-top:48px;
+  }
+  .contact-box h3{font-size:18px; font-weight:900; text-transform:uppercase; margin-bottom:8px}
+  .contact-box p{color:rgba(255,255,255,0.6); font-size:13px; margin-bottom:18px}
+  .contact-box a.btn{
+    display:inline-flex; align-items:center; gap:8px; background:var(--sunset); color:#fff;
+    padding:12px 24px; border-radius:8px; font-size:12px; font-weight:700;
+    letter-spacing:0.1em; text-transform:uppercase;
+  }
+  .contact-box a.btn:hover{background:var(--sunset-dark); color:#fff}
+
+  footer.site-footer{
+    background:var(--ocean); color:rgba(255,255,255,0.35); text-align:center;
+    padding:24px 20px; font-size:11px;
+  }
+
+  @media (max-width:600px){
+    main{padding:36px 16px 60px}
+    section.term h2{font-size:15px}
+    table.data-table{font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">KANKI <span>&amp; CO</span></div>
+  <a class="back" href="../VF-storefront.html">← Volver a la tienda</a>
+</header>
+
+<div class="hero">
+  <div class="eyebrow">Legal</div>
+  <h1>Política de Privacidad</h1>
+  <p>Cómo recolectamos, usamos y protegemos tus datos personales cuando compras o navegas en KANKI &amp; CO.</p>
+</div>
+
+<main>
+  <p class="updated">Última actualización: 3 de agosto de 2026 · Vigente para kankisurf.cl y nuestros canales de WhatsApp e Instagram.</p>
+
+  <nav class="toc">
+    <div class="toc__title">Contenido</div>
+    <ol>
+      <li><a href="#responsable">Quién es responsable de tus datos</a></li>
+      <li><a href="#datos-recolectados">Qué datos recolectamos</a></li>
+      <li><a href="#uso">Para qué usamos tus datos</a></li>
+      <li><a href="#comparticion">Con quién compartimos tus datos</a></li>
+      <li><a href="#almacenamiento">Cómo almacenamos y protegemos tus datos</a></li>
+      <li><a href="#cookies">Cookies y datos de navegación</a></li>
+      <li><a href="#derechos">Tus derechos</a></li>
+      <li><a href="#menores">Menores de edad</a></li>
+      <li><a href="#cambios">Cambios a esta política</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ol>
+  </nav>
+
+  <section class="term" id="responsable">
+    <h2><span class="num">01.</span> Quién es responsable de tus datos</h2>
+    <p><strong>KANKI SpA</strong> (RUT 78.433.042-7), con domicilio en Reñaca Norte 265 Of 510, Viña del Mar, Chile, es la responsable del tratamiento de los datos personales que recolectamos a través de <strong>kankisurf.cl</strong> y nuestros canales de venta (WhatsApp, Instagram).</p>
+  </section>
+
+  <section class="term" id="datos-recolectados">
+    <h2><span class="num">02.</span> Qué datos recolectamos</h2>
+    <p>Recolectamos únicamente los datos necesarios para venderte, despacharte y responderte. Según cómo interactúes con nosotros, esto puede incluir:</p>
+    <table class="data-table">
+      <tr><th>Dato</th><th>¿Cuándo lo pedimos?</th></tr>
+      <tr><td>Nombre completo</td><td>Al comprar, crear cuenta o suscribirte al newsletter</td></tr>
+      <tr><td>Correo electrónico</td><td>Al comprar, crear cuenta, suscribirte al newsletter o escribirnos</td></tr>
+      <tr><td>Teléfono</td><td>Al comprar o contactarnos por WhatsApp</td></tr>
+      <tr><td>Dirección de despacho</td><td>Al comprar, para coordinar el envío</td></tr>
+      <tr><td>Detalle del pedido (productos, talla, monto)</td><td>Al comprar</td></tr>
+    </table>
+    <p>No solicitamos datos de tarjetas de crédito/débito: esos los procesa directamente la pasarela de pago que elijas (Webpay, Mercado Pago u otra), nunca nosotros.</p>
+  </section>
+
+  <section class="term" id="uso">
+    <h2><span class="num">03.</span> Para qué usamos tus datos</h2>
+    <ul>
+      <li>Procesar y confirmar tu pedido.</li>
+      <li>Coordinar el despacho con el courier (Starken, Chilexpress) o el retiro en tienda.</li>
+      <li>Contactarte por WhatsApp o correo sobre el estado de tu compra, cambios o devoluciones.</li>
+      <li>Enviarte novedades, lanzamientos y promociones, solo si te suscribes voluntariamente a nuestro newsletter.</li>
+      <li>Verificar la autenticidad de tu compra en caso de reclamo o garantía.</li>
+    </ul>
+    <div class="callout">💬 Nunca usamos tus datos para fines distintos a los descritos aquí, y puedes darte de baja del newsletter cuando quieras.</div>
+  </section>
+
+  <section class="term" id="comparticion">
+    <h2><span class="num">04.</span> Con quién compartimos tus datos</h2>
+    <p>No vendemos tus datos personales ni los compartimos con terceros para fines comerciales ajenos a KANKI &amp; CO. Solo los compartimos cuando es estrictamente necesario para completar tu compra:</p>
+    <ul>
+      <li><strong>Pasarelas de pago</strong> (Webpay, Mercado Pago, u otras vigentes), para procesar el cobro.</li>
+      <li><strong>Empresas de courier</strong> (Starken, Chilexpress), para realizar el despacho a tu domicilio.</li>
+      <li><strong>Proveedores de infraestructura tecnológica</strong> que usamos para operar el sitio y gestionar pedidos (hosting y base de datos), quienes solo procesan la información por nuestra instrucción y bajo confidencialidad.</li>
+    </ul>
+  </section>
+
+  <section class="term" id="almacenamiento">
+    <h2><span class="num">05.</span> Cómo almacenamos y protegemos tus datos</h2>
+    <p>Tus datos de pedido se almacenan en una base de datos con acceso restringido solo al equipo de KANKI &amp; CO, protegida mediante autenticación. Conservamos la información de tus pedidos mientras sea necesaria para fines de garantía, contabilidad y obligaciones legales (tributarias, entre otras).</p>
+  </section>
+
+  <section class="term" id="cookies">
+    <h2><span class="num">06.</span> Cookies y datos de navegación</h2>
+    <p>kankisurf.cl puede usar cookies o almacenamiento local del navegador para recordar tu carrito de compras y mejorar tu experiencia de navegación. No usamos cookies de rastreo publicitario de terceros.</p>
+  </section>
+
+  <section class="term" id="derechos">
+    <h2><span class="num">07.</span> Tus derechos</h2>
+    <p>De acuerdo con la <strong>Ley N° 19.628 sobre Protección de la Vida Privada</strong>, tienes derecho a:</p>
+    <ul>
+      <li><strong>Acceder</strong> a los datos personales que tenemos sobre ti.</li>
+      <li><strong>Rectificar</strong> datos que estén incorrectos o desactualizados.</li>
+      <li><strong>Solicitar la eliminación</strong> de tus datos de nuestros registros, cuando ya no sean necesarios para las finalidades descritas o cumplidas las obligaciones legales.</li>
+      <li><strong>Oponerte</strong> al uso de tus datos para fines de marketing (por ejemplo, darte de baja del newsletter).</li>
+    </ul>
+    <p>Para ejercer cualquiera de estos derechos, escríbenos por WhatsApp indicando tu nombre y correo asociado a la compra o suscripción.</p>
+  </section>
+
+  <section class="term" id="menores">
+    <h2><span class="num">08.</span> Menores de edad</h2>
+    <p>Nuestros productos están dirigidos a mayores de 18 años. No recolectamos intencionalmente datos de menores de edad sin el consentimiento de su padre, madre o tutor.</p>
+  </section>
+
+  <section class="term" id="cambios">
+    <h2><span class="num">09.</span> Cambios a esta política</h2>
+    <p>KANKI &amp; CO puede actualizar esta política de privacidad en cualquier momento para reflejar cambios en nuestra operación o en la normativa vigente. La versión vigente es siempre la publicada en esta página, con su fecha de última actualización.</p>
+  </section>
+
+  <div class="contact-box" id="contacto">
+    <h3>¿Dudas sobre tus datos?</h3>
+    <p>Escríbenos y te respondemos directo, sin bots ni vueltas.</p>
+    <a class="btn" href="https://wa.me/56957807766?text=Hola%20Kanki!%20Tengo%20una%20consulta%20sobre%20la%20pol%C3%ADtica%20de%20privacidad" target="_blank">Escribir por WhatsApp</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  © 2026 KANKI SpA · RUT 78.433.042-7 · Reñaca Norte 265 Of 510, Viña del Mar, Chile
+</footer>
+
+</body>
+</html>
