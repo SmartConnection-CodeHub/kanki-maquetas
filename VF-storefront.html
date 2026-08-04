@@ -880,13 +880,15 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 @media (max-width:768px) {
   .qv-modal { padding:0; align-items:flex-end; }
   .qv-panel {
-    grid-template-columns:1fr; grid-template-rows:auto 1fr;
+    display:flex; flex-direction:column;
     border-radius:20px 20px 0 0; max-height:90vh;
     overflow-y:auto; overflow-x:hidden;
+    -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
   }
-  .qv-img-col { min-height:0; padding:20px; }
+  .qv-close { position:fixed; top:16px; right:16px; z-index:1310; }
+  .qv-img-col { flex:0 0 auto; min-height:0; padding:20px; }
   .qv-img-col img { min-height:200px; max-height:260px; }
-  .qv-info-col { padding:20px; overflow-y:visible; }
+  .qv-info-col { flex:0 0 auto; padding:20px; overflow-y:visible; }
 }
 @media (max-width:480px) {
   .qv-img-col img { min-height:220px; max-height:260px; }
