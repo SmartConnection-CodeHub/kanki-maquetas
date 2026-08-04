@@ -676,51 +676,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .lb-item:hover .lb-item__overlay { opacity: 1; }
 .lb-item__label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
 
-/* ── COLLECTIONS DARK ── */
-.cols-dark { padding: 80px 0; background: var(--ocean); }
-.cols-dark .eyebrow--white { margin-bottom: 0; }
-.cols-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
-.cols-title { font-size: clamp(28px, 5vw, 52px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; color: var(--white); line-height: 1; }
-.cols-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-.col-tile {
-  position: relative; overflow: hidden; aspect-ratio: 3/4;
-  cursor: pointer; display: block; border-radius: var(--r-md);
-  background: #0a0a0a;
-}
-
-/* ── Multi-photo collage ── */
-.col-tile__photos {
-  position: absolute; inset: 0;
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  grid-template-rows: repeat(3, 1fr);
-  gap: 2px;
-}
-.col-tile__photo {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: brightness(0.72);
-  transition: filter 0.5s ease, transform 0.6s ease;
-}
-.col-tile__photo--main { grid-row: 1 / 4; }
-.col-tile:hover .col-tile__photo { filter: brightness(0.5); transform: scale(1.04); }
-
-.col-tile__content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  color: var(--white); text-align: center; padding: 20px;
-  background: linear-gradient(to top, rgba(12,27,46,0.6) 0%, transparent 60%);
-}
-.col-tile__name { font-size: clamp(18px, 2.5vw, 28px); font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; line-height: 1; }
-.col-tile__count { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.6; margin-bottom: 18px; }
-.col-tile__btn {
-  font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-  border: 1.5px solid rgba(255,255,255,0.6); padding: 9px 22px;
-  border-radius: var(--r-full); transition: all var(--t);
-  opacity: 0; transform: translateY(8px);
-}
-.col-tile:hover .col-tile__btn { opacity: 1; transform: translateY(0); background: var(--white); color: var(--ocean); }
-
 /* ── VALORES / TRUST ── */
 .valores {
   padding: 80px 0;
@@ -1254,10 +1209,6 @@ a.cart-checkout { text-decoration: none; }
   .lb-item--tall { grid-row: span 1; }
   /* Overlay siempre visible en touch */
   .lb-item__overlay { opacity: 1; background: linear-gradient(to top, rgba(12,27,46,0.75) 0%, transparent 60%); }
-
-  /* Collections */
-  .cols-grid { grid-template-columns: 1fr; gap: 6px; }
-  .col-tile { aspect-ratio: 16/6; }
   /* Botón siempre visible en touch */
   .col-tile__btn { opacity: 1; transform: none; }
 
@@ -1381,19 +1332,6 @@ a.cart-checkout { text-decoration: none; }
   .lb-item__overlay { opacity: 1; background: linear-gradient(to top, rgba(12,27,46,0.8) 0%, transparent 55%); }
   .lb-item__label { font-size: 9px; letter-spacing: 0.1em; }
 
-  /* ─── COLLECTIONS: panorámicas apiladas ─── */
-  .cols-dark { padding: 44px 0; }
-  .cols-grid { grid-template-columns: 1fr; gap: 6px; }
-  .col-tile { aspect-ratio: 16/7; border-radius: 8px; }
-  /* En mobile solo foto principal, sin thumbnails */
-  .col-tile__photos { grid-template-columns: 1fr; grid-template-rows: 1fr; }
-  .col-tile__photo--main { grid-row: 1; }
-  .col-tile__photo--thumb { display: none; }
-  .col-tile__name { font-size: 18px; letter-spacing: 0.04em; }
-  .col-tile__count { font-size: 9px; margin-bottom: 8px; }
-  .col-tile__btn { opacity: 1; transform: none; font-size: 8px; padding: 6px 16px; }
-  .cols-title { font-size: clamp(22px, 8vw, 34px); }
-
   /* ─── BEST SELLERS ─── */
   .products-section--cream { padding: 40px 0; }
 
@@ -1429,21 +1367,27 @@ a.cart-checkout { text-decoration: none; }
   .nl-input { border-radius: 6px 6px 0 0; padding: 14px 16px; font-size: 14px; }
   .nl-btn { border-radius: 0 0 6px 6px; padding: 13px 16px; font-size: 10px; }
 
-  /* ─── FOOTER: 1 col limpio, espacio para WA ─── */
-  .footer { padding: 44px 0 88px; }
-  .footer__top { grid-template-columns: 1fr; gap: 24px; }
-  .footer__brand-name { font-size: 20px; }
+  /* ─── FOOTER: compacto estilo luked.cl — marca + una fila de links, sin columnas apiladas ─── */
+  .footer { padding: 28px 0 76px; }
+  .footer__top {
+    display: flex; flex-wrap: wrap; align-items: flex-start;
+    gap: 6px 14px; padding-bottom: 20px;
+  }
+  .footer__brand { flex: 1 1 100%; }
+  .footer__brand-name { font-size: 18px; }
   .footer__brand-logo { height: 30px; }
-  .footer__brand-tag { font-size: 8px; margin-bottom: 10px; }
-  .footer__brand p { font-size: 12px; margin-bottom: 8px; }
-  .footer__brand-hours { font-size: 10px; margin-bottom: 16px; }
-  .footer__col h4 { font-size: 8px; margin-bottom: 12px; }
-  .footer__col ul { gap: 10px; }
-  .footer__col li a { font-size: 12px; }
-  .footer__bottom { flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+  .footer__brand-tag { font-size: 8px; margin-bottom: 6px; }
+  .footer__brand p { font-size: 12px; line-height: 1.5; margin-bottom: 6px; }
+  .footer__brand-hours { font-size: 10px; line-height: 1.5; margin-bottom: 10px; }
+  .footer__col { display: contents; }
+  .footer__col h4 { display: none; }
+  .footer__col ul { display: contents; }
+  .footer__col li { display: contents; }
+  .footer__col li a { font-size: 12px; color: rgba(255,255,255,0.5); white-space: nowrap; }
+  .footer__bottom { flex-direction: column; align-items: center; text-align: center; gap: 8px; padding-top: 14px; }
   .footer__payments { flex-wrap: wrap; justify-content: center; gap: 6px; }
   .footer__payments span { font-size: 8px; padding: 3px 8px; }
-  .footer__legal-links { gap: 12px; }
+  .footer__legal-links { flex-wrap: wrap; justify-content: center; gap: 10px 12px; }
 
   /* ─── WHATSAPP ─── */
   .wa-float { bottom: 18px; right: 14px; width: 46px; height: 46px; }
@@ -1769,7 +1713,7 @@ a.cart-checkout { text-decoration: none; }
     </p>
     <div class="hero__actions">
       <a href="#fog" class="btn btn-sunset">Compra Ahora</a>
-      <a href="#colecciones" class="btn btn-outline-white">Ver Colecciones</a>
+      <a href="#marcas" class="btn btn-outline-white">Ver Colecciones</a>
     </div>
   </div>
   <div class="hero__scroll">
@@ -1922,7 +1866,7 @@ a.cart-checkout { text-decoration: none; }
       <span class="brand-badge">Fear of God · FW24</span>
       <h2 class="brand-name-big">FEAR<br>OF GOD<br>ESSENTIALS</h2>
       <p class="brand-tagline">La colección de hoodies más buscada del mundo. Corte oversized, calidad premium y colores atemporales — directo a Chile con autenticidad garantizada.</p>
-      <div class="brand-price-range">Desde $99.990 CLP</div>
+      <div class="brand-price-range">Desde $65.000 CLP</div>
       <div class="brand-actions">
         <a href="#fog-products" class="btn btn-ocean">Ver Productos</a>
         <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20info%20sobre%20Fear%20of%20God%20Essentials" target="_blank" class="btn btn-outline-sunset">Saber Más</a>
@@ -2060,7 +2004,7 @@ a.cart-checkout { text-decoration: none; }
       <span class="brand-badge">Skate &amp; Street</span>
       <h2 class="brand-name-big">GRIZZLY<br>GRIP<br>TAPE</h2>
       <p class="brand-tagline">La marca que nació en los skate parks y conquistó las calles del mundo. Hoodies y tees con la energía del skate — desde $48.990 CLP.</p>
-      <div class="brand-price-range">Desde $48.990 CLP</div>
+      <div class="brand-price-range">Desde $24.990 CLP</div>
       <div class="brand-actions">
         <a href="#grizzly-products" class="btn btn-sunset">Ver Productos</a>
         <a href="https://wa.me/56957807766?text=Hola%20Kanki!%20Quiero%20info%20de%20Grizzly%20Griptape" target="_blank" class="btn btn-teal">Skate Chile</a>
@@ -2138,7 +2082,7 @@ a.cart-checkout { text-decoration: none; }
       <span class="brand-badge">Streetwear · 1980 · NYC</span>
       <h2 class="brand-name-big">STUSSY</h2>
       <p class="brand-tagline">La marca que inventó el streetwear. Stock Logo Tee, 8-Ball y clásicos del estilo urbano — con autenticidad garantizada en Kanki.</p>
-      <div class="brand-price-range">Desde $49.990 CLP</div>
+      <div class="brand-price-range">Desde $65.000 CLP</div>
       <div class="brand-actions">
         <a href="#stussy-products" class="btn btn-teal">Ver Productos</a>
         <a href="#marcas" class="btn btn-outline-white">Otras Marcas</a>
@@ -2253,89 +2197,6 @@ a.cart-checkout { text-decoration: none; }
   </div>
 </div>
 
-
-<!-- ══ COLLECTIONS ══ -->
-<section class="cols-dark" id="colecciones">
-  <div class="container">
-    <div class="cols-header">
-      <div>
-        <div class="eyebrow eyebrow--white">Explora</div>
-        <h2 class="cols-title">TODAS LAS<br>COLECCIONES</h2>
-      </div>
-      <a href="#marcas" class="pg-view-all" style="color:rgba(255,255,255,0.5);">Ver todas</a>
-    </div>
-    <div class="cols-grid">
-
-      <!-- FOG ESSENTIALS -->
-      <a href="#fog" class="col-tile reveal delay-1">
-        <div class="col-tile__photos">
-          <img class="col-tile__photo col-tile__photo--main"
-               src="https://luked.cl/cdn/shop/files/fwafawwfawfa.webp?v=1750114347"
-               alt="FOG Fleece Hoodie Black" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://luked.cl/cdn/shop/files/IMG-8874.webp?v=1756595907"
-               alt="FOG Fleece Hoodie Grey" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://luked.cl/cdn/shop/files/IMG-4248.jpg?v=1750117064"
-               alt="FOG Dark Oatmeal" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://luked.cl/cdn/shop/files/IMG-4252.jpg?v=1750117099"
-               alt="FOG Light Oatmeal" loading="lazy">
-        </div>
-        <div class="col-tile__content">
-          <h3 class="col-tile__name">FOG ESSENTIALS</h3>
-          <p class="col-tile__count">7 productos · FW24</p>
-          <span class="col-tile__btn">Ver Colección</span>
-        </div>
-      </a>
-
-      <!-- GRIZZLY -->
-      <a href="#grizzly" class="col-tile reveal delay-2">
-        <div class="col-tile__photos">
-          <img class="col-tile__photo col-tile__photo--main"
-               src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96098-image.jpg"
-               alt="Grizzly OG Bear Hoodie" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="grizzly-tee-negro.webp"
-               alt="Grizzly OG Bear Tee Negro" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://grizzlygriptape.cl/wp-content/uploads/2025/11/product.template-96087-image.jpg"
-               alt="Grizzly OG Bear Tee Beige" loading="lazy">
-        </div>
-        <div class="col-tile__content">
-          <h3 class="col-tile__name">GRIZZLY</h3>
-          <p class="col-tile__count">3 productos · Skate</p>
-
-          <span class="col-tile__btn">Ver Colección</span>
-        </div>
-      </a>
-
-      <!-- STUSSY -->
-      <a href="#stussy" class="col-tile reveal delay-3">
-        <div class="col-tile__photos">
-          <img class="col-tile__photo col-tile__photo--main"
-               src="https://www.stussy.com/cdn/shop/files/1905022_FBLA_1.jpg?v=1773353775&width=800"
-               alt="Stussy 8 Ball Tee" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_1.jpg?v=1760638172&width=1920"
-               alt="Basic Stussy Tee Negra" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://www.stussy.com/cdn/shop/files/1905000_WHIT_1.jpg?v=1760638129&width=1920"
-               alt="Basic Stussy Tee Blanca" loading="lazy">
-          <img class="col-tile__photo col-tile__photo--thumb"
-               src="https://www.stussy.com/cdn/shop/files/1905000_BLAC_2.jpg?v=1760638172&width=800"
-               alt="8 Ball Tee Clasic Blanca" loading="lazy">
-        </div>
-        <div class="col-tile__content">
-          <h3 class="col-tile__name">STUSSY</h3>
-          <p class="col-tile__count">5 productos · Clásicos</p>
-          <span class="col-tile__btn">Ver Colección</span>
-        </div>
-      </a>
-
-    </div>
-  </div>
-</section>
 
 <!-- ══ BEST SELLERS ══ -->
 <section class="products-section products-section--cream" id="best-sellers">
@@ -2559,7 +2420,7 @@ a.cart-checkout { text-decoration: none; }
         <ul>
           <li><a href="#cultura">Sobre Nosotros</a></li>
           <li><a href="#surf-school">Escuela de Surf</a></li>
-          <li><a href="#colecciones">Lookbook</a></li>
+          <li><a href="#marcas">Lookbook</a></li>
           <li><a href="https://wa.me/56957807766?text=Hola%20Kanki!%20%C2%BFC%C3%B3mo%20verifico%20la%20autenticidad%20de%20mi%20prenda?" target="_blank">Autenticidad</a></li>
           <li><a href="#valores">Envíos</a></li>
         </ul>
