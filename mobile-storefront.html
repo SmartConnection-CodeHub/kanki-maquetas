@@ -55,16 +55,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   height: 52px;
   padding: 0 14px;
 }
-.topbar__logo {
-  text-align: center;
-  font-size: 17px; font-weight: 900;
-  letter-spacing: 0.07em; text-transform: uppercase; color: var(--ocean);
-  line-height: 1;
-}
-.topbar__logo span {
-  display: block; font-size: 7px; font-weight: 700;
-  letter-spacing: 0.3em; color: var(--teal); margin-top: 2px;
-}
+.topbar__logo { text-align: center; }
+.topbar__logo img { height: 32px; width: auto; display: block; margin: 0 auto; }
 .topbar__btn {
   width: 44px; height: 44px;
   display: flex; align-items: center; justify-content: center;
@@ -397,7 +389,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: #080e18; color: rgba(255,255,255,0.5);
   padding: 18px 20px 12px;
 }
-.footer__logo { font-size: 17px; font-weight: 900; letter-spacing: 0.07em; text-transform: uppercase; color: #fff; margin-bottom: 3px; }
+.footer__logo img { height: 26px; width: auto; display: block; margin-bottom: 3px; }
 .footer__tag { font-size: 8px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
 .footer__desc { font-size: 11px; line-height: 1.5; margin-bottom: 10px; }
 .footer__socials { display: flex; gap: 8px; margin-bottom: 12px; }
@@ -768,8 +760,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
   </button>
   <div class="topbar__logo">
-    KANKI &amp; CO
-    <span>Surf × Street · Chile</span>
+    <img src="kanki-logo-dark.png" alt="KANKI & CO — Surf & Clothing">
   </div>
   <button class="topbar__btn" id="cart-btn" aria-label="Carrito">
     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -1198,7 +1189,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 <!-- ══ FOOTER ══ -->
 <footer class="footer">
-  <div class="footer__logo">KANKI &amp; CO</div>
+  <div class="footer__logo"><img src="kanki-logo-white.png" alt="KANKI & CO — Surf & Clothing"></div>
   <div class="footer__tag">Surf × Street · Chile</div>
   <p class="footer__desc">Distribuidores de FOG Essentials, Grizzly y Stussy en Chile. Autenticidad garantizada.</p>
   <div class="footer__socials">
