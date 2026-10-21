@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <script>window.KANKI_T0=performance.now();window.KANKI_FETCH=fetch("https://yjjtbwfgtoepsevvkzta.supabase.co/functions/v1/kanki-orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"stock-publico"})}).then(function(r){return r.ok?r.json():Promise.reject(new Error("HTTP "+r.status))});window.KANKI_FETCH.catch(function(){});document.documentElement.classList.add("kanki-loading");setTimeout(function(){document.documentElement.classList.remove("kanki-loading")},6000)</script>
+  <meta name="theme-color" content="#f6f6f2">
+  <meta name="description" content="Maqueta de propuesta del nuevo formato de la tienda Kanki Surf, conectada al catálogo real. No es la tienda.">
+  <title>Kanki Surf — Nos vemos afuera · Maqueta de propuesta</title>
+  <link rel="preload" as="image" href="../hero-surf-poster.jpg" media="(max-width: 767px)" fetchpriority="high">
+  <link rel="preload" as="image" href="../hero-surf-pc-poster.jpg" media="(min-width: 768px)" fetchpriority="high">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="styles.css?v=60bb5bdd35">
+  <link rel="stylesheet" href="motion.css?v=d6c8b782f4">
+  <link rel="stylesheet" href="brand.css?v=e5cfa9ddc5">
+  <link rel="stylesheet" href="catalog-video.css?v=2706325f17">
+  <link rel="stylesheet" href="assets/vendor/swiper-bundle.min.css?v=74ca6aae54">
+  <link rel="stylesheet" href="showcase.css?v=ae0cf36d37">
+  <link rel="stylesheet" href="experience.css?v=ca993f9855">
+  <link rel="stylesheet" href="catalog-navigation.css?v=24a7f1b43d">
+  <link rel="stylesheet" href="commerce.css?v=03c6e889f2">
+  <link rel="stylesheet" href="cart.css?v=c9b43b61db">
+  <link rel="stylesheet" href="journal.css?v=e6f739954c">
+  <link rel="stylesheet" href="interactions.css?v=b4ca6fd636">
+  <link rel="stylesheet" href="maqueta.css?v=2">
+  <script src="catalog.js?v=40cce32540" defer></script>
+  <script src="live-catalog.js?v=2" defer></script>
+  <script src="navigation.js?v=6cee700941" defer></script>
+  <script src="interactions.js?v=fa66cb69f2" defer></script>
+  <script src="app.js?v=ccaafe0591" defer></script>
+  <script src="video.js?v=8c34694193" defer></script>
+  <script src="assets/vendor/swiper-bundle.min.js?v=985f1224c0" defer></script>
+  <script src="showcase.js?v=458a145dd9" defer></script>
+  <script src="image-loading.js?v=0df63687b8" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Saltar al contenido</a>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="maqueta-bar" role="note">Maqueta de propuesta · 21-10-2026</div>
+  <div class="viewport" id="viewport" data-theme="coast">
+    <div class="site-shell">
+      <div class="announcement"><span>Del mar a la calle. Y de vuelta.</span><span class="announcement-location">La Boca, Concón · Chile ↗</span></div>
+      <header class="header">
+        <a class="brand" href="#inicio" aria-label="Kanki Surf, inicio"><img src="assets/logo.png" width="164" height="57" alt="Kanki Surf & Clothing"></a>
+        <nav class="desktop-nav" aria-label="Navegación principal"><a href="#ropa">La ropa</a><a href="#escuela">La escuela</a><a href="#marca">Así somos</a><a href="#diario">Fuera del agua</a></nav>
+        <div class="header-actions"><button class="bag-button" data-open="cart-dialog" aria-label="Abrir carrito" aria-haspopup="dialog" aria-controls="cart-dialog"><svg viewBox="0 0 24 24"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg><span data-cart-count>0</span></button><button class="menu-button" id="menu-button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menú"><span></span><span></span></button></div>
+      </header>
+      <nav class="mobile-nav" id="mobile-nav" aria-label="Navegación móvil" hidden><a href="#ropa">La ropa <span>↗</span></a><a href="#escuela">La escuela <span>↗</span></a><a href="#marca">Así somos <span>↗</span></a><a href="#diario">Fuera del agua <span>↗</span></a></nav>
+      <main id="main">
+        <section id="inicio" aria-label="Portada Kanki">
+          <div class="hero hero-video-mode" id="improved-hero">
+            <div class="hero-copy">
+              <p class="eyebrow"><span class="tiny-sun">✳</span> Un pie en la arena. El otro, donde sea.</p>
+              <h1 id="hero-title">LA VIDA,<br><em>MÁS SALADA.</em></h1>
+              <p class="hero-description" id="hero-description">Ropa para después del agua.<br>Surf para todo lo demás.</p>
+              <div class="hero-actions"><a class="button primary" href="#ropa">Ver la ropa <span>↗</span></a><a class="text-link" href="#escuela">Quiero surfear <span>↗</span></a></div>
+              <div class="hero-foot"><span>Sin tanto plan.<br>Con muchas ganas de salir.</span><a href="#marca" aria-label="Conoce la historia de Kanki">↓</a></div>
+            </div>
+            <div class="hero-photo"><video id="hero-video" width="720" height="1280" autoplay muted loop playsinline webkit-playsinline controlslist="nofullscreen nodownload noremoteplayback" disablepictureinpicture disableremoteplayback preload="auto" aria-hidden="true" tabindex="-1"></video><script>(function(){var v=document.getElementById("hero-video"),pc=window.matchMedia("(min-width: 768px)").matches;v.poster=pc?"../hero-surf-pc-poster.jpg":"../hero-surf-poster.jpg";v.src=pc?"../hero-surf-pc.mp4":"../hero-surf.mp4"})()</script><button class="video-toggle" id="video-toggle" type="button" data-playing="true" aria-label="Pausar video de portada"><svg class="video-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><svg class="video-pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14M17 5v14"/></svg></button><p id="video-fallback" hidden>No pudimos reproducir el video. Usa el botón para reintentar.</p><span class="photo-caption" id="photo-caption">UN RATO AFUERA SIEMPRE HACE BIEN.</span><div class="coast-stamp" aria-hidden="true">KANKI<br><span>PACIFIC COAST</span><svg viewBox="0 0 80 22"><path d="M1 15c12 0 12-12 25-12s13 12 26 12 13-12 27-12"/></svg>CHILE</div></div>
+          </div>
+          <div class="sand-strip"><div class="sand-strip-track" data-scroll-drift="100"><span>BUENAS OLAS.</span><span aria-hidden="true">✳</span><span>MEJORES RATOS.</span><span aria-hidden="true">✳</span><span>ROPA QUE SE VIENE CONTIGO.</span><span aria-hidden="true">✳</span><span class="strip-last">KANKI SURF & CLOTHING.</span></div></div>
+        </section>
+
+
+
+        <section class="products section-space" id="ropa" aria-labelledby="products-title">
+          <div class="section-heading"><div><p class="eyebrow">01 / Del mar a la calle</p><h2 id="products-title">COMPRA POR MARCA.</h2></div><p>Cuatro marcas. Cada una con lo suyo.<br>Elige por dónde partir.</p></div>
+          <div class="brand-filter-row"><span class="filter-label" id="brand-filter-label">Elige una marca</span><div class="brand-filters" role="group" aria-labelledby="brand-filter-label">
+            <button class="brand-filter-all" data-brand="all" aria-pressed="true">Ver toda la selección <span data-brand-count>15</span> ↗</button>
+            <button class="brand-option" data-brand="essentials" aria-pressed="false"><span class="brand-option-logo"><img src="assets/brand-essentials-original.svg" alt="" aria-hidden="true"></span><span class="brand-option-meta"><strong>Essentials</strong><span data-brand-count>7</span><i aria-hidden="true">↗</i></span></button>
+            <button class="brand-option" data-brand="grizzly" aria-pressed="false"><span class="brand-option-logo brand-option-logo--grizzly"><img src="assets/brand-grizzly.png" alt="" aria-hidden="true"></span><span class="brand-option-meta"><strong>Grizzly</strong><span data-brand-count>3</span><i aria-hidden="true">↗</i></span></button>
+            <button class="brand-option" data-brand="stussy" aria-pressed="false"><span class="brand-option-logo brand-option-logo--stussy"><img src="assets/brand-stussy.svg" alt="" aria-hidden="true"></span><span class="brand-option-meta"><strong>Stüssy</strong><span data-brand-count>3</span><i aria-hidden="true">↗</i></span></button>
+            <button class="brand-option" data-brand="luked" aria-pressed="false"><span class="brand-option-logo brand-option-logo--luked"><img src="assets/brand-luked.jpg" alt="" aria-hidden="true"></span><span class="brand-option-meta"><strong>Luked</strong><span data-brand-count>2</span><i aria-hidden="true">↗</i></span></button>
+          </div></div>
+          <div class="catalog-toolbar"><details class="garment-filter-drawer" id="garment-filter-drawer"><summary>Tipo de prenda <span id="garment-filter-value">Todas</span><span aria-hidden="true">⌄</span></summary><div class="product-controls"><div class="filters" role="group" aria-label="Filtrar productos"><button data-filter="all" aria-pressed="true">Todo</button><button data-filter="hoodie" aria-pressed="false">Polerones</button><button data-filter="tee" aria-pressed="false">Poleras</button></div></div></details><span id="product-count" class="small-text" aria-live="polite">15 prendas</span></div>
+          <div class="filter-summary"><p id="filter-description" aria-live="polite">Toda la selección</p><button data-reset-filters hidden>Limpiar filtros ×</button></div>
+          <div class="brand-catalog" id="product-grid"><div id="essentials-grid"></div><section class="kanki-editorial" id="kanki-banner" aria-label="Comunidad Kanki"><img src="assets/optimized/school-1-1100-67baa06fdc.webp" srcset="assets/optimized/school-1-480-c47be5726c.webp 480w, assets/optimized/school-1-800-d430e7dfe3.webp 800w, assets/optimized/school-1-1100-67baa06fdc.webp 1100w" sizes="(max-width: 700px) 100vw, 55vw" alt="La comunidad Kanki junto al mar" width="1100" height="1467" loading="lazy" decoding="async"><div><p class="eyebrow">EL MAR NOS JUNTA.</p><h2>KANKI.</h2><a href="#escuela" class="button cream">Nos vemos afuera <span>↗</span></a></div></section><section id="product-showcase" class="showcase-section" aria-label="Selección de ropa Kanki" data-mode="compact"><div class="showcase-stage"><div id="showcase-slides"></div><div class="showcase-nav" role="group" aria-label="Elegir producto destacado"></div><div class="showcase-foot"><span>SELECCIÓN KANKI</span><span id="showcase-instruction">Elige una prenda para explorar</span><a href="#ropa">Todas las marcas ↘</a></div></div></section><div id="other-brand-grid"></div><div id="catalog-empty" hidden></div></div>
+          <p class="catalog-note" id="catalog-note">Cargando el catálogo de kankisurf.cl…</p>
+
+        </section>
+
+        <section class="brand-story" id="marca" aria-labelledby="story-title">
+          <div class="story-photo"><img src="assets/optimized/school-2-800-a57060ad2e.webp" srcset="assets/optimized/school-2-480-bc5d09f7e6.webp 480w, assets/optimized/school-2-800-a57060ad2e.webp 800w" sizes="(max-width: 700px) 100vw, 55vw" alt="Comunidad de Kanki con sus tablas amarillas en la playa" width="800" height="1067" loading="lazy" decoding="async"><span class="tape-label">Buen grupo. Buen plan.</span></div>
+          <div class="story-copy"><p class="eyebrow">02 / Así somos</p><h2 id="story-title">EL PLAN ERA<br>UN RATO.<br><em>NOS QUEDAMOS.</em></h2><p>Somos Kanki. Nos gusta el mar, la ropa y esos días que empiezan con una tabla y terminan sin mirar mucho la hora.</p><p>La Boca, Concón, es nuestro punto de encuentro. Lo demás pasa entre el agua y la calle.</p><a href="#escuela" class="text-link">Nos vemos en la playa <span>↗</span></a><span class="story-doodle" aria-hidden="true">☼</span></div>
+        </section>
+
+
+
+        <section class="school section-space" id="escuela" aria-labelledby="school-title">
+          <div class="school-intro"><p class="eyebrow">03 / Escuela Kanki Surf · La Boca, Concón</p><h2 id="school-title">MENOS “ALGÚN DÍA”.<br><em>MÁS AL AGUA.</em></h2><p>Si tienes ganas de probar, por ahí se empieza.<br>Conoce la escuela y encuentra tu próximo plan de playa.</p><button class="button primary" data-open="school-dialog">Quiero una clase <span>↗</span></button><span class="school-caption">Tu primera ola también cuenta.</span></div>
+          <div class="school-photo"><img src="assets/optimized/school-3-675-76940eccf4.webp" srcset="assets/optimized/school-3-480-07dbbd7cb6.webp 480w, assets/optimized/school-3-675-76940eccf4.webp 675w" sizes="(max-width: 700px) 100vw, 55vw" alt="Alumno de la escuela Kanki practicando en el agua" width="675" height="1200" loading="lazy" decoding="async"><span class="school-tag">DE ESTE LADO DE LA PANTALLA ↗</span></div>
+        </section>
+
+        <section class="journal section-space" id="diario" aria-labelledby="journal-title">
+          <div class="journal-heading">
+            <div><p class="eyebrow">04 / Fuera del agua</p><h2 id="journal-title">SIN MUCHO<br>FILTRO.</h2></div>
+            <p>Días de playa. Planes que se alargan.<br>Un poco de la vida de este lado.</p>
+          </div>
+          <div class="journal-grid">
+            <article class="journal-entry"><button class="journal-card" data-story="beach" aria-label="Leer la historia de la banda Kanki">
+              <span class="journal-card-media"><img src="assets/optimized/school-1-1100-67baa06fdc.webp" srcset="assets/optimized/school-1-480-c47be5726c.webp 480w, assets/optimized/school-1-800-d430e7dfe3.webp 800w, assets/optimized/school-1-1100-67baa06fdc.webp 1100w" sizes="(max-width: 700px) 100vw, 55vw" width="1100" height="1467" alt="Alumnos y tablas de Kanki en la playa" loading="lazy" decoding="async"></span>
+              <span class="journal-card-body"><span class="journal-card-kicker">01 / La banda</span><span class="journal-card-title">“Vamos un rato”, dijeron.</span><span class="journal-card-description">Clases que terminan en un buen rato con la banda.</span><span class="journal-card-action">Ver la historia <span aria-hidden="true">↗</span></span></span>
+            </button></article>
+            <article class="journal-entry"><button class="journal-card" data-story="street" aria-label="Leer la historia de Kanki fuera del agua">
+              <span class="journal-card-media"><img src="assets/lifestyle.jpg" srcset="assets/optimized/lifestyle-480-c470747342.webp 480w, assets/optimized/lifestyle-800-7a1de0e4c1.webp 800w, assets/lifestyle.jpg 960w" sizes="(max-width: 700px) 100vw, 55vw" width="960" height="1280" alt="Look de ropa de Kanki caminando por la ciudad" loading="lazy" decoding="async"></span>
+              <span class="journal-card-body"><span class="journal-card-kicker">02 / Después del surf</span><span class="journal-card-title">Del agua a lo que venga.</span><span class="journal-card-description">Ropa cómoda para seguir el día, donde toque.</span><span class="journal-card-action">Ver la historia <span aria-hidden="true">↗</span></span></span>
+            </button></article>
+          </div>
+          <div class="journal-note"><p>Mi agenda de hoy depende de la marea.</p><span>Kanki, probablemente.</span></div>
+        </section>
+
+        <section class="kanki-benefits" aria-label="Explora Kanki"><a href="#ropa"><span>01 / LA ROPA</span><h3>Cada marca, su historia.</h3><p>Essentials, Grizzly, Stüssy y Luked.</p></a><a href="#ropa"><span>02 / TU PRÓXIMA PRENDA</span><h3>Encuentra tu talla.</h3><p>Despacho con Starken · envío por pagar.</p></a><a href="#escuela"><span>03 / LA ESCUELA</span><h3>Nos vemos en el agua.</h3><p>La Boca, Concón. Donde empieza el plan.</p></a></section>
+      </main>
+      <footer class="footer"><div class="footer-top"><a href="#inicio" class="footer-wordmark">KANKI<span>SURF & CLOTHING</span></a><p>Un pie en la arena.<br>El otro, donde sea.</p><nav aria-label="Navegación del pie"><a href="#ropa">La ropa ↗</a><a href="#escuela">La escuela ↗</a><a href="#marca">Así somos ↗</a></nav></div><div class="footer-bottom"><span>La Boca, Concón · Chile</span><span>Maqueta de propuesta · Sin compras ni reservas reales</span><button data-open="info-dialog">Sobre esta propuesta ↗</button></div></footer>
+    </div>
+  </div>
+  <div id="toast" role="status" class="toast" hidden></div>
+
+  <dialog aria-label="Detalle del producto" id="product-dialog" class="product-dialog"><button class="close floating-close" data-close aria-label="Cerrar producto">×</button><div id="product-detail"></div></dialog>
+  <button id="cart-floating" class="cart-floating" data-open="cart-dialog" aria-label="Abrir carrito" aria-haspopup="dialog" aria-controls="cart-dialog" hidden>Carrito <span data-cart-count>0</span></button>
+  <dialog aria-labelledby="cart-title" aria-describedby="cart-prototype-note" id="cart-dialog" class="cart-drawer">
+    <header class="cart-heading"><div><p class="eyebrow">Kanki / Para el próximo plan</p><h2 id="cart-title" tabindex="-1">Tu carrito.<span class="cart-heading-count" data-cart-count>0</span></h2></div><button class="close" data-close aria-label="Cerrar carrito">×</button></header>
+    <p id="cart-notice" class="cart-notice" role="status" aria-live="polite" hidden></p>
+    <div class="cart-body">
+      <section id="cart-selection" aria-label="Prendas del carrito"><div id="cart-items"></div><div id="cart-undo" class="cart-undo" hidden><span id="cart-undo-label">Prenda quitada.</span><button id="cart-undo-button">Deshacer</button></div><div id="cart-recommendations" class="cart-recommendations"></div></section>
+      <section id="cart-review" class="cart-review" aria-labelledby="cart-review-title" hidden><p class="eyebrow">02 / Pago</p><h3 id="cart-review-title" tabindex="-1">Todo lo que elegiste.</h3><p id="checkout-message" hidden></p><ul id="cart-review-items"></ul><button id="cart-review-back" class="cart-review-back">← Volver a editar mi carrito</button></section>
+    </div>
+    <footer id="cart-footer" class="cart-footer"><div class="cart-total"><span>Subtotal</span><strong id="cart-total">$0</strong></div><p class="cart-shipping"><span>Despacho</span><span>Starken · envío por pagar</span></p><p id="cart-savings" class="cart-savings" hidden></p><button class="button primary full" id="demo-checkout">Ir a pagar <span aria-hidden="true">↗</span></button><button id="cart-continue" class="cart-continue">Seguir mirando</button><p id="cart-prototype-note" class="cart-prototype">Maqueta · No se realizará ningún cobro. El envío (Starken) se paga al recibir.</p><p id="cart-feedback" class="cart-feedback" role="status" aria-live="polite"></p></footer>
+  </dialog>
+  <dialog aria-label="Explorar una clase de surf" id="school-dialog"><div class="dialog-heading"><p class="eyebrow">Escuela Kanki Surf</p><button class="close" data-close aria-label="Cerrar clases">×</button></div><h2>TU PRÓXIMO<br>PLAN DE PLAYA.</h2><p>La Boca, Concón. Cuéntanos qué te gustaría probar.</p><form id="school-form"><fieldset><legend>¿Cómo te gustaría empezar?</legend><label class="radio-option"><input type="radio" name="classType" value="Clase grupal" required checked><span>Con más gente<small>Explorar una clase grupal</small></span></label><label class="radio-option"><input type="radio" name="classType" value="Clase privada"><span>A mi ritmo<small>Explorar una clase privada</small></span></label></fieldset><label class="select-label" for="experience">Tu experiencia</label><select id="experience" name="experience"><option>Sería mi primera vez</option><option>Ya lo he intentado</option><option>Quiero seguir practicando</option></select><label class="select-label school-plan-label" for="school-description">Cuéntanos tu plan <span>(opcional)</span></label><textarea id="school-description" name="description" rows="3" maxlength="1200" placeholder="Por ejemplo: somos dos, nos gustaría ir el sábado por la mañana."></textarea><p id="school-whatsapp-note" class="small-text school-whatsapp-note">Abriremos WhatsApp con tu selección y lo que nos cuentes. Podrás revisar el mensaje antes de enviarlo.</p><button class="button primary full" type="submit" aria-describedby="school-whatsapp-note">Ver mi próximo paso <span aria-hidden="true">↗</span></button></form><div id="school-result" class="demo-result" role="status" hidden><p>Tu mensaje está listo para WhatsApp. Si no se abrió, puedes continuar aquí:</p><a id="school-whatsapp-link" class="button secondary full" href="https://wa.me/56957807766" target="_blank" rel="noopener noreferrer">Abrir WhatsApp <span aria-hidden="true">↗</span></a></div><p class="small-text">La clase se agenda directamente con Kanki por WhatsApp. Horarios, precios y cupos se confirman con la escuela; este formulario no confirma una reserva.</p></dialog>
+  <dialog aria-label="Diario Kanki" id="story-dialog"><div class="dialog-heading"><p class="eyebrow">Fuera del agua / Kanki</p><button class="close" data-close aria-label="Cerrar historia">×</button></div><img id="story-image" class="story-dialog-image" src="assets/optimized/school-1-1100-67baa06fdc.webp" srcset="assets/optimized/school-1-480-c47be5726c.webp 480w, assets/optimized/school-1-800-d430e7dfe3.webp 800w, assets/optimized/school-1-1100-67baa06fdc.webp 1100w" sizes="(max-width: 700px) 100vw, 55vw" alt="" decoding="async"><h2 id="story-dialog-title"></h2><p id="story-dialog-copy"></p><a id="story-dialog-link" class="button primary full" href="#escuela" data-close>Conocer la escuela ↗</a></dialog>
+  <dialog aria-label="Información de la maqueta" id="info-dialog"><div class="dialog-heading"><p class="eyebrow">Sobre esta propuesta</p><button class="close" data-close aria-label="Cerrar información">×</button></div><h2>MÁS KANKI.<br>MENOS RUIDO.</h2><p>Maqueta del nuevo formato de la tienda: portada con video, compra por marca, vitrinas con carrusel y una selección que se recorre con el scroll.</p><p>Los productos, precios, fotos, etiquetas, tallas y estados salen del catálogo real de kankisurf.cl, consultado al abrir la página. Las prendas agotadas se muestran con su etiqueta y no se pueden agregar al carrito.</p><p>El despacho es con Starken y el envío se paga al recibir; la web no cobra envío. El carrito de esta maqueta funciona solo en este navegador: no crea pedidos ni cobra. El pago se activa al pasar a kankisurf.cl.</p><button class="button primary full" data-close>Volver a Kanki ↗</button></dialog>
+</body>
+</html>

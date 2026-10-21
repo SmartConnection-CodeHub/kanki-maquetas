@@ -1,0 +1,49 @@
+/* Coastal palette: chalk, charcoal and medium navy blue. */
+:root{--brand-ink:#242b29;--brand-dark:#304b68;--brand-accent:#42698f;--brand-accent-ink:#385e85;--brand-light:#f6f6f2;--brand-accent-light:#dce6ef;--accent-text:var(--brand-accent-ink)}
+.viewport[data-theme=street]{--sand:#fff;--paper:#f3f4f5;--ink:#242b29;--muted:#68717b;--line:#d9dfe5;--accent:#42698f;--accent-text:#385e85}
+.lab-bar{background:var(--brand-dark);color:var(--brand-light)}
+.status-dot,.scroll-progress{background:var(--brand-accent-light)}
+.announcement{background:var(--brand-dark);color:var(--brand-light);border-bottom-color:#ffffff1f}
+.story-copy h2 em,.school-intro h2 em{color:var(--accent-text)}
+.hero h1 em,.viewport[data-theme=street] .hero h1 em{color:inherit}
+
+.hero-copy .tiny-sun,.text-link>span,.journal-card h3>span,.brands-row>button[aria-pressed=true]{color:var(--accent-text)}
+.button.primary{background:var(--brand-accent-ink);color:var(--brand-light)}
+.button.primary:hover,.viewport[data-theme=street] .button.primary:hover{background:#2d4c6e;color:var(--brand-light)}
+.coast-stamp,.viewport[data-theme=street] .coast-stamp{background:var(--brand-light);color:var(--brand-accent);border:1px solid var(--brand-accent)}
+.sand-strip{background:var(--brand-light);color:var(--ink);border-bottom:1px solid var(--line)}
+.product-index{color:#68717b}
+.quick-add{background:var(--brand-dark);color:var(--brand-light)}
+.product-photo:hover .quick-add{background:var(--brand-accent)}
+.brand-story{border-top:1px solid var(--line)}
+.tape-label{background:var(--brand-light);color:var(--accent-text)}
+.journal-quote{background:var(--brand-dark);color:var(--brand-light)}
+.journal-quote .tiny-sun{color:var(--brand-accent-light)}
+.last-call,.viewport[data-theme=street] .last-call{background:var(--brand-dark);color:var(--brand-light)}
+.last-call .button.cream,.viewport[data-theme=street] .last-call .button.cream{background:var(--brand-light);color:var(--brand-dark)}
+.last-call .outline-light,.viewport[data-theme=street] .last-call .outline-light{color:var(--brand-light);border-color:var(--brand-light)}
+.scroll-bridge,.viewport[data-theme=street] .scroll-bridge{background:var(--brand-dark);color:var(--brand-light)}
+.bridge-track em,.viewport[data-theme=street] .bridge-track em{color:var(--brand-accent-light)}
+.footer-wordmark{color:var(--ink)}
+.footer-wordmark span{color:var(--accent-text)}
+.footer-top nav a:hover,.footer-top nav button:hover{color:var(--accent-text)}
+.filters button[aria-pressed=true],.brand-filters button[aria-pressed=true]{background:var(--brand-accent-ink);border-color:var(--brand-accent);color:var(--brand-light)}
+.variant-card[aria-pressed=true]{border-color:var(--accent-text)}
+.coast-preview{background:var(--brand-light);color:var(--brand-dark)}
+.coast-preview i{color:var(--accent-text)}
+.street-preview{background:var(--brand-dark);color:var(--brand-light)}
+.street-preview i{color:var(--brand-accent-light)}
+.close:hover{background:#edf0f3;color:var(--accent-text)}
+.size-choice:has(input:checked) span{background:var(--brand-accent-ink);border-color:var(--brand-accent);color:var(--brand-light)}
+.radio-option:has(input:checked){background:#e9eef3;border-color:var(--accent-text)}
+.radio-option input{accent-color:var(--accent-text)}
+.demo-result{background:#e9eef3;border-left:3px solid var(--brand-accent)}
+.toast{background:var(--brand-dark);color:var(--brand-light);border-top:2px solid var(--brand-accent)}
+/* The reference hero retains the colors of the observed original. */
+.current-copy .button.primary{background:#188c80;color:white}
+.current-copy .button.primary:hover{background:#14786f}
+/* Original brand artwork has the same colors everywhere, independent of theme. */
+.brand-option-logo,.brand-title-mark{background:#e9e4da}
+.brand-option-logo--grizzly,.brand-title-mark--grizzly{background:#111c2a}
+.brand-option-logo--stussy,.brand-title-mark--stussy,.brand-option-logo--luked,.brand-title-mark--luked{background:#0a0a0a}
+.brand-option-logo img,.brand-title-mark img{mix-blend-mode:normal;filter:none;opacity:1}

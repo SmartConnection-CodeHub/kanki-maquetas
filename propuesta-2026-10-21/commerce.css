@@ -1,0 +1,23 @@
+/* Neutral product presentation and clearer buying interactions. */
+.detail-photo{position:relative;padding:0;cursor:zoom-in;text-align:center;isolation:isolate}
+.detail-photo:disabled{opacity:1;cursor:default}
+.image-zoom-hint{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);background:#fff;color:#242b29;border:1px solid #242b2933;padding:10px 14px;font-size:10px;white-space:nowrap;pointer-events:none}
+.product-dialog.is-photo-expanded .product-detail-layout{grid-template-columns:1fr}
+.product-dialog.is-photo-expanded .detail-photo{height:calc(100dvh - 100px);min-height:300px;width:100%;cursor:zoom-out}
+.product-dialog.is-photo-expanded .detail-photo img{height:100%;max-height:none;object-fit:contain;padding:36px 28px 60px}
+.product-dialog.is-photo-expanded .detail-copy{display:none}
+.size-availability{min-height:36px;margin-top:16px;font-size:11px;line-height:1.7;color:#68717b}
+.size-choice:has(input:disabled){opacity:.45;cursor:default}
+.size-choice:has(input:disabled) span{background:linear-gradient(to bottom right,transparent calc(50% - .5px),#9a947f 50%,transparent calc(50% + .5px))}
+.detail-copy .button:disabled{background:#e4e5ec;color:#68717b;opacity:1}
+.cart-photo{display:block;position:relative;width:65px;height:80px;background:#fff}
+.cart-quantity{display:inline-flex;align-items:center;border:1px solid #d9dfe5;margin-top:12px;background:#fff;color:#242b29}
+.cart-row .cart-quantity button{width:44px;min-height:44px;padding:0;text-decoration:none;font-size:19px}
+.cart-quantity output{min-width:27px;text-align:center;font-size:12px}
+.cart-quantity button:hover:not(:disabled){background:#eef1f4}
+.cart-row .cart-line-total{font-size:12px;color:#242b29;font-weight:600;margin-top:12px}
+.cart-feedback{font-size:11px;color:#68717b;line-height:1.7;margin-top:12px}
+.cart-feedback:empty{display:none}
+.product-image-fallback{background:#fff;color:#68717b}
+.cart-photo .product-image-fallback{font-size:9px;padding:5px}
+@media(max-width:700px){.detail-photo{height:300px}.detail-photo img{height:300px;padding:20px 22px 50px}.detail-photo img.grizzly-image{padding:20px 22px 50px}.detail-copy .button{position:sticky;bottom:0;box-shadow:0 0 0 8px #f6f6f2}.product-dialog.is-photo-expanded .detail-photo{height:calc(100dvh - 80px);min-height:240px}.cart-row{column-gap:11px}.cart-row>button[data-remove]{align-self:start;font-size:10px}.image-zoom-hint{font-size:10px}}

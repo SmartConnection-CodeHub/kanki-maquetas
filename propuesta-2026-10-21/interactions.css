@@ -1,0 +1,23 @@
+/* One rhythm for click feedback; product colors stay untouched. */
+:root{--ui-ease:cubic-bezier(.22,1,.36,1);--ui-fast:180ms;--ui-normal:320ms;--ui-slow:420ms}
+:root{scrollbar-gutter:stable}
+:root[data-scroll-motion=running]{scroll-behavior:auto!important;overflow-anchor:none}
+.button,.cart-quantity button,.size-choice>span{position:relative;overflow:hidden;isolation:isolate}
+.ui-ripple{position:absolute;display:block;pointer-events:none;border-radius:50%;background:currentColor;opacity:0;transform-origin:center;z-index:1}
+.button,.close,.shelf-arrows button,.cart-quantity button,.size-choice span,.filters button,.segmented button,.variant-card,.bag-button{transition:background-color var(--ui-normal) var(--ui-ease),color var(--ui-normal) var(--ui-ease),border-color var(--ui-normal) var(--ui-ease),box-shadow var(--ui-normal) var(--ui-ease),transform var(--ui-fast) var(--ui-ease),opacity var(--ui-fast) var(--ui-ease)}
+.button:active:not(:disabled),.close:active,.shelf-arrows button:active:not(:disabled),.cart-quantity button:active:not(:disabled){transform:translateY(1px) scale(.97)}
+.size-choice:active:not(:has(input:disabled)) span{transform:scale(.95)}
+.brand-filters .brand-option{transition:transform var(--ui-normal) var(--ui-ease),border-color var(--ui-normal) var(--ui-ease),box-shadow var(--ui-normal) var(--ui-ease),background-color var(--ui-normal) var(--ui-ease)}
+.brand-option-meta,.brand-option-meta strong,.viewport,.showcase-stage,.showcase-slide,.story-copy,.brand-story,.footer,.kanki-benefits{transition:background-color var(--ui-slow) var(--ui-ease),color var(--ui-slow) var(--ui-ease)}
+.brand-option-logo,.brand-title-mark,.product-photo,.detail-photo,.cart-photo,.showcase-panel,.showcase-card-media{isolation:isolate}
+.menu-button span{transition:transform var(--ui-normal) var(--ui-ease),opacity var(--ui-fast) var(--ui-ease)}
+.menu-button[aria-expanded=true] span:first-child{transform:translateY(4.25px) rotate(45deg)}
+.menu-button[aria-expanded=true] span:last-child{transform:translateY(-4.25px) rotate(-45deg)}
+:root[data-ui-motion=on] dialog[open]{animation:none}
+:root[data-ui-motion=on] dialog[open]::backdrop{animation:ui-backdrop-in 320ms var(--ui-ease) both}
+:root[data-ui-motion=on] dialog.is-closing::backdrop{animation:ui-backdrop-out 200ms var(--ui-ease) both}
+.is-closing{pointer-events:none}
+@keyframes ui-backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes ui-backdrop-out{from{opacity:1}to{opacity:0}}
+@media(max-width:700px){.detail-copy .button{position:sticky}}
+@media(prefers-reduced-motion:reduce){.button,.close,.shelf-arrows button,.cart-quantity button,.size-choice span,.filters button,.segmented button,.variant-card,.bag-button,.brand-filters .brand-option,.brand-option-meta,.brand-option-meta strong,.viewport,.showcase-stage,.showcase-slide,.story-copy,.brand-story,.footer,.kanki-benefits,.menu-button span{transition:none}.button:active:not(:disabled),.close:active,.shelf-arrows button:active:not(:disabled),.cart-quantity button:active:not(:disabled),.size-choice:active:not(:has(input:disabled)) span{transform:none}}
