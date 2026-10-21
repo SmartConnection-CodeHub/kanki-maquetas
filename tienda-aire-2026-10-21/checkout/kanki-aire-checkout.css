@@ -1,0 +1,38 @@
+/* KANKI · "Nuevo aire" para el checkout. Solo estilo, ninguna logica.
+   Rollback: quitar el <link> de kanki-aire-checkout.css del head. */
+:root {
+  --ocean: #242b29; --ocean-mid: #385e85;
+  --teal: #385e85; --teal-light: #dce6ef;
+  --sunset: #385e85; --sunset-dark: #2d4c6e;
+  --sand: #eceee8; --sand-dark: #dce6ef;
+  --gray: #68717b; --gray-light: #eef1f4; --border: #d9dfe5;
+  --r-sm: 0; --r-md: 2px; --r-lg: 4px;
+  --font: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Barlow Condensed', 'Arial Narrow', Impact, sans-serif;
+}
+body::after { background: linear-gradient(180deg, rgba(48,75,104,.62) 0%, rgba(36,43,41,.84) 55%, rgba(36,43,41,.94) 100%); }
+.ck-head { background: rgba(48,75,104,.92); border-bottom: 1px solid rgba(246,246,242,.18); }
+.ck-head .logo em { color: #dce6ef; }
+.ck-head .secure { color: #dce6ef; }
+.ck-back { min-height: 44px; }
+h1, h2, .sec-head h2, .ck-gate__card h1 {
+  font-family: var(--font-display); font-weight: 800; letter-spacing: .01em; text-transform: uppercase;
+}
+.sec-head h2 { font-size: 24px; line-height: 1; }
+.sec-num { border-radius: 0; background: #304b68; font-family: var(--font-display); }
+.sub-label { font-family: var(--font-display); font-size: 17px; letter-spacing: .04em; }
+input, select, textarea { border-radius: 0 !important; font-family: var(--font); }
+input:focus, select:focus, textarea:focus { border-color: #385e85 !important; outline: 2px solid #dce6ef; }
+button { border-radius: 0 !important; }
+.kk-paybar__btn { letter-spacing: .1em; min-height: 48px; }
+.kk-paybar__btn { background: #385e85; color: #f6f6f2; }
+.kk-paybar__btn:hover { background: #2d4c6e; }
+.opt, .gateway-note, .pickup-info, .sum-toggle, .sec { border-radius: 0 !important; }
+.sum-toggle { background: #dce6ef; }
+.back-store, .free { color: #385e85; }
+.pickup-info { background: rgba(56,94,133,.08); border-color: rgba(56,94,133,.3); }
+.sum-thumb { border-radius: 0; background: #fff; }
+.err-msg { color: #b42318; }
+.ck-gate__card { border-radius: 0 !important; }
+.ck-gate__btn { border-radius: 0 !important; background: #385e85 !important; }
+.ck-gate__btn:hover { box-shadow: none; background: #2d4c6e !important; }
